@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BackupViewController">
+            <connections>
+                <outlet property="view" destination="iN0-l3-epB" id="USU-RE-jQP"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fYC-kd-S55">
+                    <rect key="frame" x="0.0" y="16" width="320" height="432"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="GENERAL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pbI-lT-vIQ">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JXO-Fh-wTz">
+                            <rect key="frame" x="240" y="37" width="51" height="31"/>
+                        </switch>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Enable Auto Backup" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hQt-06-bCK">
+                            <rect key="frame" x="8" y="42" width="157" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cTx-gr-lUb">
+                            <rect key="frame" x="0.0" y="76" width="320" height="135"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <string key="text">You have enabled the auto backup. we will backup the entire content of the CoolWallet in a proprletary format and safe it on your online storage.
+
+BACKUP SITE</string>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Llp-Sb-H2L">
+                            <rect key="frame" x="0.0" y="211" width="320" height="46"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Dropbox" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="erG-eq-VkP">
+                                    <rect key="frame" x="8" y="12" width="67" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="cping.hsiao@gmail.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FiE-RJ-EX4">
+                                    <rect key="frame" x="114" y="12" width="182" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                    <integer key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ALF-zU-0hC">
+                            <rect key="frame" x="0.0" y="265" width="320" height="46"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="GoogleDrive" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="knK-Gm-e3f">
+                                    <rect key="frame" x="8" y="12" width="95" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="cping.hsiao@gmail.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c06-fC-qnZ">
+                                    <rect key="frame" x="114" y="12" width="182" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                    <integer key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="JXO-Fh-wTz" secondAttribute="trailing" constant="20" id="57T-aU-tut"/>
+                        <constraint firstItem="ALF-zU-0hC" firstAttribute="leading" secondItem="fYC-kd-S55" secondAttribute="leading" id="F7c-4f-3as"/>
+                        <constraint firstItem="pbI-lT-vIQ" firstAttribute="leading" secondItem="fYC-kd-S55" secondAttribute="leading" id="FgV-ne-QOZ"/>
+                        <constraint firstAttribute="trailing" secondItem="cTx-gr-lUb" secondAttribute="trailing" id="TsM-8u-lLn"/>
+                        <constraint firstItem="cTx-gr-lUb" firstAttribute="leading" secondItem="fYC-kd-S55" secondAttribute="leading" id="U6Q-cv-FIL"/>
+                        <constraint firstAttribute="trailing" secondItem="pbI-lT-vIQ" secondAttribute="trailing" id="bds-Ak-CSc"/>
+                        <constraint firstAttribute="trailing" secondItem="ALF-zU-0hC" secondAttribute="trailing" id="jvI-nd-a3t"/>
+                        <constraint firstAttribute="trailing" secondItem="Llp-Sb-H2L" secondAttribute="trailing" id="xcT-LO-OFe"/>
+                        <constraint firstItem="Llp-Sb-H2L" firstAttribute="leading" secondItem="fYC-kd-S55" secondAttribute="leading" id="yza-Nr-WZq"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aRz-Fh-7y7">
+                    <rect key="frame" x="16" y="519" width="288" height="30"/>
+                    <color key="backgroundColor" red="0.079463252390000003" green="0.74682145850000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="288" id="J1P-oV-XZj"/>
+                    </constraints>
+                    <state key="normal" title="Restore">
+                        <color key="titleColor" red="0.99550346199999995" green="0.9706826127" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gMQ-pv-VBn">
+                    <rect key="frame" x="16" y="481" width="288" height="30"/>
+                    <color key="backgroundColor" red="0.079463252390000003" green="0.74682145850000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="288" id="Uow-oF-HT3"/>
+                    </constraints>
+                    <state key="normal" title="Backup Now">
+                        <color key="titleColor" red="0.99550346199999995" green="0.9706826127" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="aRz-Fh-7y7" secondAttribute="bottom" constant="20" id="4st-6h-WIK"/>
+                <constraint firstItem="aRz-Fh-7y7" firstAttribute="top" secondItem="gMQ-pv-VBn" secondAttribute="bottom" constant="8" id="6ag-l6-Nl0"/>
+                <constraint firstAttribute="centerX" secondItem="gMQ-pv-VBn" secondAttribute="centerX" id="AHz-O2-bbg"/>
+                <constraint firstItem="fYC-kd-S55" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="AXi-HY-fmJ"/>
+                <constraint firstAttribute="centerX" secondItem="aRz-Fh-7y7" secondAttribute="centerX" id="DHz-zQ-GQb"/>
+                <constraint firstAttribute="trailing" secondItem="fYC-kd-S55" secondAttribute="trailing" id="U6Q-Q0-riJ"/>
+                <constraint firstItem="fYC-kd-S55" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="65" id="hmq-sl-ZVU"/>
+            </constraints>
+            <point key="canvasLocation" x="303" y="249"/>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="kyf-P9-VIH">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--New Wallet View Contoller-->
+        <scene sceneID="q7W-jR-QBy">
+            <objects>
+                <viewController storyboardIdentifier="NewWalletViewContoller" id="kyf-P9-VIH" customClass="NewWalletViewContoller" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="C03-vj-0Rh"/>
+                        <viewControllerLayoutGuide type="bottom" id="Sxy-UI-lHf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hb2-v5-ynt">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="boh-bR-qBt">
+                                <rect key="frame" x="16" y="507" width="288" height="30"/>
+                                <color key="backgroundColor" red="0.079463252390000003" green="0.74682145850000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="288" id="Fea-b1-SEJ"/>
+                                </constraints>
+                                <state key="normal" title="Confirm Seed">
+                                    <color key="titleColor" red="0.99550346199999995" green="0.9706826127" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="wh7-yE-49p" kind="push" id="wwv-CN-jAB"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EBb-i6-4zF">
+                                <rect key="frame" x="0.0" y="30" width="320" height="370"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Move Your Finger Here Generate a Seed You Linke" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="At8-q9-iO6">
+                                        <rect key="frame" x="8" y="8" width="304" height="148"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SEED VALUE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VoY-aE-ZAR">
+                                        <rect key="frame" x="8" y="164" width="102" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" text="afford alter spike radar gate glance object seek swamp infant panel yellow" translatesAutoresizingMaskIntoConstraints="NO" id="ePp-4S-I8D">
+                                        <rect key="frame" x="8" y="193" width="304" height="157"/>
+                                        <color key="backgroundColor" red="0.4130372506796598" green="0.82319499215795811" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <accessibility key="accessibilityConfiguration" hint="afford alter spike radar gate glance object seek swamp infant panel yellow" label=""/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="At8-q9-iO6" firstAttribute="leading" secondItem="EBb-i6-4zF" secondAttribute="leading" constant="8" id="9Qo-J6-ndQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="ePp-4S-I8D" secondAttribute="trailing" constant="8" id="EDu-EX-rTl"/>
+                                    <constraint firstItem="ePp-4S-I8D" firstAttribute="leading" secondItem="EBb-i6-4zF" secondAttribute="leading" constant="8" id="ZOD-ys-sbM"/>
+                                    <constraint firstAttribute="trailing" secondItem="At8-q9-iO6" secondAttribute="trailing" constant="8" id="kzq-L4-JUl"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="EBb-i6-4zF" firstAttribute="leading" secondItem="hb2-v5-ynt" secondAttribute="leadingMargin" id="GIk-De-LlC"/>
+                            <constraint firstAttribute="centerX" secondItem="boh-bR-qBt" secondAttribute="centerX" id="LJP-lB-f8K"/>
+                            <constraint firstItem="EBb-i6-4zF" firstAttribute="top" secondItem="C03-vj-0Rh" secondAttribute="bottom" constant="10" id="Lfk-V6-tsf"/>
+                            <constraint firstItem="Sxy-UI-lHf" firstAttribute="top" secondItem="boh-bR-qBt" secondAttribute="bottom" constant="30" id="jQ4-PV-rX2"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="EBb-i6-4zF" secondAttribute="trailing" id="sbe-fz-dng"/>
+                            <constraint firstItem="boh-bR-qBt" firstAttribute="top" secondItem="EBb-i6-4zF" secondAttribute="bottom" constant="8" id="zfg-mh-v2i"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="qxu-ic-mSp"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nMS-9X-tLr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="118" y="334"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="yrZ-AA-kbt">
+            <objects>
+                <viewController id="wh7-yE-49p" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nXR-hZ-afw"/>
+                        <viewControllerLayoutGuide type="bottom" id="1q0-hu-AvL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0vI-mT-wun">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VHA-PH-Wgh">
+                                <rect key="frame" x="16" y="506" width="288" height="30"/>
+                                <color key="backgroundColor" red="0.079463252390000003" green="0.74682145850000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="288" id="gwG-uz-jmo"/>
+                                </constraints>
+                                <state key="normal" title="I've Backupped the Seed">
+                                    <color key="titleColor" red="0.99550346199999995" green="0.9706826127" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Fxj-Q7-hEq" kind="push" id="Wlz-d3-19p"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SEED VALUE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EIE-21-eWB">
+                                <rect key="frame" x="16" y="70" width="102" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" text="Seed Value" translatesAutoresizingMaskIntoConstraints="NO" id="AdO-1x-GQL">
+                                <rect key="frame" x="8" y="99" width="304" height="157"/>
+                                <color key="backgroundColor" red="0.41303725070000002" green="0.82319499220000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <accessibility key="accessibilityConfiguration" hint="afford alter spike radar gate glance object seek swamp infant panel yellow" label=""/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bc6-EC-7YT">
+                                <rect key="frame" x="16" y="264" width="288" height="127"/>
+                                <string key="text">You should backup the seed to safe place, for example. write down to a paper and put into a sealed cnvclopc. The scod can bc used to recover the cntirc wallet.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="1q0-hu-AvL" firstAttribute="top" secondItem="VHA-PH-Wgh" secondAttribute="bottom" constant="30" id="3W2-1a-PmE"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="AdO-1x-GQL" secondAttribute="trailing" constant="8" id="4eX-VX-XLo"/>
+                            <constraint firstAttribute="centerX" secondItem="VHA-PH-Wgh" secondAttribute="centerX" id="foe-V8-ZVd"/>
+                            <constraint firstItem="AdO-1x-GQL" firstAttribute="leading" secondItem="0vI-mT-wun" secondAttribute="leadingMargin" constant="8" id="kfI-GI-G7t"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="mcP-K6-hJc"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iZe-sH-dGE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="kQ5-xQ-OjW" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="520" y="334"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="zlP-mY-eKR">
+            <objects>
+                <viewController id="Fxj-Q7-hEq" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0q4-ux-Qvp"/>
+                        <viewControllerLayoutGuide type="bottom" id="Dea-8R-s89"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="snk-vl-9S5">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JTn-84-yvG">
+                                <rect key="frame" x="16" y="509" width="288" height="30"/>
+                                <color key="backgroundColor" red="0.079463252390000003" green="0.74682145850000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="288" id="a4V-wj-h4J"/>
+                                </constraints>
+                                <state key="normal" title="Giveup">
+                                    <color key="titleColor" red="0.99550346199999995" green="0.9706826127" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="kQ5-xQ-OjW" kind="unwind" unwindAction="unwindToThisViewController:" id="fsM-Xl-Kac"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cIl-LO-WPZ">
+                                <rect key="frame" x="16" y="471" width="288" height="30"/>
+                                <color key="backgroundColor" red="0.079463252390000003" green="0.74682145850000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="288" id="yip-T4-up7"/>
+                                </constraints>
+                                <state key="normal" title="Confirm">
+                                    <color key="titleColor" red="0.99550346199999995" green="0.9706826127" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="jna-hq-IJH" kind="push" id="PKJ-fG-U1v"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="To make sure that you have backup the seed successtuly, Please input the seed to confim your backup" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2N9-qp-l4x">
+                                <rect key="frame" x="11" y="60" width="293" height="83"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SEED VALUE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V53-Qe-nJq">
+                                <rect key="frame" x="11" y="151" width="102" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" text="Seed Value" translatesAutoresizingMaskIntoConstraints="NO" id="6I6-FS-Klo">
+                                <rect key="frame" x="8" y="180" width="304" height="157"/>
+                                <color key="backgroundColor" red="0.41303725070000002" green="0.82319499220000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <accessibility key="accessibilityConfiguration" hint="afford alter spike radar gate glance object seek swamp infant panel yellow" label=""/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2N9-qp-l4x" firstAttribute="leading" secondItem="snk-vl-9S5" secondAttribute="leadingMargin" constant="8" id="3t2-Gq-Skp"/>
+                            <constraint firstAttribute="centerX" secondItem="6I6-FS-Klo" secondAttribute="centerX" id="7ft-AL-B4S"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6I6-FS-Klo" secondAttribute="trailing" constant="8" id="AVZ-9C-rRp"/>
+                            <constraint firstAttribute="centerX" secondItem="JTn-84-yvG" secondAttribute="centerX" id="CxR-mR-XNr"/>
+                            <constraint firstAttribute="centerX" secondItem="2N9-qp-l4x" secondAttribute="centerX" id="G9p-4W-GLc"/>
+                            <constraint firstAttribute="centerX" secondItem="cIl-LO-WPZ" secondAttribute="centerX" id="Ovu-pS-Kmr"/>
+                            <constraint firstItem="6I6-FS-Klo" firstAttribute="leading" secondItem="snk-vl-9S5" secondAttribute="leadingMargin" constant="8" id="QaC-fK-Vlf"/>
+                            <constraint firstItem="JTn-84-yvG" firstAttribute="top" secondItem="cIl-LO-WPZ" secondAttribute="bottom" constant="10" id="fEm-yv-ADX"/>
+                            <constraint firstItem="Dea-8R-s89" firstAttribute="top" secondItem="JTn-84-yvG" secondAttribute="bottom" constant="30" id="k8E-UL-tm1"/>
+                            <constraint firstItem="2N9-qp-l4x" firstAttribute="trailing" secondItem="snk-vl-9S5" secondAttribute="trailingMargin" constant="8" id="nBf-fS-wiK"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Jia-Gz-PEI"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bug-Bh-gA0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="932" y="332"/>
+        </scene>
+        <!--New Wallet View Contoller-->
+        <scene sceneID="Es1-9g-inW">
+            <objects>
+                <viewController id="jna-hq-IJH" customClass="NewWalletViewContoller" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dbs-ge-bhl"/>
+                        <viewControllerLayoutGuide type="bottom" id="hPX-DZ-odl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kzh-7B-EXl">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D9i-2I-C9s">
+                                <rect key="frame" x="16" y="508" width="288" height="30"/>
+                                <color key="backgroundColor" red="0.079463252390000003" green="0.74682145850000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="288" id="eKH-E8-77H"/>
+                                </constraints>
+                                <state key="normal" title="Done">
+                                    <color key="titleColor" red="0.99550346199999995" green="0.9706826127" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btn_done:" destination="jna-hq-IJH" eventType="touchUpInside" id="3av-Wu-X0v"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Please input the basic into of the Wallet" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oRt-JX-HQD">
+                                <rect key="frame" x="9" y="68" width="303" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="WALLET NAME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LJx-5y-yGJ">
+                                <rect key="frame" x="9" y="97" width="120" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" text="Wallet Name" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="iQ5-t2-EwG">
+                                <rect key="frame" x="8" y="131" width="304" height="39"/>
+                                <color key="backgroundColor" red="0.41303725070000002" green="0.82319499220000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <accessibility key="accessibilityConfiguration" hint="afford alter spike radar gate glance object seek swamp infant panel yellow" label=""/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="WALLET ICON" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZAT-a7-sjd">
+                                <rect key="frame" x="8" y="202" width="113" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="coin.png" translatesAutoresizingMaskIntoConstraints="NO" id="83e-9a-qfB">
+                                <rect key="frame" x="40" y="238" width="240" height="177"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="D9i-2I-C9s" secondAttribute="centerX" id="Jzh-Tq-4e4"/>
+                            <constraint firstItem="hPX-DZ-odl" firstAttribute="top" secondItem="D9i-2I-C9s" secondAttribute="bottom" constant="30" id="ZHT-MV-Rtp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iQ5-t2-EwG" secondAttribute="trailing" constant="8" id="kz7-4t-PK9"/>
+                            <constraint firstItem="iQ5-t2-EwG" firstAttribute="leading" secondItem="kzh-7B-EXl" secondAttribute="leadingMargin" constant="8" id="wgf-dn-3W3"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="teu-1t-u4D"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HPS-cr-V9m" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1314" y="333"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="coin.png" width="188" height="185"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingViewController">
+            <connections>
+                <outlet property="view" destination="iN0-l3-epB" id="sWK-Ro-6fB"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LS1-Kh-WMd">
+                    <rect key="frame" x="16" y="518" width="288" height="30"/>
+                    <color key="backgroundColor" red="0.079463252390000003" green="0.74682145850000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="288" id="jmc-pX-VX9"/>
+                    </constraints>
+                    <state key="normal" title="About Us">
+                        <color key="titleColor" red="0.99550346199999995" green="0.9706826127" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="quV-MD-sXh">
+                    <rect key="frame" x="16" y="480" width="288" height="30"/>
+                    <color key="backgroundColor" red="0.079463252390000003" green="0.74682145850000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="288" id="6sl-dA-hks"/>
+                    </constraints>
+                    <state key="normal" title="Feedback">
+                        <color key="titleColor" red="0.99550346199999995" green="0.9706826127" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IUQ-b9-fc2">
+                    <rect key="frame" x="0.0" y="65" width="320" height="407"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="GENERAL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xba-H4-Xs3">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="CURRENCY" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IhT-iL-oSx">
+                            <rect key="frame" x="0.0" y="76" width="320" height="30"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="EXCHANGE SITE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KnZ-6n-Ubm">
+                            <rect key="frame" x="0.0" y="258" width="320" height="30"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3yY-Rd-jPE">
+                            <rect key="frame" x="240" y="37" width="51" height="31"/>
+                        </switch>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Enable Push Notification" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mEH-cW-DkO">
+                            <rect key="frame" x="8" y="42" width="188" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3m6-7M-sye">
+                            <rect key="frame" x="0.0" y="108" width="320" height="44"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="USD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Idf-bs-MWi">
+                                    <rect key="frame" x="21" y="12" width="36" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IJx-gy-nbV">
+                                    <rect key="frame" x="265" y="6" width="32" height="32"/>
+                                    <state key="normal" image="checkbox_full.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                    <integer key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AXp-22-AYn">
+                            <rect key="frame" x="0.0" y="212" width="320" height="44"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="TWD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pgX-gA-Pxj">
+                                    <rect key="frame" x="21" y="12" width="38" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FSZ-6b-Ohm">
+                                    <rect key="frame" x="265" y="6" width="32" height="32"/>
+                                    <state key="normal" image="checkbox_empty.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                    <integer key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="92E-T1-p15">
+                            <rect key="frame" x="0.0" y="288" width="320" height="44"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Bitstamp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ba-xn-x8Y">
+                                    <rect key="frame" x="21" y="12" width="69" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gk8-0D-Iru">
+                                    <rect key="frame" x="265" y="6" width="32" height="32"/>
+                                    <state key="normal" image="checkbox_full.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                    <integer key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oCA-8b-dDg">
+                            <rect key="frame" x="0.0" y="340" width="320" height="44"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Blockchain" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HWY-tN-bQ9">
+                                    <rect key="frame" x="21" y="12" width="85" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WeB-8d-Icm">
+                                    <rect key="frame" x="265" y="6" width="32" height="32"/>
+                                    <state key="normal" image="checkbox_empty.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                    <integer key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z3s-m6-lIz">
+                            <rect key="frame" x="0.0" y="160" width="320" height="44"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CAD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ted-0V-0IB">
+                                    <rect key="frame" x="21" y="12" width="36" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Hm-YQ-yrY">
+                                    <rect key="frame" x="265" y="6" width="32" height="32"/>
+                                    <state key="normal" image="checkbox_empty.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                    <integer key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Xba-H4-Xs3" firstAttribute="leading" secondItem="IUQ-b9-fc2" secondAttribute="leading" id="2FU-gj-RPk"/>
+                        <constraint firstAttribute="trailing" secondItem="Xba-H4-Xs3" secondAttribute="trailing" id="3a5-SF-xNT"/>
+                        <constraint firstItem="Z3s-m6-lIz" firstAttribute="leading" secondItem="IUQ-b9-fc2" secondAttribute="leading" id="4oM-mL-KeV"/>
+                        <constraint firstAttribute="trailing" secondItem="KnZ-6n-Ubm" secondAttribute="trailing" id="5sQ-22-zSE"/>
+                        <constraint firstAttribute="trailing" secondItem="oCA-8b-dDg" secondAttribute="trailing" id="FMq-8B-bdC"/>
+                        <constraint firstAttribute="trailing" secondItem="92E-T1-p15" secondAttribute="trailing" id="Iwk-pa-aGg"/>
+                        <constraint firstItem="KnZ-6n-Ubm" firstAttribute="leading" secondItem="IUQ-b9-fc2" secondAttribute="leading" id="QKe-9r-bou"/>
+                        <constraint firstAttribute="trailing" secondItem="IhT-iL-oSx" secondAttribute="trailing" id="Sq2-ww-VzV"/>
+                        <constraint firstAttribute="trailing" secondItem="Z3s-m6-lIz" secondAttribute="trailing" id="StW-ga-kEl"/>
+                        <constraint firstItem="AXp-22-AYn" firstAttribute="leading" secondItem="IUQ-b9-fc2" secondAttribute="leading" id="WGg-eq-0Pp"/>
+                        <constraint firstAttribute="trailing" secondItem="AXp-22-AYn" secondAttribute="trailing" id="XFf-2V-Xjr"/>
+                        <constraint firstAttribute="trailing" secondItem="3m6-7M-sye" secondAttribute="trailing" id="Y9m-C0-Wh7"/>
+                        <constraint firstItem="IhT-iL-oSx" firstAttribute="leading" secondItem="IUQ-b9-fc2" secondAttribute="leading" id="YMk-w3-zks"/>
+                        <constraint firstAttribute="trailing" secondItem="3yY-Rd-jPE" secondAttribute="trailing" constant="20" id="blj-RI-2zS"/>
+                        <constraint firstItem="3m6-7M-sye" firstAttribute="leading" secondItem="IUQ-b9-fc2" secondAttribute="leading" id="fAD-7d-Pw8"/>
+                        <constraint firstItem="92E-T1-p15" firstAttribute="leading" secondItem="IUQ-b9-fc2" secondAttribute="leading" id="gp9-62-rvL"/>
+                        <constraint firstItem="oCA-8b-dDg" firstAttribute="leading" secondItem="IUQ-b9-fc2" secondAttribute="leading" id="ls9-Gn-QTm"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="IUQ-b9-fc2" secondAttribute="trailing" id="1Wt-e4-31i"/>
+                <constraint firstAttribute="centerX" secondItem="quV-MD-sXh" secondAttribute="centerX" id="8Xt-YC-CLc"/>
+                <constraint firstAttribute="bottom" secondItem="LS1-Kh-WMd" secondAttribute="bottom" constant="20" id="AdI-9I-zwR"/>
+                <constraint firstItem="IUQ-b9-fc2" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="65" id="EaX-8k-TXL"/>
+                <constraint firstAttribute="centerX" secondItem="LS1-Kh-WMd" secondAttribute="centerX" id="nBt-8p-JJG"/>
+                <constraint firstItem="LS1-Kh-WMd" firstAttribute="top" secondItem="quV-MD-sXh" secondAttribute="bottom" constant="8" id="uCL-Fc-8zp"/>
+                <constraint firstItem="IUQ-b9-fc2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="wdQ-bO-fAB"/>
+                <constraint firstItem="quV-MD-sXh" firstAttribute="top" secondItem="IUQ-b9-fc2" secondAttribute="bottom" constant="8" id="xdS-Nj-680"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <point key="canvasLocation" x="304" y="274"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="checkbox_empty.png" width="32" height="32"/>
+        <image name="checkbox_full.png" width="32" height="32"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

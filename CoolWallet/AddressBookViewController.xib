@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddressBookViewController">
+            <connections>
+                <outlet property="view" destination="iN0-l3-epB" id="tCE-1c-YaG"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Family" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4MS-p3-0xO">
+                    <rect key="frame" x="0.0" y="80" width="320" height="30"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y1M-mQ-cQl">
+                    <rect key="frame" x="0.0" y="110" width="320" height="113"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="member.png" translatesAutoresizingMaskIntoConstraints="NO" id="cIQ-7v-W6R">
+                            <rect key="frame" x="8" y="4" width="80" height="80"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Alex Cican" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7CP-Ck-Inc">
+                            <rect key="frame" x="7" y="92" width="82" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.55456878200385251" green="1" blue="0.98471299562660364" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Merchant" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bmp-rT-4lz">
+                    <rect key="frame" x="0.0" y="223" width="320" height="30"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qhp-LB-3Te">
+                    <rect key="frame" x="0.0" y="253" width="320" height="113"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="member.png" translatesAutoresizingMaskIntoConstraints="NO" id="Kci-tQ-wX2">
+                            <rect key="frame" x="8" y="4" width="80" height="80"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Alex Cican" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YKl-Nh-yPh">
+                            <rect key="frame" x="7" y="92" width="82" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.55456878200000004" green="1" blue="0.98471299560000003" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Investors" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yDF-nZ-EH2">
+                    <rect key="frame" x="0.0" y="366" width="320" height="30"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LMY-as-stb">
+                    <rect key="frame" x="0.0" y="396" width="320" height="113"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="member.png" translatesAutoresizingMaskIntoConstraints="NO" id="9ap-ah-m4N">
+                            <rect key="frame" x="8" y="4" width="80" height="80"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Alex Cican" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p5K-iY-zZX">
+                            <rect key="frame" x="7" y="92" width="82" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.55456878200000004" green="1" blue="0.98471299560000003" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="yDF-nZ-EH2" firstAttribute="top" secondItem="qhp-LB-3Te" secondAttribute="bottom" id="0Ox-ty-EFk"/>
+                <constraint firstAttribute="trailing" secondItem="qhp-LB-3Te" secondAttribute="trailing" id="3HF-sJ-1Wy"/>
+                <constraint firstItem="qhp-LB-3Te" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="3f9-MZ-O4H"/>
+                <constraint firstItem="y1M-mQ-cQl" firstAttribute="top" secondItem="4MS-p3-0xO" secondAttribute="bottom" id="3kN-cq-xpm"/>
+                <constraint firstItem="LMY-as-stb" firstAttribute="top" secondItem="yDF-nZ-EH2" secondAttribute="bottom" id="88k-qZ-CzW"/>
+                <constraint firstItem="LMY-as-stb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Bs1-mu-haq"/>
+                <constraint firstAttribute="trailing" secondItem="Bmp-rT-4lz" secondAttribute="trailing" id="IjX-mm-FxK"/>
+                <constraint firstAttribute="trailing" secondItem="4MS-p3-0xO" secondAttribute="trailing" id="KDC-pn-aYU"/>
+                <constraint firstAttribute="trailing" secondItem="LMY-as-stb" secondAttribute="trailing" id="MKJ-NQ-Ai4"/>
+                <constraint firstItem="4MS-p3-0xO" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="65" id="Muv-83-jmN"/>
+                <constraint firstItem="Bmp-rT-4lz" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="RiC-RU-lAk"/>
+                <constraint firstItem="yDF-nZ-EH2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Xv6-2d-gD4"/>
+                <constraint firstAttribute="trailing" secondItem="yDF-nZ-EH2" secondAttribute="trailing" id="eqa-DW-V8X"/>
+                <constraint firstItem="y1M-mQ-cQl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fn7-7d-7vW"/>
+                <constraint firstAttribute="trailing" secondItem="y1M-mQ-cQl" secondAttribute="trailing" id="jjW-8f-hs9"/>
+                <constraint firstItem="qhp-LB-3Te" firstAttribute="top" secondItem="Bmp-rT-4lz" secondAttribute="bottom" id="x7m-9B-GH7"/>
+                <constraint firstItem="Bmp-rT-4lz" firstAttribute="top" secondItem="y1M-mQ-cQl" secondAttribute="bottom" id="xvF-uo-Nsg"/>
+                <constraint firstItem="4MS-p3-0xO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yK7-pt-CyZ"/>
+            </constraints>
+            <point key="canvasLocation" x="304" y="300"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="member.png" width="76" height="78"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

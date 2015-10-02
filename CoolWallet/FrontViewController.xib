@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FrontViewController">
+            <connections>
+                <outlet property="btn_connectCoolWallet" destination="KEA-Sb-iMd" id="4gL-W7-S68"/>
+                <outlet property="view" destination="iN0-l3-epB" id="TwI-Qd-THY"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Oa-SD-R0i">
+                    <rect key="frame" x="10" y="481" width="300" height="30"/>
+                    <color key="backgroundColor" red="0.079463252390000003" green="0.74682145850000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="300" id="kpi-36-yT5"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <state key="normal" title="Connect Later">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="btn_connectlater:" destination="-1" eventType="touchUpInside" id="XLQ-zG-eev"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KEA-Sb-iMd">
+                    <rect key="frame" x="10" y="422" width="300" height="30"/>
+                    <color key="backgroundColor" red="0.079463252390000003" green="0.74682145850000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="300" id="f1K-TZ-4yj"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <state key="normal" title="Connect CoolWallet">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="btn_connectCoolWallet:" destination="-1" eventType="touchUpInside" id="UIM-Vr-Obz"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a8y-7N-evi">
+                    <rect key="frame" x="0.0" y="130" width="320" height="139"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="icon-2.png" translatesAutoresizingMaskIntoConstraints="NO" id="jHf-5R-cXS">
+                            <rect key="frame" x="77" y="0.0" width="167" height="139"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="centerX" secondItem="jHf-5R-cXS" secondAttribute="centerX" id="DcO-er-SKE"/>
+                        <constraint firstAttribute="centerY" secondItem="jHf-5R-cXS" secondAttribute="centerY" id="cGo-bo-Kjj"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="3Oa-SD-R0i" firstAttribute="top" secondItem="KEA-Sb-iMd" secondAttribute="bottom" constant="30" id="0Ef-Vr-jIX"/>
+                <constraint firstAttribute="bottom" secondItem="3Oa-SD-R0i" secondAttribute="bottom" constant="40" id="1Ce-Co-3RU"/>
+                <constraint firstItem="a8y-7N-evi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="4bX-NY-v7l"/>
+                <constraint firstItem="a8y-7N-evi" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="130" id="4jw-BV-3fa"/>
+                <constraint firstAttribute="centerX" secondItem="KEA-Sb-iMd" secondAttribute="centerX" id="R19-b3-zXN"/>
+                <constraint firstAttribute="centerX" secondItem="3Oa-SD-R0i" secondAttribute="centerX" id="X1t-E9-SHz"/>
+                <constraint firstAttribute="trailing" secondItem="a8y-7N-evi" secondAttribute="trailing" id="avj-RQ-gSi"/>
+                <constraint firstAttribute="centerX" secondItem="a8y-7N-evi" secondAttribute="centerX" id="y1f-rT-7Gg"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="154"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon-2.png" width="301" height="240"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
