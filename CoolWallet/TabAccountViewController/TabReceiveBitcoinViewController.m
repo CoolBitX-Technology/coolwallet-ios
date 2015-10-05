@@ -86,6 +86,17 @@ NSString *Label;
 #pragma marks - Actions
 
 - (IBAction)btnNewAddress:(id)sender {
+    if (![cwCard enableGenAddressWithAccountId:account.accId]) {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Can't create address"
+                                                       message: nil
+                                                      delegate: nil
+                                             cancelButtonTitle: nil
+                                             otherButtonTitles:@"OK",nil];
+        [alert show];
+        
+        return;
+    }
+    
     self.actBusyIndicator.hidden = NO;
     [self.actBusyIndicator startAnimating];
     
@@ -95,7 +106,6 @@ NSString *Label;
 #pragma marks - Account Button Actions
 
 - (void)setAccountButton{
-    NSLog(@"cwAccounts = %d", [cwCard.cwAccounts count]);
     for(int i =0; i< [cwCard.cwAccounts count]; i++) {
         if(i == 0) {
             _btnAccount1.hidden = NO;
@@ -578,8 +588,11 @@ void freeRawData(void *info, const void *data, size_t size) {
             [self setAddressLabel:rowSelected];
         }
     }else if(alertView.tag == TAG_REQUEST) {
-        RequestBTC = [[alertView textFieldAtIndex:0] text];
-        [self setQRcodeDataforkey:rowSelected];
+        NSString *payment = [[[alertView textFieldAtIndex:0] text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if (payment.length > 0) {
+            RequestBTC = payment;
+            [self setQRcodeDataforkey:rowSelected];
+        }
     }
 }
 

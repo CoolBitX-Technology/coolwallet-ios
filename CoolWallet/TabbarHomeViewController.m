@@ -97,7 +97,7 @@ bool isFirst = YES;
 #pragma marks - Account Button Actions
 
 - (void)setAccountButton{
-    NSLog(@"cwAccounts = %d", [cwCard.cwAccounts count]);
+    NSLog(@"cwAccounts = %ld", [cwCard.cwAccounts count]);
     for(int i =0; i< [cwCard.cwAccounts count]; i++) {
         if(i == 0) {
             _btnAccount1.hidden = NO;
@@ -115,7 +115,7 @@ bool isFirst = YES;
         }
         
     }
-    NSLog(@"accid = %d",cwCard.currentAccountId);
+    NSLog(@"accid = %ld",cwCard.currentAccountId);
     if([cwCard.cwAccounts count] == 1) {
         [_btnAccount1 sendActionsForControlEvents:UIControlEventTouchUpInside];
     }else{
@@ -268,7 +268,7 @@ Boolean setBtnActionFlag;
 - (void)SetBalanceText
 {
     NSLog(@"SetBalanceText");
-    CwAccount *account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
+    CwAccount *account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     //_lblBalance.text = [NSString stringWithFormat: @"%lld BTC", (int64_t)account.balance];
     _lblBalance.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertBTCStringformUnit: (int64_t)account.balance], [[OCAppCommon getInstance] BitcoinUnit]];
     
@@ -286,7 +286,7 @@ Boolean setBtnActionFlag;
 
 - (void)SetTxkeys
 {
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     if([account.transactions count] == 0 ) return;
     //sorting account transactions
     sortedTxKeys = [account.transactions keysSortedByValueUsingComparator: ^(id obj1, id obj2) {
@@ -450,7 +450,7 @@ Boolean setBtnActionFlag;
 -(void) didGetCwHdwAccountPointer
 {
     //[self performDismiss];
-    NSLog(@"didGetCwHdwAccointPointer = %d", cwCard.hdwAcccountPointer);
+    NSLog(@"didGetCwHdwAccointPointer = %ld", cwCard.hdwAcccountPointer);
     if (cwCard.hdwAcccountPointer == 0) {
         [self CreateAccount];
         cwCard.currentAccountId = 0;
@@ -518,13 +518,15 @@ Boolean setBtnActionFlag;
     });
 }
 
--(void) didNewAccount
+-(void) didNewAccount: (NSInteger)aid
 {
+    NSLog(@"didNewAccount");
     [self performDismiss];
     //find CW via BLE
     cwManager = [CwManager sharedManager];
     
     cwCard = cwManager.connectedCwCard;
+    [cwCard genAddress:aid KeyChainId:CwAddressKeyChainExternal];
     
     [self setAccountButton];
 }

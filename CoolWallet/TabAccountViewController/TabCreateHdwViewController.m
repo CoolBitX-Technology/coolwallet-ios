@@ -53,6 +53,7 @@
     // Do any additional setup after loading the view.
     //find CW via BLE
     self.cwManager = [CwManager sharedManager];
+    self.cwManager.connectedCwCard.delegate = self;
     
     self.txtHdwName.delegate = self;
     self.txtSeed.delegate = self;
@@ -67,8 +68,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    self.cwManager.connectedCwCard.delegate = self;
     
     self.actBusyIndicator.hidden = YES;
     //[self.actBusyIndicator startAnimating];
