@@ -40,9 +40,8 @@
     for (int i = 0; i < (int)seedBits.count / 32; i++) {
         [seedBits addObject: checksumBits[i]];
     }
-    NSString *path = [NSString stringWithFormat:@"%@/%@.txt", [[NSBundle mainBundle] bundlePath], language];
-    NSString *fileText = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
-    NSArray *lines = [fileText componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+
+    NSArray *lines = [self getSeedsWithLanguage:language];
     
     // Split into groups of 11, and change to numbers
     NSMutableArray *words = [NSMutableArray arrayWithCapacity:(int)seedBits.count / 11];
@@ -106,6 +105,16 @@
     }
     return nil;
 }
+
++ (NSArray *) getSeedsWithLanguage:(NSString *)language
+{
+    NSString *path = [NSString stringWithFormat:@"%@/%@.txt", [[NSBundle mainBundle] bundlePath], language];
+    NSString *fileText = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
+    NSArray *lines = [fileText componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]];
+    
+    return lines;
+}
+
 @end
 
 @implementation NSData (NYMnemonic)

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="pJk-oc-UYe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F1112" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="pJk-oc-UYe">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -2279,7 +2278,7 @@ Press the button on the card to see the next set of numbers</string>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Import my seed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UUt-pK-8VY">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Import my seed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UUt-pK-8VY">
                                                     <rect key="frame" x="18" y="24" width="270" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -2288,8 +2287,8 @@ Press the button on the card to see the next set of numbers</string>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="GiR-4r-gKY" firstAttribute="leading" secondItem="Wg0-h1-Dg1" secondAttribute="leadingMargin" constant="10" id="2dc-js-NGv"/>
+                                                <constraint firstItem="UUt-pK-8VY" firstAttribute="leading" secondItem="Wg0-h1-Dg1" secondAttribute="leadingMargin" constant="10" id="8xF-KT-sFe"/>
                                                 <constraint firstItem="GiR-4r-gKY" firstAttribute="top" secondItem="Wg0-h1-Dg1" secondAttribute="topMargin" constant="-3" id="N2g-0C-x7i"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="UUt-pK-8VY" secondAttribute="bottom" constant="-8" id="Puh-x1-PjM"/>
                                                 <constraint firstAttribute="bottom" secondItem="UUt-pK-8VY" secondAttribute="bottom" constant="4.5" id="Y1V-Xy-ZYE"/>
                                                 <constraint firstItem="GiR-4r-gKY" firstAttribute="top" secondItem="Wg0-h1-Dg1" secondAttribute="top" constant="5" id="jiK-Wp-g7o"/>
                                             </constraints>
@@ -3343,6 +3342,11 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <image name="settings.png" width="342" height="333"/>
         <image name="x.png" width="417" height="417"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="AyV-UJ-ITH"/>
         <segue reference="gzi-1q-gb8"/>
