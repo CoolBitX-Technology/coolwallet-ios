@@ -59,6 +59,7 @@ CwCard *cwCard;
     self.cwManager = [CwManager sharedManager];
     self.cwManager.delegate=self;
     cwCard = self.cwManager.connectedCwCard;
+    cwCard.delegate = self;
     
     self.actBusyIndicator.hidden = YES;
     
@@ -66,8 +67,6 @@ CwCard *cwCard;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    self.cwManager.connectedCwCard.delegate = self;
     
     self.sliDogScale.value = cwCard.securityPolicy_WatchDogScale;
     
@@ -101,7 +100,7 @@ CwCard *cwCard;
 #pragma mark - Actions
 - (IBAction)btnUpdateSecurityPolicy:(id)sender {
     
-    NSLog(@"mode = %d", self.cwManager.connectedCwCard.mode);
+    NSLog(@"mode = %ld", self.cwManager.connectedCwCard.mode);
     if (self.cwManager.connectedCwCard.mode==CwCardModeNormal) {
         //get security policy
         self.actBusyIndicator.hidden = NO;
@@ -147,7 +146,7 @@ CwCard *cwCard;
 
 -(void) didGetModeState
 {
-    NSLog(@"mode = %d", self.cwManager.connectedCwCard.mode);
+    NSLog(@"mode = %ld", self.cwManager.connectedCwCard.mode);
     
 }
 

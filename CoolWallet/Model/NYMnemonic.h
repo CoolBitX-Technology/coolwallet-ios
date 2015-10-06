@@ -63,6 +63,17 @@
  */
 + (NSString *)generateMnemonicString:(NSNumber *)strength
                             language:(NSString *)language;
+
+
+/**
+ Get all seeds.
+ 
+ @param language The language file to use. Currently the only value is 'english'
+ 
+ @return an array containing all seeds
+ */
++ (NSArray *) getSeedsWithLanguage:(NSString *)language;
+
 @end
 
 /**

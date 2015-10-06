@@ -15,8 +15,20 @@
 #import "NYMnemonic.h"
 #import "SWRevealViewController.h"
 
+@implementation UITextView (DisablePaste)
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    if (action == @selector(paste:))
+        return NO;
+    return [super canPerformAction:action withSender:sender];
+}
+
+@end
+
 @interface TabImportSeedViewController () <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate, UITextViewDelegate>
 @property CwManager *cwManager;
+@property (strong, nonatomic) NSArray *wordSeeds;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtHdwName;
 @property (weak, nonatomic) IBOutlet UILabel *lblSeedLen;
@@ -59,6 +71,7 @@ CwBtcNetWork *btcNet;
     self.txtSeed.delegate = self;
     //self.txtSum.delegate = self;
     
+    self.wordSeeds = [NYMnemonic getSeedsWithLanguage:@"english"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,6 +88,11 @@ CwBtcNetWork *btcNet;
     // Dispose of any resources that can be recreated.
 }
 
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.txtSeed resignFirstResponder];
+}
+
 #pragma mark - UITextFieldDelegate Delegates
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -85,10 +103,25 @@ CwBtcNetWork *btcNet;
 #pragma mark - UITextViewDelegate Delegates
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if ([text isEqualToString:@"\n"])
-    {
+    if ([text isEqualToString:@" "]) {
+        NSArray *inputWords = [textView.text componentsSeparatedByString:@" "];
+        NSString *checkWord = [[inputWords lastObject] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if (checkWord.length > 0) {
+            [self checkImportSeed:checkWord];
+        }
+    } else if ([text isEqualToString:@"\n"]) {
         [textView resignFirstResponder];
+    } else if (self.swNumberSeed.on) {
+        NSCharacterSet* nonNumbers = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+        for (int index = 0; index < text.length; index++) {
+            NSRange r = [text rangeOfCharacterFromSet: nonNumbers];
+            if (r.location != NSNotFound) {
+                return NO;
+            }
+        }
+        
     }
+    
     return YES;
 }
 
@@ -121,32 +154,27 @@ CwBtcNetWork *btcNet;
     return YES;
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-    NSLog(@"textViewDidBeginEditing:");
-    textView.backgroundColor = [UIColor greenColor];
-}
-
 #pragma marks - Actions
 
 - (IBAction)swNumberSeed:(UISwitch *)sender {
     _txtSeed.text = @"";
-    
 }
 
 - (IBAction)btnCreateHdw:(id)sender {
+    NSString *seeds = [self.txtSeed.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-        NSString *seed = [NYMnemonic deterministicSeedStringFromMnemonicString: self.txtSeed.text
-                                                                    passphrase: nil
-                                                                      language: @"english"];
-         
-        //NSString *seed = _txtSeed.text;
-        NSLog(@"HDW seed: %@", seed);
-        
-        //=> "d71de856f81a8acc65e6fc851a38d4d7ec216fd0796d0a6827a3ad6ed5511a30fa280f12eb2e47ed2ac03b5c462a0358d18d69fe4f985ec81778c1b370b652a8"
-        [self.cwManager.connectedCwCard initHdw:@"" BySeed:seed];
-        
-        self.actBusyIndicator.hidden = NO;
-        [self.actBusyIndicator startAnimating];
+    NSString *seed = [NYMnemonic deterministicSeedStringFromMnemonicString: seeds
+                                                                passphrase: nil
+                                                                  language: @"english"];
+    
+    //NSString *seed = _txtSeed.text;
+    NSLog(@"HDW seed: %@", seed);
+    
+    //=> "d71de856f81a8acc65e6fc851a38d4d7ec216fd0796d0a6827a3ad6ed5511a30fa280f12eb2e47ed2ac03b5c462a0358d18d69fe4f985ec81778c1b370b652a8"
+    [self.cwManager.connectedCwCard initHdw:@"" BySeed:seed];
+    
+    self.actBusyIndicator.hidden = NO;
+    [self.actBusyIndicator startAnimating];
     
 }
 
@@ -158,38 +186,29 @@ CwBtcNetWork *btcNet;
 }
 
 // check seed string number or english
-- (bool) CheckImportSeedString:(NSString *)seed {
-    NSArray *array = [seed componentsSeparatedByString:@" "];
-    if(self.swNumberSeed.on == YES) {  //number
-        //NSArray *array = [seed componentsSeparatedByString:@" "];
-        for(NSString *str in array) {
+- (void) checkImportSeed:(NSString *)seed {
+    BOOL checkResult = NO;
+    
+    if (self.swNumberSeed.on) {
+        if (seed.length != 6) {
+            checkResult = NO;
+        } else {
+            int checkSum = [[seed substringFromIndex:seed.length-1] intValue];
             int sum = 0;
-            for(int i=0 ; i<str.length - 1; i++) {
-                NSString *s = [str substringWithRange:NSMakeRange(i, 1)];
-                sum = sum + [s integerValue];
+            for (int index = 0; index < seed.length - 1; index++) {
+                sum = sum + [[seed substringWithRange:NSMakeRange(index, 1)] intValue];
             }
             
-            if((sum % 10) != [[str substringFromIndex:str.length-1] integerValue])
-                return NO;
+            checkResult = checkSum == (sum % 10);
         }
-    }else{  //english
-        NSString* Path = [[NSBundle mainBundle] pathForResource:@"english" ofType:@"txt"];
-        NSString* content = [NSString stringWithContentsOfFile:Path encoding:NSUTF8StringEncoding error:nil];
-        NSArray *english = [content componentsSeparatedByString:@"\n"];
-        
-        for(NSString *str in array) {
-            NSLog(@"str = %@", str);
-            
-            bool find = NO;
-            for(NSString *enstr in english)
-            {
-                NSLog(@"english = %@", enstr);
-                if([enstr compare:str] == 0) find = YES;
-            }
-            if(find == NO) return NO;
-        }
+    } else {
+        checkResult = [self.wordSeeds containsObject:seed];
     }
-    return YES;
+    
+    if (!checkResult) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"seed invalid" message:[NSString stringWithFormat:@"'%@' is an invalid seed.", seed] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alert show];
+    }
 }
 
 #pragma marks - CwCard Delegate

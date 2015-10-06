@@ -260,7 +260,7 @@ NSInteger accPtr[5][2]; //store key index of each accounts
 -(void) setProgressPercent
 {
     if(percent <0.9) {
-        percent += 0.0045;
+        percent += 0.012;
     }
 
     NSLog(@"Progress = %f",percent);

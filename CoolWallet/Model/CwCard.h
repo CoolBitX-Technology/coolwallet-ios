@@ -164,6 +164,7 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) getAccountAddresses: (NSInteger) accountId;
 -(void) genAddress:  (NSInteger)accountId KeyChainId: (NSInteger) keyChainId; //didGenNextAddress, didGetAccountInfo
 -(void) getAddressInfo: (NSInteger)accountId KeyChainId: (NSInteger) keyChainId KeyId: (NSInteger) keyId; //didGenNextAddress
+-(BOOL) enableGenAddressWithAccountId:(NSInteger)accId;
 
 -(void) prepareTransaction:(int64_t)amount Address: (NSString *)recvAddress Change: (NSString *)changeAddress; //didPrepareTransaction
 -(void) verifyTransactionOtp: (NSString *)otp; //didVerifyOtp, didVerifyOtpError

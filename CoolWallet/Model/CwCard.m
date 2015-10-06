@@ -337,6 +337,8 @@ typedef NS_ENUM (NSInteger, CwHdwAccountKeyInfo) {
 };
 
 
+//#define CW_SOFT_SIMU
+
 @interface CwCard () <CBPeripheralDelegate>
 
 @end
@@ -1096,6 +1098,13 @@ NSArray *addresses;
 {
     [self cwCmdHdwCreateAccount:accountId AccountName:accountName];
     [self setAccount: accountId Balance:0];
+    NSLog(@"syncCwInfoFlag = %d", syncCwInfoFlag);
+    NSLog(@"syncSecurityPolicyFlag = %d", syncSecurityPolicyFlag);
+    NSLog(@"syncCurrRateFlag = %d", syncCurrRateFlag);
+    NSLog(@"syncCardIdFlag = %d", syncCardIdFlag);
+    NSLog(@"syncCardNameFlag = %d", syncCardNameFlag);
+    NSLog(@"syncHdwNameFlag = %d", syncHdwNameFlag);
+    NSLog(@"syncHdwAccPtrFlag = %d", syncHdwAccPtrFlag);
 }
 
 -(void) getAccounts; //didGetAccounts
@@ -1212,6 +1221,23 @@ NSArray *addresses;
 -(void) setAccount: (NSInteger) accountId IntKeyPtr:(NSInteger)intKeyPtr
 {
     [self cwCmdHdwSetAccountInfo:CwHdwAccountInfoIntKeyPtr AccountId:accountId AccountInfo:[NSData dataWithBytes:&intKeyPtr length:4]];
+}
+
+-(BOOL) enableGenAddressWithAccountId:(NSInteger)accId
+{
+    CwAccount *acc= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", accId]];
+    
+    int emptyAddrCount = 0;
+    for (int i=0; i<acc.extKeyPointer; i++) {
+        //check transactions of each keys
+        CwAddress *addr = acc.extKeys[i];
+        
+        if (addr.historyTrx.count==0) {
+            emptyAddrCount++;
+        }
+    }
+    
+    return emptyAddrCount < CwHdwRecoveryAddressWindow;
 }
 
 -(void) genAddress:  (NSInteger)accId KeyChainId: (NSInteger) keyChainId
@@ -4326,6 +4352,9 @@ NSArray *addresses;
                 break;
             case ERR_TRX_VERIFY_OTP: errString = @"OTP Error";
                 break;
+            case ERR_BIND_REGRESP: errString = @"Pair with device Fail";
+                callDelegate = YES;
+                break;
             default: errString = [NSString stringWithFormat:@"Command Error %04lX", (long)cmd.cmdResult];
                 callDelegate = YES;
                 break;
@@ -5923,7 +5952,7 @@ NSArray *addresses;
         NSLog(@"[ERROR] didUpdateValueForCharacteristic [%@]: %@",
               [self CBUUIDToString:characteristic.UUID], [error localizedDescription]);
     } else {
-        //NSLog(@"        [%@] [BLE_ReadData] %@", [self CBUUIDToString:characteristic.UUID], [self NSDataToHex:characteristic.value]);
+//        NSLog(@"        [%@] [BLE_ReadData] %@", [self CBUUIDToString:characteristic.UUID], [self NSDataToHex:characteristic.value]);
         
         if([characteristic.UUID isEqual:[CBUUID UUIDWithString:@"A006"]]) {
             

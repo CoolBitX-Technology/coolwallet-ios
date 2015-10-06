@@ -25,6 +25,7 @@
     // Do any additional setup after loading the view.
     //find CW via BLE
     self.cwManager = [CwManager sharedManager];
+    self.cwManager.connectedCwCard.delegate = self;
     
     SelectPage =0;
     
@@ -41,15 +42,13 @@
         _viewOnCardCheckSum.hidden = YES;
         _btnCreateWallet.hidden = YES;
         SeedArray = [mnemonic componentsSeparatedByString:@" "];
-        NSLog(@"SeedArray = %d",[SeedArray count]);
+        NSLog(@"SeedArray = %ld",[SeedArray count]);
         [self ShowSeedDetail];
     }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    self.cwManager.connectedCwCard.delegate = self;
     
     self.actBusyIndicator.hidden = YES;
     //[self.actBusyIndicator startAnimating];

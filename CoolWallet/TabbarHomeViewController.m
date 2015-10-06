@@ -94,7 +94,7 @@ bool isFirst = YES;
 #pragma marks - Account Button Actions
 
 - (void)setAccountButton{
-    NSLog(@"cwAccounts = %d", [cwCard.cwAccounts count]);
+    NSLog(@"cwAccounts = %ld", [cwCard.cwAccounts count]);
     for(int i =0; i< [cwCard.cwAccounts count]; i++) {
         if(i == 0) {
             _btnAccount1.hidden = NO;
@@ -112,7 +112,7 @@ bool isFirst = YES;
         }
         
     }
-    NSLog(@"accid = %d",cwCard.currentAccountId);
+    NSLog(@"accid = %ld",cwCard.currentAccountId);
     if([cwCard.cwAccounts count] == 1) {
         [_btnAccount1 sendActionsForControlEvents:UIControlEventTouchUpInside];
     }else{
@@ -180,12 +180,12 @@ bool isFirst = YES;
     [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
     
     if(cwCard.currentAccountId != 1) {
-    cwCard.currentAccountId = 1;
-    [cwCard setDisplayAccount:cwCard.currentAccountId];
-    [cwCard getAccountInfo:cwCard.currentAccountId];
+        cwCard.currentAccountId = 1;
+        [cwCard setDisplayAccount:cwCard.currentAccountId];
+        [cwCard getAccountInfo:cwCard.currentAccountId];
     }
-    [self SetBalanceText];
     
+    [self SetBalanceText];
     [self SetTxkeys];
 }
 
@@ -265,7 +265,7 @@ Boolean setBtnActionFlag;
 - (void)SetBalanceText
 {
     NSLog(@"SetBalanceText");
-    CwAccount *account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
+    CwAccount *account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     //_lblBalance.text = [NSString stringWithFormat: @"%lld BTC", (int64_t)account.balance];
     _lblBalance.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertBTCStringformUnit: (int64_t)account.balance], [[OCAppCommon getInstance] BitcoinUnit]];
     
@@ -283,8 +283,13 @@ Boolean setBtnActionFlag;
 
 - (void)SetTxkeys
 {
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
-    if([account.transactions count] == 0 ) return;
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+    
+    if([account.transactions count] == 0 ) {
+        [_tableTransaction reloadData];
+        return;
+    }
+    
     //sorting account transactions
     sortedTxKeys = [account.transactions keysSortedByValueUsingComparator: ^(id obj1, id obj2) {
         NSDate *d1 = ((CwTx *)obj1).historyTime_utc;
@@ -297,7 +302,8 @@ Boolean setBtnActionFlag;
             //return (NSComparisonResult)NSOrderedDescending;
         return (NSComparisonResult)NSOrderedSame;
     }];
-    NSLog(@"trans = %d",[account.transactions count]);
+    
+    NSLog(@"trans = %ld",[account.transactions count]);
     [_tableTransaction reloadData];
 }
 
@@ -326,15 +332,7 @@ Boolean setBtnActionFlag;
         [cwCard newAccount:cwCard.hdwAcccountPointer Name:@""];
         
         
-    }/*else {
-      UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Reach Accounts Limit (5)"
-      message: nil
-      delegate: nil
-      cancelButtonTitle: nil
-      otherButtonTitles:@"OK",nil];
-      [alert show];
-      
-      }*/
+    }
 }
 
 #pragma mark - Table view data source
@@ -371,7 +369,7 @@ Boolean setBtnActionFlag;
     //lblTxNotes.text = [NSString stringWithFormat: @"%@", tx.tid];
     UILabel *lblTxAmount = (UILabel *)[cell viewWithTag:103];
     if ([tx.historyAmount.satoshi intValue]>0){
-        lblTxAmount.text = [NSString stringWithFormat: @"+%@", tx.historyAmount.BTC];
+        lblTxAmount.text = [NSString stringWithFormat: @"+%g", tx.historyAmount.BTC.doubleValue];
         lblTxAmount.textColor = [UIColor greenColor];
         
         if(tx.inputs.count > 0) {
@@ -379,7 +377,7 @@ Boolean setBtnActionFlag;
             lblTxNotes.text = txin.addr;
         }
     }else{
-        lblTxAmount.text = [NSString stringWithFormat: @"%@", tx.historyAmount.BTC];
+        lblTxAmount.text = [NSString stringWithFormat: @"%g", tx.historyAmount.BTC.doubleValue];
         lblTxAmount.textColor = [UIColor redColor];
         
         if(tx.outputs.count > 0) {
@@ -426,7 +424,7 @@ Boolean setBtnActionFlag;
 
 -(void) didGetModeState
 {
-    NSLog(@"card mode = %d", cwCard.mode);
+    NSLog(@"card mode = %ld", cwCard.mode);
     if (cwCard.mode ==CwCardModePerso) {
         //goto Setting for Security Policy
         [self performSegueWithIdentifier:@"SecuritySegue" sender:self];
@@ -447,7 +445,7 @@ Boolean setBtnActionFlag;
 -(void) didGetCwHdwAccountPointer
 {
     //[self performDismiss];
-    NSLog(@"didGetCwHdwAccointPointer = %d", cwCard.hdwAcccountPointer);
+    NSLog(@"didGetCwHdwAccointPointer = %ld", cwCard.hdwAcccountPointer);
     if (cwCard.hdwAcccountPointer == 0) {
         [self CreateAccount];
         cwCard.currentAccountId = 0;
@@ -468,11 +466,10 @@ Boolean setBtnActionFlag;
 
 -(void) didGetAccountInfo: (NSInteger) accId
 {
-    NSLog(@"didGetAccountInfo = %d", accId);
+    NSLog(@"didGetAccountInfo = %ld, currentAccountId = %ld", accId, cwCard.currentAccountId);
     
     if(accId == cwCard.currentAccountId) {
         [cwCard getAccountAddresses:accId];
-        
     }
 }
 
@@ -483,6 +480,7 @@ Boolean setBtnActionFlag;
     //create activity indicator on the cell
     
     if(accId == cwCard.currentAccountId) {
+        [self showIndicatorView:@"synchronizing data"];
         
         if (account.transactions==nil) {
             //get balance and transaction when there is no transaction yet.
@@ -512,19 +510,23 @@ Boolean setBtnActionFlag;
         //NSLog(@"account tx count = %lu", (unsigned long)account.transactions.count );
         //[cwCard setAccount: accId Balance: account.balance];
         
-        [self SetTxkeys]; //this includes reloadData
+        if (accId == cwCard.currentAccountId) {
+            [self SetTxkeys]; //this includes reloadData
+        }
+        
         //[_tableTransaction reloadData];
         [self performDismiss];
     });
 }
 
--(void) didNewAccount
+-(void) didNewAccount: (NSInteger)aid
 {
     [self performDismiss];
     //find CW via BLE
     cwManager = [CwManager sharedManager];
     
     cwCard = cwManager.connectedCwCard;
+    [cwCard genAddress:aid KeyChainId:CwAddressKeyChainExternal];
     
     [self setAccountButton];
 }
@@ -569,7 +571,6 @@ Boolean setBtnActionFlag;
     mHUD.labelText = Msg;
     
     [mHUD show:YES];
-    
 }
 
 - (void) performDismiss
