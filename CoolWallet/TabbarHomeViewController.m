@@ -372,7 +372,7 @@ Boolean setBtnActionFlag;
     //lblTxNotes.text = [NSString stringWithFormat: @"%@", tx.tid];
     UILabel *lblTxAmount = (UILabel *)[cell viewWithTag:103];
     if ([tx.historyAmount.satoshi intValue]>0){
-        lblTxAmount.text = [NSString stringWithFormat: @"+%@", tx.historyAmount.BTC];
+        lblTxAmount.text = [NSString stringWithFormat: @"+%g", tx.historyAmount.BTC.doubleValue];
         lblTxAmount.textColor = [UIColor greenColor];
         
         if(tx.inputs.count > 0) {
@@ -380,7 +380,7 @@ Boolean setBtnActionFlag;
             lblTxNotes.text = txin.addr;
         }
     }else{
-        lblTxAmount.text = [NSString stringWithFormat: @"%@", tx.historyAmount.BTC];
+        lblTxAmount.text = [NSString stringWithFormat: @"%g", tx.historyAmount.BTC.doubleValue];
         lblTxAmount.textColor = [UIColor redColor];
         
         if(tx.outputs.count > 0) {

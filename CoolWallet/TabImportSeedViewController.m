@@ -15,6 +15,17 @@
 #import "NYMnemonic.h"
 #import "SWRevealViewController.h"
 
+@implementation UITextView (DisablePaste)
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    if (action == @selector(paste:))
+        return NO;
+    return [super canPerformAction:action withSender:sender];
+}
+
+@end
+
 @interface TabImportSeedViewController () <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate, UITextViewDelegate>
 @property CwManager *cwManager;
 @property (strong, nonatomic) NSArray *wordSeeds;
@@ -141,11 +152,6 @@ CwBtcNetWork *btcNet;
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     NSLog(@"textViewShouldBeginEditing:");
     return YES;
-}
-
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-    NSLog(@"textViewDidBeginEditing:");
-    textView.backgroundColor = [UIColor greenColor];
 }
 
 #pragma marks - Actions

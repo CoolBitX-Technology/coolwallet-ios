@@ -11,6 +11,7 @@
 #import "CwBtcNetWork.h"
 #import "CwTxin.h"
 #import "CwTxout.h"
+#import "OCAppCommon.h"
 
 @implementation TabTransactionDetailViewController
 
@@ -50,22 +51,22 @@ CwAccount *account;
     
     CwTx *tx = [account.transactions objectForKey:key];
     NSLog(@"tx utc = %@",[NSString stringWithFormat: @"%@", tx.historyTime_utc]);
-    NSLog(@"tx amount = %@", [NSString stringWithFormat: @"%@", tx.historyAmount.BTC]);
+    NSLog(@"tx amount = %@", [NSString stringWithFormat: @"%.6f", tx.historyAmount.BTC.doubleValue]);
     NSLog(@"tid = %@",[[NSString alloc] initWithData:tx.tid encoding:NSUTF8StringEncoding]);
     NSLog(@"confirm = %d",tx.confirmations);
     NSLog(@"input = %@",tx.inputs);
     NSLog(@"output = %@",tx.outputs);
     
     if([tx.historyAmount.BTC doubleValue] >=0) {
-        _lblTxType.text = @"Receive at";
-        _lblTxAmount.text = [NSString stringWithFormat: @"+%@", tx.historyAmount.BTC];
+        _lblTxType.text = @"Receive from";
+        _lblTxAmount.text = [NSString stringWithFormat: @"+%g", tx.historyAmount.BTC.doubleValue];
         if(tx.inputs.count > 0) {
             CwTxin* txin = (CwTxin *)[tx.inputs objectAtIndex:0];
             _lblTxAddr.text = txin.addr;
         }
     }else{
         _lblTxType.text = @"Send to";
-        _lblTxAmount.text = [NSString stringWithFormat: @"%@", tx.historyAmount.BTC];
+        _lblTxAmount.text = [NSString stringWithFormat: @"+%g", tx.historyAmount.BTC.doubleValue];
         if(tx.outputs.count > 0) {
             CwTxout* txout = (CwTxout *)[tx.outputs objectAtIndex:0];
             _lblTxAddr.text = txout.addr;
