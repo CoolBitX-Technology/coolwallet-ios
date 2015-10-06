@@ -42,9 +42,6 @@ bool isFirst = YES;
     cwManager.delegate = self;
     cwCard.delegate = self;
     btcNet.delegate = self;
-
-    //get mode state
-    [cwCard getModeState];
     
     [self getBitcoinRateforCurrency];
 }
@@ -487,21 +484,24 @@ Boolean setBtnActionFlag;
     
     if(accId == cwCard.currentAccountId) {
         
-        dispatch_queue_t queue = dispatch_queue_create("com.dtco.CoolWallet", NULL);
-        
-        dispatch_async(queue, ^{
-            [btcNet registerNotifyByAccount: accId];
-
-            //update balance
-            [btcNet getBalanceByAccount: accId]; //this will update the CwCard.account
-            [self SetBalanceText];
-            [cwCard setAccount: accId Balance: account.balance];
+        if (account.transactions==nil) {
+            //get balance and transaction when there is no transaction yet.
             
-            [btcNet getTransactionByAccount: accId]; //this will update the CwCard.transaction
-        });
+            dispatch_queue_t queue = dispatch_queue_create("com.dtco.CoolWallet", NULL);
+            
+            dispatch_async(queue, ^{
+                [btcNet registerNotifyByAccount: accId];
+                
+                //update balance
+                [btcNet getBalanceByAccount: accId]; //this will update the CwCard.account
+                [self SetBalanceText];
+                [cwCard setAccount: accId Balance: account.balance];
+                
+                [btcNet getTransactionByAccount: accId]; //this will update the CwCard.transaction
+            });
+        }
     }
 }
-
 
 -(void) didGetTransactionByAccount:(NSInteger)accId
 {
@@ -551,6 +551,14 @@ Boolean setBtnActionFlag;
     _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:cwManager.connectedCwCard.currRate], cwCard.currId];
     //self.txtExchangeRage.text = numberAsString;
 }
+
+
+-(void) didSetCwCurrRate
+{
+    //get mode state
+    [cwCard getModeState];
+}
+
 
 - (void) showIndicatorView:(NSString *)Msg {
     mHUD = [[MBProgressHUD alloc] initWithView:self.view];

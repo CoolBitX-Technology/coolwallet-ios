@@ -76,7 +76,7 @@
 
     self.cwManager.connectedCwCard.delegate = self;
     [self.cwManager.connectedCwCard getCwCardName];
-    [self.cwManager.connectedCwCard getCwCurrRate];
+    //[self.cwManager.connectedCwCard getCwCurrRate]; //no need to get rate from card
     [self.cwManager.connectedCwCard getCwHdwInfo];
 }
 
