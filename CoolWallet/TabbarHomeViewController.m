@@ -183,12 +183,12 @@ bool isFirst = YES;
     [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
     
     if(cwCard.currentAccountId != 1) {
-    cwCard.currentAccountId = 1;
-    [cwCard setDisplayAccount:cwCard.currentAccountId];
-    [cwCard getAccountInfo:cwCard.currentAccountId];
+        cwCard.currentAccountId = 1;
+        [cwCard setDisplayAccount:cwCard.currentAccountId];
+        [cwCard getAccountInfo:cwCard.currentAccountId];
     }
-    [self SetBalanceText];
     
+    [self SetBalanceText];
     [self SetTxkeys];
 }
 
@@ -287,7 +287,12 @@ Boolean setBtnActionFlag;
 - (void)SetTxkeys
 {
     account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
-    if([account.transactions count] == 0 ) return;
+    
+    if([account.transactions count] == 0 ) {
+        [_tableTransaction reloadData];
+        return;
+    }
+    
     //sorting account transactions
     sortedTxKeys = [account.transactions keysSortedByValueUsingComparator: ^(id obj1, id obj2) {
         NSDate *d1 = ((CwTx *)obj1).historyTime_utc;
@@ -300,7 +305,8 @@ Boolean setBtnActionFlag;
             //return (NSComparisonResult)NSOrderedDescending;
         return (NSComparisonResult)NSOrderedSame;
     }];
-    NSLog(@"trans = %d",[account.transactions count]);
+    
+    NSLog(@"trans = %ld",[account.transactions count]);
     [_tableTransaction reloadData];
 }
 
@@ -329,15 +335,7 @@ Boolean setBtnActionFlag;
         [cwCard newAccount:cwCard.hdwAcccountPointer Name:@""];
         
         
-    }/*else {
-      UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Reach Accounts Limit (5)"
-      message: nil
-      delegate: nil
-      cancelButtonTitle: nil
-      otherButtonTitles:@"OK",nil];
-      [alert show];
-      
-      }*/
+    }
 }
 
 #pragma mark - Table view data source
@@ -429,7 +427,7 @@ Boolean setBtnActionFlag;
 
 -(void) didGetModeState
 {
-    NSLog(@"card mode = %d", cwCard.mode);
+    NSLog(@"card mode = %ld", cwCard.mode);
     if (cwCard.mode ==CwCardModePerso) {
         //goto Setting for Security Policy
         [self performSegueWithIdentifier:@"SecuritySegue" sender:self];
@@ -471,11 +469,10 @@ Boolean setBtnActionFlag;
 
 -(void) didGetAccountInfo: (NSInteger) accId
 {
-    NSLog(@"didGetAccountInfo = %d", accId);
+    NSLog(@"didGetAccountInfo = %ld, currentAccountId = %ld", accId, cwCard.currentAccountId);
     
     if(accId == cwCard.currentAccountId) {
         [cwCard getAccountAddresses:accId];
-        
     }
 }
 
@@ -486,6 +483,7 @@ Boolean setBtnActionFlag;
     //create activity indicator on the cell
     
     if(accId == cwCard.currentAccountId) {
+        [self showIndicatorView:@"synchronizing data"];
         
         dispatch_queue_t queue = dispatch_queue_create("com.dtco.CoolWallet", NULL);
         
@@ -512,7 +510,10 @@ Boolean setBtnActionFlag;
         //NSLog(@"account tx count = %lu", (unsigned long)account.transactions.count );
         //[cwCard setAccount: accId Balance: account.balance];
         
-        [self SetTxkeys]; //this includes reloadData
+        if (accId == cwCard.currentAccountId) {
+            [self SetTxkeys]; //this includes reloadData
+        }
+        
         //[_tableTransaction reloadData];
         [self performDismiss];
     });
@@ -520,7 +521,6 @@ Boolean setBtnActionFlag;
 
 -(void) didNewAccount: (NSInteger)aid
 {
-    NSLog(@"didNewAccount");
     [self performDismiss];
     //find CW via BLE
     cwManager = [CwManager sharedManager];
@@ -563,7 +563,6 @@ Boolean setBtnActionFlag;
     mHUD.labelText = Msg;
     
     [mHUD show:YES];
-    
 }
 
 - (void) performDismiss
