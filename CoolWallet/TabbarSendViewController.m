@@ -22,6 +22,12 @@ NSDictionary *rates;
 
 long TxFee = 10000;
 
+@interface TabbarSendViewController ()
+
+@property (assign, nonatomic) BOOL transCancel;
+
+@end
+
 @implementation TabbarSendViewController
 
 - (void)viewDidLoad {
@@ -36,6 +42,8 @@ long TxFee = 10000;
     cwCard.paymentAddress = @"";
     //cwCard.amount = 0;
     cwCard.label = @"";
+    
+    self.transCancel = NO;
     
     [self addDecimalKeyboardDoneButton];
 }
@@ -408,7 +416,14 @@ long TxFee = 10000;
 {
     NSLog(@"OTP entered=%@",tfOTP.text);
     if(actionSheet.tag == TAG_SEND_OTP) {
-        [cwCard verifyTransactionOtp:tfOTP.text];
+        if (buttonIndex == actionSheet.cancelButtonIndex) {
+            // TODO: cancel transaction and send cancel otp to cw
+            self.transCancel = YES;
+            [cwCard cancelTrancation];
+        } else {
+            self.transCancel = NO;
+            [cwCard verifyTransactionOtp:tfOTP.text];
+        }
     }else  if(actionSheet.tag == TAG_PRESS_BUTTON) {
         [cwCard cancelTrancation];
         [cwCard setDisplayAccount:cwCard.currentAccountId];
@@ -543,18 +558,22 @@ long TxFee = 10000;
 {
     NSLog(@"didSignTransaction");
     //[self performDismiss];
-    if(PressAlert != nil) [PressAlert dismissWithClickedButtonIndex:-1 animated:YES] ;
     
-    NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
-    [cwCard setAccount: account.accId Balance: account.balance-([sato longLongValue] + TxFee)];
+    if (!self.transCancel) {
+        if(PressAlert != nil) [PressAlert dismissWithClickedButtonIndex:-1 animated:YES] ;
+        
+        NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
+        [cwCard setAccount: account.accId Balance: account.balance-([sato longLongValue] + TxFee)];
+        
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Send Bitcoin"
+                                                       message: [NSString stringWithFormat:@"Send %@ BTC to %@", self.txtAmount.text, self.txtReceiverAddress.text]
+                                                      delegate: nil
+                                             cancelButtonTitle: nil
+                                             otherButtonTitles: @"OK",nil];
+        
+        [alert show];
+    }
     
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Send Bitcoin"
-                                                   message: [NSString stringWithFormat:@"Send %@ BTC to %@", self.txtAmount.text, self.txtReceiverAddress.text]
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles: @"OK",nil];
-    
-    [alert show];
     
     [self SetBalanceText];
     
@@ -598,7 +617,7 @@ long TxFee = 10000;
 - (void) showOTPEnterView
 {
     if(cwCard.securityPolicy_OtpEnable == NO) return;
-    OTPalert = [[UIAlertView alloc] initWithTitle:@"Please enter OTP" message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    OTPalert = [[UIAlertView alloc] initWithTitle:@"Please enter OTP" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     OTPalert.alertViewStyle = UIAlertViewStylePlainTextInput;
     OTPalert.tag = TAG_SEND_OTP;
     tfOTP = [OTPalert textFieldAtIndex:0];

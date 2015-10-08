@@ -215,7 +215,7 @@
     //if erase CW, then wait for didEraseCw delegate, don't show the alert here
     if (self.swPreserveHostInfo.on)
     {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CW Erased"
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CoolWallet has reset"
                                                    message: @"Host info preserved"
                                                   delegate: nil
                                          cancelButtonTitle: nil
@@ -233,7 +233,7 @@
 
 -(void) didEraseCw {
     
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CW Erased"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CoolWallet has reset"
                                                    message: @"Host info also erased"
                                                   delegate: nil
                                          cancelButtonTitle: nil

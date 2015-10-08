@@ -90,9 +90,7 @@ CwCard *cwCard;
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     NSLog(@"touchesBegan cwCard.mode = %ld", cwCard.mode);
-    if (cwCard.mode == CwCardModeNoHost) {
-        [self.txtOtp resignFirstResponder];
-    }
+    [self.txtOtp resignFirstResponder];
 }
 
 /*
