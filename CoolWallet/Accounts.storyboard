@@ -687,20 +687,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wwP-t0-c2q">
-                                <rect key="frame" x="60" y="475" width="200" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="9oc-ol-pqL"/>
-                                    <constraint firstAttribute="height" constant="30" id="DBs-De-Ooc"/>
-                                </constraints>
-                                <state key="normal" title="View at Blockchain.info" backgroundImage="button.png">
-                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="btnBlockchain:" destination="BSG-41-lD0" eventType="touchUpInside" id="fQG-LF-0TF"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Receive from" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yYF-Zh-Wzi">
                                 <rect key="frame" x="16" y="36" width="288" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -833,6 +819,20 @@
                                     <constraint firstAttribute="trailing" secondItem="fqT-hp-7Js" secondAttribute="trailing" constant="8" id="kax-tY-FcN"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wwP-t0-c2q">
+                                <rect key="frame" x="60" y="453" width="200" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="9oc-ol-pqL"/>
+                                    <constraint firstAttribute="height" constant="30" id="LrH-wk-ini"/>
+                                </constraints>
+                                <state key="normal" title="View at Blockchain.info" backgroundImage="button.png">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnBlockchain:" destination="BSG-41-lD0" eventType="touchUpInside" id="fQG-LF-0TF"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.098039215686274508" green="0.098039215686274508" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -857,7 +857,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="adH-zj-eSv" secondAttribute="trailing" constant="-20" id="gor-C9-6yT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="p6D-Me-Epc" secondAttribute="trailing" constant="-20" id="iCQ-re-8CJ"/>
                             <constraint firstItem="TZs-ai-RsI" firstAttribute="leading" secondItem="jbO-Kp-ge0" secondAttribute="leadingMargin" constant="-4" id="lLo-Me-jHF"/>
-                            <constraint firstItem="wwP-t0-c2q" firstAttribute="top" secondItem="axY-fx-CUj" secondAttribute="bottom" constant="52" id="ldY-Q4-p2d"/>
+                            <constraint firstItem="wwP-t0-c2q" firstAttribute="top" secondItem="axY-fx-CUj" secondAttribute="bottom" constant="30" id="ldY-Q4-p2d"/>
                             <constraint firstItem="NB2-uo-I8x" firstAttribute="leading" secondItem="jbO-Kp-ge0" secondAttribute="leadingMargin" constant="-20" id="lpO-0s-CQs"/>
                             <constraint firstItem="OVG-dI-sbw" firstAttribute="top" secondItem="otl-3b-fAv" secondAttribute="bottom" constant="8" id="mgx-EU-VQ9"/>
                             <constraint firstItem="yYF-Zh-Wzi" firstAttribute="leading" secondItem="jbO-Kp-ge0" secondAttribute="leadingMargin" constant="-4" id="n5U-2U-FYM"/>
