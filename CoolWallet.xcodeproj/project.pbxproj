@@ -160,6 +160,7 @@
 		EFFA18311B450EA600FF8FC6 /* FrontViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFA182F1B450EA600FF8FC6 /* FrontViewController.m */; };
 		EFFA18321B450EA600FF8FC6 /* FrontViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFFA18301B450EA600FF8FC6 /* FrontViewController.xib */; };
 		EFFA18351B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFA18341B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m */; };
+		F493F32F1BC6807600876710 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F493F32E1BC6807600876710 /* BaseViewController.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -409,6 +410,8 @@
 		EFFA18301B450EA600FF8FC6 /* FrontViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FrontViewController.xib; sourceTree = "<group>"; };
 		EFFA18331B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabSettingBitcoinUnitViewController.h; sourceTree = "<group>"; };
 		EFFA18341B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabSettingBitcoinUnitViewController.m; sourceTree = "<group>"; };
+		F493F32D1BC6807600876710 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		F493F32E1BC6807600876710 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -483,6 +486,8 @@
 				93CF96BD19EE1DA200466DAF /* CALayer+ColorConfig.m */,
 				EFAC5FED1AAD9D4C0042FF8C /* SidebarViewController.h */,
 				EFAC5FEE1AAD9D4C0042FF8C /* SidebarViewController.m */,
+				F493F32D1BC6807600876710 /* BaseViewController.h */,
+				F493F32E1BC6807600876710 /* BaseViewController.m */,
 			);
 			path = CoolWallet;
 			sourceTree = "<group>";
@@ -1015,6 +1020,7 @@
 				EFAC5FDD1AAD39620042FF8C /* TabReceiveBitcoinViewController.m in Sources */,
 				EFAC5C4E1AC25A7000320EA6 /* qrencode.c in Sources */,
 				EFCF9A4F1B32C8810076091B /* BRPaymentRequest.m in Sources */,
+				F493F32F1BC6807600876710 /* BaseViewController.m in Sources */,
 				EFE204261B4A837A00F3D8F6 /* Base58.c in Sources */,
 				EFEF1BCE1B4124DA00373B0E /* MBProgressHUD.m in Sources */,
 				EFCF9A541B32C8810076091B /* CwCard.m in Sources */,
