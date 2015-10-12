@@ -176,7 +176,8 @@ BOOL didGetTransactionByAccountFlag[5];
                 [cwCard.cwAccounts setObject:acc forKey:[NSString stringWithFormat: @"%ld", acc.accId]];
 
                 //refresh account transaction
-                [self getTransactionByAccount: acc.accId];
+                //Need a better way!
+                //[self getTransactionByAccount: acc.accId];
             }
         }
         
@@ -1066,7 +1067,7 @@ BOOL didGetTransactionByAccountFlag[5];
     NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
     
-    NSLog(@"tx raw: %@", [tx rawTx]);
+    NSLog(@"tx raw: %@", postString);
     
     [httpRequest setURL:connection];
     [httpRequest setHTTPMethod:@"POST"];
@@ -1091,7 +1092,7 @@ BOOL didGetTransactionByAccountFlag[5];
     NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
     
-    NSLog(@"tx raw: %@", [tx rawTx]);
+    NSLog(@"tx raw: %@", postString);
     
     [httpRequest setURL:connection];
     [httpRequest setHTTPMethod:@"POST"];

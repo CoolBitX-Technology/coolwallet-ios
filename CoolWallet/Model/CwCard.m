@@ -1034,6 +1034,7 @@ NSArray *addresses;
         }
     }
 }
+
 -(void) setCwCurrRate:(NSDecimalNumber *)currRate
 {
     self.currRate = currRate;
@@ -1376,6 +1377,33 @@ NSArray *addresses;
     }
 }
 
+-(void) getAddressPublickey: (NSInteger)accountId KeyChainId: (NSInteger) keyChainId KeyId: (NSInteger) keyId;
+{
+    //get account from dictionary
+    CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", accountId]];
+    
+    if (keyChainId==CwAddressKeyChainExternal ) {
+        //get publickey
+        if (((CwAddress *)account.extKeys[keyId]).publicKey==nil) {
+            syncAccExtAddress[accountId]=NO;
+            [self cwCmdHdwQueryAccountKeyInfo:CwHdwAccountKeyInfoPubKey
+                                   KeyChainId:CwAddressKeyChainExternal
+                                    AccountId:accountId
+                                        KeyId:keyId];
+        }
+        
+    } else if (keyChainId==CwAddressKeyChainInternal) {
+        //get publickey
+        if (((CwAddress *)account.intKeys[keyId]).publicKey==nil) {
+            syncAccIntAddress[accountId]=NO;
+            [self cwCmdHdwQueryAccountKeyInfo:CwHdwAccountKeyInfoPubKey
+                                   KeyChainId:CwAddressKeyChainInternal
+                                    AccountId:accountId
+                                        KeyId:keyId];
+        }
+    }
+}
+
 //didPrepareTransaction
 -(void) prepareTransaction:(int64_t)amount Address: (NSString *)recvAddress Change: (NSString *)changeAddress
 {
@@ -1425,6 +1453,7 @@ NSArray *addresses;
     {
         NSLog(@"in :  %@ n:%ld %@", [txin addr], txin.n, [[txin amount]BTC]);
     }
+    
     for (CwTxout* txout in [unsignedTx outputs])
     {
         NSLog(@"out:  %@ %@", [txout addr], [[txout amount]BTC]);
@@ -5303,9 +5332,6 @@ NSArray *addresses;
                 
                 [self.cwAccounts setObject: account forKey: [NSString stringWithFormat: @"%ld", (long)addr.accountId]];
                 
-                //get publickey of the address
-                //[self getAddressInfo:addr.accountId KeyChainId:addr.keyChainId KeyId:addr.keyId];
-
                 if ([self.delegate respondsToSelector:@selector(didGenAddress:)]) {
                     [self.delegate didGenAddress:addr];
                 }
@@ -5414,31 +5440,33 @@ NSArray *addresses;
                 
                 [self.cwAccounts setObject: account forKey: [NSString stringWithFormat: @"%ld", (long)addr.accountId]];
                 
-                if ([self.delegate respondsToSelector:@selector(didGetAddressInfo)]) {
-                    [self.delegate didGetAddressInfo];
-                }
-                
-                //if all addresses are synced
-                syncAccExtAddress[accId] = YES;
-                for (int i=0; i<account.extKeyPointer; i++) {
-                    addr = account.extKeys[i];
-                    if (addr.address==nil) {
-                        syncAccExtAddress[accId] = NO;
-                        break;
+                if (cmd.cmdP1 == CwAddressInfoAddress) {
+                    if ([self.delegate respondsToSelector:@selector(didGetAddressInfo)]) {
+                        [self.delegate didGetAddressInfo];
                     }
-                }
-                syncAccIntAddress[accId] = YES;
-                for (int i=0; i<account.intKeyPointer; i++) {
-                    addr = account.intKeys[i];
-                    if (addr.address==nil) {
-                        syncAccIntAddress[accId] = NO;
-                        break;
+                    
+                    //if all addresses are synced
+                    syncAccExtAddress[accId] = YES;
+                    for (int i=0; i<account.extKeyPointer; i++) {
+                        addr = account.extKeys[i];
+                        if (addr.address==nil) {
+                            syncAccExtAddress[accId] = NO;
+                            break;
+                        }
                     }
-                }
-                
-                if (syncAccExtAddress[accId] && syncAccIntAddress[accId]) {
-                    if ([self.delegate respondsToSelector:@selector(didGetAccountAddresses:)]) {
-                        [self.delegate didGetAccountAddresses: account.accId];
+                    syncAccIntAddress[accId] = YES;
+                    for (int i=0; i<account.intKeyPointer; i++) {
+                        addr = account.intKeys[i];
+                        if (addr.address==nil) {
+                            syncAccIntAddress[accId] = NO;
+                            break;
+                        }
+                    }
+                    
+                    if (syncAccExtAddress[accId] && syncAccIntAddress[accId]) {
+                        if ([self.delegate respondsToSelector:@selector(didGetAccountAddresses:)]) {
+                            [self.delegate didGetAccountAddresses: account.accId];
+                        }
                     }
                 }
                 
