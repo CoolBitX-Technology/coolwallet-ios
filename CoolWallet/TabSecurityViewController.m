@@ -20,7 +20,6 @@
 
 @property (weak, nonatomic) IBOutlet UISwitch *swPreserveHostInfo;
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBusyIndicator;
 @property (weak, nonatomic) IBOutlet UISlider *sliDogScale;
 
 - (IBAction)btnUpdateSecurityPolicy:(id)sender;
@@ -60,9 +59,6 @@ CwCard *cwCard;
     self.cwManager.delegate=self;
     cwCard = self.cwManager.connectedCwCard;
     cwCard.delegate = self;
-    
-    self.actBusyIndicator.hidden = YES;
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -71,8 +67,7 @@ CwCard *cwCard;
     self.sliDogScale.value = cwCard.securityPolicy_WatchDogScale;
     
     if (cwCard.mode==CwCardModeNormal) {
-        self.actBusyIndicator.hidden = NO;
-        [self.actBusyIndicator startAnimating];
+        [self showIndicatorView:@"loading..."];
         
         //get security policy
         [cwCard getSecurityPolicy];
@@ -86,6 +81,8 @@ CwCard *cwCard;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 /*
  #pragma mark - Navigation
@@ -103,8 +100,7 @@ CwCard *cwCard;
     NSLog(@"mode = %ld", self.cwManager.connectedCwCard.mode);
     if (self.cwManager.connectedCwCard.mode==CwCardModeNormal) {
         //get security policy
-        self.actBusyIndicator.hidden = NO;
-        [self.actBusyIndicator startAnimating];
+        [self showIndicatorView:@"update security policy..."];
         [self.cwManager.connectedCwCard setSecurityPolicy:self.swOtpEnable.on
                                              ButtonEnable:self.swBtnEnable.on
                                      DisplayAddressEnable:self.swDisplayAddress.on
@@ -112,8 +108,7 @@ CwCard *cwCard;
     } else if (self.cwManager.connectedCwCard.mode == CwCardModePerso) {
         NSLog(@"otp = %d", self.swOtpEnable.on);
         //get security policy
-        self.actBusyIndicator.hidden = NO;
-        [self.actBusyIndicator startAnimating];
+        [self showIndicatorView:@"update security policy..."];
         [self.cwManager.connectedCwCard persoSecurityPolicy:self.swOtpEnable.on
                                                ButtonEnable:self.swBtnEnable.on
                                        DisplayAddressEnable:self.swDisplayAddress.on
@@ -122,8 +117,7 @@ CwCard *cwCard;
 }
 
 - (IBAction)btnEraseCw:(id)sender {
-    self.actBusyIndicator.hidden = NO;
-    [self.actBusyIndicator startAnimating];
+    [self showIndicatorView:@"Start reset CoolWallet..."];
     
     [cwCard eraseCw:self.swPreserveHostInfo.on Pin:@"" NewPin:@""];
 }
@@ -140,8 +134,7 @@ CwCard *cwCard;
     if (cwCard.cardId)
         [cwCard saveCwCardToFile];
     
-    [self.actBusyIndicator stopAnimating];
-    self.actBusyIndicator.hidden = YES;
+    [self performDismiss];
 }
 
 -(void) didGetModeState
@@ -176,6 +169,8 @@ CwCard *cwCard;
      */
     //[self.cwManager.connectedCwCard getModeState];
     
+    [self performDismiss];
+    
     UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
     UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
     [self.revealViewController pushFrontViewController:vc animated:YES];
@@ -188,26 +183,33 @@ CwCard *cwCard;
     self.swBtnEnable.on = self.cwManager.connectedCwCard.securityPolicy_BtnEnable;
     self.swWatchDogEnable.on = self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable;
     self.swDisplayAddress.on = self.cwManager.connectedCwCard.securityPolicy_DisplayAddressEnable;
+    
+    [self performDismiss];
 }
 
 -(void) didSetSecurityPolicy
 {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CW Security policy updated"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];
+    [self performDismiss];
     
-    //[self.cwManager.connectedCwCard getModeState];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Security policy updated" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
+        UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
+        [self.revealViewController pushFrontViewController:vc animated:YES];
+    }];
+    [alertController addAction:okAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 -(void) didEraseWallet {
+    [self performDismiss];
     
     //if erase CW, then wait for didEraseCw delegate, don't show the alert here
     if (self.swPreserveHostInfo.on)
     {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CW Erased"
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CoolWallet has reset"
                                                        message: @"Host info preserved"
                                                       delegate: nil
                                              cancelButtonTitle: nil
@@ -224,8 +226,9 @@ CwCard *cwCard;
 }
 
 -(void) didEraseCw {
+    [self performDismiss];
     
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CW Erased"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CoolWallet has reset"
                                                    message: @"Host info also erased"
                                                   delegate: nil
                                          cancelButtonTitle: nil

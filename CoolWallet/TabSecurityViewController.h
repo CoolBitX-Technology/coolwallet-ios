@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface TabSecurityViewController : UIViewController
+@interface TabSecurityViewController : BaseViewController
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *baritemBack;
 @end

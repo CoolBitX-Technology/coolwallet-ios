@@ -1119,6 +1119,7 @@ NSArray *addresses;
 -(void) getAccountInfo: (NSInteger) accountId;
 {
     //get account from dictionary
+    NSLog(@"self.cwAccounts: %@", self.cwAccounts);
     CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", accountId]];
                          
     if (account==nil) {
@@ -5906,7 +5907,7 @@ NSArray *addresses;
     
     NSLog (@"RSSI %@, scale: %ld", RSSI, scale);
     
-    if (scale > self.securityPolicy_WatchDogScale) {
+    if (self.securityPolicy_WatchDogEnable && scale > self.securityPolicy_WatchDogScale) {
         if ([self.delegate respondsToSelector:@selector(didWatchDogAlert:)])
             [self.delegate didWatchDogAlert:scale];
     }

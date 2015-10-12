@@ -12,7 +12,6 @@
 #import "OCAppCommon.h"
 #import "CwTxin.h"
 #import "CwTxout.h"
-#import "CwUnspentTxIndex.h"
 
 CwBtcNetWork *btcNet;
 CwAccount *account;
@@ -23,11 +22,17 @@ NSInteger rowSelect;
 
 bool isFirst = YES;
 
+@interface TabbarHomeViewController ()
+
+@property (strong, nonatomic) NSArray *accountButtons;
+
+@end
+
 @implementation TabbarHomeViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"viewDidLoad");
+    NSLog(@"TabbarHomeViewController, viewDidLoad");
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl addTarget:self action:@selector(setAccountButton) forControlEvents:UIControlEventValueChanged];
@@ -44,6 +49,9 @@ bool isFirst = YES;
     cwCard.delegate = self;
     btcNet.delegate = self;
     
+    
+    self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
+    
     [self getBitcoinRateforCurrency];
 }
 
@@ -54,7 +62,7 @@ bool isFirst = YES;
     cwCard.delegate = self;
     btcNet.delegate = self;
     
-     NSLog(@"accid = %d",cwCard.currentAccountId);
+     NSLog(@"accid = %ld",cwCard.currentAccountId);
     //[self showIndicatorView:@"synchronizing data"];
     //self.actBusyIndicator.hidden = NO;
     //[self.actBusyIndicator startAnimating];
@@ -62,7 +70,7 @@ bool isFirst = YES;
 }
 
 -(void)viewDidAppear:(BOOL)animated {
-    NSLog(@"viewDidAppear");
+    NSLog(@"TabbarHomeViewController, viewDidAppear");
 }
 
 - (void)didReceiveMemoryWarning {
@@ -95,178 +103,57 @@ bool isFirst = YES;
 #pragma marks - Account Button Actions
 
 - (void)setAccountButton{
-    NSLog(@"cwAccounts = %ld", [cwCard.cwAccounts count]);
+    NSLog(@"TabbarHomeViewController, cwAccounts = %ld", [cwCard.cwAccounts count]);
+    
     for(int i =0; i< [cwCard.cwAccounts count]; i++) {
-        if(i == 0) {
-            _btnAccount1.hidden = NO;
-        }else if(i == 1) {
-            _btnAccount2.hidden = NO;
-        }else if(i == 2) {
-            _btnAccount3.hidden = NO;
-        }else if(i == 3) {
-            _btnAccount4.hidden = NO;
-        }else if(i == 4) {
-            _btnAccount5.hidden = NO;
-            _btnAccount5.enabled = YES;
-            _btnAddAccount.hidden = YES;
-            _imgAddAccount.hidden = YES;
+        UIButton *accountBtn = [self.accountButtons objectAtIndex:i];
+        accountBtn.hidden = NO;
+        
+        if (i == cwCard.cwAccounts.count-1) {
+            accountBtn.enabled = YES;
+            self.btnAddAccount.hidden = YES;
+            self.imgAddAccount.hidden = YES;
         }
         
     }
     NSLog(@"accid = %ld",cwCard.currentAccountId);
-    if([cwCard.cwAccounts count] == 1) {
-        [_btnAccount1 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    }else{
-        switch (cwCard.currentAccountId) {
-            case 0:
-                [_btnAccount1 sendActionsForControlEvents:UIControlEventTouchUpInside];
-                break;
-            case 1:
-                [_btnAccount2 sendActionsForControlEvents:UIControlEventTouchUpInside];
-                break;
-            case 2:
-                [_btnAccount3 sendActionsForControlEvents:UIControlEventTouchUpInside];
-                break;
-            case 3:
-                [_btnAccount4 sendActionsForControlEvents:UIControlEventTouchUpInside];
-                break;
-            case 4:
-                [_btnAccount5 sendActionsForControlEvents:UIControlEventTouchUpInside];
-                break;
-            default:
-                break;
+    UIButton *selectedAccount = [self.accountButtons objectAtIndex:cwCard.currentAccountId];
+    [selectedAccount sendActionsForControlEvents:UIControlEventTouchUpInside];
+    
+}
+
+- (IBAction)btnAccount:(id)sender {
+    NSInteger currentAccountId = cwCard.currentAccountId;
+    for (UIButton *btn in self.accountButtons) {
+        if (sender == btn) {
+            cwCard.currentAccountId = [self.accountButtons indexOfObject:btn];
+            [btn setBackgroundColor:[UIColor colorAccountBackground]];
+            [btn setSelected:YES];
+        } else {
+            [btn setBackgroundColor:[UIColor blackColor]];
+            [btn setSelected:NO];
         }
     }
     
-}
-
-- (IBAction)btnAccount1:(id)sender {
-    [_btnAccount1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     
-    [_btnAccount2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount3 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount4 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount5 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    
-    [_btnAccount1 setBackgroundColor:[UIColor colorAccountBackground]];
-    
-    [_btnAccount2 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount3 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount4 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
-    
-    if(cwCard.currentAccountId != 0 || isFirst) {
-        isFirst = NO;
-        cwCard.currentAccountId = 0;
+    if (currentAccountId != cwCard.currentAccountId || isFirst) {
+        [self showIndicatorView:@"synchronizing data"];
+        
         [cwCard setDisplayAccount:cwCard.currentAccountId];
         [cwCard getAccountInfo:cwCard.currentAccountId];
     }
     
     [self SetBalanceText];
-    [self SetTxkeys];
-}
-
-- (IBAction)btnAccount2:(id)sender {
-    [_btnAccount2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    [_btnAccount1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount3 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount4 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount5 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    
-    [_btnAccount2 setBackgroundColor:[UIColor colorAccountBackground]];
-    [_btnAccount1 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount3 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount4 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
-    
-    if(cwCard.currentAccountId != 1) {
-        cwCard.currentAccountId = 1;
-        [cwCard setDisplayAccount:cwCard.currentAccountId];
-        [cwCard getAccountInfo:cwCard.currentAccountId];
-    }
-    
-    [self SetBalanceText];
-    [self SetTxkeys];
-}
-
-- (IBAction)btnAccount3:(id)sender {
-    [_btnAccount3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    [_btnAccount2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount4 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount5 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    
-    [_btnAccount3 setBackgroundColor:[UIColor colorAccountBackground]];
-    [_btnAccount1 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount2 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount4 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
-    
-    if(cwCard.currentAccountId != 2) {
-    cwCard.currentAccountId = 2;
-    [cwCard setDisplayAccount:cwCard.currentAccountId];
-    [cwCard getAccountInfo:cwCard.currentAccountId];
-    }
-    [self SetBalanceText];
-    
-    [self SetTxkeys];
-}
-
-- (IBAction)btnAccount4:(id)sender {
-    [_btnAccount4 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    [_btnAccount2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount3 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount5 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    
-    [_btnAccount4 setBackgroundColor:[UIColor colorAccountBackground]];
-    [_btnAccount1 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount2 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount3 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
-    
-    if(cwCard.currentAccountId != 3) {
-    cwCard.currentAccountId = 3;
-    [cwCard setDisplayAccount:cwCard.currentAccountId];
-    [cwCard getAccountInfo:cwCard.currentAccountId];
-    }
-    [self SetBalanceText];
-    
-    [self SetTxkeys];
-}
-
-- (IBAction)btnAccount5:(id)sender {
-    [_btnAccount5 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    [_btnAccount2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount3 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount4 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    
-    [_btnAccount5 setBackgroundColor:[UIColor colorAccountBackground]];
-    [_btnAccount1 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount2 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount3 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount4 setBackgroundColor:[UIColor blackColor]];
-    
-    if(cwCard.currentAccountId != 4) {
-    cwCard.currentAccountId = 4;
-    [cwCard setDisplayAccount:cwCard.currentAccountId];
-    [cwCard getAccountInfo:cwCard.currentAccountId];
-    }
-    [self SetBalanceText];
-    
     [self SetTxkeys];
 }
 
 Boolean setBtnActionFlag;
 - (void)SetBalanceText
 {
-    NSLog(@"SetBalanceText");
-    CwAccount *account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+    NSLog(@"TabbarHomeViewController, SetBalanceText");
+//    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+    
     //_lblBalance.text = [NSString stringWithFormat: @"%lld BTC", (int64_t)account.balance];
     _lblBalance.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertBTCStringformUnit: (int64_t)account.balance], [[OCAppCommon getInstance] BitcoinUnit]];
     
@@ -284,7 +171,9 @@ Boolean setBtnActionFlag;
 
 - (void)SetTxkeys
 {
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+//    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+    
+    NSLog(@"TabbarHomeViewController, %ld trans = %ld", account.accId, [account.transactions count]);
     
     if([account.transactions count] == 0 ) {
         [_tableTransaction reloadData];
@@ -304,14 +193,14 @@ Boolean setBtnActionFlag;
         return (NSComparisonResult)NSOrderedSame;
     }];
     
-    NSLog(@"trans = %ld",[account.transactions count]);
+    
     [_tableTransaction reloadData];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier compare:@"TransactionDetailSegue"] == 0) {
-        NSLog(@"rowSelect = %d",rowSelect);
+        NSLog(@"TabbarHomeViewController, rowSelect = %ld",rowSelect);
         id page = segue.destinationViewController;
         id TxKey = sortedTxKeys[rowSelect];
         [page setValue:TxKey forKey:@"TxKey"];
@@ -320,7 +209,6 @@ Boolean setBtnActionFlag;
 
 #pragma marks - Actions
 - (IBAction)btnAddAccount:(id)sender {
-    NSLog(@"btnAddAccount");
     [self CreateAccount];
 }
 
@@ -331,8 +219,6 @@ Boolean setBtnActionFlag;
         [self showIndicatorView:@"Creating Account"];
         
         [cwCard newAccount:cwCard.hdwAcccountPointer Name:@""];
-        
-        
     }
 }
 
@@ -403,8 +289,8 @@ Boolean setBtnActionFlag;
 
 -(void) didCwCardCommand
 {
-    NSLog(@"didCwCardCommand");
-    if(cwCard.hdwAcccountPointer > 0) [self setAccountButton];
+    NSLog(@"TabbarHomeViewController, didCwCardCommand");
+//    if(isFirst && cwCard.hdwAcccountPointer > 0) [self setAccountButton];
     [cwCard saveCwCardToFile];
     
     //[self.actBusyIndicator stopAnimating];
@@ -425,18 +311,19 @@ Boolean setBtnActionFlag;
 
 -(void) didGetModeState
 {
-    NSLog(@"card mode = %ld", cwCard.mode);
+    NSLog(@"TabbarHomeViewController, card mode = %ld", cwCard.mode);
     if (cwCard.mode ==CwCardModePerso) {
         //goto Setting for Security Policy
         [self performSegueWithIdentifier:@"SecuritySegue" sender:self];
     }else{
+        [self showIndicatorView:@"synchronizing data"];
         [cwCard syncFromCard];
     }
 }
 
 -(void) didGetCwHdwStatus
 {
-    NSLog(@" cwCard.hdwStatus = %d",cwCard.hdwStatus);
+    NSLog(@" TabbarHomeViewController, cwCard.hdwStatus = %ld",cwCard.hdwStatus);
     if (cwCard.hdwStatus == CwHdwStatusInactive || cwCard.hdwStatus == CwHdwStatusWaitConfirm) {
         //goto New Wallet
         [self performSegueWithIdentifier:@"CreateHdwSegue" sender:self];
@@ -446,13 +333,12 @@ Boolean setBtnActionFlag;
 -(void) didGetCwHdwAccountPointer
 {
     //[self performDismiss];
-    NSLog(@"didGetCwHdwAccointPointer = %ld", cwCard.hdwAcccountPointer);
+    NSLog(@"TabbarHomeViewController, didGetCwHdwAccointPointer = %ld", cwCard.hdwAcccountPointer);
     if (cwCard.hdwAcccountPointer == 0) {
         [self CreateAccount];
         cwCard.currentAccountId = 0;
     }
     else {
-        [self showIndicatorView:@"synchronizing data"];
         [self setAccountButton];
         //[cwCard getAccounts];
     }
@@ -467,7 +353,7 @@ Boolean setBtnActionFlag;
 
 -(void) didGetAccountInfo: (NSInteger) accId
 {
-    NSLog(@"didGetAccountInfo = %ld, currentAccountId = %ld", accId, cwCard.currentAccountId);
+    NSLog(@"TabbarHomeViewController, didGetAccountInfo = %ld, currentAccountId = %ld", accId, cwCard.currentAccountId);
     
     if(accId == cwCard.currentAccountId) {
         [cwCard getAccountAddresses:accId];
@@ -480,55 +366,49 @@ Boolean setBtnActionFlag;
     //clear the UIActivityIndicatorView
     //create activity indicator on the cell
     
-    if(accId == cwCard.currentAccountId) {
-        [self showIndicatorView:@"synchronizing data"];
+    NSLog(@"TabbarHomeViewController, didGetAccountAddresses = %ld, currentAccountId = %ld", accId, cwCard.currentAccountId);
+    
+    if (accId != cwCard.currentAccountId) {
+        return;
+    }
+    
+//    if (account.accId != cwCard.currentAccountId) {
+//        account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+//    }
+    
+    NSLog(@"TabbarHomeViewController, %ld, transitions: %@", account.accId, account.transactions);
+    if (account.transactions==nil) {
+        //get balance and transaction when there is no transaction yet.
         
-        if (account.transactions==nil) {
-            //get balance and transaction when there is no transaction yet.
+        dispatch_queue_t queue = dispatch_queue_create("com.dtco.CoolWallet", NULL);
+        
+        dispatch_async(queue, ^{
+            [btcNet registerNotifyByAccount: accId];
             
-            dispatch_queue_t queue = dispatch_queue_create("com.dtco.CoolWallet", NULL);
+            //update balance
+            [btcNet getBalanceByAccount: accId]; //this will update the CwCard.account
+            [self SetBalanceText];
+            [cwCard setAccount: accId Balance: account.balance];
             
-            dispatch_async(queue, ^{
-                [btcNet registerNotifyByAccount: accId];
-                
-                //update balance
-                [btcNet getBalanceByAccount: accId]; //this will update the CwCard.account
-                [self SetBalanceText];
-                [cwCard setAccount: accId Balance: account.balance];
-                
-                [btcNet getTransactionByAccount: accId]; //this will update the CwCard.transaction
-            });
-        } else {
-            [self didGetTransactionByAccount: accId];
-        }
+            [btcNet getTransactionByAccount: accId]; //this will update the CwCard.transaction
+        });
+    } else {
+        [self performDismiss];
     }
 }
 
 -(void) didGetTransactionByAccount:(NSInteger)accId
 {
+    NSLog(@"TabbarHomeViewController, currAccId: %ld, didGetTransactionByAccount: %ld", cwCard.currentAccountId, accId);
     //code to be executed in the background
     dispatch_async(dispatch_get_main_queue(), ^{
         //code to be executed on the main thread when background task is finished
-        account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
-        
-        //get address publickey uf the unspent if needed
-        for (CwUnspentTxIndex *utx in account.unspentTxs)
-        {
-            CwAddress *addr;
-            //get publickey from address
-            if (utx.kcId==0) {
-                //External Address
-                addr = account.extKeys[utx.kId];
-            } else {
-                //Internal Address
-                addr = account.intKeys[utx.kId];
-            }
-            
-            if (addr.publicKey==nil)
-                [cwCard getAddressPublickey:accId KeyChainId:utx.kcId KeyId:utx.kId];
-        }
+        //account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
+        //NSLog(@"account tx count = %lu", (unsigned long)account.transactions.count );
+        //[cwCard setAccount: accId Balance: account.balance];
         
         if (accId == cwCard.currentAccountId) {
+            NSLog(@"TabbarHomeViewController, prepare to update tx records");
             [self SetTxkeys]; //this includes reloadData
         }
         
@@ -539,6 +419,7 @@ Boolean setBtnActionFlag;
 
 -(void) didNewAccount: (NSInteger)aid
 {
+    NSLog(@"TabbarHomeViewController, didNewAccount: %ld", aid);
     [self performDismiss];
     //find CW via BLE
     cwManager = [CwManager sharedManager];
@@ -551,7 +432,6 @@ Boolean setBtnActionFlag;
 
 -(void) didSetAccountBalance
 {
-    
     if (setBtnActionFlag) {
         setBtnActionFlag = NO;
     }
@@ -559,11 +439,11 @@ Boolean setBtnActionFlag;
 
 -(void) didGetCwCurrRate
 {
-    NSLog(@"didGetCwCurrRate");
+    NSLog(@"TabbarHomeViewController, didGetCwCurrRate");
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
     [numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
     NSString *numberAsString = [numberFormatter stringFromNumber: cwManager.connectedCwCard.currRate];
-    NSLog(@"currRate = %@ ",numberAsString);
+    NSLog(@"TabbarHomeViewController, currRate = %@ ",numberAsString);
     //_lblFaitMoney.text = numberAsString;
     NSDecimalNumber *decNum = [NSDecimalNumber decimalNumberWithDecimal:[[numberFormatter numberFromString:numberAsString] decimalValue]];
     [cwManager.connectedCwCard setCwCurrRate:decNum];
@@ -581,6 +461,11 @@ Boolean setBtnActionFlag;
 
 
 - (void) showIndicatorView:(NSString *)Msg {
+    if (mHUD != nil) {
+        mHUD.labelText = Msg;
+        return;
+    }
+    
     mHUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:mHUD];
     
@@ -597,14 +482,14 @@ Boolean setBtnActionFlag;
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         //[mHUD removeFromSuperview];
         //[mHUD release];
-        //mHUD = nil;
+        mHUD = nil;
     }
 }
 
 #pragma mark - CwManager Delegate
 -(void) didDisconnectCwCard: (NSString *)cardName
 {
-    NSLog(@"didDisconnectCwCard");
+    NSLog(@"TabbarHomeViewController, didDisconnectCwCard");
     //Add a notification to the system
     UILocalNotification *notify = [[UILocalNotification alloc] init];
     notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];

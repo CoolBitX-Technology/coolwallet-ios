@@ -22,7 +22,6 @@
     MBProgressHUD *mHUD;
 }
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBusyIndicator;
 //@property (weak, nonatomic) IBOutlet UIBarButtonItem *btnAddAccount;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount1;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount2;
@@ -37,12 +36,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableTransaction;
 
 - (IBAction)btnAddAccount:(id)sender;
-
-- (IBAction)btnAccount1:(id)sender;
-- (IBAction)btnAccount2:(id)sender;
-- (IBAction)btnAccount3:(id)sender;
-- (IBAction)btnAccount4:(id)sender;
-- (IBAction)btnAccount5:(id)sender;
 
 @property (nonatomic,strong) UIRefreshControl *refreshControl;
 @end

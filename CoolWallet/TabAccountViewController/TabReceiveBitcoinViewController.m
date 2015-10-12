@@ -166,6 +166,7 @@ NSString *Label;
     [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
     
     if(cwCard.currentAccountId != 0) {
+        RequestBTC = nil;
         cwCard.currentAccountId = 0;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
@@ -197,6 +198,7 @@ NSString *Label;
     [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
     
     if(cwCard.currentAccountId != 1) {
+        RequestBTC = nil;
         cwCard.currentAccountId = 1;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
@@ -228,6 +230,7 @@ NSString *Label;
     [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
     
     if(cwCard.currentAccountId != 2) {
+        RequestBTC = nil;
         cwCard.currentAccountId = 2;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
@@ -258,6 +261,7 @@ NSString *Label;
     [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
     
     if(cwCard.currentAccountId != 3) {
+        RequestBTC = nil;
         cwCard.currentAccountId = 3;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
@@ -288,6 +292,7 @@ NSString *Label;
     [_btnAccount4 setBackgroundColor:[UIColor blackColor]];
     
     if(cwCard.currentAccountId != 4) {
+        RequestBTC = nil;
         cwCard.currentAccountId = 4;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
@@ -442,10 +447,12 @@ NSString *Label;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    rowSelected = indexPath.row;
-    //NSLog(@"row: %d sec: %d", indexPath.row, indexPath.section);
-    [self setQRcodeDataforkey:indexPath.row];
-    
+    if (rowSelected != indexPath.row) {
+        RequestBTC = nil;
+        rowSelected = indexPath.row;
+        //NSLog(@"row: %d sec: %d", indexPath.row, indexPath.section);
+        [self setQRcodeDataforkey:indexPath.row];
+    }
 }
 
 #pragma mark - QR code Encode

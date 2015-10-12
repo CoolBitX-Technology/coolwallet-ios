@@ -128,7 +128,7 @@ CwCard *cwCard;
 }
 
 -(void) didEraseCw {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CW Erased"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CoolWallet has reset"
                                                    message: nil
                                                   delegate: self
                                          cancelButtonTitle: nil
