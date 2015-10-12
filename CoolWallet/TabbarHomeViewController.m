@@ -12,6 +12,7 @@
 #import "OCAppCommon.h"
 #import "CwTxin.h"
 #import "CwTxout.h"
+#import "CwUnspentTxIndex.h"
 
 CwBtcNetWork *btcNet;
 CwAccount *account;
@@ -403,9 +404,27 @@ Boolean setBtnActionFlag;
     //code to be executed in the background
     dispatch_async(dispatch_get_main_queue(), ^{
         //code to be executed on the main thread when background task is finished
-        //account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
         //NSLog(@"account tx count = %lu", (unsigned long)account.transactions.count );
         //[cwCard setAccount: accId Balance: account.balance];
+        
+        account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
+        
+        //get address publickey uf the unspent if needed
+        for (CwUnspentTxIndex *utx in account.unspentTxs)
+        {
+            CwAddress *addr;
+            //get publickey from address
+            if (utx.kcId==0) {
+                //External Address
+                addr = account.extKeys[utx.kId];
+            } else {
+                //Internal Address
+                addr = account.intKeys[utx.kId];
+            }
+            
+            if (addr.publicKey==nil)
+                [cwCard getAddressPublickey:accId KeyChainId:utx.kcId KeyId:utx.kId];
+        }
         
         if (accId == cwCard.currentAccountId) {
             NSLog(@"TabbarHomeViewController, prepare to update tx records");
