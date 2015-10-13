@@ -115,8 +115,12 @@
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
+    NSString *alertTitle = [notification.userInfo objectForKey:@"title"];
+    if (alertTitle == nil) {
+        alertTitle = @"Notification";
+    }
     
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CW Notification"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: alertTitle
                                                    message: notification.alertBody
                                                   delegate: nil
                                          cancelButtonTitle: nil

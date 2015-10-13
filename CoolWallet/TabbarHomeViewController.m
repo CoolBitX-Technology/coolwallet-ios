@@ -26,6 +26,7 @@ bool isFirst = YES;
 @interface TabbarHomeViewController ()
 
 @property (strong, nonatomic) NSArray *accountButtons;
+@property (assign, nonatomic) BOOL waitAccountCreated;
 
 @end
 
@@ -50,7 +51,6 @@ bool isFirst = YES;
     cwCard.delegate = self;
     btcNet.delegate = self;
     
-    
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
     
     [self getBitcoinRateforCurrency];
@@ -63,7 +63,10 @@ bool isFirst = YES;
     cwCard.delegate = self;
     btcNet.delegate = self;
     
-     NSLog(@"accid = %ld",cwCard.currentAccountId);
+    NSLog(@"accid = %ld",cwCard.currentAccountId);
+    if (account != nil) {
+        [self setAccountButton];
+    }
     //[self showIndicatorView:@"synchronizing data"];
     //self.actBusyIndicator.hidden = NO;
     //[self.actBusyIndicator startAnimating];
@@ -110,13 +113,13 @@ bool isFirst = YES;
         UIButton *accountBtn = [self.accountButtons objectAtIndex:i];
         accountBtn.hidden = NO;
         
-        if (i == cwCard.cwAccounts.count-1) {
+        if (i == self.accountButtons.count-1) {
             accountBtn.enabled = YES;
             self.btnAddAccount.hidden = YES;
             self.imgAddAccount.hidden = YES;
         }
-        
     }
+    
     NSLog(@"accid = %ld",cwCard.currentAccountId);
     UIButton *selectedAccount = [self.accountButtons objectAtIndex:cwCard.currentAccountId];
     [selectedAccount sendActionsForControlEvents:UIControlEventTouchUpInside];
@@ -124,7 +127,7 @@ bool isFirst = YES;
 }
 
 - (IBAction)btnAccount:(id)sender {
-    NSInteger currentAccountId = cwCard.currentAccountId;
+    NSInteger currentAccId = cwCard.currentAccountId;
     for (UIButton *btn in self.accountButtons) {
         if (sender == btn) {
             cwCard.currentAccountId = [self.accountButtons indexOfObject:btn];
@@ -138,7 +141,7 @@ bool isFirst = YES;
     
     account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     
-    if (currentAccountId != cwCard.currentAccountId || isFirst) {
+    if (currentAccId != cwCard.currentAccountId || isFirst) {
         [self showIndicatorView:@"synchronizing data"];
         
         [cwCard setDisplayAccount:cwCard.currentAccountId];
@@ -152,28 +155,15 @@ bool isFirst = YES;
 Boolean setBtnActionFlag;
 - (void)SetBalanceText
 {
-    NSLog(@"TabbarHomeViewController, SetBalanceText");
-//    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+    NSLog(@"TabbarHomeViewController, SetBalanceText, balance: %lld", account.balance);
     
-    //_lblBalance.text = [NSString stringWithFormat: @"%lld BTC", (int64_t)account.balance];
     _lblBalance.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertBTCStringformUnit: (int64_t)account.balance], [[OCAppCommon getInstance] BitcoinUnit]];
     
     _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:cwManager.connectedCwCard.currRate], cwCard.currId];
-    
-    /*
-    if(cwCard.currentAccountId == 0) {
-        if(account.balance == 0) {
-            //update account balance
-            setBtnActionFlag = YES;
-            [cwCard setAccount: cwCard.currentAccountId Balance: 1L];
-        }
-    }*/
 }
 
 - (void)SetTxkeys
 {
-//    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
-    
     NSLog(@"TabbarHomeViewController, %ld trans = %ld", account.accId, [account.transactions count]);
     
     if([account.transactions count] == 0 ) {
@@ -201,7 +191,6 @@ Boolean setBtnActionFlag;
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier compare:@"TransactionDetailSegue"] == 0) {
-        NSLog(@"TabbarHomeViewController, rowSelect = %ld",rowSelect);
         id page = segue.destinationViewController;
         id TxKey = sortedTxKeys[rowSelect];
         [page setValue:TxKey forKey:@"TxKey"];
@@ -242,7 +231,7 @@ Boolean setBtnActionFlag;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"TransactionViewCell"];
     }
-    NSLog(@"tx");
+    
     if((sortedTxKeys.count - 1) < indexPath.row) return cell;
     CwTx *tx = [account.transactions objectForKey:sortedTxKeys[indexPath.row]];
     //CwTx *tx = [account.transactions objectForKey: [NSString stringWithFormat:@"%d",indexPath.row]];
@@ -256,8 +245,10 @@ Boolean setBtnActionFlag;
     UILabel *lblTxNotes = (UILabel *)[cell viewWithTag:102];
     //lblTxNotes.text = [NSString stringWithFormat: @"%@", tx.tid];
     UILabel *lblTxAmount = (UILabel *)[cell viewWithTag:103];
+    
+    lblTxAmount.text = [NSString stringWithFormat: @"%@", [[OCAppCommon getInstance] convertBTCStringformUnit: tx.historyAmount.satoshi.longLongValue]];
     if ([tx.historyAmount.satoshi intValue]>0){
-        lblTxAmount.text = [NSString stringWithFormat: @"+%g", tx.historyAmount.BTC.doubleValue];
+        lblTxAmount.text = [NSString stringWithFormat:@"+%@", lblTxAmount.text];
         lblTxAmount.textColor = [UIColor greenColor];
         
         if(tx.inputs.count > 0) {
@@ -265,7 +256,6 @@ Boolean setBtnActionFlag;
             lblTxNotes.text = txin.addr;
         }
     }else{
-        lblTxAmount.text = [NSString stringWithFormat: @"%g", tx.historyAmount.BTC.doubleValue];
         lblTxAmount.textColor = [UIColor redColor];
         
         if(tx.outputs.count > 0) {
@@ -407,10 +397,10 @@ Boolean setBtnActionFlag;
         //NSLog(@"account tx count = %lu", (unsigned long)account.transactions.count );
         //[cwCard setAccount: accId Balance: account.balance];
         
-        account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
+        CwAccount *txAccount = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
         
         //get address publickey uf the unspent if needed
-        for (CwUnspentTxIndex *utx in account.unspentTxs)
+        for (CwUnspentTxIndex *utx in txAccount.unspentTxs)
         {
             CwAddress *addr;
             //get publickey from address
@@ -439,14 +429,14 @@ Boolean setBtnActionFlag;
 -(void) didNewAccount: (NSInteger)aid
 {
     NSLog(@"TabbarHomeViewController, didNewAccount: %ld", aid);
-    [self performDismiss];
+    
     //find CW via BLE
     cwManager = [CwManager sharedManager];
     
     cwCard = cwManager.connectedCwCard;
     [cwCard genAddress:aid KeyChainId:CwAddressKeyChainExternal];
     
-    [self setAccountButton];
+    self.waitAccountCreated = YES;
 }
 
 -(void) didSetAccountBalance
@@ -476,6 +466,18 @@ Boolean setBtnActionFlag;
 {
     //get mode state
     [cwCard getModeState];
+}
+
+-(void) didGenAddress:(CwAddress *)addr
+{
+    NSLog(@"addr: %@, keyChainId = %ld", addr, addr.keyChainId);
+    if (self.waitAccountCreated) {
+        self.waitAccountCreated = NO;
+        
+        [self performDismiss];
+        [self setAccountButton];
+        
+    }
 }
 
 

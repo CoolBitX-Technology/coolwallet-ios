@@ -13,7 +13,6 @@
 
 @interface TabExitViewController ()  <CwManagerDelegate, CwCardDelegate>
 @property CwManager *cwManager;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBusyIndicator;
 - (IBAction)btnDisconnectCw:(id)sender;
 @end
 
@@ -29,9 +28,6 @@
         [self.sidebarButton setAction: @selector( revealToggle: )];
         [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     }
-    
-    // Do any additional setup after loading the view.
-    self.actBusyIndicator.hidden = YES;
     
     //Navigate Bar UI effect
     //add CW Logo
@@ -78,8 +74,7 @@
 
 #pragma marks - Actions
 - (IBAction)btnDisconnectCw:(id)sender {
-    self.actBusyIndicator.hidden = NO;
-    [self.actBusyIndicator startAnimating];
+    [self showIndicatorView:@"Logout..."];
     
     [self.cwManager.connectedCwCard logoutHost];
 }
@@ -87,8 +82,6 @@
 #pragma marks - CwCardDelegate
 -(void) didCwCardCommand
 {
-    if(_actBusyIndicator.isAnimating) [self.actBusyIndicator stopAnimating];
-    self.actBusyIndicator.hidden = YES;
 }
 
 -(void) didLogoutHost
@@ -104,14 +97,8 @@
 {
     NSLog(@"CW %@ Disconnected", cwCardName);
     
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CW card Disconnected"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];
-    
-    
+    [self performDismiss];
+
     // Get the storyboard named secondStoryBoard from the main bundle:
     UIStoryboard *secondStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     

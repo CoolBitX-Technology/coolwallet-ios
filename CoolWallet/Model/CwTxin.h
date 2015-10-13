@@ -22,5 +22,6 @@
 @property NSData *hashForSign;  //hash of the transaciton to be signed
 @property NSData *signature;    //64bytes of signature
 @property NSData *scriptPub;
+@property BOOL sendToCard;      //true: sent to card, false: not send yet
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "CwBtc.h"
+#import "OCAppCommon.h"
 
 @implementation CwBtc
 
@@ -99,6 +100,11 @@
         return YES;
     else
         return NO;
+}
+
+-(NSString *) getBTCDisplayFromUnit
+{
+    return [[OCAppCommon getInstance] convertBTCStringformUnit: self.satoshi.longLongValue];
 }
 
 @end

@@ -66,7 +66,7 @@ CwAccount *account;
         }
     }else{
         _lblTxType.text = @"Send to";
-        _lblTxAmount.text = [NSString stringWithFormat: @"+%g", tx.historyAmount.BTC.doubleValue];
+        _lblTxAmount.text = [NSString stringWithFormat: @"%g", tx.historyAmount.BTC.doubleValue];
         if(tx.outputs.count > 0) {
             CwTxout* txout = (CwTxout *)[tx.outputs objectAtIndex:0];
             _lblTxAddr.text = txout.addr;

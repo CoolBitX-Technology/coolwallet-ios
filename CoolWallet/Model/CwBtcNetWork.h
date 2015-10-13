@@ -27,8 +27,8 @@
 - (GetAllTxsByAddrErr) getHistoryTxsByAddr: (NSString*)addr txs:(NSMutableArray**)txs;
 - (GetUnspentTxsByAddrErr) getUnspentTxsByAddr: (NSString*)addr unspentTxs:(NSMutableArray**)unspentTxs;
 
-- (PublishErr) publish:(CwTx*)tx result:(NSString**)result;
-- (DecodeErr) decode:(CwTx*)tx result:(NSString**)result;
+- (PublishErr) publish:(CwTx*)tx result:(NSData **)result;
+- (DecodeErr) decode:(CwTx*)tx result:(NSData **)result;
 
 - (NSDictionary *) getCurrRate; //key: CurrId, value: rate
 

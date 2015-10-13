@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-@interface TabExitViewController : UIViewController
+#import "BaseViewController.h"
+
+@interface TabExitViewController : BaseViewController
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
 @end

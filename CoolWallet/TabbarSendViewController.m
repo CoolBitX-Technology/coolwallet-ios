@@ -24,7 +24,7 @@ long TxFee = 10000;
 
 @interface TabbarSendViewController ()
 
-@property (assign, nonatomic) BOOL transCancel;
+@property (strong, nonatomic) CwAddress *genAddr;
 
 @end
 
@@ -42,8 +42,6 @@ long TxFee = 10000;
     cwCard.paymentAddress = @"";
     //cwCard.amount = 0;
     cwCard.label = @"";
-    
-    self.transCancel = NO;
     
     [self addDecimalKeyboardDoneButton];
 }
@@ -137,13 +135,15 @@ long TxFee = 10000;
     _actBusyIndicator.hidden = NO;
     [_actBusyIndicator startAnimating];
     
-    if (cwCard.securityPolicy_OtpEnable==NO) {
-        
-        //find an internal address with empty transactions, if no, creat a new internal address
-        [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
-    }else{
-        [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
-    }
+    [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
+    
+//    if (cwCard.securityPolicy_OtpEnable==NO) {
+//        
+//        //find an internal address with empty transactions, if no, creat a new internal address
+//        [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
+//    }else{
+//        [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
+//    }
     
     /*
     NSString *satoshi =  [[OCAppCommon getInstance] convertBTCtoSatoshi:_txtAmount.text];
@@ -410,6 +410,22 @@ long TxFee = 10000;
     _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:cwManager.connectedCwCard.currRate], cwCard.currId];
 }
 
+-(void) sendPrepareTransaction
+{
+    if (self.genAddr == nil) {
+        return;
+    }
+    
+    NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
+    [cwCard prepareTransaction: [sato longLongValue] Address:self.txtReceiverAddress.text Change: self.genAddr.address];
+}
+
+-(void) cancelTransaction
+{
+    [cwCard cancelTrancation];
+    [cwCard setDisplayAccount: cwCard.currentAccountId];
+}
+
 #define TAG_SEND_OTP 1
 #define TAG_PRESS_BUTTON 2
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -417,16 +433,12 @@ long TxFee = 10000;
     NSLog(@"OTP entered=%@",tfOTP.text);
     if(actionSheet.tag == TAG_SEND_OTP) {
         if (buttonIndex == actionSheet.cancelButtonIndex) {
-            // TODO: cancel transaction and send cancel otp to cw
-            self.transCancel = YES;
-            [cwCard cancelTrancation];
+            [self cancelTransaction];
         } else {
-            self.transCancel = NO;
             [cwCard verifyTransactionOtp:tfOTP.text];
         }
     }else  if(actionSheet.tag == TAG_PRESS_BUTTON) {
-        [cwCard cancelTrancation];
-        [cwCard setDisplayAccount:cwCard.currentAccountId];
+        [self cancelTransaction];
     }
 }
 
@@ -470,23 +482,24 @@ long TxFee = 10000;
     NSLog(@"didGenAddress");
     [btcNet registerNotifyByAccount:cwCard.currentAccountId];
     
-    NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
-    [cwCard prepareTransaction: [sato longLongValue] Address:self.txtReceiverAddress.text Change: addr.address];
+    self.genAddr = addr;
+    
+    [self sendPrepareTransaction];
 }
 
--(void) didGetAccountInfo
-{
-    NSLog(@"didGetAccountInfo");
-    //account keyIdx and keys beening updated
-    account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
-}
-     
+//-(void) didGetAccountInfo
+//{
+//    NSLog(@"didGetAccountInfo");
+//    //account keyIdx and keys beening updated
+//    account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
+//}
+
 -(void) didGetAccountInfo: (NSInteger) accId
 {
-        NSLog(@"didGetAccountInfo = %d", accId);
-        if(accId == cwCard.currentAccountId) {
-            [self SetBalanceText];
-        }
+    NSLog(@"didGetAccountInfo = %ld", accId);
+    if(accId == cwCard.currentAccountId) {
+        [self SetBalanceText];
+    }
 }
 
 -(void) didPrepareTransaction: (NSString *)OTP
@@ -545,13 +558,19 @@ long TxFee = 10000;
     //self.lblPressButton.hidden= YES;
     self.txtOtp.text = @"";
     
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"OTP Error"
-                                                   message: @"Generate OTP Again"
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles: @"OK",nil];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"OTP Error" message:@"Generate OTP Again" preferredStyle:UIAlertControllerStyleAlert];
     
-    [alert show];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self sendPrepareTransaction];
+    }];
+    [alertController addAction:okAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self cancelTransaction];
+    }];
+    [alertController addAction:cancelAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 -(void) didSignTransaction
@@ -559,26 +578,32 @@ long TxFee = 10000;
     NSLog(@"didSignTransaction");
     //[self performDismiss];
     
-    if (!self.transCancel) {
-        if(PressAlert != nil) [PressAlert dismissWithClickedButtonIndex:-1 animated:YES] ;
-        
-        NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
-        [cwCard setAccount: account.accId Balance: account.balance-([sato longLongValue] + TxFee)];
-        
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Send Bitcoin"
-                                                       message: [NSString stringWithFormat:@"Send %@ BTC to %@", self.txtAmount.text, self.txtReceiverAddress.text]
-                                                      delegate: nil
-                                             cancelButtonTitle: nil
-                                             otherButtonTitles: @"OK",nil];
-        
-        [alert show];
-    }
+    if(PressAlert != nil) [PressAlert dismissWithClickedButtonIndex:-1 animated:YES] ;
     
+    NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
+    [cwCard setAccount: account.accId Balance: account.balance-([sato longLongValue] + TxFee)];
+    
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Send Bitcoin"
+                                                   message: [NSString stringWithFormat:@"Send %@ BTC to %@", self.txtAmount.text, self.txtReceiverAddress.text]
+                                                  delegate: nil
+                                         cancelButtonTitle: nil
+                                         otherButtonTitles: @"OK",nil];
+    
+    [alert show];
     
     [self SetBalanceText];
     
     //back to previous controller
     //[self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void) didSignTransactionError:(NSString *)errMsg
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Send Bitcoin Fail" message:errMsg preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    [alertController addAction:okAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 -(void) didGetCwCurrRate

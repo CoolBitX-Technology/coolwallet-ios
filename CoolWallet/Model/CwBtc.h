@@ -34,4 +34,6 @@
 
 - (bool)greater:(CwBtc*)btc;
 
+-(NSString *) getBTCDisplayFromUnit;
+
 @end
