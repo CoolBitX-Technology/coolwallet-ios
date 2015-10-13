@@ -132,27 +132,9 @@ long TxFee = 10000;
     if([self.txtAmount.text compare:@""] == 0 ) return;
     
     //send OTP
-    _actBusyIndicator.hidden = NO;
-    [_actBusyIndicator startAnimating];
+    [self showIndicatorView:@"Send..."];
     
     [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
-    
-//    if (cwCard.securityPolicy_OtpEnable==NO) {
-//        
-//        //find an internal address with empty transactions, if no, creat a new internal address
-//        [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
-//    }else{
-//        [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
-//    }
-    
-    /*
-    NSString *satoshi =  [[OCAppCommon getInstance] convertBTCtoSatoshi:_txtAmount.text];
-    
-    NSMutableArray *transactions = [[NSMutableArray alloc] init];
-    
-    [transactions addObject:self.txtReceiverAddress.text];
-    [cwCard prepareTransaction: transactions Amount: [satoshi longLongValue] Address:self.txtReceiverAddress.text];
-    */
 }
 
 - (IBAction)btnScanQRcode:(id)sender {
@@ -433,11 +415,17 @@ long TxFee = 10000;
     NSLog(@"OTP entered=%@",tfOTP.text);
     if(actionSheet.tag == TAG_SEND_OTP) {
         if (buttonIndex == actionSheet.cancelButtonIndex) {
+            [self showIndicatorView:@"Cancel transaction..."];
+            
             [self cancelTransaction];
         } else {
+            [self showIndicatorView:@"Send..."];
+            
             [cwCard verifyTransactionOtp:tfOTP.text];
         }
     }else  if(actionSheet.tag == TAG_PRESS_BUTTON) {
+        [self showIndicatorView:@"Cancel transaction..."];
+        
         [self cancelTransaction];
     }
 }
@@ -446,8 +434,8 @@ long TxFee = 10000;
 -(void) didCwCardCommand
 {
     NSLog(@"didCwCardCommand");
-    [self.actBusyIndicator stopAnimating];
-    self.actBusyIndicator.hidden = YES;
+//    [self.actBusyIndicator stopAnimating];
+//    self.actBusyIndicator.hidden = YES;
     
     [self didGetCwCurrRate];
 }
@@ -466,8 +454,8 @@ long TxFee = 10000;
 
 -(void) didPrepareTransactionError: (NSString *) errMsg
 {
-    [self.actBusyIndicator stopAnimating];
-    self.actBusyIndicator.hidden = YES;
+    [self performDismiss];
+    
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Send Bitcoin Error"
                                                    message: errMsg
                                                   delegate: nil
@@ -506,6 +494,8 @@ long TxFee = 10000;
 {
     NSLog(@"didPrepareTransaction");
     if (cwCard.securityPolicy_OtpEnable) {
+        [self performDismiss];
+        
         self.btnSendBitcoin.hidden = NO;
         [self showOTPEnterView];
     }else{
@@ -536,6 +526,7 @@ long TxFee = 10000;
     if (cwCard.securityPolicy_BtnEnable) {
         //[self showIndicatorView:@"Press Button On the Card"];
         //self.lblPressButton.text = @"Press Button On the Card";
+        [self performDismiss];
         
         PressAlert = [[UIAlertView alloc]initWithTitle: nil
                                                        message: @"Press Button On the Card"
@@ -554,8 +545,8 @@ long TxFee = 10000;
 
 -(void) didVerifyOtpError
 {
-    //self.lblPressButton.text = @"";
-    //self.lblPressButton.hidden= YES;
+    [self performDismiss];
+    
     self.txtOtp.text = @"";
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"OTP Error" message:@"Generate OTP Again" preferredStyle:UIAlertControllerStyleAlert];
@@ -580,6 +571,8 @@ long TxFee = 10000;
     
     if(PressAlert != nil) [PressAlert dismissWithClickedButtonIndex:-1 animated:YES] ;
     
+    [self performDismiss];
+    
     NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
     [cwCard setAccount: account.accId Balance: account.balance-([sato longLongValue] + TxFee)];
     
@@ -599,6 +592,8 @@ long TxFee = 10000;
 
 -(void) didSignTransactionError:(NSString *)errMsg
 {
+    [self performDismiss];
+    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Send Bitcoin Fail" message:errMsg preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
     [alertController addAction:okAction];

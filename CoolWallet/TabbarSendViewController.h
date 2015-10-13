@@ -13,12 +13,9 @@
 #import "CwAddress.h"
 #import "CwBtcNetWork.h"
 #import "UIColor+CustomColors.h"
-#import "MBProgressHUD.h"
+#import "BaseViewController.h"
+@interface TabbarSendViewController:BaseViewController <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate>
 
-@interface TabbarSendViewController:UIViewController <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate>
-{
-    MBProgressHUD *mHUD;
-}
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount1;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount2;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount3;
