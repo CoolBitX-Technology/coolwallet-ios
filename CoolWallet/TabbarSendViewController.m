@@ -25,6 +25,7 @@ long TxFee = 10000;
 @interface TabbarSendViewController ()
 
 @property (strong, nonatomic) CwAddress *genAddr;
+@property (assign, nonatomic) BOOL transactionBegin;
 
 @end
 
@@ -44,6 +45,8 @@ long TxFee = 10000;
     cwCard.label = @"";
     
     [self addDecimalKeyboardDoneButton];
+    
+    self.transactionBegin = NO;
 }
 
 
@@ -76,6 +79,13 @@ long TxFee = 10000;
     self.txtNote.text = cwCard.label;
     _txtAmountFiatmoney.text = @"";
     _lblFiatCurrency.text = cwCard.currId;
+}
+
+-(void) viewWillDisappear:(BOOL)animated
+{
+    if (self.transactionBegin) {
+        // TODO: alert cancel?
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -398,12 +408,16 @@ long TxFee = 10000;
         return;
     }
     
+    self.transactionBegin = YES;
     NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
     [cwCard prepareTransaction: [sato longLongValue] Address:self.txtReceiverAddress.text Change: self.genAddr.address];
 }
 
 -(void) cancelTransaction
 {
+    [self showIndicatorView:@"Cancel transaction..."];
+    
+    self.transactionBegin = NO;
     [cwCard cancelTrancation];
     [cwCard setDisplayAccount: cwCard.currentAccountId];
 }
@@ -412,11 +426,8 @@ long TxFee = 10000;
 #define TAG_PRESS_BUTTON 2
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"OTP entered=%@",tfOTP.text);
     if(actionSheet.tag == TAG_SEND_OTP) {
         if (buttonIndex == actionSheet.cancelButtonIndex) {
-            [self showIndicatorView:@"Cancel transaction..."];
-            
             [self cancelTransaction];
         } else {
             [self showIndicatorView:@"Send..."];
@@ -424,8 +435,6 @@ long TxFee = 10000;
             [cwCard verifyTransactionOtp:tfOTP.text];
         }
     }else  if(actionSheet.tag == TAG_PRESS_BUTTON) {
-        [self showIndicatorView:@"Cancel transaction..."];
-        
         [self cancelTransaction];
     }
 }
@@ -475,13 +484,6 @@ long TxFee = 10000;
     [self sendPrepareTransaction];
 }
 
-//-(void) didGetAccountInfo
-//{
-//    NSLog(@"didGetAccountInfo");
-//    //account keyIdx and keys beening updated
-//    account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
-//}
-
 -(void) didGetAccountInfo: (NSInteger) accId
 {
     NSLog(@"didGetAccountInfo = %ld", accId);
@@ -530,7 +532,7 @@ long TxFee = 10000;
         
         PressAlert = [[UIAlertView alloc]initWithTitle: nil
                                                        message: @"Press Button On the Card"
-                                                      delegate: nil
+                                                      delegate: self
                                              cancelButtonTitle: nil
                                              otherButtonTitles: @"Cancel",nil];
         PressAlert.tag = TAG_PRESS_BUTTON;
@@ -552,6 +554,7 @@ long TxFee = 10000;
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"OTP Error" message:@"Generate OTP Again" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self showIndicatorView:@"Send..."];
         [self sendPrepareTransaction];
     }];
     [alertController addAction:okAction];
@@ -569,9 +572,9 @@ long TxFee = 10000;
     NSLog(@"didSignTransaction");
     //[self performDismiss];
     
-    if(PressAlert != nil) [PressAlert dismissWithClickedButtonIndex:-1 animated:YES] ;
+    self.transactionBegin = NO;
     
-    [self performDismiss];
+    if(PressAlert != nil) [PressAlert dismissWithClickedButtonIndex:-1 animated:YES] ;
     
     NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
     [cwCard setAccount: account.accId Balance: account.balance-([sato longLongValue] + TxFee)];
@@ -592,13 +595,20 @@ long TxFee = 10000;
 
 -(void) didSignTransactionError:(NSString *)errMsg
 {
-    [self performDismiss];
+    self.transactionBegin = NO;
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Send Bitcoin Fail" message:errMsg preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Send Bitcoin Error" message:errMsg preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
     [alertController addAction:okAction];
     
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+-(void) didFinishTransaction
+{
+    if (!self.transactionBegin) {
+        [self performDismiss];
+    }
 }
 
 -(void) didGetCwCurrRate
@@ -645,26 +655,6 @@ long TxFee = 10000;
     //alertTextField.keyboardType = UIKeyboardTypeNumberPad;
     //alertTextField.placeholder = @"Enter request BTC";
     [OTPalert show];
-}
-
-- (void) showIndicatorView:(NSString *)Msg {
-    mHUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:mHUD];
-    
-    //如果设置此属性则当前的view置于后台
-    mHUD.dimBackground = YES;
-    mHUD.labelText = Msg;
-    
-    [mHUD show:YES];
-    
-}
-
-- (void) performDismiss
-{
-    if(mHUD != nil) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-    }
-    //[IndicatorAlert dismissWithClickedButtonIndex:0 animated:NO];
 }
 
 - (void)dismissAllAlert

@@ -193,7 +193,7 @@ NSInteger accPtr[5][2]; //store key index of each accounts
         }
     }
     
-    //gen address if the empty address < 20
+    //gen address if the empty address < 5
     if (accPtr[accId][CwAddressKeyChainInternal] == -1 || acc.intKeyPointer-accPtr[accId][CwAddressKeyChainInternal]<CwHdwRecoveryAddressWindow) {
         [cwCard genAddress:accId KeyChainId:CwAddressKeyChainInternal];
     } else {

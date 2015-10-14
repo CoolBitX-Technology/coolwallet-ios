@@ -551,57 +551,110 @@ BOOL didGetTransactionByAccountFlag[5];
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        if (addr.historyTrx==nil) {
-            //NSLog(@"Get HistoryTxsByAddr: %@", add.address);
-            NSMutableArray *addrTxs;
-            
-            if([self getHistoryTxsByAddr:addr.address txs:&addrTxs] != GETALLTXSBYADDR_BASE)
-            {
-                //err = GETTRXBYACCT_ALLTX;
-                //break;
-            }
-            else
-            {
-                //add txs to address
-                addr.historyTrx = addrTxs;
-                if (addrType == CwAddressKeyChainExternal) {
-                    account.extKeys[addrIndex] = addr;
-                } else {
-                    account.intKeys[addrIndex] = addr;
-                }
-                
-                //add txs to account
-                for (CwTx *htx in addrTxs)
-                {
-                    CwTx *record = [account.transactions objectForKey:htx.tid];
-                    if(record)
-                    {
-                        //update amount
-                        NSLog(@"Update Trx %@ amount %@ with %@, conifrm: %ld", record.tid, record.historyAmount.satoshi,  htx.historyAmount.satoshi, [htx confirmations]);
-                        
-//                        record.historyAmount = htx.historyAmount;
-                        record.historyAmount = [record.historyAmount add:htx.historyAmount];
-                        /*
-                         CwTx *txOrg = [account.transactions objectForKey:record.tid];
-                         
-                         txOrg.historyAmount = [txOrg.historyAmount add:record.historyAmount];
-                         */
-                        //update confirmations
-                        [record setConfirmations:[htx confirmations]];
-                        
-                        [account.transactions setObject:record forKey:record.tid];
-                    }
-                    else
-                    {
-                        //add new txs
-                        NSLog(@"Add New Trx %@ with amount %@", htx.tid, htx.historyAmount.satoshi);
-                        [account.transactions setObject:htx forKey:htx.tid];
-                    }
-                }
-//            }
-            //save account back to cwCard
-            [cwCard.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
+        NSMutableArray *addrTxs;
+        if([self getHistoryTxsByAddr:addr.address txs:&addrTxs] != GETALLTXSBYADDR_BASE)
+        {
+            //err = GETTRXBYACCT_ALLTX;
+            //break;
         }
+        else
+        {
+            for (CwTx *htx in addrTxs)
+            {
+                CwTx *record = [account.transactions objectForKey:htx.tid];
+                if(record)
+                {
+                    //update amount
+                    NSLog(@"Update Trx %@ amount %@ with %@, conifrm: %ld", record.tid, record.historyAmount.satoshi,  htx.historyAmount.satoshi, [htx confirmations]);
+                    
+                    if (addr.historyTrx == nil) {
+                        NSLog(@"1111, record BTC: %ld, satoshi: %lld", record.historyAmount.BTC.longValue, record.historyAmount.satoshi.longLongValue);
+                        NSLog(@"1111, htx BTC: %ld, satoshi: %lld", htx.historyAmount.BTC.longValue, htx.historyAmount.satoshi.longLongValue);
+                        record.historyAmount = [record.historyAmount add:htx.historyAmount];
+                    } else {
+                        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@", htx.tid];
+                        NSArray *searchResult = [addr.historyTrx filteredArrayUsingPredicate:predicate];
+                        if (searchResult.count == 0) {
+                            NSLog(@"2222, record BTC: %ld, satoshi: %lld", record.historyAmount.BTC.longValue, record.historyAmount.satoshi.longLongValue);
+                            NSLog(@"2222, htx BTC: %ld, satoshi: %lld", htx.historyAmount.BTC.longValue, htx.historyAmount.satoshi.longLongValue);
+                            record.historyAmount = [record.historyAmount add:htx.historyAmount];
+                        }
+                    }
+                    
+                    //update confirmations
+                    [record setConfirmations:[htx confirmations]];
+                    
+                    [account.transactions setObject:record forKey:record.tid];
+                }
+                else
+                {
+                    //add new txs
+                    NSLog(@"Add New Trx %@ with amount %@", htx.tid, htx.historyAmount.satoshi);
+                    [account.transactions setObject:htx forKey:htx.tid];
+                }
+            }
+            
+            addr.historyTrx = addrTxs;
+            if (addrType == CwAddressKeyChainExternal) {
+                account.extKeys[addrIndex] = addr;
+            } else {
+                account.intKeys[addrIndex] = addr;
+            }
+        }
+        
+        [cwCard.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
+        
+//        if (addr.historyTrx==nil) {
+//            //NSLog(@"Get HistoryTxsByAddr: %@", add.address);
+//            NSMutableArray *addrTxs;
+//            
+//            if([self getHistoryTxsByAddr:addr.address txs:&addrTxs] != GETALLTXSBYADDR_BASE)
+//            {
+//                //err = GETTRXBYACCT_ALLTX;
+//                //break;
+//            }
+//            else
+//            {
+//                //add txs to address
+//                addr.historyTrx = addrTxs;
+//                if (addrType == CwAddressKeyChainExternal) {
+//                    account.extKeys[addrIndex] = addr;
+//                } else {
+//                    account.intKeys[addrIndex] = addr;
+//                }
+//                
+//                //add txs to account
+//                for (CwTx *htx in addrTxs)
+//                {
+//                    CwTx *record = [account.transactions objectForKey:htx.tid];
+//                    if(record)
+//                    {
+//                        //update amount
+//                        NSLog(@"Update Trx %@ amount %@ with %@, conifrm: %ld", record.tid, record.historyAmount.satoshi,  htx.historyAmount.satoshi, [htx confirmations]);
+//                        
+////                        record.historyAmount = htx.historyAmount;
+//                        record.historyAmount = [record.historyAmount add:htx.historyAmount];
+//                        /*
+//                         CwTx *txOrg = [account.transactions objectForKey:record.tid];
+//                         
+//                         txOrg.historyAmount = [txOrg.historyAmount add:record.historyAmount];
+//                         */
+//                        //update confirmations
+//                        [record setConfirmations:[htx confirmations]];
+//                        
+//                        [account.transactions setObject:record forKey:record.tid];
+//                    }
+//                    else
+//                    {
+//                        //add new txs
+//                        NSLog(@"Add New Trx %@ with amount %@", htx.tid, htx.historyAmount.satoshi);
+//                        [account.transactions setObject:htx forKey:htx.tid];
+//                    }
+//                }
+//            }
+//            //save account back to cwCard
+//            [cwCard.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
+//        }
         //check if all addresses of account synced
         [self isGetTransactionByAccount: account.accId];
         
@@ -621,14 +674,6 @@ BOOL didGetTransactionByAccountFlag[5];
             }
             else
             {
-                //add txs to address
-                addr.unspendTrx = addrUnspentTxs;
-                if (addrType == CwAddressKeyChainExternal) {
-                    account.extKeys[addrIndex] = addr;
-                } else {
-                    account.intKeys[addrIndex] = addr;
-                }
-                
                 //add txs to account
                 for (CwTx *utx in addrUnspentTxs)
                 {
@@ -640,7 +685,25 @@ BOOL didGetTransactionByAccountFlag[5];
                     unspentTxIndex.kId = [addr keyId];
                     unspentTxIndex.kcId = [addr keyChainId];
                     
-                    [account.unspentTxs addObject:unspentTxIndex];
+                    if (addr.unspendTrx == nil) {
+                        NSLog(@"Add unspentTxs to account %ld", account.accId);
+                        [account.unspentTxs addObject:unspentTxIndex];
+                    } else {
+                        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@", unspentTxIndex.tid];
+                        NSArray *searchResult = [addr.unspendTrx filteredArrayUsingPredicate:predicate];
+                        if (searchResult == 0) {
+                            NSLog(@"not matched. Add unspentTxs to account %ld", account.accId);
+                            [account.unspentTxs addObject:unspentTxIndex];
+                        }
+                    }
+                }
+                
+                //add txs to address
+                addr.unspendTrx = addrUnspentTxs;
+                if (addrType == CwAddressKeyChainExternal) {
+                    account.extKeys[addrIndex] = addr;
+                } else {
+                    account.intKeys[addrIndex] = addr;
                 }
             }
             //save account back to cwCard
