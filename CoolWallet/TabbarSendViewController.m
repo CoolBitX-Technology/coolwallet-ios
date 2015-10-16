@@ -16,7 +16,7 @@ CwBtcNetWork *btcNet;
 
 UIAlertView *OTPalert;
 UITextField *tfOTP;
-UIAlertView *PressAlert;
+UIAlertController *PressAlert;
 
 NSDictionary *rates;
 
@@ -530,14 +530,13 @@ long TxFee = 10000;
         //self.lblPressButton.text = @"Press Button On the Card";
         [self performDismiss];
         
-        PressAlert = [[UIAlertView alloc]initWithTitle: nil
-                                                       message: @"Press Button On the Card"
-                                                      delegate: self
-                                             cancelButtonTitle: nil
-                                             otherButtonTitles: @"Cancel",nil];
-        PressAlert.tag = TAG_PRESS_BUTTON;
+        PressAlert = [UIAlertController alertControllerWithTitle:@"Press Button On the Card" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self cancelTransaction];
+        }];
+        [PressAlert addAction:cancelAction];
         
-        [PressAlert show];
+        [self presentViewController:PressAlert animated:YES completion:nil];
         
     } else {
         //self.lblPressButton.text = @"Otp Verified, Sending Bitcoin";
@@ -574,7 +573,7 @@ long TxFee = 10000;
     
     self.transactionBegin = NO;
     
-    if(PressAlert != nil) [PressAlert dismissWithClickedButtonIndex:-1 animated:YES] ;
+    if(PressAlert != nil) [PressAlert dismissViewControllerAnimated:YES completion:nil] ;
     
     NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
     [cwCard setAccount: account.accId Balance: account.balance-([sato longLongValue] + TxFee)];
@@ -596,6 +595,8 @@ long TxFee = 10000;
 -(void) didSignTransactionError:(NSString *)errMsg
 {
     self.transactionBegin = NO;
+    
+    if(PressAlert != nil) [PressAlert dismissViewControllerAnimated:YES completion:nil] ;
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Send Bitcoin Error" message:errMsg preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
