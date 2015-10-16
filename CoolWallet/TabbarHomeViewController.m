@@ -52,8 +52,9 @@ bool isFirst = YES;
     btcNet.delegate = self;
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
-    
+    NSLog(@"111");
     [self getBitcoinRateforCurrency];
+    NSLog(@"222");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -120,13 +121,21 @@ bool isFirst = YES;
         }
     }
     
-    NSLog(@"accid = %ld",cwCard.currentAccountId);
-    UIButton *selectedAccount = [self.accountButtons objectAtIndex:cwCard.currentAccountId];
-    [selectedAccount sendActionsForControlEvents:UIControlEventTouchUpInside];
+    NSLog(@"accid = %ld, refresh? %d,%d",cwCard.currentAccountId, self.refreshControl.isHidden, self.refreshControl.isRefreshing);
+    if (self.refreshControl.isHidden) {
+        UIButton *selectedAccount = [self.accountButtons objectAtIndex:cwCard.currentAccountId];
+        [selectedAccount sendActionsForControlEvents:UIControlEventTouchUpInside];
+    } else {
+        [self updateBalanceAndTxs:cwCard.currentAccountId];
+    }
     
 }
 
 - (IBAction)btnAccount:(id)sender {
+    if (self.refreshControl.isRefreshing) {
+        [self.refreshControl endRefreshing];
+    }
+    
     NSInteger currentAccId = cwCard.currentAccountId;
     for (UIButton *btn in self.accountButtons) {
         if (sender == btn) {
@@ -186,6 +195,39 @@ Boolean setBtnActionFlag;
     
     
     [_tableTransaction reloadData];
+}
+
+-(void) updateBalanceAndTxs:(NSInteger)accId
+{
+    //update balance
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        //Do background work
+        [btcNet getBalanceByAccount: accId];
+        [btcNet getTransactionByAccount: accId];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //Update UI
+            NSLog(@"update %ld, current is %ld", accId, cwCard.currentAccountId);
+            if (accId == cwCard.currentAccountId) {
+                [self SetBalanceText];
+                [cwCard setAccount: accId Balance: account.balance];
+            } else {
+                CwAccount *updateAccount = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
+                [cwCard setAccount: accId Balance: updateAccount.balance];
+            }
+        });
+    });
+    
+//    [btcNet getBalanceByAccount: accId]; //this will update the CwCard.account
+//    if (accId == cwCard.currentAccountId) {
+//        [self SetBalanceText];
+//        [cwCard setAccount: accId Balance: account.balance];
+//    } else {
+//        CwAccount *updateAccount = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
+//        [cwCard setAccount: accId Balance: updateAccount.balance];
+//    }
+//    
+//    [btcNet getTransactionByAccount: accId]; //this will update the CwCard.transaction
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -363,10 +405,6 @@ Boolean setBtnActionFlag;
         return;
     }
     
-//    if (account.accId != cwCard.currentAccountId) {
-//        account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
-//    }
-    
     NSLog(@"TabbarHomeViewController, %ld, transitions: %@", account.accId, account.transactions);
     if (account.transactions==nil) {
         //get balance and transaction when there is no transaction yet.
@@ -376,12 +414,7 @@ Boolean setBtnActionFlag;
         dispatch_async(queue, ^{
             [btcNet registerNotifyByAccount: accId];
             
-            //update balance
-            [btcNet getBalanceByAccount: accId]; //this will update the CwCard.account
-            [self SetBalanceText];
-            [cwCard setAccount: accId Balance: account.balance];
-            
-            [btcNet getTransactionByAccount: accId]; //this will update the CwCard.transaction
+            [self updateBalanceAndTxs:accId];
         });
     } else {
         [self performDismiss];
@@ -419,10 +452,8 @@ Boolean setBtnActionFlag;
         if (accId == cwCard.currentAccountId) {
             NSLog(@"TabbarHomeViewController, prepare to update tx records");
             [self SetTxkeys]; //this includes reloadData
+            [self performDismiss];
         }
-        
-        //[_tableTransaction reloadData];
-        [self performDismiss];
     });
 }
 
@@ -504,6 +535,10 @@ Boolean setBtnActionFlag;
         //[mHUD removeFromSuperview];
         //[mHUD release];
         mHUD = nil;
+    }
+    
+    if (self.refreshControl.isRefreshing) {
+        [self.refreshControl endRefreshing];
     }
 }
 

@@ -17,22 +17,11 @@
     NSArray *menuItems;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    //menuItems = @[@"title", @"HostDevices", @"CoolWalletCard",@"AddressBook",@"Security",@"Settings",@"Logout"];
     menuItems = @[@"title", @"HostDevices", @"CoolWalletCard",@"Security",@"Settings",@"Logout"];
-    self.SideTableView.separatorStyle = NO;
 }
 
 - (void)didReceiveMemoryWarning

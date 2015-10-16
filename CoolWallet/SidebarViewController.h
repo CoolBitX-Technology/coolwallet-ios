@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SidebarViewController : UITableViewController
+@interface SidebarViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITableView *SideTableView;
 
 @end
