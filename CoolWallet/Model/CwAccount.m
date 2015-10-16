@@ -298,4 +298,18 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
     return GENSCRIPTSIG_BASE;
 }
 
+-(NSMutableArray *) getAllAddresses
+{
+    if (self.extKeys == nil) {
+        return [NSMutableArray new];
+    }
+    
+    NSMutableArray *allAddresses = [NSMutableArray arrayWithArray:self.extKeys];
+    if (self.intKeys != nil && self.intKeys.count > 0) {
+        [allAddresses addObjectsFromArray:self.intKeys];
+    }
+    
+    return allAddresses;
+}
+
 @end

@@ -57,16 +57,17 @@ CwAccount *account;
     NSLog(@"input = %@",tx.inputs);
     NSLog(@"output = %@",tx.outputs);
     
+    NSString *BTCAmount = [tx.historyAmount getBTCDisplayFromUnit];
     if([tx.historyAmount.BTC doubleValue] >=0) {
         _lblTxType.text = @"Receive from";
-        _lblTxAmount.text = [NSString stringWithFormat: @"+%g", tx.historyAmount.BTC.doubleValue];
+        _lblTxAmount.text = [NSString stringWithFormat: @"+%@", BTCAmount];
         if(tx.inputs.count > 0) {
             CwTxin* txin = (CwTxin *)[tx.inputs objectAtIndex:0];
             _lblTxAddr.text = txin.addr;
         }
     }else{
         _lblTxType.text = @"Send to";
-        _lblTxAmount.text = [NSString stringWithFormat: @"%g", tx.historyAmount.BTC.doubleValue];
+        _lblTxAmount.text = [NSString stringWithFormat: @"%@", BTCAmount];
         if(tx.outputs.count > 0) {
             CwTxout* txout = (CwTxout *)[tx.outputs objectAtIndex:0];
             _lblTxAddr.text = txout.addr;
@@ -82,7 +83,7 @@ CwAccount *account;
     [format setDateFormat:@"dd MMM yyyy hh:mm a"];
     _lblTxDate.text = [format stringFromDate:tx.historyTime_utc];
     //_lblTxDate.text = [NSString stringWithFormat: @"%@", tx.historyTime_utc];
-    _lblTxConfirm.text = [NSString stringWithFormat:@"%d",tx.confirmations];
+    _lblTxConfirm.text = [NSString stringWithFormat:@"%ld",tx.confirmations];
    // NSString* responseString = [[NSString alloc] initWithData:responseData encoding:NSNonLossyASCIIStringEncoding];
     //_lblTxId.text = [[NSString alloc] initWithData:tx.tid encoding:NSUTF8StringEncoding];
     

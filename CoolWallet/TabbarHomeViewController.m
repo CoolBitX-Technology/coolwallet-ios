@@ -217,17 +217,6 @@ Boolean setBtnActionFlag;
             }
         });
     });
-    
-//    [btcNet getBalanceByAccount: accId]; //this will update the CwCard.account
-//    if (accId == cwCard.currentAccountId) {
-//        [self SetBalanceText];
-//        [cwCard setAccount: accId Balance: account.balance];
-//    } else {
-//        CwAccount *updateAccount = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
-//        [cwCard setAccount: accId Balance: updateAccount.balance];
-//    }
-//    
-//    [btcNet getTransactionByAccount: accId]; //this will update the CwCard.transaction
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -288,7 +277,7 @@ Boolean setBtnActionFlag;
     //lblTxNotes.text = [NSString stringWithFormat: @"%@", tx.tid];
     UILabel *lblTxAmount = (UILabel *)[cell viewWithTag:103];
     
-    lblTxAmount.text = [NSString stringWithFormat: @"%@", [[OCAppCommon getInstance] convertBTCStringformUnit: tx.historyAmount.satoshi.longLongValue]];
+    lblTxAmount.text = [NSString stringWithFormat: @"%@", [tx.historyAmount getBTCDisplayFromUnit]];
     if ([tx.historyAmount.satoshi intValue]>0){
         lblTxAmount.text = [NSString stringWithFormat:@"+%@", lblTxAmount.text];
         lblTxAmount.textColor = [UIColor greenColor];
@@ -439,10 +428,10 @@ Boolean setBtnActionFlag;
             //get publickey from address
             if (utx.kcId==0) {
                 //External Address
-                addr = account.extKeys[utx.kId];
+                addr = txAccount.extKeys[utx.kId];
             } else {
                 //Internal Address
-                addr = account.intKeys[utx.kId];
+                addr = txAccount.intKeys[utx.kId];
             }
             
             if (addr.publicKey==nil)

@@ -385,9 +385,9 @@ long TxFee = 10000;
         cwCard.currentAccountId = 4;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     
-    NSLog(@"account.accId = %d",account.accId);
+    NSLog(@"account.accId = %ld",account.accId);
     //[cwCard getAccountAddresses: account.accId];
     [cwCard getAccountInfo:cwCard.currentAccountId];
     [self SetBalanceText];
@@ -395,7 +395,7 @@ long TxFee = 10000;
 
 - (void)SetBalanceText
 {
-    CwAccount *account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
+    CwAccount *account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     //_lblBalance.text = [NSString stringWithFormat: @"%lld BTC", (int64_t)account.balance];
     _lblBalance.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertBTCStringformUnit: (int64_t)account.balance], [[OCAppCommon getInstance] BitcoinUnit]];
     
@@ -420,6 +420,16 @@ long TxFee = 10000;
     self.transactionBegin = NO;
     [cwCard cancelTrancation];
     [cwCard setDisplayAccount: cwCard.currentAccountId];
+}
+
+-(void) performDismiss
+{
+    [super performDismiss];
+    
+    if (PressAlert != nil) {
+        [PressAlert dismissViewControllerAnimated:YES completion:nil];
+        PressAlert = nil;
+    }
 }
 
 #define TAG_SEND_OTP 1
@@ -451,6 +461,8 @@ long TxFee = 10000;
 
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
 {
+    [self performDismiss];
+    
     NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
                                                    message: msg
@@ -459,6 +471,11 @@ long TxFee = 10000;
                                          otherButtonTitles:@"OK",nil];
     
     [alert show];
+}
+
+-(void) didSetAccountBalance
+{
+    [self SetBalanceText];
 }
 
 -(void) didPrepareTransactionError: (NSString *) errMsg

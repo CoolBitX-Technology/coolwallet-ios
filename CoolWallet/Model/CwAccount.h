@@ -35,5 +35,6 @@ typedef NS_ENUM (NSInteger, CwAccountStatus) {
 - (NSMutableArray*) genHashesOfTxCopy:(CwTx*)unsignedTx;
 - (GenScriptSigErr) genScriptSig:(NSData*)sig pubKey:(NSData*)pubKey scriptSig:(NSData**)scriptSig;
 - (GenRawTxDataErr) genRawTxData:(CwTx*)tx scriptSigs:(NSArray*)scriptSigs;
+-(NSMutableArray *) getAllAddresses;
 
 @end
