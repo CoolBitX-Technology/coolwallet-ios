@@ -13,6 +13,7 @@
 #import "CwTxin.h"
 #import "CwTxout.h"
 #import "CwUnspentTxIndex.h"
+#import "NSDate+Localize.h"
 
 CwBtcNetWork *btcNet;
 CwAccount *account;
@@ -52,9 +53,8 @@ bool isFirst = YES;
     btcNet.delegate = self;
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
-    NSLog(@"111");
+    
     [self getBitcoinRateforCurrency];
-    NSLog(@"222");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -268,9 +268,7 @@ Boolean setBtnActionFlag;
     //CwTx *tx = [account.transactions objectForKey: [NSString stringWithFormat:@"%d",indexPath.row]];
     
     UILabel *lblTxUTC = (UILabel *)[cell viewWithTag:100];
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"dd MMM yyyy h:mm a"];
-    lblTxUTC.text = [format stringFromDate:tx.historyTime_utc];
+    lblTxUTC.text = [tx.historyTime_utc cwDateString];
     
     //lblTxUTC.text = [NSString stringWithFormat: @"%@", tx.historyTime_utc];
     UILabel *lblTxNotes = (UILabel *)[cell viewWithTag:102];

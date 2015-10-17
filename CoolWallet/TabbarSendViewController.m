@@ -422,6 +422,13 @@ long TxFee = 10000;
     [cwCard setDisplayAccount: cwCard.currentAccountId];
 }
 
+-(void) cleanInput
+{
+    [self.txtReceiverAddress setText:@""];
+    [self.txtAmount setText:@""];
+    [self.txtAmountFiatmoney setText:@""];
+}
+
 -(void) performDismiss
 {
     [super performDismiss];
@@ -482,7 +489,7 @@ long TxFee = 10000;
 {
     [self performDismiss];
     
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Send Bitcoin Error"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Unable to send"
                                                    message: errMsg
                                                   delegate: nil
                                          cancelButtonTitle: nil
@@ -496,9 +503,35 @@ long TxFee = 10000;
     NSLog(@"didGenAddress");
     [btcNet registerNotifyByAccount:cwCard.currentAccountId];
     
+    for (NSString *accIndex in cwCard.cwAccounts) {
+        CwAccount *cwAccount = [cwCard.cwAccounts objectForKey:accIndex];
+        if (cwAccount.accId == account.accId) {
+            continue;
+        }
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.address == %@", self.txtReceiverAddress.text];
+        NSArray *searchResult = [[cwAccount getAllAddresses] filteredArrayUsingPredicate:predicate];
+        if (searchResult.count > 0) {
+            CwAddress *address = searchResult[0];
+            [btcNet registerNotifyByAddress:address];
+            break;
+        }
+    }
+    
     self.genAddr = addr;
     
     [self sendPrepareTransaction];
+}
+
+-(void) didGenAddressError
+{
+    [self performDismiss];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to send" message:@"Can't generate address, please try it later." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    [alertController addAction:okAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 -(void) didGetAccountInfo: (NSInteger) accId
@@ -605,6 +638,8 @@ long TxFee = 10000;
     
     [self SetBalanceText];
     
+    [self cleanInput];
+    
     //back to previous controller
     //[self.navigationController popViewControllerAnimated:YES];
 }
@@ -615,7 +650,7 @@ long TxFee = 10000;
     
     if(PressAlert != nil) [PressAlert dismissViewControllerAnimated:YES completion:nil] ;
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Send Bitcoin Error" message:errMsg preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to send" message:errMsg preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
     [alertController addAction:okAction];
     

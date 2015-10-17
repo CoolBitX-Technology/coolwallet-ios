@@ -185,11 +185,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 //Need a better way!
                 //[self getTransactionByAccount: acc.accId];
                 
-                if (foundExtInt == 0) {
-                    [self getTransactionByAddress:acc.extKeys[foundAccIndex] fromAccount:acc];
-                } else {
-                    [self getTransactionByAddress:acc.intKeys[foundAccIndex] fromAccount:acc];
-                }
+                [self updateHistoryTxs:JSON[@"data"][@"txid"]];
                 
                 break;
             }
@@ -316,6 +312,75 @@ BOOL didGetTransactionByAccountFlag[5];
     return nil;
 }
 
+-(GetAllTxsByAddrErr) updateHistoryTxs:(NSString *)tid
+{
+    NSError *_err = nil;
+    GetAllTxsByAddrErr err = GETALLTXSBYADDR_BASE;
+    NSURLResponse *_response = nil;
+    NSLog(@"updateHistoryTxs %@", tid);
+    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,txInfoURLStr,tid] err:&_err response:&_response];
+    
+    if(_err)
+    {
+        err = GETALLTXSBYADDR_NETWORK;
+    }
+    else
+    {
+        NSDictionary *JSON =[NSJSONSerialization JSONObjectWithData:data options:0 error:&_err];
+        
+        if(!(!_err && [@"success" isEqualToString:JSON[@"status"]] && JSON[@"data"]))
+        {
+            err = GETALLTXSBYADDR_JSON;
+        }
+        else
+        {
+            NSMutableArray *txs = [NSMutableArray arrayWithArray:JSON[@"data"][@"vins"]];
+            [txs addObjectsFromArray:JSON[@"data"][@"vouts"]];
+            
+            NSMutableArray *allAddresses = [NSMutableArray new];
+            for (CwAccount *cwAccount in [cwCard.cwAccounts allValues]) {
+                if (cwAccount.transactions == nil) {
+                    continue;
+                }
+                
+                [allAddresses addObjectsFromArray:[cwAccount getAllAddresses]];
+            }
+            NSLog(@"all address count: %ld", allAddresses.count);
+            NSMutableArray *txAddresses = [NSMutableArray new];
+            for (NSDictionary *txData in txs) {
+                NSString *address = [txData objectForKey:@"address"];
+                if ([txAddresses containsObject:address]) {
+                    continue;
+                }
+                [txAddresses addObject:address];
+                
+                NSArray *searchResult = [allAddresses filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.address == %@", address]];
+                NSLog(@"tx address: %@, searchResult = %ld", address, searchResult.count);
+                if (searchResult.count > 0) {
+                    CwAddress *cwAddr = searchResult[0];
+                    CwAccount *cwAccount = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwAddr.accountId]];
+                    
+                    NSData* _tid = [self hexstringToData:tid];
+                    CwTx *historyTx = [cwAccount.transactions objectForKey:_tid];
+                    
+                    if (historyTx != nil) {
+                        NSUInteger confirmations = [[JSON objectForKey:@"confirmations"] unsignedIntegerValue];
+                        [historyTx setConfirmations:confirmations];
+                        [cwAccount.transactions setObject:historyTx forKey:_tid];
+                        if ([self.delegate respondsToSelector:@selector(didGetTransactionByAccount:)]) {
+                            [self.delegate didGetTransactionByAccount:cwAccount.accId];
+                        }
+                    } else {
+                        [self getTransactionByAddress:cwAddr fromAccount:cwAccount];
+                    }
+                }
+            }
+        }
+    }
+    
+    return err;
+}
+
 - (GetTransactionByAccountErr) getTransactionByAccount:(NSInteger)accId
 {
     GetTransactionByAccountErr err = GETTRXBYACCT_BASE;
@@ -388,6 +453,7 @@ BOOL didGetTransactionByAccountFlag[5];
                     
                     //update confirmations
                     [record setConfirmations:[htx confirmations]];
+                    [record setHistoryTime_utc:htx.historyTime_utc];
                     
                     [account.transactions setObject:record forKey:record.tid];
                 }
@@ -508,30 +574,22 @@ BOOL didGetTransactionByAccountFlag[5];
     CwAccount *account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)accId]];
     
     //add addresses to query string
-    for (int i=0; i< account.extKeys.count; i++) {
-        CwAddress *add =account.extKeys[i];
-        if (add.registerNotification) continue;
-        
-        //register a notification of the address when balance change
-        NSString *msg = [NSString stringWithFormat:@"{\"network\": \"BTC\",\"type\": \"address\",\"address\": \"%@\"}", add.address];
-        NSLog(@"WebNotify: %@", msg);
-        [_webSocket send:msg];
-        
-        add.registerNotification = YES;
-    }
-    for (int i=0; i< account.intKeys.count; i++) {
-        CwAddress *add =account.intKeys[i];
-        if (add.registerNotification) continue;
-        
-        //register a notification of the address when balance change
-        NSString *msg = [NSString stringWithFormat:@"{\"network\": \"BTC\",\"type\": \"address\",\"address\": \"%@\"}", add.address];
-        NSLog(@"WebNotify: %@", msg);
-        [_webSocket send:msg];
-        
-        add.registerNotification = YES;
+    for (CwAddress *addr in [account getAllAddresses]) {
+        [self registerNotifyByAddress:addr];
     }
     
     return err;
+}
+
+-(void) registerNotifyByAddress:(CwAddress *)addr
+{
+    if (addr.registerNotification) return;
+    
+    NSString *msg = [NSString stringWithFormat:@"{\"network\": \"BTC\",\"type\": \"address\",\"address\": \"%@\"}", addr.address];
+    NSLog(@"WebNotify: %@", msg);
+    [_webSocket send:msg];
+    
+    addr.registerNotification = YES;
 }
 
 - (GetBalanceByAddrErr) getBalanceByAccount:(NSInteger) accId
@@ -760,6 +818,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 NSData* tid = [self hexstringToData:rawTx[@"tx"]];
                 NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
                 [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+                [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
                 
                 CwTx *tx = [[CwTx alloc] init];
                 tx.txType = TypeHistoryTx;
@@ -865,6 +924,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 NSData* tid = [self hexstringToData:rawTx[@"tx"]];
                 NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
                 [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+                [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
                 
                 CwTx *tx = [[CwTx alloc] init];
                 tx.txType = TypeHistoryTx;

@@ -15,6 +15,7 @@
 		93CF96B319EE1A0200466DAF /* CoolWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF96B219EE1A0200466DAF /* CoolWalletTests.m */; };
 		93CF96BE19EE1DA200466DAF /* CALayer+ColorConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF96BD19EE1DA200466DAF /* CALayer+ColorConfig.m */; };
 		93CF96C419EE56A100466DAF /* BindSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF96C319EE56A100466DAF /* BindSuccessViewController.m */; };
+		A2B6E7D81BD28879001B1592 /* NSDate+Localize.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */; };
 		EF09E9261BA6C00200C8DCD0 /* TabRecoveryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF09E9251BA6C00200C8DCD0 /* TabRecoveryViewController.m */; };
 		EF698CE21A78C36300A943B9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF698CE11A78C36300A943B9 /* Security.framework */; };
 		EF698CE41A78C36D00A943B9 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF698CE31A78C36D00A943B9 /* CoreBluetooth.framework */; };
@@ -160,7 +161,7 @@
 		EFFA18311B450EA600FF8FC6 /* FrontViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFA182F1B450EA600FF8FC6 /* FrontViewController.m */; };
 		EFFA18321B450EA600FF8FC6 /* FrontViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFFA18301B450EA600FF8FC6 /* FrontViewController.xib */; };
 		EFFA18351B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFA18341B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m */; };
-		F493F32F1BC6807600876710 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F493F32E1BC6807600876710 /* BaseViewController.m */; settings = {ASSET_TAGS = (); }; };
+		F493F32F1BC6807600876710 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F493F32E1BC6807600876710 /* BaseViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -191,6 +192,8 @@
 		93CF96BD19EE1DA200466DAF /* CALayer+ColorConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+ColorConfig.m"; sourceTree = "<group>"; };
 		93CF96C219EE56A100466DAF /* BindSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindSuccessViewController.h; sourceTree = "<group>"; };
 		93CF96C319EE56A100466DAF /* BindSuccessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindSuccessViewController.m; sourceTree = "<group>"; };
+		A2B6E7D61BD28879001B1592 /* NSDate+Localize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Localize.h"; sourceTree = "<group>"; };
+		A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Localize.m"; sourceTree = "<group>"; };
 		EF09E9241BA6C00200C8DCD0 /* TabRecoveryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabRecoveryViewController.h; sourceTree = "<group>"; };
 		EF09E9251BA6C00200C8DCD0 /* TabRecoveryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabRecoveryViewController.m; sourceTree = "<group>"; };
 		EF698CE11A78C36300A943B9 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -461,6 +464,7 @@
 		93CF969519EE1A0200466DAF /* CoolWallet */ = {
 			isa = PBXGroup;
 			children = (
+				A2B6E7D51BD28813001B1592 /* Category */,
 				EFEE57DA1B7AFA5D00E5999B /* C_API */,
 				EFEF8DB81B4A5FB3004427B8 /* SRWebSocket */,
 				EFAC5FBA1AAD37C80042FF8C /* TabAccountViewController */,
@@ -516,6 +520,15 @@
 				93CF96B119EE1A0200466DAF /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A2B6E7D51BD28813001B1592 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				A2B6E7D61BD28879001B1592 /* NSDate+Localize.h */,
+				A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */,
+			);
+			name = Category;
 			sourceTree = "<group>";
 		};
 		EF1B3E571A220F9400D54416 /* CoolWallectViewController */ = {
@@ -1016,6 +1029,7 @@
 				EFEDBE4D1B4D00D200E1A63E /* CwFwUpdateViewController.m in Sources */,
 				EFF6DD051B9403970089E093 /* CwBase58.m in Sources */,
 				EF698CF41A78DD0200A943B9 /* CwInfoViewController.m in Sources */,
+				A2B6E7D81BD28879001B1592 /* NSDate+Localize.m in Sources */,
 				EFAC5C4D1AC25A7000320EA6 /* qrenc.c in Sources */,
 				EFF1ACC019EFF1CA00DD0BCB /* OCAppCommon.mm in Sources */,
 				EFAC5FDD1AAD39620042FF8C /* TabReceiveBitcoinViewController.m in Sources */,
@@ -1212,7 +1226,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dtco.CoolWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "80739107-e410-445a-8c26-3dbe5abcec74";
+				PROVISIONING_PROFILE = "41245a81-36c0-4170-abbc-674cc2cea06c";
 			};
 			name = Release;
 		};

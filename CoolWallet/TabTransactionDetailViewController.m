@@ -12,6 +12,7 @@
 #import "CwTxin.h"
 #import "CwTxout.h"
 #import "OCAppCommon.h"
+#import "NSDate+Localize.h"
 
 @implementation TabTransactionDetailViewController
 
@@ -50,7 +51,7 @@ CwAccount *account;
     account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
     
     CwTx *tx = [account.transactions objectForKey:key];
-    NSLog(@"tx utc = %@",[NSString stringWithFormat: @"%@", tx.historyTime_utc]);
+    NSLog(@"tx utc = %@",[tx.historyTime_utc cwDateString]);
     NSLog(@"tx amount = %@", [NSString stringWithFormat: @"%.6f", tx.historyAmount.BTC.doubleValue]);
     NSLog(@"tid = %@",[[NSString alloc] initWithData:tx.tid encoding:NSUTF8StringEncoding]);
     NSLog(@"confirm = %d",tx.confirmations);
@@ -79,9 +80,7 @@ CwAccount *account;
         _lblTxFiatMoney.text = [NSString stringWithFormat:@"%.2f %@",fiat, cwCard.currId];
     }
     
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"dd MMM yyyy hh:mm a"];
-    _lblTxDate.text = [format stringFromDate:tx.historyTime_utc];
+    _lblTxDate.text = [tx.historyTime_utc cwDateString];
     //_lblTxDate.text = [NSString stringWithFormat: @"%@", tx.historyTime_utc];
     _lblTxConfirm.text = [NSString stringWithFormat:@"%ld",tx.confirmations];
    // NSString* responseString = [[NSString alloc] initWithData:responseData encoding:NSNonLossyASCIIStringEncoding];

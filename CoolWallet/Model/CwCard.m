@@ -28,6 +28,8 @@
 
 #import "CwCardSoft.h"
 
+//#define CW_SOFT_SIMU
+
 //******************************************************
 //Default Init data (set by init tool)
 //******************************************************
@@ -1413,7 +1415,7 @@ NSArray *addresses;
     //check unsigned tx
     if (unsignedTx==nil) {
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
-            [self.delegate didPrepareTransactionError:@"Unable to create unsigned transaction"];
+            [self.delegate didPrepareTransactionError:@"At least 1 confirmation needed before sending out."];
         }
         return;
     }
@@ -5311,6 +5313,9 @@ NSArray *addresses;
                  }*/
             } else{
                 NSLog(@"CwCmdIdHdwGetNextAddress Error %04lX", (long)cmd.cmdResult);
+                if ([self.delegate respondsToSelector:@selector(didGenAddressError)]) {
+                    [self.delegate didGenAddressError];
+                }
             }
             
             break;
