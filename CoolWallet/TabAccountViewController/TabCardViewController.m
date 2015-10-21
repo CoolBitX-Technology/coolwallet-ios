@@ -196,7 +196,7 @@
 {
     //status, name, account pointer
     
-    switch (self.cwManager.connectedCwCard.hdwStatus)
+    switch ([self.cwManager.connectedCwCard.hdwStatus integerValue])
     {
         case CwHdwStatusInactive:
             self.lblHdwStatus.text = @"Inactive";

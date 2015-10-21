@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		81C1F357D6D467190945B444 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B28B6DD8D9D122F6EE9EC294 /* libPods.a */; };
 		93CF969919EE1A0200466DAF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF969819EE1A0200466DAF /* main.m */; };
 		93CF969C19EE1A0200466DAF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF969B19EE1A0200466DAF /* AppDelegate.m */; };
 		93CF969F19EE1A0200466DAF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF969E19EE1A0200466DAF /* ViewController.m */; };
@@ -161,6 +162,7 @@
 		EFFA18311B450EA600FF8FC6 /* FrontViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFA182F1B450EA600FF8FC6 /* FrontViewController.m */; };
 		EFFA18321B450EA600FF8FC6 /* FrontViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFFA18301B450EA600FF8FC6 /* FrontViewController.xib */; };
 		EFFA18351B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFA18341B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m */; };
+		F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */; settings = {ASSET_TAGS = (); }; };
 		F493F32F1BC6807600876710 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F493F32E1BC6807600876710 /* BaseViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -176,6 +178,8 @@
 
 /* Begin PBXFileReference section */
 		02FE950B1BBA8D7F00B152FE /* CwBtcNetworkDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwBtcNetworkDelegate.h; sourceTree = "<group>"; };
+		4CF2C6CD44BF21E494A604D2 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		4DB3269166503D40A34F1D4E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		93CF969319EE1A0200466DAF /* CoolWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoolWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93CF969719EE1A0200466DAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93CF969819EE1A0200466DAF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -194,6 +198,7 @@
 		93CF96C319EE56A100466DAF /* BindSuccessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindSuccessViewController.m; sourceTree = "<group>"; };
 		A2B6E7D61BD28879001B1592 /* NSDate+Localize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Localize.h"; sourceTree = "<group>"; };
 		A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Localize.m"; sourceTree = "<group>"; };
+		B28B6DD8D9D122F6EE9EC294 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF09E9241BA6C00200C8DCD0 /* TabRecoveryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabRecoveryViewController.h; sourceTree = "<group>"; };
 		EF09E9251BA6C00200C8DCD0 /* TabRecoveryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabRecoveryViewController.m; sourceTree = "<group>"; };
 		EF698CE11A78C36300A943B9 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -414,6 +419,8 @@
 		EFFA18331B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabSettingBitcoinUnitViewController.h; sourceTree = "<group>"; };
 		EFFA18341B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabSettingBitcoinUnitViewController.m; sourceTree = "<group>"; };
 		F40A8D0D1BD613EE00D5940A /* CwCommandDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CwCommandDefine.h; sourceTree = "<group>"; };
+		F48C0DEF1BD78A33007CFBEE /* CwCardInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwCardInfo.h; sourceTree = "<group>"; };
+		F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwCardInfo.m; sourceTree = "<group>"; };
 		F493F32D1BC6807600876710 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		F493F32E1BC6807600876710 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -427,6 +434,7 @@
 				EFEF8DBE1B4A6208004427B8 /* CFNetwork.framework in Frameworks */,
 				EF698CE41A78C36D00A943B9 /* CoreBluetooth.framework in Frameworks */,
 				EF698CE21A78C36300A943B9 /* Security.framework in Frameworks */,
+				81C1F357D6D467190945B444 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +448,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		10E384BC3E5FBF5058B7600D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B28B6DD8D9D122F6EE9EC294 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5E9682D95388021A5107AAD2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4CF2C6CD44BF21E494A604D2 /* Pods.debug.xcconfig */,
+				4DB3269166503D40A34F1D4E /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		93CF968A19EE1A0200466DAF = {
 			isa = PBXGroup;
 			children = (
@@ -450,6 +475,8 @@
 				93CF969519EE1A0200466DAF /* CoolWallet */,
 				93CF96AF19EE1A0200466DAF /* CoolWalletTests */,
 				93CF969419EE1A0200466DAF /* Products */,
+				5E9682D95388021A5107AAD2 /* Pods */,
+				10E384BC3E5FBF5058B7600D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -602,6 +629,8 @@
 				EFCF9A4D1B32C8810076091B /* NYMnemonic.h */,
 				EFCF9A4E1B32C8810076091B /* NYMnemonic.m */,
 				F40A8D0D1BD613EE00D5940A /* CwCommandDefine.h */,
+				F48C0DEF1BD78A33007CFBEE /* CwCardInfo.h */,
+				F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -838,9 +867,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 93CF96B619EE1A0200466DAF /* Build configuration list for PBXNativeTarget "CoolWallet" */;
 			buildPhases = (
+				7F663B76C14062F268DC0FA0 /* Check Pods Manifest.lock */,
 				93CF968F19EE1A0200466DAF /* Sources */,
 				93CF969019EE1A0200466DAF /* Frameworks */,
 				93CF969119EE1A0200466DAF /* Resources */,
+				7A23F74CD2B965CC3FB3F04C /* Embed Pods Frameworks */,
+				BC41CBC563AA4A16C8F79A88 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1009,6 +1041,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7A23F74CD2B965CC3FB3F04C /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7F663B76C14062F268DC0FA0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		BC41CBC563AA4A16C8F79A88 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		93CF968F19EE1A0200466DAF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1016,6 +1096,7 @@
 			files = (
 				93CF969F19EE1A0200466DAF /* ViewController.m in Sources */,
 				EFAC5FEF1AAD9D4C0042FF8C /* SidebarViewController.m in Sources */,
+				F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */,
 				EFAC5FDE1AAD39620042FF8C /* TabScanTransactionViewController.m in Sources */,
 				EFAC5FD91AAD39620042FF8C /* TabCreateAccountViewController.m in Sources */,
 				EFAC5FDC1AAD39620042FF8C /* TabHostTableViewController.m in Sources */,
@@ -1204,6 +1285,7 @@
 		};
 		93CF96B719EE1A0200466DAF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4CF2C6CD44BF21E494A604D2 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1219,6 +1301,7 @@
 		};
 		93CF96B819EE1A0200466DAF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4DB3269166503D40A34F1D4E /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: CoolBitX Technology Ltd. (87HB2LFXY3)";

@@ -78,7 +78,7 @@ CwCard *cwCard;
     NSObject *listCV = [self.navigationController.viewControllers objectAtIndex:currentVCIndex];
     
     if ([listCV isKindOfClass:[CwListTableViewController class]]) {
-        if (cwCard.mode == CwCardModeNormal || cwCard.mode == CwCardModePerso || cwCard.mode == CwCardModeAuth)
+        if ([cwCard.mode integerValue] == CwCardModeNormal || [cwCard.mode integerValue] == CwCardModePerso || [cwCard.mode integerValue] == CwCardModeAuth)
             [cwCard logoutHost];
         else
             [self didLogoutHost];
@@ -91,7 +91,7 @@ CwCard *cwCard;
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"touchesBegan cwCard.mode = %ld", cwCard.mode);
+    NSLog(@"touchesBegan cwCard.mode = %@", cwCard.mode);
     [self.txtOtp resignFirstResponder];
 }
 
@@ -157,11 +157,11 @@ CwCard *cwCard;
 */
 -(void) didGetModeState
 {
-    NSLog(@"didGetModeState mode = %d", cwCard.mode);
+    NSLog(@"didGetModeState mode = %@", cwCard.mode);
     
     NSString *modeStr = [[NSString alloc] init];
     
-    switch (cwCard.mode) {
+    switch ([cwCard.mode integerValue]) {
         case CwCardModeAuth:
             modeStr = @"Auth";
             break;
@@ -188,7 +188,7 @@ CwCard *cwCard;
     //self.lblState.text = [@(cwCard.state) stringValue];
     NSLog(@"mode = %@", modeStr);
     //action according to the mode
-    if (cwCard.mode == CwCardModePerso || cwCard.mode == CwCardModeNormal) {
+    if ([cwCard.mode integerValue] == CwCardModePerso || [cwCard.mode integerValue] == CwCardModeNormal) {
         //already loggin, goto Accounts story board
         [self didLoginHost];
         [self showIndicatorView:@"Login Host"];
@@ -208,16 +208,18 @@ CwCard *cwCard;
     //self.lblFwVersion.text = cwCard.fwVersion;
     //self.lblUid.text = cwCard.uid;
     
+    NSInteger cardMode = [cwCard.mode integerValue];
+    
     //update UI according to the mode
-    if (cwCard.mode == CwCardModeNoHost) {
+    if (cardMode == CwCardModeNoHost) {
         //new Card
         [self regHost:self];
         
-    } else if (cwCard.mode == CwCardModeDisconn || cwCard.mode == CwCardModePerso) {
+    } else if (cardMode == CwCardModeDisconn || cardMode == CwCardModePerso) {
         //used Card
-        if (cwCard.hostId>=0) {
-            NSLog(@"cwCard.hostConfirmStatus = %d",cwCard.hostConfirmStatus);
-            if (cwCard.hostConfirmStatus == CwHostConfirmStatusConfirmed) {
+        if ([cwCard.hostId integerValue] >= 0) {
+            NSLog(@"cwCard.hostConfirmStatus = %@",cwCard.hostConfirmStatus);
+            if ([cwCard.hostConfirmStatus integerValue] == CwHostConfirmStatusConfirmed) {
                 //login
                 [cwCard loginHost];
                 [self showIndicatorView:@"Login Host"];
@@ -312,10 +314,10 @@ CwCard *cwCard;
     
     //back to previous controller
     //[self.navigationController popViewControllerAnimated:YES];
-    if (cwCard.mode == CwCardModeDisconn || cwCard.mode == CwCardModePerso) {
+    if ([cwCard.mode integerValue] == CwCardModeDisconn || [cwCard.mode integerValue] == CwCardModePerso) {
         //used Card
-        if (cwCard.hostId>=0) {
-            if (cwCard.hostConfirmStatus!=CwHostConfirmStatusConfirmed) {
+        if ([cwCard.hostId integerValue] >= 0) {
+            if ([cwCard.hostConfirmStatus integerValue] != CwHostConfirmStatusConfirmed) {
                 NSString *msg = @"Waiting for authorization from paired device.";
                 //self.lblCWstatus.text = @"CW Found, Need Authed Device to Confirm the Registration";
                 
@@ -395,26 +397,6 @@ CwCard *cwCard;
     
     [cwCard getModeState];
     //    [cwCard getCwCardId];
-}
-
-- (void) showIndicatorView:(NSString *)Msg {
-    mHUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:mHUD];
-    
-    //如果设置此属性则当前的view置于后台
-    mHUD.dimBackground = YES;
-    mHUD.labelText = Msg;
-    
-    [mHUD show:YES];
-}
-
-- (void) performDismiss
-{
-    if(mHUD != nil) {
-        [mHUD removeFromSuperview];
-        mHUD = nil;
-    }
-    //[IndicatorAlert dismissWithClickedButtonIndex:0 animated:NO];
 }
 
 @end

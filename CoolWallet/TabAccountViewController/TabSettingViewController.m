@@ -109,15 +109,15 @@
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    NSLog(@"row select = %d",indexPath.row);
+    NSLog(@"row select = %ld",indexPath.row);
     //if(indexPath.row == 0) [self performSegueWithIdentifier:@"SettingBitcoinUnit" sender:self];
 }
 
 #pragma mark - Actions
 - (IBAction)btnUpdateSecurityPolicy:(id)sender {
     
-    NSLog(@"mode = %d", self.cwManager.connectedCwCard.mode);
-    if (self.cwManager.connectedCwCard.mode==CwCardModeNormal) {
+    NSLog(@"mode = %@", self.cwManager.connectedCwCard.mode);
+    if ([self.cwManager.connectedCwCard.mode integerValue] == CwCardModeNormal) {
         //get security policy
         self.actBusyIndicator.hidden = NO;
         [self.actBusyIndicator startAnimating];
@@ -125,7 +125,7 @@
                                              ButtonEnable:self.swBtnEnable.on
                                      DisplayAddressEnable:self.swDisplayAddress.on
                                            WatchDogEnable:self.swWatchDogEnable.on];
-    } else if (self.cwManager.connectedCwCard.mode == CwCardModePerso) {
+    } else if ([self.cwManager.connectedCwCard.mode integerValue] == CwCardModePerso) {
         NSLog(@"otp = %d", self.swOtpEnable.on);
         //get security policy
         self.actBusyIndicator.hidden = NO;
@@ -154,7 +154,7 @@
 
 -(void) didGetModeState
 {
-    NSLog(@"mode = %d", self.cwManager.connectedCwCard.mode);
+    NSLog(@"mode = %@", self.cwManager.connectedCwCard.mode);
 
 }
 
@@ -192,10 +192,10 @@
 
 -(void) didGetSecurityPolicy
 {
-    self.swOtpEnable.on = self.cwManager.connectedCwCard.securityPolicy_OtpEnable;
-    self.swBtnEnable.on = self.cwManager.connectedCwCard.securityPolicy_BtnEnable;
-    self.swWatchDogEnable.on = self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable;
-    self.swDisplayAddress.on = self.cwManager.connectedCwCard.securityPolicy_DisplayAddressEnable;
+    self.swOtpEnable.on = self.cwManager.connectedCwCard.securityPolicy_OtpEnable.boolValue;
+    self.swBtnEnable.on = self.cwManager.connectedCwCard.securityPolicy_BtnEnable.boolValue;
+    self.swWatchDogEnable.on = self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable.boolValue;
+    self.swDisplayAddress.on = self.cwManager.connectedCwCard.securityPolicy_DisplayAddressEnable.boolValue;
 }
 
 -(void) didSetSecurityPolicy

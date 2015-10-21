@@ -65,7 +65,7 @@
     NSObject *listCV = [self.navigationController.viewControllers objectAtIndex:currentVCIndex];
     
     if ([listCV isKindOfClass:[FrontViewController class]]) {
-        if (self.cwCard.mode == CwCardModeNormal || self.cwCard.mode == CwCardModePerso || self.cwCard.mode == CwCardModeAuth)
+        if ([self.cwCard.mode integerValue] == CwCardModeNormal || [self.cwCard.mode integerValue] == CwCardModePerso || [self.cwCard.mode integerValue] == CwCardModeAuth)
             [self.cwCard logoutHost];
         else
             [self didLogoutHost];
@@ -96,10 +96,10 @@
 
 -(void) didGetModeState
 {
-    self.lblMode.text = [@(self.cwCard.mode) stringValue];
-    self.lblState.text = [@(self.cwCard.state) stringValue];
+    self.lblMode.text = [NSString stringWithFormat:@"%@", self.cwCard.mode];
+    self.lblState.text = [NSString stringWithFormat:@"%@", self.cwCard.state];
     
-    if (self.cwCard.mode == CwCardModePerso || self.cwCard.mode == CwCardModeNormal) {
+    if ([self.cwCard.mode integerValue] == CwCardModePerso || [self.cwCard.mode integerValue] == CwCardModeNormal) {
         //already loggin, goto Accounts story board
         [self didLoginHost];
     } else {
@@ -117,15 +117,15 @@
     
     //NSLog(@"didGetCwInfo cwcards = %ld",self.cwMgr.cwCards.count);
     
-    if (self.cwCard.mode == CwCardModeNoHost) {
+    if ([self.cwCard.mode integerValue] == CwCardModeNoHost) {
         //new Card
         self.lblCWstatus.text = @"New CW Found";
         self.btnRegHostNew.hidden=NO;
         
-    } else if (self.cwCard.mode == CwCardModeDisconn || self.cwCard.mode == CwCardModePerso) {
+    } else if ([self.cwCard.mode integerValue] == CwCardModeDisconn || [self.cwCard.mode integerValue] == CwCardModePerso) {
         //used Card
-        if (self.cwCard.hostId>=0) {
-            if (self.cwCard.hostConfirmStatus==CwHostConfirmStatusConfirmed) {
+        if ([self.cwCard.hostId integerValue] >= 0) {
+            if ([self.cwCard.hostConfirmStatus integerValue] == CwHostConfirmStatusConfirmed) {
                 //login
                 self.lblCWstatus.text = @"CW Found";
                 self.btnHostLogin.hidden=NO;

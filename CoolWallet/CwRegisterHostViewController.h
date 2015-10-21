@@ -7,12 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
+#import "BaseViewController.h"
 
-@interface CwRegisterHostViewController : UIViewController
-{
-    MBProgressHUD *mHUD;
-}
+@interface CwRegisterHostViewController : BaseViewController
+
 - (IBAction)BtnCancelAction:(id)sender;
 @property (weak, nonatomic) IBOutlet UIView *viewOTPConfirm;
 @property (weak, nonatomic) IBOutlet UIButton *btnRegisterHost;

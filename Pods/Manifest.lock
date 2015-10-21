@@ -1,0 +1,10 @@
+PODS:
+  - RMMapper (1.1.5)
+
+DEPENDENCIES:
+  - RMMapper
+
+SPEC CHECKSUMS:
+  RMMapper: 21122d753c736d975f6c61e674afce8db73579af
+
+COCOAPODS: 0.39.0

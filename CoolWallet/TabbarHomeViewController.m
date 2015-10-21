@@ -334,8 +334,8 @@ Boolean setBtnActionFlag;
 
 -(void) didGetModeState
 {
-    NSLog(@"TabbarHomeViewController, card mode = %ld", cwCard.mode);
-    if (cwCard.mode ==CwCardModePerso) {
+    NSLog(@"TabbarHomeViewController, card mode = %@", cwCard.mode);
+    if ([cwCard.mode integerValue] == CwCardModePerso) {
         //goto Setting for Security Policy
         [self performSegueWithIdentifier:@"SecuritySegue" sender:self];
     }else{
@@ -346,8 +346,8 @@ Boolean setBtnActionFlag;
 
 -(void) didGetCwHdwStatus
 {
-    NSLog(@" TabbarHomeViewController, cwCard.hdwStatus = %ld",cwCard.hdwStatus);
-    if (cwCard.hdwStatus == CwHdwStatusInactive || cwCard.hdwStatus == CwHdwStatusWaitConfirm) {
+    NSLog(@" TabbarHomeViewController, cwCard.hdwStatus = %@",cwCard.hdwStatus);
+    if ([cwCard.hdwStatus integerValue] == CwHdwStatusInactive || [cwCard.hdwStatus integerValue] == CwHdwStatusWaitConfirm) {
         //goto New Wallet
         [self performSegueWithIdentifier:@"CreateHdwSegue" sender:self];
     }
@@ -356,8 +356,8 @@ Boolean setBtnActionFlag;
 -(void) didGetCwHdwAccountPointer
 {
     //[self performDismiss];
-    NSLog(@"TabbarHomeViewController, didGetCwHdwAccointPointer = %ld", cwCard.hdwAcccountPointer);
-    if (cwCard.hdwAcccountPointer == 0) {
+    NSLog(@"TabbarHomeViewController, didGetCwHdwAccointPointer = %@", cwCard.hdwAcccountPointer);
+    if ([cwCard.hdwAcccountPointer integerValue] == 0) {
         [self CreateAccount];
         cwCard.currentAccountId = 0;
     }

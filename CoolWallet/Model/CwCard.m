@@ -29,6 +29,8 @@
 
 #import "CwCardSoft.h"
 
+#import "NSUserDefaults+RMSaveCustomObject.h"
+
 //#define CW_SOFT_SIMU
 
 //******************************************************
@@ -270,73 +272,82 @@ NSArray *addresses;
     return self;
 }
 
-- (void) encodeWithCoder:(NSCoder *)encoder {
-    //basic info
-    [encoder encodeObject:self.fwVersion forKey:@"fwVersion"];
-    [encoder encodeObject:self.uid forKey:@"uid"];
-    
-    //host info
-    //[encoder encodeObject:self.devCredential forKey:@"devCredential"];
-    [encoder encodeObject:self.currId forKey:@"currId"];
-    [encoder encodeObject:self.currRate forKey:@"currRate"];
-    
-    //hosts
-    [encoder encodeObject:self.cwHosts forKey:@"cwHosts"];
-    
-    //Security Policy
-    [encoder encodeBool:self.securityPolicy_OtpEnable forKey:@"spOtp"];
-    [encoder encodeBool:self.securityPolicy_BtnEnable forKey:@"spBtn"];
-    [encoder encodeBool:self.securityPolicy_DisplayAddressEnable forKey:@"spAddr"];
-    [encoder encodeBool:self.securityPolicy_WatchDogEnable forKey:@"spDog"];
-    [encoder encodeBool:self.securityPolicy_WatchDogScale forKey:@"spDogScale"];
-    
-    //CardInfo
-    [encoder encodeObject:self.cardName forKey:@"carName"];
-    [encoder encodeObject:self.cardId forKey:@"cardId"];
-    
-    //HdwInfo
-    [encoder encodeInteger:self.hdwStatus forKey:@"hdwStatus"];
-    [encoder encodeObject:self.hdwName forKey:@"hdwName"];
-    [encoder encodeInteger:self.hdwAcccountPointer forKey:@"hdwAccountPointer"];
-    
-    //Accounts
-    [encoder encodeObject:self.cwAccounts forKey:@"cwAccounts"];
+- (NSArray *)rm_excludedProperties
+{
+    return @[
+                @"delegate",
+                @"bleName", @"rssi", @"connected", @"peripheral", @"lastUpdate",
+                @"currentAccountId", @"paymentAddress", @"amount", @"label",
+             ];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder {
-    //basic info
-    self.fwVersion = [decoder decodeObjectForKey:@"fwVersion"];
-    self.uid = [decoder decodeObjectForKey:@"uid"];
-    
-    //host info
-    //self.devCredential = [decoder decodeObjectForKey:@"devCredential"];
-    self.currId = [decoder decodeObjectForKey:@"currId"];
-    self.currRate = [decoder decodeObjectForKey:@"currRate"];
-    
-    //hosts
-    self.cwHosts = [decoder decodeObjectForKey:@"cwHosts"];
-    
-    //security policy
-    self.securityPolicy_OtpEnable = [decoder decodeBoolForKey:@"spOtp"];
-    self.securityPolicy_BtnEnable =[decoder decodeBoolForKey:@"spBtn"];
-    self.securityPolicy_DisplayAddressEnable = [decoder decodeBoolForKey:@"spAddr"];
-    self.securityPolicy_WatchDogEnable = [decoder decodeBoolForKey:@"spDog"];
-    self.securityPolicy_WatchDogScale = [decoder decodeBoolForKey:@"spDogScale"];
-    
-    //CardInfo
-    self.cardName = [decoder decodeObjectForKey:@"carName"];
-    self.cardId = [decoder decodeObjectForKey:@"cardId"];
-    
-    //HdwInfo
-    self.hdwStatus = [decoder decodeIntegerForKey:@"hdwStatus"];
-    self.hdwName = [decoder decodeObjectForKey:@"hdwName"];
-    self.hdwAcccountPointer = [decoder decodeIntegerForKey:@"hdwAccountPointer"];
-    
-    //Accounts
-    self.cwAccounts = [decoder decodeObjectForKey:@"cwAccounts"];
-    
-    return self;
-}
+//- (void) encodeWithCoder:(NSCoder *)encoder {
+//    //basic info
+//    [encoder encodeObject:self.fwVersion forKey:@"fwVersion"];
+//    [encoder encodeObject:self.uid forKey:@"uid"];
+//    
+//    //host info
+//    //[encoder encodeObject:self.devCredential forKey:@"devCredential"];
+//    [encoder encodeObject:self.currId forKey:@"currId"];
+//    [encoder encodeObject:self.currRate forKey:@"currRate"];
+//    
+//    //hosts
+//    [encoder encodeObject:self.cwHosts forKey:@"cwHosts"];
+//    
+//    //Security Policy
+//    [encoder encodeBool:self.securityPolicy_OtpEnable forKey:@"spOtp"];
+//    [encoder encodeBool:self.securityPolicy_BtnEnable forKey:@"spBtn"];
+//    [encoder encodeBool:self.securityPolicy_DisplayAddressEnable forKey:@"spAddr"];
+//    [encoder encodeBool:self.securityPolicy_WatchDogEnable forKey:@"spDog"];
+//    [encoder encodeBool:self.securityPolicy_WatchDogScale forKey:@"spDogScale"];
+//    
+//    //CardInfo
+//    [encoder encodeObject:self.cardName forKey:@"carName"];
+//    [encoder encodeObject:self.cardId forKey:@"cardId"];
+//    
+//    //HdwInfo
+//    [encoder encodeInteger:self.hdwStatus forKey:@"hdwStatus"];
+//    [encoder encodeObject:self.hdwName forKey:@"hdwName"];
+//    [encoder encodeInteger:self.hdwAcccountPointer forKey:@"hdwAccountPointer"];
+//    
+//    //Accounts
+//    [encoder encodeObject:self.cwAccounts forKey:@"cwAccounts"];
+//}
+
+//- (id)initWithCoder:(NSCoder *)decoder {
+//    //basic info
+//    self.fwVersion = [decoder decodeObjectForKey:@"fwVersion"];
+//    self.uid = [decoder decodeObjectForKey:@"uid"];
+//    
+//    //host info
+//    //self.devCredential = [decoder decodeObjectForKey:@"devCredential"];
+//    self.currId = [decoder decodeObjectForKey:@"currId"];
+//    self.currRate = [decoder decodeObjectForKey:@"currRate"];
+//    
+//    //hosts
+//    self.cwHosts = [decoder decodeObjectForKey:@"cwHosts"];
+//    
+//    //security policy
+//    self.securityPolicy_OtpEnable = [decoder decodeBoolForKey:@"spOtp"];
+//    self.securityPolicy_BtnEnable =[decoder decodeBoolForKey:@"spBtn"];
+//    self.securityPolicy_DisplayAddressEnable = [decoder decodeBoolForKey:@"spAddr"];
+//    self.securityPolicy_WatchDogEnable = [decoder decodeBoolForKey:@"spDog"];
+//    self.securityPolicy_WatchDogScale = [decoder decodeBoolForKey:@"spDogScale"];
+//    
+//    //CardInfo
+//    self.cardName = [decoder decodeObjectForKey:@"carName"];
+//    self.cardId = [decoder decodeObjectForKey:@"cardId"];
+//    
+//    //HdwInfo
+//    self.hdwStatus = [decoder decodeIntegerForKey:@"hdwStatus"];
+//    self.hdwName = [decoder decodeObjectForKey:@"hdwName"];
+//    self.hdwAcccountPointer = [decoder decodeIntegerForKey:@"hdwAccountPointer"];
+//    
+//    //Accounts
+//    self.cwAccounts = [decoder decodeObjectForKey:@"cwAccounts"];
+//    
+//    return self;
+//}
 
 -(void) prepareService
 {
@@ -460,74 +471,30 @@ NSArray *addresses;
     //remove for test
     //[[NSUserDefaults standardUserDefaults] removeObjectForKey:self.cardId];
     
-    NSData *notesData = [[NSUserDefaults standardUserDefaults] objectForKey:self.bleName];
-    CwCard *cwCardSaved = [NSKeyedUnarchiver unarchiveObjectWithData:notesData];
-    
-    if (cwCardSaved) {
-        
-        NSLog(@"LoadFromFile:%@ accountptr:%ld accoints:%lu", cwCardSaved.cardId, cwCardSaved.hdwAcccountPointer, (unsigned long)cwCardSaved.cwAccounts.count);
-        
-        //basic info
-        self.fwVersion = cwCardSaved.fwVersion;
-        self.uid = cwCardSaved.uid;
-        
-        //host Info
-        //self.devCredential = cwCardSaved.devCredential;
-        self.currId = cwCardSaved.currId;
-        self.currRate = cwCardSaved.currRate;
-        
-        //hosts
-        self.cwHosts = cwCardSaved.cwHosts;
-        
-        self.securityPolicy_OtpEnable = cwCardSaved.securityPolicy_OtpEnable;
-        self.securityPolicy_BtnEnable = cwCardSaved.securityPolicy_OtpEnable;
-        self.securityPolicy_DisplayAddressEnable = cwCardSaved.securityPolicy_OtpEnable;
-        self.securityPolicy_WatchDogEnable = cwCardSaved.securityPolicy_OtpEnable;
-        self.securityPolicy_WatchDogScale = cwCardSaved.securityPolicy_WatchDogScale;
-        
-        //CardInfo
-        self.cardName = cwCardSaved.cardName;
-        self.cardId = cwCardSaved.cardId;
-        
-        //hdwInfo
-        self.hdwStatus = cwCardSaved.hdwStatus;
-        self.hdwName = cwCardSaved.hdwName;
-        self.hdwAcccountPointer = cwCardSaved.hdwAcccountPointer;
-        
-        //accounts
-        if (cwCardSaved.cwAccounts!=nil)
-            self.cwAccounts = cwCardSaved.cwAccounts;
-        
-        //update sync flags of address
-        /*
-         for (int a=0; a<self.cwAccounts.count; a++) {
-         CwAccount *acc = [self.cwAccounts objectForKey: [NSString stringWithFormat:@"%d", a]];
-         
-         //check acc ext address status
-         for(int i=0; i<acc.extKeyPointer; i++) {
-         if (acc.extKeys[i])
-         if (((CwAddress*)acc.extKeys[i]).address!=nil && ![((CwAddress*)acc.extKeys[i]).address isEqualToString:@""])
-         syncAccExtAddress[acc.accId]=i;
-         }
-         
-         //check acc int address status
-         for(int i=0; i<acc.intKeyPointer; i++) {
-         if (acc.intKeys[i])
-         if (((CwAddress*)acc.intKeys[i]).address!=nil && ![((CwAddress*)acc.intKeys[i]).address isEqualToString:@""])
-         syncAccIntAddress[acc.accId]=i;
-         }
-         }
-         */
+    if (self.cardId == nil) {
+        return;
     }
+    
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    CwCard *card = [defaults rm_customObjectForKey:self.cardId];
+    if (card == nil) {
+        return;
+    }
+    [RMMapper populateObject:self fromDictionary:[RMMapper dictionaryForObject:card]];
+    
+
 }
 
 //Save Commands
 -(void) saveCwCardToFile
 {
-    NSLog(@"SaveCwToFile:%@ accountptr:%ld accoints:%lu", self.cardId, self.hdwAcccountPointer, (unsigned long)self.cwAccounts.count);
+    NSLog(@"SaveCwToFile:%@ accountptr:%@ accoints:%lu", self.cardId, self.hdwAcccountPointer, (unsigned long)self.cwAccounts.count);
     
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self];
-    [[NSUserDefaults standardUserDefaults] setObject:data forKey:self.bleName];
+    if (self.cardId == nil) {
+        return;
+    }
+    
+    [[NSUserDefaults standardUserDefaults] rm_setCustomObject:self forKey:self.cardId];
 }
 
 //Sync Card Info after Login
@@ -650,7 +617,7 @@ NSArray *addresses;
 //Host Commands
 -(void) registerHost: (NSString *)credential Description: (NSString*)description
 {
-    if (self.mode==CwCardModeNoHost)
+    if ([self.mode integerValue] == CwCardModeNoHost)
         [self cwCmdBindRegInit: YES Credential: credential Description: description];
     else
         [self cwCmdBindRegInit: NO Credential: credential Description: description];
@@ -666,9 +633,9 @@ NSArray *addresses;
 
 -(void) eraseCw: (BOOL) preserveHost Pin: (NSString *)pin NewPin: (NSString *) newPin //callback: didEraseCw
 {
-    if (self.mode == CwCardModeDisconn) {
+    if ([self.mode integerValue] == CwCardModeDisconn) {
         [self cwCmdBindBackNoHost:pin NewPin:newPin];
-    } else if (self.mode == CwCardModeNormal) {
+    } else if ([self.mode integerValue] == CwCardModeNormal) {
         [self cwCmdPersoBackPerso: newPin];
         
         if (!preserveHost)
@@ -678,15 +645,15 @@ NSArray *addresses;
     }
     
     //remove stored file
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:self.bleName];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:self.cardId];
     self.cardId = nil;
     self.cwAccounts = nil;
     self.cardName = nil;
     self.currId = nil;
     self.currRate = 0;
-    self.hdwStatus = 0;
+    self.hdwStatus = [NSNumber numberWithInt:0];
     self.hdwName = nil;
-    self.hdwAcccountPointer = 0;
+    self.hdwAcccountPointer = [NSNumber numberWithInt:0];
 }
 
 -(void) loginHost //callback: didLoginHost
@@ -736,10 +703,10 @@ NSArray *addresses;
 
 -(void) persoSecurityPolicy: (BOOL)otpEnable ButtonEnable: (BOOL)btnEnable DisplayAddressEnable: (BOOL) addEnable WatchDogEnable: (BOOL)wdEnable
 {
-    self.securityPolicy_OtpEnable = otpEnable;
-    self.securityPolicy_BtnEnable = btnEnable;
-    self.securityPolicy_DisplayAddressEnable = addEnable;
-    self.securityPolicy_WatchDogEnable = wdEnable;
+    self.securityPolicy_OtpEnable = [NSNumber numberWithBool:otpEnable];
+    self.securityPolicy_BtnEnable = [NSNumber numberWithBool:btnEnable];
+    self.securityPolicy_DisplayAddressEnable = [NSNumber numberWithBool:addEnable];
+    self.securityPolicy_WatchDogEnable = [NSNumber numberWithBool:wdEnable];
     
     [self CwCmdPersoSetData];
 }
@@ -761,10 +728,10 @@ NSArray *addresses;
 
 -(void) setSecurityPolicy: (BOOL)otpEnable ButtonEnable: (BOOL)btnEnable DisplayAddressEnable: (BOOL) addEnable WatchDogEnable: (BOOL)wdEnable
 {
-    self.securityPolicy_OtpEnable = otpEnable;
-    self.securityPolicy_BtnEnable = btnEnable;
-    self.securityPolicy_DisplayAddressEnable = addEnable;
-    self.securityPolicy_WatchDogEnable = wdEnable;
+    self.securityPolicy_OtpEnable = [NSNumber numberWithBool:otpEnable];
+    self.securityPolicy_BtnEnable = [NSNumber numberWithBool:btnEnable];
+    self.securityPolicy_DisplayAddressEnable = [NSNumber numberWithBool:addEnable];
+    self.securityPolicy_WatchDogEnable = [NSNumber numberWithBool:wdEnable];
     
     [self cwCmdSetPerso];
 }
@@ -820,7 +787,7 @@ NSArray *addresses;
             [self.delegate didGetCwHdwStatus];
         }
         
-        if (self.hdwStatus == CwHdwStatusActive) {
+        if ([self.hdwStatus integerValue] == CwHdwStatusActive) {
             if (syncHdwNameFlag) {
                 //call delegate
                 if ([self.delegate respondsToSelector:@selector(didGetCwHdwName)]) {
@@ -873,7 +840,7 @@ NSArray *addresses;
 -(void) getAccounts; //didGetAccounts
 {
     //get hostInfos
-    for (int i=0; i<self.hdwAcccountPointer; i++) {
+    for (int i=0; i<self.hdwAcccountPointer.integerValue; i++) {
         [self getAccountInfo:i];
     }
 }
@@ -1629,7 +1596,7 @@ NSArray *addresses;
     cmd.cmdPriority = CwCardCommandPriorityNone;
     cmd.cmdCla = CwCmdIdInitBackInitCLA;
     cmd.cmdId = CwCmdIdInitBackInit;
-    cmd.cmdP1 = self.hostId;
+    cmd.cmdP1 = [self.hostId integerValue];
     cmd.cmdP2 = 0;
     cmd.cmdInput = [NSData dataWithBytes:vmkResponse length:16];;
     
@@ -2027,7 +1994,7 @@ NSArray *addresses;
     cmd.cmdPriority = CwCardCommandPriorityNone;
     cmd.cmdCla = CwCmdIdBindLoginChlngCLA;
     cmd.cmdId = CwCmdIdBindLoginChlng;
-    cmd.cmdP1 = self.hostId;
+    cmd.cmdP1 = [self.hostId integerValue];
     cmd.cmdP2 = 0;
     cmd.cmdInput = nil;
     
@@ -2111,7 +2078,7 @@ NSArray *addresses;
     cmd.cmdPriority = CwCardCommandPriorityNone;
     cmd.cmdCla = CwCmdIdBindLoginCLA;
     cmd.cmdId = CwCmdIdBindLogin;
-    cmd.cmdP1 = self.hostId;
+    cmd.cmdP1 = [self.hostId integerValue];
     cmd.cmdP2 = 0;
     cmd.cmdInput = [NSData dataWithBytes:loginResponse length:16];;
     
@@ -4142,8 +4109,8 @@ NSArray *addresses;
             //mode: 1B
             //state: 1B
             if (cmd.cmdResult==0x9000) {
-                self.mode = data[0];
-                self.state = data[1];
+                self.mode = [NSNumber numberWithInteger:data[0]];
+                self.state = [NSNumber numberWithInteger:data[1]];
                 if ([self.delegate respondsToSelector:@selector(didGetModeState)]) {
                     [self.delegate didGetModeState];
                 }
@@ -4324,8 +4291,8 @@ NSArray *addresses;
             //hostId: 1B
             //confirm: 1B
             if (cmd.cmdResult==0x9000) {
-                self.hostId = data[0];
-                self.hostConfirmStatus = data[1];
+                self.hostId = [NSNumber numberWithInteger:data[0]];
+                self.hostConfirmStatus = [NSNumber numberWithInteger:data[1]];
                 
                 KeychainItemWrapper *keychain =
                 [[KeychainItemWrapper alloc] initWithIdentifier:self.cardId accessGroup:nil];
@@ -4338,8 +4305,8 @@ NSArray *addresses;
                 }
                 
             } else {
-                self.hostId = -1;
-                self.hostConfirmStatus = -1;
+                self.hostId = [NSNumber numberWithInteger:-1];
+                self.hostConfirmStatus = [NSNumber numberWithInteger:-1];
                 
                 if ([self.delegate respondsToSelector:@selector(didConfirmHostError:)]) {
                     [self.delegate didConfirmHostError:cmd.cmdResult];
@@ -4445,11 +4412,11 @@ NSArray *addresses;
             
             if (cmd.cmdResult==0x9000) {
                 if (data[0]>=0 && data[0]<=2) {
-                    self.hostId = data[0];
-                    self.hostConfirmStatus = data[1];
+                    self.hostId = [NSNumber numberWithInteger:data[0]];
+                    self.hostConfirmStatus = [NSNumber numberWithInteger:data[1]];
                 } else {
-                    self.hostId = -1;
-                    self.hostConfirmStatus = -1;
+                    self.hostId = [NSNumber numberWithInteger:-1];
+                    self.hostConfirmStatus = [NSNumber numberWithInteger:-1];
                 }
                 
                 //syncCwInfoFlag = YES;
@@ -4601,24 +4568,24 @@ NSArray *addresses;
                 syncSecurityPolicyFlag = YES;
                 
                 if (data[0] & CwSecurityPolicyMaskOtp)
-                    self.securityPolicy_OtpEnable=YES;
+                    self.securityPolicy_OtpEnable=[NSNumber numberWithBool:YES];
                 else
-                    self.securityPolicy_OtpEnable=NO;
+                    self.securityPolicy_OtpEnable=[NSNumber numberWithBool:NO];
                 
                 if (data[0] & CwSecurityPolicyMaskBtn)
-                    self.securityPolicy_BtnEnable=YES;
+                    self.securityPolicy_BtnEnable=[NSNumber numberWithBool:YES];
                 else
-                    self.securityPolicy_BtnEnable=NO;
+                    self.securityPolicy_BtnEnable=[NSNumber numberWithBool:NO];
                 
                 if (data[0] & CwSecurityPolicyMaskWatchDog)
-                    self.securityPolicy_WatchDogEnable=YES;
+                    self.securityPolicy_WatchDogEnable=[NSNumber numberWithBool:YES];
                 else
-                    self.securityPolicy_WatchDogEnable=NO;
+                    self.securityPolicy_WatchDogEnable=[NSNumber numberWithBool:NO];
                 
                 if (data[0] & CwSecurityPolicyMaskAddress)
-                    self.securityPolicy_DisplayAddressEnable=YES;
+                    self.securityPolicy_DisplayAddressEnable=[NSNumber numberWithBool:YES];
                 else
-                    self.securityPolicy_DisplayAddressEnable=NO;
+                    self.securityPolicy_DisplayAddressEnable=[NSNumber numberWithBool:NO];
                 
                 if ([self.delegate respondsToSelector:@selector(didGetSecurityPolicy)]) {
                     [self.delegate didGetSecurityPolicy];
@@ -4649,7 +4616,7 @@ NSArray *addresses;
             //none
             if (cmd.cmdResult==0x9000) {
                 syncHdwStatusFlag = YES;
-                self.hdwStatus = CwHdwStatusActive;
+                self.hdwStatus = [NSNumber numberWithInteger:CwHdwStatusActive];
                 
                 if ([self.delegate respondsToSelector:@selector(didInitHdwBySeed)]) {
                     [self.delegate didInitHdwBySeed];
@@ -4666,7 +4633,7 @@ NSArray *addresses;
             //mac: (seedString || activeCode)
             if (cmd.cmdResult==0x9000) {
                 syncHdwStatusFlag = YES;
-                self.hdwStatus = CwHdwStatusWaitConfirm;
+                self.hdwStatus = [NSNumber numberWithInteger:CwHdwStatusWaitConfirm];
                 
                 const unsigned char *tmp = [cmd.cmdInput bytes];
                 
@@ -4689,7 +4656,7 @@ NSArray *addresses;
             //none
             if (cmd.cmdResult==0x9000) {
                 syncHdwStatusFlag = YES;
-                self.hdwStatus = CwHdwStatusActive;
+                self.hdwStatus = [NSNumber numberWithInteger:CwHdwStatusActive];
                 
                 if ([self.delegate respondsToSelector:@selector(didInitHdwConfirm)]) {
                     [self.delegate didInitHdwConfirm];
@@ -4711,14 +4678,14 @@ NSArray *addresses;
                 
                 switch (cmd.cmdP1) {
                     case CwHdwInfoStatus:
-                        self.hdwStatus = data[0];
+                        self.hdwStatus = [NSNumber numberWithInteger:data[0]];
                         syncHdwStatusFlag = YES;
                         
                         if ([self.delegate respondsToSelector:@selector(didGetCwHdwStatus)]) {
                             [self.delegate didGetCwHdwStatus];
                         }
                         
-                        if (self.hdwStatus == CwHdwStatusActive) {
+                        if ([self.hdwStatus integerValue] == CwHdwStatusActive) {
                             //get name
                             if (syncHdwNameFlag == NO) {
                                 [self cwCmdHdwQueryWalletInfo:CwHdwInfoName];
@@ -4754,7 +4721,7 @@ NSArray *addresses;
                         }
                         break;
                     case CwHdwInfoAccountPointer:
-                        self.hdwAcccountPointer = *(int32_t *)data;
+                        self.hdwAcccountPointer = [NSNumber numberWithInteger:*(int32_t *)data];
                         syncHdwAccPtrFlag = YES;
                         
                         //get account info
@@ -4767,7 +4734,7 @@ NSArray *addresses;
                             [self cwCmdHdwQueryAccountInfo:CwHdwAccountInfoIntKeyPtr AccountId:i];
                          }*/
                         
-                        for (int i=0; i<self.hdwAcccountPointer; i++) {
+                        for (int i=0; i<[self.hdwAcccountPointer integerValue]; i++) {
                             //get account from dictionary
                             CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", (long)i]];
                             
@@ -4836,7 +4803,7 @@ NSArray *addresses;
                 
                 self.currentAccountId = account.accId;
                 
-                self.hdwAcccountPointer = account.accId+1;
+                self.hdwAcccountPointer = [NSNumber numberWithInteger:account.accId+1];
                 
                 syncHdwAccPtrFlag = YES;
                 syncAccNameFlag[account.accId] = YES;
@@ -5678,7 +5645,7 @@ NSArray *addresses;
     
     NSLog (@"RSSI %@, scale: %ld", RSSI, scale);
     
-    if (scale > self.securityPolicy_WatchDogScale) {
+    if (self.securityPolicy_WatchDogEnable.boolValue && scale > [self.securityPolicy_WatchDogScale integerValue]) {
         if ([self.delegate respondsToSelector:@selector(didWatchDogAlert:)])
             [self.delegate didWatchDogAlert:scale];
     }

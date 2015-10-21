@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
+#import <RMMapper/RMMapper.h>
 #import "CwCardDelegate.h"
 #import "CwAccount.h"
+//#import "CwCardInfo.h"
 
 #define CwHdwRecoveryAddressWindow  5
 
@@ -44,9 +46,11 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
     CwFwUpdateStatusCheckFail = 0x03,
 };
 
-@interface CwCard : NSObject
+@interface CwCard : NSObject <RMMapping>
 
 @property (nonatomic, assign) id<CwCardDelegate> delegate;
+
+//@property (copy, nonatomic) CwCardInfo *cardInfo;
 
 #pragma mark - CwLowLevelProperties
 @property NSString *bleName;
@@ -56,25 +60,25 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 @property NSDate *lastUpdate;
 
 #pragma mark - CwProperties - Basic Info
-@property NSInteger mode;
-@property NSInteger state;
+@property NSNumber *mode;
+@property NSNumber *state;
 @property NSString *fwVersion;
 @property NSString *uid;
 
 #pragma mark - CwProperties - Host Info
 @property NSString *devCredential; //Query and input from the UIDevice
-@property NSInteger hostId;
-@property NSInteger hostConfirmStatus;
+@property NSNumber *hostId;
+@property NSNumber *hostConfirmStatus;
 @property NSString *hostOtp;
 
 @property NSMutableDictionary *cwHosts;
 
 #pragma mark - CwProperties - Securityp Policy
-@property BOOL securityPolicy_OtpEnable;
-@property BOOL securityPolicy_BtnEnable;
-@property BOOL securityPolicy_DisplayAddressEnable;
-@property BOOL securityPolicy_WatchDogEnable;
-@property NSInteger securityPolicy_WatchDogScale;
+@property NSNumber *securityPolicy_OtpEnable;
+@property NSNumber *securityPolicy_BtnEnable;
+@property NSNumber *securityPolicy_DisplayAddressEnable;
+@property NSNumber *securityPolicy_WatchDogEnable;
+@property NSNumber *securityPolicy_WatchDogScale;
 
 #pragma mark - CwProperties - Card Info
 @property NSString *cardName;
@@ -83,9 +87,9 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 @property NSDecimalNumber *currRate;
 
 #pragma mark - CwProperties - HDW Info
-@property NSInteger hdwStatus;
+@property NSNumber *hdwStatus;
 @property NSString *hdwName;
-@property NSInteger hdwAcccountPointer;
+@property NSNumber *hdwAcccountPointer;
 
 @property NSMutableDictionary *cwAccounts;
 @property NSInteger currentAccountId;
@@ -94,9 +98,6 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 @property NSString *paymentAddress;
 @property int64_t amount;
 @property NSString *label;
-
-#pragma mark - Command Control
-@property BOOL waitCancel;
 
 #pragma mark - CwMethods
 

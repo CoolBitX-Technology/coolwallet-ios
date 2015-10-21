@@ -294,7 +294,7 @@ NSTimer *scanTimer;
     self.connectedCwCard.delegate = self;
 
     //read stored file
-    [self.connectedCwCard loadCwCardFromFile];
+//    [self.connectedCwCard loadCwCardFromFile];
 
     [self.connectedCwCard prepareService];
     

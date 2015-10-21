@@ -64,14 +64,14 @@ CwCard *cwCard;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.sliDogScale.value = cwCard.securityPolicy_WatchDogScale;
+    self.sliDogScale.value = [cwCard.securityPolicy_WatchDogScale integerValue];
     
-    if (cwCard.mode==CwCardModeNormal) {
+    if ([cwCard.mode integerValue] == CwCardModeNormal) {
         [self showIndicatorView:@"loading..."];
         
         //get security policy
         [cwCard getSecurityPolicy];
-    }else if (self.cwManager.connectedCwCard.mode == CwCardModePerso){
+    }else if ([self.cwManager.connectedCwCard.mode integerValue] == CwCardModePerso){
         self.baritemBack.enabled = false;
         self.swBtnEnable.on = YES;
     }
@@ -97,15 +97,15 @@ CwCard *cwCard;
 #pragma mark - Actions
 - (IBAction)btnUpdateSecurityPolicy:(id)sender {
     
-    NSLog(@"mode = %ld", self.cwManager.connectedCwCard.mode);
-    if (self.cwManager.connectedCwCard.mode==CwCardModeNormal) {
+    NSLog(@"mode = %@", self.cwManager.connectedCwCard.mode);
+    if ([self.cwManager.connectedCwCard.mode integerValue] == CwCardModeNormal) {
         //get security policy
         [self showIndicatorView:@"update security policy..."];
         [self.cwManager.connectedCwCard setSecurityPolicy:self.swOtpEnable.on
                                              ButtonEnable:self.swBtnEnable.on
                                      DisplayAddressEnable:self.swDisplayAddress.on
                                            WatchDogEnable:self.swWatchDogEnable.on];
-    } else if (self.cwManager.connectedCwCard.mode == CwCardModePerso) {
+    } else if ([self.cwManager.connectedCwCard.mode integerValue] == CwCardModePerso) {
         NSLog(@"otp = %d", self.swOtpEnable.on);
         //get security policy
         [self showIndicatorView:@"update security policy..."];
@@ -124,7 +124,20 @@ CwCard *cwCard;
 
 - (IBAction)sliDogScale:(id)sender {
     self.sliDogScale.value = lroundf (self.sliDogScale.value);
-    cwCard.securityPolicy_WatchDogScale = self.sliDogScale.value;
+    cwCard.securityPolicy_WatchDogScale = [NSNumber numberWithInteger:self.sliDogScale.value];
+}
+
+- (IBAction)securiityChanged:(UISwitch *)sender {
+    if (sender == self.swOtpEnable) {
+        if (!sender.on && !self.swBtnEnable.on) {
+            self.swBtnEnable.on = YES;
+        }
+    } else if (sender == self.swBtnEnable) {
+        if (!sender.on && !self.swOtpEnable.on) {
+            self.swOtpEnable.on = YES;
+        }
+    }
+    
 }
 
 #pragma mark - CwCardDelegate
@@ -139,7 +152,7 @@ CwCard *cwCard;
 
 -(void) didGetModeState
 {
-    NSLog(@"mode = %ld", self.cwManager.connectedCwCard.mode);
+    NSLog(@"mode = %@", self.cwManager.connectedCwCard.mode);
     
 }
 
@@ -179,10 +192,10 @@ CwCard *cwCard;
 
 -(void) didGetSecurityPolicy
 {
-    self.swOtpEnable.on = self.cwManager.connectedCwCard.securityPolicy_OtpEnable;
-    self.swBtnEnable.on = self.cwManager.connectedCwCard.securityPolicy_BtnEnable;
-    self.swWatchDogEnable.on = self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable;
-    self.swDisplayAddress.on = self.cwManager.connectedCwCard.securityPolicy_DisplayAddressEnable;
+    self.swOtpEnable.on = self.cwManager.connectedCwCard.securityPolicy_OtpEnable.boolValue;
+    self.swBtnEnable.on = self.cwManager.connectedCwCard.securityPolicy_BtnEnable.boolValue;
+    self.swWatchDogEnable.on = self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable.boolValue;
+    self.swDisplayAddress.on = self.cwManager.connectedCwCard.securityPolicy_DisplayAddressEnable.boolValue;
     
     [self performDismiss];
 }
@@ -241,19 +254,6 @@ CwCard *cwCard;
     [self.cwManager disconnectCwCard];
     
     NSLog(@"CW Released");
-}
-
-#pragma marks - CwCardDelegates
--(void) didWatchDogAlert:(NSInteger)scale
-{
-    NSLog(@"Cw Watchdog Alert scale: %ld", (long)scale);
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CW Watchdog Alert"
-                                                   message: [NSString stringWithFormat:@"Range %ld", scale]
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    
-    [alert show];
 }
 
 #pragma mark - CwManager Delegate

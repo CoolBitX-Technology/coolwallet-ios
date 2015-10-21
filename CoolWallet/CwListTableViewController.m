@@ -284,7 +284,7 @@ NSString *segueIdentifier;
 {
     //self.lblMode.text = [@(self.cwCard.mode) stringValue];
     //self.lblState.text = [@(self.cwCard.state) stringValue];
-    NSLog(@"mode = %d",self.myCw.mode);
+    NSLog(@"mode = %@",self.myCw.mode);
     [self.tablev_cwlist reloadData];
 
 }
