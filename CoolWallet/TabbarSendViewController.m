@@ -143,7 +143,7 @@ long TxFee = 10000;
     
     //send OTP
     [self showIndicatorView:@"Send..."];
-    
+        
     [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
 }
 
@@ -621,20 +621,25 @@ long TxFee = 10000;
     NSLog(@"didSignTransaction");
     //[self performDismiss];
     
-    self.transactionBegin = NO;
-    
     if(PressAlert != nil) [PressAlert dismissViewControllerAnimated:YES completion:nil] ;
     
-    NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
-    [cwCard setAccount: account.accId Balance: account.balance-([sato longLongValue] + TxFee)];
+    if (self.transactionBegin) {
+        NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
+        NSLog(@"sato: %@", sato);
+        int64_t balance = account.balance-([sato longLongValue] + TxFee);
+        //    [cwCard setAccount: account.accId Balance: account.balance-([sato longLongValue] + TxFee)];
+        NSLog(@"account.balance: %lld, sato.longLongValue: %lld, fee: %ld", account.balance, [sato longLongValue], TxFee);
+        NSLog(@"balance: %lld", balance);
+        
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Send Bitcoin"
+                                                       message: [NSString stringWithFormat:@"Send %@ BTC to %@", self.txtAmount.text, self.txtReceiverAddress.text]
+                                                      delegate: nil
+                                             cancelButtonTitle: nil
+                                             otherButtonTitles: @"OK",nil];
+        [alert show];
+    }
     
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Send Bitcoin"
-                                                   message: [NSString stringWithFormat:@"Send %@ BTC to %@", self.txtAmount.text, self.txtReceiverAddress.text]
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles: @"OK",nil];
-    
-    [alert show];
+    self.transactionBegin = NO;
     
     [self SetBalanceText];
     

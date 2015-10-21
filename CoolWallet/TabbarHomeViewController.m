@@ -193,7 +193,6 @@ Boolean setBtnActionFlag;
         return (NSComparisonResult)NSOrderedSame;
     }];
     
-    
     [_tableTransaction reloadData];
 }
 
@@ -252,6 +251,10 @@ Boolean setBtnActionFlag;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
+    if (account == nil || account.transactions == nil) {
+        return 0;
+    }
+    
     return [account.transactions count];
 }
 
@@ -387,13 +390,15 @@ Boolean setBtnActionFlag;
     //create activity indicator on the cell
     
     NSLog(@"TabbarHomeViewController, didGetAccountAddresses = %ld, currentAccountId = %ld", accId, cwCard.currentAccountId);
-    
+
     if (accId != cwCard.currentAccountId) {
         return;
     }
     
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+    
     NSLog(@"TabbarHomeViewController, %ld, transitions: %@", account.accId, account.transactions);
-    if (account.transactions==nil) {
+    if (account.lastUpdate == nil) {
         //get balance and transaction when there is no transaction yet.
         
         dispatch_queue_t queue = dispatch_queue_create("com.dtco.CoolWallet", NULL);

@@ -31,6 +31,8 @@ typedef NS_ENUM (NSInteger, CwAccountStatus) {
 @property NSMutableDictionary *transactions;         // CWTx[]
 @property NSMutableArray *unspentTxs;       // CWUnspentTxIndex[]
 
+@property NSDate *lastUpdate;
+
 - (GenTxErr) genUnsignedTxToAddrByAutoCoinSelection:(NSString*)destAddr change: (NSString*)changeAddr amount:(CwBtc*)amount unsignedTx:(CwTx**)unsignedTx fee:(CwBtc**)fee;
 - (NSMutableArray*) genHashesOfTxCopy:(CwTx*)unsignedTx;
 - (GenScriptSigErr) genScriptSig:(NSData*)sig pubKey:(NSData*)pubKey scriptSig:(NSData**)scriptSig;

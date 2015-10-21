@@ -259,7 +259,7 @@
                                     <constraint firstAttribute="height" constant="160" id="VUv-zn-p5o"/>
                                 </constraints>
                             </imageView>
-                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="110" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Ow5-iq-AZG">
+                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="110" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Ow5-iq-AZG">
                                 <rect key="frame" x="0.0" y="254" width="320" height="239"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -320,6 +320,7 @@ pressing the button on card.</string>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="Ow5-iq-AZG" secondAttribute="trailing" id="3fK-3b-fh5"/>
+                            <constraint firstItem="zoT-6X-Cb8" firstAttribute="top" secondItem="Ow5-iq-AZG" secondAttribute="bottom" constant="25" id="AEu-ZF-1vA"/>
                             <constraint firstItem="Ow5-iq-AZG" firstAttribute="leading" secondItem="aZf-3Z-ebA" secondAttribute="leadingMargin" id="E6O-JD-tUC"/>
                             <constraint firstItem="czc-cD-g0m" firstAttribute="top" secondItem="57n-Ed-ao7" secondAttribute="bottom" constant="40" id="Lvh-qY-Znm"/>
                             <constraint firstItem="s5q-vF-vq9" firstAttribute="top" secondItem="czc-cD-g0m" secondAttribute="bottom" constant="40" id="Qtz-94-Xob"/>

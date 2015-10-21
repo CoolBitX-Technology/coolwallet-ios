@@ -23,6 +23,7 @@
 
 
 static const NSString *serverSite        = @"https://btc.blockr.io/api/v1";
+//static const NSString *serverSite        = @"http://btc-blockr-io-soziedsyodjk.runscope.net/api/v1";
 static const NSString *currencyURLStr    = @"exchangerate/current";
 static const NSString *decodeURLStr      = @"tx/decode";
 static const NSString *pushURLStr        = @"tx/push";
@@ -334,8 +335,9 @@ BOOL didGetTransactionByAccountFlag[5];
         }
         else
         {
-            NSMutableArray *txs = [NSMutableArray arrayWithArray:JSON[@"data"][@"vins"]];
-            [txs addObjectsFromArray:JSON[@"data"][@"vouts"]];
+            NSDictionary *data = [JSON objectForKey:@"data"];
+            NSMutableArray *txs = [NSMutableArray arrayWithArray:data[@"vins"]];
+            [txs addObjectsFromArray:data[@"vouts"]];
             
             NSMutableArray *allAddresses = [NSMutableArray new];
             for (CwAccount *cwAccount in [cwCard.cwAccounts allValues]) {
@@ -364,9 +366,10 @@ BOOL didGetTransactionByAccountFlag[5];
                     CwTx *historyTx = [cwAccount.transactions objectForKey:_tid];
                     
                     if (historyTx != nil) {
-                        NSUInteger confirmations = [[JSON objectForKey:@"confirmations"] unsignedIntegerValue];
+                        NSUInteger confirmations = [[data objectForKey:@"confirmations"] unsignedIntegerValue];
                         [historyTx setConfirmations:confirmations];
                         [cwAccount.transactions setObject:historyTx forKey:_tid];
+                        [cwCard.cwAccounts setObject:cwAccount forKey:[NSString stringWithFormat:@"%ld", cwAccount.accId]];
                         if ([self.delegate respondsToSelector:@selector(didGetTransactionByAccount:)]) {
                             [self.delegate didGetTransactionByAccount:cwAccount.accId];
                         }
@@ -556,10 +559,12 @@ BOOL didGetTransactionByAccountFlag[5];
     
     if (isGetTrx && !didGetTransactionByAccountFlag[accId]) {
         //Call Delegate
-        if ([self.delegate respondsToSelector:@selector(didGetTransactionByAccount:)]) {
+        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didGetTransactionByAccount:)]) {
             [self.delegate didGetTransactionByAccount:accId];
         }
         didGetTransactionByAccountFlag[accId] = YES;
+        
+        account.lastUpdate = [NSDate date];
     }
     
     return;
@@ -1068,8 +1073,9 @@ BOOL didGetTransactionByAccountFlag[5];
 
 - (PublishErr) publish:(CwTx*)tx result:(NSData **)result
 {
-    NSURL *connection = [[NSURL alloc]initWithString:@"https://btc.blockr.io/api/v1/tx/push"];
+    NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, pushURLStr]];
     NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
+    
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
     
     NSLog(@"tx raw: %@", postString);
@@ -1093,7 +1099,7 @@ BOOL didGetTransactionByAccountFlag[5];
 
 - (DecodeErr) decode:(CwTx*)tx result:(NSData **)result
 {
-    NSURL *connection = [[NSURL alloc]initWithString:@"https://btc.blockr.io/api/v1/tx/decode"];
+    NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, decodeURLStr]];
     NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
     

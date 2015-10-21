@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "qrencode.h"
+#import "BaseViewController.h"
 
-@interface TabReceiveBitcoinViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
+@interface TabReceiveBitcoinViewController : BaseViewController <UITableViewDataSource,UITableViewDelegate>
 
 - (UIImage *)quickResponseImageForString:(NSString *)dataString withDimension:(int)imageWidth;
 

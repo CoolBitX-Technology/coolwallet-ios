@@ -413,6 +413,7 @@
 		EFFA18301B450EA600FF8FC6 /* FrontViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FrontViewController.xib; sourceTree = "<group>"; };
 		EFFA18331B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabSettingBitcoinUnitViewController.h; sourceTree = "<group>"; };
 		EFFA18341B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabSettingBitcoinUnitViewController.m; sourceTree = "<group>"; };
+		F40A8D0D1BD613EE00D5940A /* CwCommandDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CwCommandDefine.h; sourceTree = "<group>"; };
 		F493F32D1BC6807600876710 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		F493F32E1BC6807600876710 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -600,6 +601,7 @@
 				EFCF9A4C1B32C8810076091B /* KeychainItemWrapper.m */,
 				EFCF9A4D1B32C8810076091B /* NYMnemonic.h */,
 				EFCF9A4E1B32C8810076091B /* NYMnemonic.m */,
+				F40A8D0D1BD613EE00D5940A /* CwCommandDefine.h */,
 			);
 			name = Model;
 			sourceTree = "<group>";

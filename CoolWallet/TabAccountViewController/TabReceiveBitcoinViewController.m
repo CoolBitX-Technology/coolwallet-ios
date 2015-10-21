@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *imgQRcode;
 
+@property (strong, nonatomic) NSArray *accountButtons;
+
 - (IBAction)btnNewAddress:(id)sender;
 
 @end
@@ -45,7 +47,8 @@ NSString *Label;
     CwManager *cwManager = [CwManager sharedManager];
     cwCard = cwManager.connectedCwCard;
     //NSLog(@"currentAccountId = %ld",cwCard.currentAccountId);
-
+    
+    self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
 }
 
 
@@ -150,164 +153,39 @@ NSString *Label;
     
 }
 
-- (IBAction)btnAccount1:(id)sender {
-    [_btnAccount1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    [_btnAccount2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount3 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount4 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount5 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    
-    [_btnAccount1 setBackgroundColor:[UIColor colorAccountBackground]];
-    
-    [_btnAccount2 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount3 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount4 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
-    
-    if(cwCard.currentAccountId != 0) {
-        RequestBTC = nil;
-        cwCard.currentAccountId = 0;
-        [cwCard setDisplayAccount:cwCard.currentAccountId];
+- (IBAction)btnAccount:(id)sender {
+    NSInteger currentAccId = cwCard.currentAccountId;
+    for (UIButton *btn in self.accountButtons) {
+        if (sender == btn) {
+            cwCard.currentAccountId = [self.accountButtons indexOfObject:btn];
+            [btn setBackgroundColor:[UIColor colorAccountBackground]];
+            [btn setSelected:YES];
+        } else {
+            [btn setBackgroundColor:[UIColor blackColor]];
+            [btn setSelected:NO];
+        }
     }
     
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
-    
-    if([account.extKeys count] >0) rowSelected = 0;
-    else rowSelected = -1;
-    
-    [self setQRcodeDataforkey:rowSelected];
-    
-    NSLog(@"account.accId = %d",account.accId);
-    [cwCard getAccountAddresses: account.accId];
-    [_tableAddressList reloadData];
-}
-
-- (IBAction)btnAccount2:(id)sender {
-    [_btnAccount2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    [_btnAccount1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount3 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount4 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount5 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    
-    [_btnAccount2 setBackgroundColor:[UIColor colorAccountBackground]];
-    [_btnAccount1 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount3 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount4 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
-    
-    if(cwCard.currentAccountId != 1) {
-        RequestBTC = nil;
-        cwCard.currentAccountId = 1;
+    if (currentAccId != cwCard.currentAccountId) {
+        [self showIndicatorView:@"loading address..."];
+        
         [cwCard setDisplayAccount:cwCard.currentAccountId];
+        [cwCard getAccountInfo:cwCard.currentAccountId];
+    } else {
+        [cwCard getAccountAddresses: account.accId];
+        [_tableAddressList reloadData];
     }
+    
     account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     
-    NSLog(@"[account.extKeys count] = %d",[account.extKeys count]);
-    if([account.extKeys count] >0) rowSelected = 0;
-    else rowSelected = -1;
-    
-    [self setQRcodeDataforkey:rowSelected];
-    
-    NSLog(@"account.accId = %ld",account.accId);
-    [cwCard getAccountAddresses: account.accId];
-    [_tableAddressList reloadData];
-}
-
-- (IBAction)btnAccount3:(id)sender {
-    [_btnAccount3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    [_btnAccount2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount4 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount5 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    
-    [_btnAccount3 setBackgroundColor:[UIColor colorAccountBackground]];
-    [_btnAccount1 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount2 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount4 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
-    
-    if(cwCard.currentAccountId != 2) {
-        RequestBTC = nil;
-        cwCard.currentAccountId = 2;
-        [cwCard setDisplayAccount:cwCard.currentAccountId];
+    if ([account.extKeys count] >0) {
+        rowSelected = 0;
+    } else {
+        rowSelected = -1;
     }
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
-    NSLog(@"[account.extKeys count] = %d",[account.extKeys count]);
-    if([account.extKeys count] >0) rowSelected = 0;
-    else rowSelected = -1;
     
     [self setQRcodeDataforkey:rowSelected];
-    
-    NSLog(@"account.accId = %ld",account.accId);
-    [cwCard getAccountAddresses: account.accId];
-    [_tableAddressList reloadData];
 }
-
-- (IBAction)btnAccount4:(id)sender {
-    [_btnAccount4 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    [_btnAccount2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount3 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount5 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    
-    [_btnAccount4 setBackgroundColor:[UIColor colorAccountBackground]];
-    [_btnAccount1 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount2 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount3 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount5 setBackgroundColor:[UIColor blackColor]];
-    
-    if(cwCard.currentAccountId != 3) {
-        RequestBTC = nil;
-        cwCard.currentAccountId = 3;
-        [cwCard setDisplayAccount:cwCard.currentAccountId];
-    }
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
-    NSLog(@"[account.extKeys count] = %d",[account.extKeys count]);
-    if([account.extKeys count] >0) rowSelected = 0;
-    else rowSelected = -1;
-    
-    [self setQRcodeDataforkey:rowSelected];
-    
-    NSLog(@"account.accId = %ld",account.accId);
-    [cwCard getAccountAddresses: account.accId];
-    [_tableAddressList reloadData];
-}
-
-- (IBAction)btnAccount5:(id)sender {
-    [_btnAccount5 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    [_btnAccount2 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount3 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount4 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btnAccount1 setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    
-    [_btnAccount5 setBackgroundColor:[UIColor colorAccountBackground]];
-    [_btnAccount1 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount2 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount3 setBackgroundColor:[UIColor blackColor]];
-    [_btnAccount4 setBackgroundColor:[UIColor blackColor]];
-    
-    if(cwCard.currentAccountId != 4) {
-        RequestBTC = nil;
-        cwCard.currentAccountId = 4;
-        [cwCard setDisplayAccount:cwCard.currentAccountId];
-    }
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
-    
-    if([account.extKeys count] >0) rowSelected = 0;
-    else rowSelected = -1;
-    
-    [self setQRcodeDataforkey:rowSelected];
-    
-    NSLog(@"account.accId = %ld",account.accId);
-    [cwCard getAccountAddresses: account.accId];
-    [_tableAddressList reloadData];
-}
-
 
 #pragma marks - CwCard Delegates
 -(void) didCwCardCommand
@@ -361,17 +239,29 @@ NSString *Label;
     if(accId == cwCard.currentAccountId) {
         account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
         
-        [self.tableAddressList reloadData];
+        if(accId == cwCard.currentAccountId) {
+            [cwCard getAccountAddresses:accId];
+        }
     }
 }
 
--(void) didGetAccountInfo
+-(void) didGetAccountAddresses:(NSInteger)accId
 {
-    NSLog(@"didGetAccountInfo");
-    //account keyIdx and keys beening updated
-    account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
+    NSLog(@"didGetAccountAddresses: %ld", accId);
     
-    [self.tableAddressList reloadData];
+    if (accId == cwCard.currentAccountId) {
+        [self performDismiss];
+        
+        account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", accId]];
+        
+        if (account.extKeys.count > 0) {
+            [self setQRcodeDataforkey:0];
+        } else {
+            [self setQRcodeDataforkey:-1];
+        }
+        
+        [self.tableAddressList reloadData];
+    }
 }
 
 #pragma mark - CwManager Delegate

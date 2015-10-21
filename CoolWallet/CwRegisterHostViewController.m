@@ -11,6 +11,8 @@
 #import "CwManager.h"
 #import "CwCard.h"
 #import "CwHost.h"
+#import "CwCardApduError.h"
+#import "CwCommandDefine.h"
 #import "ViewController.h"
 #import "KeychainItemWrapper.h"
 
@@ -281,19 +283,15 @@ CwCard *cwCard;
 
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
 {
-    NSLog(@"%ld", (long)cmdId );
     [self performDismiss];
-    NSString *msg;
-    //if(cmdId == 215) msg = @"locorrect sum, please check again";
     
-    msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
-                                                   message: msg
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    
-    [alert show];
+    if (cmdId != CwCmdIdBindRegFinish && ![errString hasPrefix:@"Command Error"]) {
+        UIAlertController *errorAlertController = [UIAlertController alertControllerWithTitle:nil message:errString preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [errorAlertController addAction:okAction];
+        
+        [self presentViewController:errorAlertController animated:YES completion:nil];
+    }
 }
 
 -(void) didRegisterHost: (NSString *)OTP {
@@ -342,6 +340,24 @@ CwCard *cwCard;
         [alert show];
         */
         [self performSegueWithIdentifier:@"CwPairSuccesfulSegue" sender:self];
+    }
+}
+
+-(void) didConfirmHostError:(NSInteger)errId
+{
+    self.actBusyIndicator.hidden = YES;
+    [self.actBusyIndicator stopAnimating];
+    
+    if (errId == ERR_BIND_REGRESP) {
+        self.txtOtp.text = @"";
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Pair fail" message:@"OTP incorrect." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *tryAction = [UIAlertAction actionWithTitle:@"try again" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self regHost:self];
+        }];
+        [alertController addAction:tryAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 

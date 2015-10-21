@@ -33,6 +33,8 @@ NSString *segueIdentifier;
 
     //find CW via BLE
     self.cwMgr = [CwManager sharedManager];
+    
+    self.tablev_cwlist.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -88,7 +90,7 @@ NSString *segueIdentifier;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     CwCard *cw = [self.cwCards objectAtIndex:indexPath.row];
-    NSLog(@"name = %@, curr= %@",cw.bleName, [NSString stringWithFormat:@"%@", cw.rssi]);
+    NSLog(@"name = %@, cardName = %@, curr= %@",cw.bleName, cw.cardName, [NSString stringWithFormat:@"%@", cw.rssi]);
     cell.lb_CwName.text = cw.bleName;
     //cell.lb_CwSerial.text = [NSString stringWithFormat:@"%@", cw.rssi];
     
@@ -248,7 +250,6 @@ NSString *segueIdentifier;
     //self.bt_cwlater.hidden = NO;
     
     [self.tablev_cwlist reloadData];
-
 }
 
 -(void) didConnectCwCard:(CwCard *)cwCard

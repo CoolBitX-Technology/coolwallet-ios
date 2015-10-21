@@ -11,6 +11,8 @@
 #import "CwCard.h"
 #import "SWRevealViewController.h"
 
+#define MAXLENGTH_CARDNAME 9
+
 @interface TabCardViewController () <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate>
 @property CwManager *cwManager;
 
@@ -90,6 +92,23 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return NO;
+}
+
+- (BOOL)textField:(UITextField *) textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSLog(@"111, %d", textField == self.txtCardName);
+    if (textField == self.txtCardName) {
+        NSUInteger oldLength = [textField.text length];
+        NSUInteger replacementLength = [string length];
+        NSUInteger rangeLength = range.length;
+        NSLog(@"old: %ld, replace: %ld, range: %ld", oldLength, replacementLength, rangeLength);
+        NSUInteger newLength = oldLength - rangeLength + replacementLength;
+        NSLog(@"new: %ld", newLength);
+        BOOL returnKey = [string rangeOfString: @"\n"].location != NSNotFound;
+        
+        return newLength <= MAXLENGTH_CARDNAME || returnKey;
+    }
+    
+    return true;
 }
 
 /*

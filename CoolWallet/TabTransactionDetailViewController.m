@@ -48,13 +48,13 @@ CwAccount *account;
 - (void) SetTxDetailData:(id)key
 {
     NSLog(@"key = %@", key);
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     
     CwTx *tx = [account.transactions objectForKey:key];
     NSLog(@"tx utc = %@",[tx.historyTime_utc cwDateString]);
     NSLog(@"tx amount = %@", [NSString stringWithFormat: @"%.6f", tx.historyAmount.BTC.doubleValue]);
-    NSLog(@"tid = %@",[[NSString alloc] initWithData:tx.tid encoding:NSUTF8StringEncoding]);
-    NSLog(@"confirm = %d",tx.confirmations);
+    NSLog(@"tid = %@",tx.tid);
+    NSLog(@"confirm = %ld",tx.confirmations);
     NSLog(@"input = %@",tx.inputs);
     NSLog(@"output = %@",tx.outputs);
     
