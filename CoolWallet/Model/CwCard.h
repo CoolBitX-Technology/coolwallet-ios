@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <RMMapper/RMMapper.h>
+#import "NSObject+RMArchivable.h" 
 #import "CwCardDelegate.h"
 #import "CwAccount.h"
-//#import "CwCardInfo.h"
 
 #define CwHdwRecoveryAddressWindow  5
 
@@ -49,8 +49,6 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 @interface CwCard : NSObject <RMMapping>
 
 @property (nonatomic, assign) id<CwCardDelegate> delegate;
-
-//@property (copy, nonatomic) CwCardInfo *cardInfo;
 
 #pragma mark - CwLowLevelProperties
 @property NSString *bleName;
@@ -106,6 +104,7 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 
 -(void) prepareService;
 
+-(CwCard *) getCardInfoFromFile;
 -(void) loadCwCardFromFile;
 -(void) saveCwCardToFile;
 

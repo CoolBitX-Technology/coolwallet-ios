@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
+#import "CwManagerDelegate.h"
+#import "CwCardDelegate.h"
+#import "CwManager.h"
 
-@interface BaseViewController : UIViewController
+@interface BaseViewController : UIViewController <CwManagerDelegate, CwCardDelegate>
+
+@property (strong, nonatomic) CwManager *cwManager;
 
 - (void) showIndicatorView:(NSString *)Msg;
 - (void) performDismiss;

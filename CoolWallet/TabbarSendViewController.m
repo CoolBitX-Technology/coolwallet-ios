@@ -9,7 +9,6 @@
 #import "TabbarSendViewController.h"
 #import "OCAppCommon.h"
 
-CwManager *cwManager;
 CwCard *cwCard;
 CwAccount *account;
 CwBtcNetWork *btcNet;
@@ -35,11 +34,11 @@ long TxFee = 10000;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     //find CW via BLE
-    CwManager *cwManager = [CwManager sharedManager];
-    cwCard = cwManager.connectedCwCard;
+    
     //NSLog(@"currentAccountId = %ld",cwCard.currentAccountId);
     //btcNet = [CwBtcNetWork sharedManager];
     
+    cwCard = self.cwManager.connectedCwCard;
     cwCard.paymentAddress = @"";
     //cwCard.amount = 0;
     cwCard.label = @"";
@@ -191,7 +190,7 @@ long TxFee = 10000;
 {
     if([_txtAmount.text compare:@""] != 0) {
         NSString *satoshi = [[OCAppCommon getInstance] convertBTCtoSatoshi:_txtAmount.text];
-        NSString *fiatmoney =  [[OCAppCommon getInstance] convertFiatMoneyString:[satoshi longLongValue] currRate:cwManager.connectedCwCard.currRate];
+        NSString *fiatmoney =  [[OCAppCommon getInstance] convertFiatMoneyString:[satoshi longLongValue] currRate:self.cwManager.connectedCwCard.currRate];
         
         _txtAmountFiatmoney.text = fiatmoney;
     }else{
@@ -203,7 +202,7 @@ long TxFee = 10000;
 - (IBAction)doneAmountFiatmoney:(id)sender
 {
     if([_txtAmountFiatmoney.text compare:@""] != 0) {
-        NSString *btc = [[OCAppCommon getInstance] convertBTCFromFiatMoney:[_txtAmountFiatmoney.text doubleValue] currRate:cwManager.connectedCwCard.currRate];
+        NSString *btc = [[OCAppCommon getInstance] convertBTCFromFiatMoney:[_txtAmountFiatmoney.text doubleValue] currRate:self.cwManager.connectedCwCard.currRate];
         _txtAmount.text = btc;
     }else{
         _txtAmount.text = @"";
@@ -214,7 +213,7 @@ long TxFee = 10000;
 #pragma marks - Account Button Actions
 
 - (void)setAccountButton{
-    NSLog(@"cwAccounts = %d", [cwCard.cwAccounts count]);
+    NSLog(@"cwAccounts = %ld", [cwCard.cwAccounts count]);
     for(int i =0; i< [cwCard.cwAccounts count]; i++) {
         if(i == 0) {
             _btnAccount1.hidden = NO;
@@ -277,9 +276,8 @@ long TxFee = 10000;
         cwCard.currentAccountId = 0;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     
-    NSLog(@"account.accId = %d",account.accId);
     //[cwCard getAccountAddresses: account.accId];
     
     [cwCard getAccountInfo:cwCard.currentAccountId];
@@ -304,9 +302,8 @@ long TxFee = 10000;
         cwCard.currentAccountId = 1;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     
-    NSLog(@"account.accId = %d",account.accId);
     //[cwCard getAccountAddresses: account.accId];
     
     [cwCard getAccountInfo:cwCard.currentAccountId];
@@ -331,9 +328,8 @@ long TxFee = 10000;
         cwCard.currentAccountId = 2;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     
-    NSLog(@"account.accId = %d",account.accId);
     //[cwCard getAccountAddresses: account.accId];
     
     [cwCard getAccountInfo:cwCard.currentAccountId];
@@ -358,9 +354,8 @@ long TxFee = 10000;
         cwCard.currentAccountId = 3;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", cwCard.currentAccountId]];
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     
-    NSLog(@"account.accId = %d",account.accId);
     //[cwCard getAccountAddresses: account.accId];
     
     [cwCard getAccountInfo:cwCard.currentAccountId];
@@ -387,7 +382,6 @@ long TxFee = 10000;
     }
     account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     
-    NSLog(@"account.accId = %ld",account.accId);
     //[cwCard getAccountAddresses: account.accId];
     [cwCard getAccountInfo:cwCard.currentAccountId];
     [self SetBalanceText];
@@ -399,7 +393,7 @@ long TxFee = 10000;
     //_lblBalance.text = [NSString stringWithFormat: @"%lld BTC", (int64_t)account.balance];
     _lblBalance.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertBTCStringformUnit: (int64_t)account.balance], [[OCAppCommon getInstance] BitcoinUnit]];
     
-    _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:cwManager.connectedCwCard.currRate], cwCard.currId];
+    _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:self.cwManager.connectedCwCard.currRate], cwCard.currId];
 }
 
 -(void) sendPrepareTransaction

@@ -8,6 +8,8 @@
 
 #import "BaseViewController.h"
 
+CwManager *cwManager;
+
 @interface BaseViewController ()
 {
     MBProgressHUD *mHUD;
@@ -20,6 +22,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.cwManager = [CwManager sharedManager];
+    cwManager = self.cwManager;
+}
+
+-(void) viewWillAppear:(BOOL)animated
+{
+    self.cwManager.delegate = self;
+    self.cwManager.connectedCwCard.delegate = self;
+}
+
+-(void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.cwManager.connectedCwCard saveCwCardToFile];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -47,10 +65,38 @@
 {
     if(mHUD != nil) {
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-        //[mHUD removeFromSuperview];
-        //[mHUD release];
         mHUD = nil;
     }
+}
+
+#pragma mark - CwCard Delegates
+-(void) didCwCardCommand
+{
+    
+}
+
+-(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
+{
+    NSLog(@"%@ didCwCardCommandError: %ld, ErrString: %@", self, cmdId, errString);
+}
+
+#pragma mark - CwManager Delegate
+-(void) didDisconnectCwCard: (NSString *)cardName
+{
+    NSLog(@"didDisconnectCwCard");
+    [self performDismiss];
+    
+    //Add a notification to the system
+    UILocalNotification *notify = [[UILocalNotification alloc] init];
+    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
+    notify.soundName = UILocalNotificationDefaultSoundName;
+    [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
+    
+    // Get the storyboard named secondStoryBoard from the main bundle:
+    UIStoryboard *secondStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *listCV = (UIViewController *)[secondStoryBoard instantiateViewControllerWithIdentifier:@"CwMain"];
+    [self.parentViewController presentViewController:listCV animated:YES completion:nil];
+    
 }
 
 /*

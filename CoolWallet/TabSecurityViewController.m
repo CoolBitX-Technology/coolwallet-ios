@@ -11,8 +11,8 @@
 #import "CwCard.h"
 #import "SWRevealViewController.h"
 
-@interface TabSecurityViewController ()  <CwManagerDelegate, CwCardDelegate>
-@property CwManager *cwManager;
+@interface TabSecurityViewController ()
+
 @property (weak, nonatomic) IBOutlet UISwitch *swOtpEnable;
 @property (weak, nonatomic) IBOutlet UISwitch *swBtnEnable;
 @property (weak, nonatomic) IBOutlet UISwitch *swWatchDogEnable;

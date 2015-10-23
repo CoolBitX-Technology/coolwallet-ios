@@ -11,8 +11,7 @@
 #import "CwCard.h"
 #import "SWRevealViewController.h"
 
-@interface TabExitViewController ()  <CwManagerDelegate, CwCardDelegate>
-@property CwManager *cwManager;
+@interface TabExitViewController ()
 - (IBAction)btnDisconnectCw:(id)sender;
 @end
 

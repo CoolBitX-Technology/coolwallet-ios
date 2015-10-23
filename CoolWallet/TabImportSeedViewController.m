@@ -26,33 +26,15 @@
 
 @end
 
-@interface TabImportSeedViewController () <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate, UITextViewDelegate>
-@property CwManager *cwManager;
+@interface TabImportSeedViewController () <UITextFieldDelegate, UITextViewDelegate>
 @property (strong, nonatomic) NSArray *wordSeeds;
 
-@property (weak, nonatomic) IBOutlet UITextField *txtHdwName;
-@property (weak, nonatomic) IBOutlet UILabel *lblSeedLen;
+@property (weak, nonatomic) IBOutlet UIButton *btnSeedType;
 @property (weak, nonatomic) IBOutlet UITextView *txtSeed;
-@property (weak, nonatomic) IBOutlet UIButton *btnCreateHdw;
-@property (weak, nonatomic) IBOutlet UIButton *btnConfirmHdw;
-@property (weak, nonatomic) IBOutlet UISwitch *swSeedOnCard;
-@property (weak, nonatomic) IBOutlet UISlider *sliSeedLen;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBusyIndicator;
-
-@property (weak, nonatomic) IBOutlet UILabel *lblSum;
-@property (weak, nonatomic) IBOutlet UITextField *txtSum;
-@property (weak, nonatomic) IBOutlet UILabel *lblWarning;
 
 @property (weak, nonatomic) IBOutlet UISwitch *swNumberSeed;
 
-- (IBAction)sliSeedLen:(UISlider *)sender;
-- (IBAction)swSeedOnCard:(UISwitch *)sender;
-
-- (IBAction)swipSeed:(id)sender;
 - (IBAction)btnCreateHdw:(id)sender;
-- (IBAction)btnConfirmHdw:(id)sender;
-
-- (IBAction)swNumberSeed:(UISwitch *)sender;
 
 @end
 
@@ -64,23 +46,12 @@ CwBtcNetWork *btcNet;
 - (void)viewDidLoad {
     [super viewDidLoad];
     //find CW via BLE
-    self.cwManager = [CwManager sharedManager];
     cwCard = self.cwManager.connectedCwCard;
     btcNet = [CwBtcNetWork sharedManager];
-    //self.txtHdwName.delegate = self;
     self.txtSeed.delegate = self;
-    //self.txtSum.delegate = self;
     
     self.wordSeeds = [NYMnemonic getSeedsWithLanguage:@"english"];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.cwManager.delegate = self;
-    cwCard.delegate = self;
-    
-    self.actBusyIndicator.hidden = YES;
-    //[self.actBusyIndicator startAnimating];
+    self.swNumberSeed.on = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -125,29 +96,6 @@ CwBtcNetWork *btcNet;
     return YES;
 }
 
--(void) genMnemonic: (NSNumber *)seedLen {
-    // Generating a mnemonic
-    NSString *mnemonic = [NYMnemonic generateMnemonicString:seedLen language:@"english"];
-    //=> @"letter advice cage absurd amount doctor acoustic avoid letter advice cage above"
-    
-    
-    self.txtSeed.text = mnemonic;
-}
-
--(void) updateSeedLen {
-    int discreteValue = roundl([self.sliSeedLen value]); // Rounds float to an integer
-    
-    if (self.swSeedOnCard.on) {
-        //48/72/96
-        self.lblSeedLen.text = [[NSString alloc] initWithFormat:@"%d",  (discreteValue * 24 + 48)];
-    } else {
-        //12/18/24
-        //Seed size	128(32*4) 192(32*6)	256(32*8)
-        self.lblSeedLen.text = [[NSString alloc] initWithFormat:@"%d",  (discreteValue * 6 + 12)];
-        [self genMnemonic: [NSNumber numberWithInt: [self.lblSeedLen.text intValue]*32/3]];
-    }
-}
-
 #pragma marks - textview delegate
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     NSLog(@"textViewShouldBeginEditing:");
@@ -156,8 +104,26 @@ CwBtcNetWork *btcNet;
 
 #pragma marks - Actions
 
-- (IBAction)swNumberSeed:(UISwitch *)sender {
-    _txtSeed.text = @"";
+- (IBAction)btnSelectSeedType:(UIButton *)sender {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Choose your seed type" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *englishAction = [UIAlertAction actionWithTitle:@"My seeds is in words" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        self.swNumberSeed.on = NO;
+        self.txtSeed.text = @"";
+        [self.btnSeedType setTitle:action.title forState:UIControlStateNormal];
+    }];
+    
+    UIAlertAction *numberAction = [UIAlertAction actionWithTitle:@"My seeds is in numbers" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        self.swNumberSeed.on = YES;
+        self.txtSeed.text = @"";
+        [self.btnSeedType setTitle:action.title forState:UIControlStateNormal];
+    }];
+    
+    [alertController addAction:englishAction];
+    [alertController addAction:numberAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
 }
 
 - (IBAction)btnCreateHdw:(id)sender {
@@ -173,16 +139,8 @@ CwBtcNetWork *btcNet;
     //=> "d71de856f81a8acc65e6fc851a38d4d7ec216fd0796d0a6827a3ad6ed5511a30fa280f12eb2e47ed2ac03b5c462a0358d18d69fe4f985ec81778c1b370b652a8"
     [self.cwManager.connectedCwCard initHdw:@"" BySeed:seed];
     
-    self.actBusyIndicator.hidden = NO;
-    [self.actBusyIndicator startAnimating];
+    [self showIndicatorView:@"Start init CoolWallet..."];
     
-}
-
-- (IBAction)btnConfirmHdw:(id)sender {
-    [self.cwManager.connectedCwCard initHdwConfirm: self.txtSum.text];
-    
-    self.actBusyIndicator.hidden = NO;
-    [self.actBusyIndicator startAnimating];
 }
 
 // check seed string number or english
@@ -212,89 +170,12 @@ CwBtcNetWork *btcNet;
 }
 
 #pragma marks - CwCard Delegate
--(void) didCwCardCommand
-{
-    [self.actBusyIndicator stopAnimating];
-    self.actBusyIndicator.hidden = YES;
-}
-
-
--(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
-{
-    NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
-                                                   message: msg
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    
-    [alert show];
-}
 
 -(void) didInitHdwBySeed
 {
-    
-    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
-    UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
+    [self performDismiss];
     
     [self performSegueWithIdentifier:@"RecoverySegue" sender:self];
-    
-    //[self.revealViewController pushFrontViewController:vc animated:YES];
-}
-
--(void) didInitHdwByCard
-{
-    //disable btn
-    self.btnCreateHdw.enabled = NO;
-    self.btnCreateHdw.backgroundColor = [UIColor grayColor];
-    
-    //enable confirm btn
-    self.txtSum.hidden = NO;
-    self.lblSum.hidden = NO;
-    self.btnConfirmHdw.hidden = NO;
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Please Backup Seed and Confirm"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];
-    
-}
-
--(void) didInitHdwConfirm
-{
-    //disable btn
-    self.btnConfirmHdw.enabled = NO;
-    self.btnConfirmHdw.backgroundColor = [UIColor grayColor];
-    
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"HDW Created"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];
-    
-    //back to previous controller
-    [self.navigationController popViewControllerAnimated:YES];
-    
-}
-
-#pragma mark - CwManager Delegate
--(void) didDisconnectCwCard: (NSString *)cardName
-{
-    //Add a notification to the system
-    UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
-    notify.soundName = UILocalNotificationDefaultSoundName;
-    [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
-    
-    // Get the storyboard named secondStoryBoard from the main bundle:
-    UIStoryboard *secondStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    // Load the view controller with the identifier string myTabBar
-    // Change UIViewController to the appropriate class
-    UIViewController *listCV = (UIViewController *)[secondStoryBoard instantiateViewControllerWithIdentifier:@"CwMain"];
-    // Then push the new view controller in the usual way:
-    [self.parentViewController presentViewController:listCV animated:YES completion:nil];
 }
 
 @end

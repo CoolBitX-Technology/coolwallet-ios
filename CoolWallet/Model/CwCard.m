@@ -14,6 +14,7 @@
 #import "CwCardApduError.h"
 #import "CwHost.h"
 #import "CwAddress.h"
+#import "CwCardInfo.h"
 
 #import "CwBtcNetwork.h"
 
@@ -466,23 +467,41 @@ NSArray *addresses;
 }
 
 //Load Commands
+-(CwCard *) getCardInfoFromFile
+{
+    if (self.cardId == nil) {
+        return nil;
+    }
+    
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    CwCard *card = [defaults rm_customObjectForKey:self.cardId];
+    
+    return card;
+}
+
 -(void) loadCwCardFromFile
 {
     //remove for test
     //[[NSUserDefaults standardUserDefaults] removeObjectForKey:self.cardId];
     
-    if (self.cardId == nil) {
+    if (self.cardId == nil || self.hostOtp == nil) {
         return;
     }
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    CwCard *card = [defaults rm_customObjectForKey:self.cardId];
-    if (card == nil) {
+    CwCardInfo *cardInfo = [defaults rm_customObjectForKey:self.cardId];
+    if (cardInfo == nil) {
         return;
     }
-    [RMMapper populateObject:self fromDictionary:[RMMapper dictionaryForObject:card]];
     
-
+    if ([cardInfo.hostOtp isEqualToString:self.hostOtp]) {
+        NSDictionary *dict = [RMMapper dictionaryForObject:cardInfo];
+        [RMMapper populateObject:self fromDictionary:dict];
+        self.cwHosts = [NSMutableDictionary dictionaryWithDictionary:self.cwHosts];
+        self.cwAccounts = [NSMutableDictionary dictionaryWithDictionary:self.cwAccounts];
+    } else {
+        [defaults removeObjectForKey:self.cardId];
+    }
 }
 
 //Save Commands
@@ -490,11 +509,12 @@ NSArray *addresses;
 {
     NSLog(@"SaveCwToFile:%@ accountptr:%@ accoints:%lu", self.cardId, self.hdwAcccountPointer, (unsigned long)self.cwAccounts.count);
     
-    if (self.cardId == nil) {
+    if (self.cardId == nil || self.hdwAcccountPointer == nil) {
         return;
     }
     
-    [[NSUserDefaults standardUserDefaults] rm_setCustomObject:self forKey:self.cardId];
+    CwCardInfo *cardInfo = [[CwCardInfo alloc] initFromCwCard:self];
+    [[NSUserDefaults standardUserDefaults] rm_setCustomObject:cardInfo forKey:self.cardId];
 }
 
 //Sync Card Info after Login
@@ -970,21 +990,10 @@ NSArray *addresses;
 {
     CwAccount *acc= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", accId]];
     NSInteger accPtr[5][2];
-    
-    //if it going to gen an internal address, use a address have no trx yet
-    /*
-    if (keyChainId==CwAddressKeyChainInternal) {
-        for (int i=0; i<account.intKeyPointer; i++) {
-            CwAddress *addr = account.intKeys[i];
-            if (addr.historyTrx==nil || addr.historyTrx.count==0) {
-                //no transactions yet
-                if ([self.delegate respondsToSelector:@selector(didGenAddress:)]) {
-                    [self.delegate didGenAddress:addr];
-                }
-                return;
-            }
-        }
-    }*/
+    for(int i=0; i<5; i++) {
+        accPtr[i][0]=-1;
+        accPtr[i][1]=-1;
+    }
     
     if (keyChainId==CwAddressKeyChainExternal) {
         //check if there are 20 empty addresses
@@ -2226,13 +2235,13 @@ NSArray *addresses;
     
     //input:
     //securePolicy 4B
-    if (self.securityPolicy_OtpEnable)
+    if (self.securityPolicy_OtpEnable.boolValue)
         sp[0]=sp[0]|CwSecurityPolicyMaskOtp;
-    if (self.securityPolicy_BtnEnable)
+    if (self.securityPolicy_BtnEnable.boolValue)
         sp[0]=sp[0]|CwSecurityPolicyMaskBtn;
-    if (self.securityPolicy_DisplayAddressEnable)
+    if (self.securityPolicy_DisplayAddressEnable.boolValue)
         sp[0]=sp[0]|CwSecurityPolicyMaskAddress;
-    if (self.securityPolicy_WatchDogEnable)
+    if (self.securityPolicy_WatchDogEnable.boolValue)
         sp[0]=sp[0]|CwSecurityPolicyMaskWatchDog;
     
     //Calc MAC by macKey
@@ -2489,13 +2498,13 @@ NSArray *addresses;
     
     //input:
     //securePolicy 4B
-    if (self.securityPolicy_OtpEnable)
+    if (self.securityPolicy_OtpEnable.boolValue)
         sp[0]=sp[0]|CwSecurityPolicyMaskOtp;
-    if (self.securityPolicy_BtnEnable)
+    if (self.securityPolicy_BtnEnable.boolValue)
         sp[0]=sp[0]|CwSecurityPolicyMaskBtn;
-    if (self.securityPolicy_DisplayAddressEnable)
+    if (self.securityPolicy_DisplayAddressEnable.boolValue)
         sp[0]=sp[0]|CwSecurityPolicyMaskAddress;
-    if (self.securityPolicy_WatchDogEnable)
+    if (self.securityPolicy_WatchDogEnable.boolValue)
         sp[0]=sp[0]|CwSecurityPolicyMaskWatchDog;
     
     //output:
@@ -4108,6 +4117,7 @@ NSArray *addresses;
             //output:
             //mode: 1B
             //state: 1B
+            NSLog(@"CwCmdIdGetModeState: %ld", cmd.cmdResult);
             if (cmd.cmdResult==0x9000) {
                 self.mode = [NSNumber numberWithInteger:data[0]];
                 self.state = [NSNumber numberWithInteger:data[1]];
@@ -4116,6 +4126,9 @@ NSArray *addresses;
                 }
             } else {
                 NSLog(@"CwCmdIdGetModeState Error %04lX", (long)cmd.cmdResult);
+                if (self.delegate && [self.delegate respondsToSelector:@selector(didCwCardCommandError:ErrString:)]) {
+                    [self.delegate didCwCardCommandError:cmd.cmdId ErrString:nil];
+                }
             }
             break;
         case CwCmdIdGetFwVersion:
@@ -4386,6 +4399,7 @@ NSArray *addresses;
             //output:
             //none
             if (cmd.cmdResult==0x9000) {
+                [self loadCwCardFromFile];
                 if ([self.delegate respondsToSelector:@selector(didLoginHost)]) {
                     [self.delegate didLoginHost];
                 }
@@ -4839,7 +4853,7 @@ NSArray *addresses;
                 NSInteger accId = *(int32_t *)[cmd.cmdInput bytes];
                 
                 //get Account from directory
-                CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", (long)accId]];
+                CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", accId]];
                 
                 switch (cmd.cmdP1) {
                     case CwHdwAccountInfoName:
@@ -4893,7 +4907,7 @@ NSArray *addresses;
                         break;
                 }
                 
-                [self.cwAccounts setObject: account forKey: [NSString stringWithFormat: @"%ld", (long)accId]];
+                [self.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", accId]];
                 
                 //if both pointers are synced, get the addresses/publickey
                 /*if (syncAccExtPtrFlag[account.accId] && syncAccIntPtrFlag[account.accId]) {
@@ -5230,11 +5244,11 @@ NSArray *addresses;
                     [self.delegate didPrepareTransaction:[[NSString alloc] initWithBytes:data length:6 encoding:NSUTF8StringEncoding]];
                 }
                 
-                if (self.securityPolicy_OtpEnable==YES) {
+                if (self.securityPolicy_OtpEnable.boolValue == YES) {
                     trxStatus=TrxStatusWaitOtp;
                     currentCmd.busy=NO;
                     [self BLE_ReadStatus];
-                } else if (self.securityPolicy_BtnEnable==YES) {
+                } else if (self.securityPolicy_BtnEnable.boolValue == YES) {
                     trxStatus = TrxStatusWaitBtn;
                     currentCmd.busy=NO;
                     [self BLE_ReadStatus];
@@ -5645,10 +5659,10 @@ NSArray *addresses;
     
     NSLog (@"RSSI %@, scale: %ld", RSSI, scale);
     
-    if (self.securityPolicy_WatchDogEnable.boolValue && scale > [self.securityPolicy_WatchDogScale integerValue]) {
-        if ([self.delegate respondsToSelector:@selector(didWatchDogAlert:)])
-            [self.delegate didWatchDogAlert:scale];
-    }
+//    if (self.securityPolicy_WatchDogEnable.boolValue && scale > [self.securityPolicy_WatchDogScale integerValue]) {
+//        if ([self.delegate respondsToSelector:@selector(didWatchDogAlert:)])
+//            [self.delegate didWatchDogAlert:scale];
+//    }
 }
 
 

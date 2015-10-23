@@ -164,6 +164,7 @@
 		EFFA18351B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFA18341B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m */; };
 		F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */; settings = {ASSET_TAGS = (); }; };
 		F493F32F1BC6807600876710 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F493F32E1BC6807600876710 /* BaseViewController.m */; };
+		F49F76431BD8AFF800C335B9 /* downarrow-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -423,6 +424,7 @@
 		F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwCardInfo.m; sourceTree = "<group>"; };
 		F493F32D1BC6807600876710 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		F493F32E1BC6807600876710 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downarrow-01@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -773,6 +775,7 @@
 		EFF1ACC219EFFCEA00DD0BCB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */,
 				EFA340DA1AA6B81B0035AC6D /* add.png */,
 				EFEF1BC71B41039A00373B0E /* add@2x.png */,
 				EFEF1BC81B41039A00373B0E /* add@3x.png */,
@@ -1025,6 +1028,7 @@
 				EFAA905D1AB91A8500D6A03E /* home@2x.png in Resources */,
 				EFAA90641AB91A8500D6A03E /* send-grey@3x.png in Resources */,
 				EFA341101AA6B81C0035AC6D /* checkbox_empty.png in Resources */,
+				F49F76431BD8AFF800C335B9 /* downarrow-01@2x.png in Resources */,
 				EFA3412A1AA6B81C0035AC6D /* member.png in Resources */,
 				EFA36D2B1AC3F3C300D7262F /* menu@2x.png in Resources */,
 				EFAC5FF21AADA2250042FF8C /* menu.png in Resources */,

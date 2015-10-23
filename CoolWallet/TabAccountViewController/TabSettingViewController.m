@@ -13,17 +13,7 @@
 
 @interface TabSettingViewController ()  <CwManagerDelegate, CwCardDelegate>
 @property CwManager *cwManager;
-@property (weak, nonatomic) IBOutlet UISwitch *swOtpEnable;
-@property (weak, nonatomic) IBOutlet UISwitch *swBtnEnable;
-@property (weak, nonatomic) IBOutlet UISwitch *swWatchDogEnable;
-@property (weak, nonatomic) IBOutlet UISwitch *swDisplayAddress;
-
-@property (weak, nonatomic) IBOutlet UISwitch *swPreserveHostInfo;
-
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBusyIndicator;
-
-- (IBAction)btnUpdateSecurityPolicy:(id)sender;
-- (IBAction)btnEraseCw:(id)sender;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -35,14 +25,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    //menuItems = @[@"BitcoinUnits", @"ResetCoolWallet"];
-    menuItems = @[@"ResetCoolWallet", @"BitcoinUnits"];
+//    menuItems = @[@"ResetCoolWallet", @"BitcoinUnits"];
+    menuItems = @[@"ResetCoolWallet"];
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     //find CW via BLE
     self.cwManager = [CwManager sharedManager];
-    //self.cwManager.delegate=self;
-
-    self.actBusyIndicator.hidden = YES;
 
 }
 
@@ -113,43 +102,11 @@
     //if(indexPath.row == 0) [self performSegueWithIdentifier:@"SettingBitcoinUnit" sender:self];
 }
 
-#pragma mark - Actions
-- (IBAction)btnUpdateSecurityPolicy:(id)sender {
-    
-    NSLog(@"mode = %@", self.cwManager.connectedCwCard.mode);
-    if ([self.cwManager.connectedCwCard.mode integerValue] == CwCardModeNormal) {
-        //get security policy
-        self.actBusyIndicator.hidden = NO;
-        [self.actBusyIndicator startAnimating];
-        [self.cwManager.connectedCwCard setSecurityPolicy:self.swOtpEnable.on
-                                             ButtonEnable:self.swBtnEnable.on
-                                     DisplayAddressEnable:self.swDisplayAddress.on
-                                           WatchDogEnable:self.swWatchDogEnable.on];
-    } else if ([self.cwManager.connectedCwCard.mode integerValue] == CwCardModePerso) {
-        NSLog(@"otp = %d", self.swOtpEnable.on);
-        //get security policy
-        self.actBusyIndicator.hidden = NO;
-        [self.actBusyIndicator startAnimating];
-        [self.cwManager.connectedCwCard persoSecurityPolicy:self.swOtpEnable.on
-                                             ButtonEnable:self.swBtnEnable.on
-                                     DisplayAddressEnable:self.swDisplayAddress.on
-                                           WatchDogEnable:self.swWatchDogEnable.on];
-    }
-}
-
-- (IBAction)btnEraseCw:(id)sender {
-    self.actBusyIndicator.hidden = NO;
-    [self.actBusyIndicator startAnimating];
-    
-    [self.cwManager.connectedCwCard eraseCw:self.swPreserveHostInfo.on Pin:@"" NewPin:@""];
-}
-
 #pragma mark - CwCardDelegate
 
 -(void) didCwCardCommand
 {
-    [self.actBusyIndicator stopAnimating];
-    self.actBusyIndicator.hidden = YES;
+    
 }
 
 -(void) didGetModeState
@@ -188,64 +145,6 @@
     UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
     [self.revealViewController pushFrontViewController:vc animated:YES];
 
-}
-
--(void) didGetSecurityPolicy
-{
-    self.swOtpEnable.on = self.cwManager.connectedCwCard.securityPolicy_OtpEnable.boolValue;
-    self.swBtnEnable.on = self.cwManager.connectedCwCard.securityPolicy_BtnEnable.boolValue;
-    self.swWatchDogEnable.on = self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable.boolValue;
-    self.swDisplayAddress.on = self.cwManager.connectedCwCard.securityPolicy_DisplayAddressEnable.boolValue;
-}
-
--(void) didSetSecurityPolicy
-{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CW Security Policy Set"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];
-    
-    //[self.cwManager.connectedCwCard getModeState];
-}
-
--(void) didEraseWallet {
-    
-    //if erase CW, then wait for didEraseCw delegate, don't show the alert here
-    if (self.swPreserveHostInfo.on)
-    {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CoolWallet has reset"
-                                                   message: @"Host info preserved"
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    
-        [alert show];
-    }
-    
-    NSLog(@"CW Erased (Host Preserved)");
-    
-    [self.cwManager disconnectCwCard];
-    
-    NSLog(@"CW Released");
-}
-
--(void) didEraseCw {
-    
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CoolWallet has reset"
-                                                   message: @"Host info also erased"
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    
-    [alert show];
-    
-    NSLog(@"Cw Erased");
-    
-    [self.cwManager disconnectCwCard];
-    
-    NSLog(@"CW Released");
 }
 
 #pragma mark - CwManager Delegate

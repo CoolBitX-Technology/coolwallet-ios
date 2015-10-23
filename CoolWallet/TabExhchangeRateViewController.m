@@ -14,10 +14,6 @@
     NSDictionary *rates;
 }
 
-CwManager *cwManager;
-CwCard *cwCard;
-CwBtcNetWork *btcNet;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     for(UIView* view in self.navigationController.navigationBar.subviews)
@@ -27,30 +23,33 @@ CwBtcNetWork *btcNet;
             [view removeFromSuperview];
         }
     }
-    
-    //find CW via BLE
-    cwManager = [CwManager sharedManager];
-    cwManager.delegate=self;
-    
-    //self.actBusyIndicator.hidden = YES;
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    cwManager.connectedCwCard.delegate = self;
+    [self showIndicatorView:@"Load..."];
     
-    rates = [btcNet getCurrRate];
-    
-    //find currId from the rates
-    NSNumber *rate = [rates objectForKey:cwCard.currId];
-    [_tableExchangeRate reloadData];
+    [self performSelectorOnMainThread:@selector(getCurrRate) withObject:nil waitUntilDone:NO];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void) getCurrRate
+{
+    NSLog(@"getCurrRate");
+    CwBtcNetWork *btcNet = [CwBtcNetWork sharedManager];
+    
+    rates = [btcNet getCurrRate];
+    
+    [self performDismiss];
+    
+    //find currId from the rates
+//    NSNumber *rate = [rates objectForKey:self.cwManager.connectedCwCard.currId];
+    [_tableExchangeRate reloadData];
 }
 
 /*
@@ -88,7 +87,7 @@ CwBtcNetWork *btcNet;
     UILabel *lblRate = (UILabel *)[cell viewWithTag:100];
     lblRate.text = [currIds objectAtIndex:indexPath.row];
     
-    if([cwCard.currId compare:lblRate.text] == 0) cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    if([self.cwManager.connectedCwCard.currId compare:lblRate.text] == 0) cell.accessoryType = UITableViewCellAccessoryCheckmark;
     else cell.accessoryType = UITableViewCellAccessoryNone;
     
     return cell;
@@ -99,13 +98,13 @@ CwBtcNetWork *btcNet;
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    NSLog(@"row select = %d",indexPath.row);
+    
     NSArray *currIds=[rates allKeys];
     
-    cwCard.currId = [currIds objectAtIndex:indexPath.row];
+    self.cwManager.connectedCwCard.currId = [currIds objectAtIndex:indexPath.row];
     
     //find currId from the rates
-    NSNumber *rate = [rates objectForKey:cwCard.currId];
+    NSNumber *rate = [rates objectForKey:self.cwManager.connectedCwCard.currId];
     
     if (rate==nil) {
         //use USD as default currId
@@ -114,7 +113,7 @@ CwBtcNetWork *btcNet;
     
     if (rate)
     {
-        cwCard.currRate = [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%f", [rate floatValue]*100]];
+        self.cwManager.connectedCwCard.currRate = [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%f", [rate floatValue]*100]];
         
         //[self didGetCwCurrRate];
         

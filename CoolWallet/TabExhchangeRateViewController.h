@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CwManager.h"
-#import "CwCard.h"
+#import "BaseViewController.h"
 
-@interface TabExhchangeRateViewController :UIViewController <CwManagerDelegate,CwCardDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface TabExhchangeRateViewController :BaseViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableExchangeRate;
 @end

@@ -29,9 +29,4 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnEditLabel;
 @property (weak, nonatomic) IBOutlet UIButton *btnRequestPayment;
 
-- (IBAction)btnAccount1:(id)sender;
-- (IBAction)btnAccount2:(id)sender;
-- (IBAction)btnAccount3:(id)sender;
-- (IBAction)btnAccount4:(id)sender;
-- (IBAction)btnAccount5:(id)sender;
 @end

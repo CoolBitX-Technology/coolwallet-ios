@@ -100,7 +100,7 @@ NSInteger accPtr[5][2]; //store key index of each accounts
 }
 
 -(void) didGetCwHdwStatus {
-    if (cwCard.hdwStatus!=CwHdwStatusActive) {
+    if (cwCard.hdwStatus.integerValue != CwHdwStatusActive) {
         [self addLog: @"HDW is not created"];
     } else {
         [self addLog: @"HDW status is ready"];
@@ -108,18 +108,18 @@ NSInteger accPtr[5][2]; //store key index of each accounts
 }
 
 -(void) didGetCwHdwAccountPointer {
-    if (cwCard.hdwStatus!=CwHdwStatusActive) {
+    if (cwCard.hdwStatus.integerValue != CwHdwStatusActive) {
         [self addLog: @"HDW is not created"];
     }
 
     //if pointer is less then 5, creat all the rest of accounts
-    for (NSInteger i=cwCard.hdwAcccountPointer; i<5; i++) {
+    for (NSInteger i=cwCard.hdwAcccountPointer.integerValue; i<5; i++) {
         [cwCard newAccount:i Name:@""];
     }
     
-    if (cwCard.hdwAcccountPointer==5) {
+    if (cwCard.hdwAcccountPointer.integerValue == 5) {
         [self addLog: @"HDW accounts are ready"];
-        for (int i=0; i<cwCard.hdwAcccountPointer; i++)
+        for (int i=0; i<cwCard.hdwAcccountPointer.integerValue; i++)
             [cwCard getAccountInfo: i];
     }
 }
@@ -128,9 +128,9 @@ NSInteger accPtr[5][2]; //store key index of each accounts
 
     [self addLog: [NSString stringWithFormat:@"HDW accounts %ld is created", (long)aid]];
     
-    if (cwCard.hdwAcccountPointer==5) {
+    if ([cwCard.hdwAcccountPointer integerValue] == 5) {
         [self addLog: @"HDW accounts are ready"];
-        for (int i=0; i<cwCard.hdwAcccountPointer; i++)
+        for (int i=0; i<cwCard.hdwAcccountPointer.integerValue; i++)
             [cwCard getAccountInfo: i];
     }
 }
@@ -203,6 +203,7 @@ NSInteger accPtr[5][2]; //store key index of each accounts
 
 -(void) didGenAddress:(CwAddress *)addr {
     [self setProgressPercent];
+    
     CwAccount *acc = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)addr.accountId]];
     NSMutableArray *addrTxs;
     

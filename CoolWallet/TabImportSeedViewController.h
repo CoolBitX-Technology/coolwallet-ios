@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface TabImportSeedViewController:UIViewController
+@interface TabImportSeedViewController:BaseViewController
 {
     NSString *mnemonic;
 }

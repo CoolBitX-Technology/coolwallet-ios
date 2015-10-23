@@ -7,20 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 #import "CwManager.h"
 #import "CwCard.h"
 #import "CwAccount.h"
 #import "MBProgressHUD.h"
 #import "CwBtcNetwork.h"
 
-@interface TabbarHomeViewController : UIViewController <CwManagerDelegate, CwCardDelegate, CwBtcNetworkDelegate, UITableViewDataSource, UITableViewDelegate>
-{
-#pragma makrs - Internal properties
-    CwManager *cwManager;
-    CwCard *cwCard;
-    
-    MBProgressHUD *mHUD;
-}
+@interface TabbarHomeViewController : BaseViewController <CwBtcNetworkDelegate, UITableViewDataSource, UITableViewDelegate>
 
 //@property (weak, nonatomic) IBOutlet UIBarButtonItem *btnAddAccount;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount1;

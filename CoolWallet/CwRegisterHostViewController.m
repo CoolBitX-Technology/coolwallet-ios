@@ -16,7 +16,7 @@
 #import "ViewController.h"
 #import "KeychainItemWrapper.h"
 
-@interface CwRegisterHostViewController () <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate>
+@interface CwRegisterHostViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtIdentifier;
 @property (weak, nonatomic) IBOutlet UITextField *txtDescription;
@@ -27,7 +27,6 @@
 - (IBAction)regHostConfirm:(id)sender;
 @end
 
-CwManager *cwManager;
 CwCard *cwCard;
 
 @implementation CwRegisterHostViewController
@@ -36,8 +35,7 @@ CwCard *cwCard;
     [super viewDidLoad];
     
     //find CW via BLE
-    cwManager = [CwManager sharedManager];
-    cwCard = cwManager.connectedCwCard;
+    cwCard = self.cwManager.connectedCwCard;
     
     // Do any additional setup after loading the view.
     self.txtIdentifier.delegate = self;
@@ -46,7 +44,7 @@ CwCard *cwCard;
     
     //display iphone infos
     //self.txtIdentifier.text = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    self.txtIdentifier.text = cwManager.connectedCwCard.devCredential;
+    self.txtIdentifier.text = self.cwManager.connectedCwCard.devCredential;
     self.txtDescription.text = [[UIDevice currentDevice] name];
     
     self.actBusyIndicator.hidden = NO;
@@ -54,13 +52,11 @@ CwCard *cwCard;
     //[self regHost:self];
     
     NSLog(@"txtIdentifier = %@",self.txtIdentifier.text);
-    NSLog(@"mode = %d",cwManager.connectedCwCard.mode);
+    NSLog(@"mode = %@",self.cwManager.connectedCwCard.mode);
 }
 
 - (void)viewWillAppear:(BOOL)animated {    
     [super viewWillAppear:animated];
-    cwManager.delegate = self;
-    cwCard.delegate = self;
     
     [cwCard getModeState];
 
@@ -128,14 +124,14 @@ CwCard *cwCard;
     _viewOTPConfirm.hidden = NO;
     _btnRegisterHost.hidden = NO;
     NSLog(@"cwManager = %@",self.txtDescription.text);
-    [cwManager.connectedCwCard registerHost: self.txtIdentifier.text Description: self.txtDescription.text];
+    [self.cwManager.connectedCwCard registerHost: self.txtIdentifier.text Description: self.txtDescription.text];
 }
 
 - (IBAction)regHostConfirm:(id)sender {
     self.actBusyIndicator.hidden = NO;
     [self.actBusyIndicator startAnimating];
     
-    [cwManager.connectedCwCard confirmHost:self.txtOtp.text];
+    [self.cwManager.connectedCwCard confirmHost:self.txtOtp.text];
 }
 
 #pragma mark - UITextFieldDelegate Delegates
@@ -155,6 +151,7 @@ CwCard *cwCard;
     [cwCard getModeState];
 }
 */
+
 -(void) didGetModeState
 {
     NSLog(@"didGetModeState mode = %@", cwCard.mode);
@@ -252,13 +249,13 @@ CwCard *cwCard;
 -(void) didGetCwCardId
 {
     NSLog(@"didGetCwCardId");
-    [cwCard loadCwCardFromFile];
 }
 
 
 -(void) didLoginHost
 {
     [self performDismiss];
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
     ViewController *myVC = (ViewController *)[storyboard instantiateViewControllerWithIdentifier:@"RevealViewController"];
     [self.navigationController presentViewController:myVC animated:YES completion:nil];
@@ -273,7 +270,7 @@ CwCard *cwCard;
      cwManager.delegate = (CwListTableViewController *)listCV;
      */
     
-    [cwManager disconnectCwCard];
+    [self.cwManager disconnectCwCard];
     
     //clear properties
     cwCard = nil;
@@ -285,15 +282,28 @@ CwCard *cwCard;
 
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
 {
-    [self performDismiss];
+    [super didCwCardCommandError:cmdId ErrString:errString];
     
-    if (cmdId != CwCmdIdBindRegFinish && ![errString hasPrefix:@"Command Error"]) {
-        UIAlertController *errorAlertController = [UIAlertController alertControllerWithTitle:nil message:errString preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [errorAlertController addAction:okAction];
+    switch (cmdId) {
+        case CwCmdIdGetModeState:
+            
+            break;
         
-        [self presentViewController:errorAlertController animated:YES completion:nil];
+        case CwCmdIdBindRegFinish:
+            break;
+            
+        default:
+            if (![errString hasPrefix:@"Command Error"]) {
+                UIAlertController *errorAlertController = [UIAlertController alertControllerWithTitle:nil message:errString preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                [errorAlertController addAction:okAction];
+                
+                [self presentViewController:errorAlertController animated:YES completion:nil];
+            }
+            
+            break;
     }
+    
 }
 
 -(void) didRegisterHost: (NSString *)OTP {

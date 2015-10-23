@@ -30,7 +30,6 @@
 
 @end
 
-CwManager *cwManager;
 CwCard *cwCard;
 CwAccount *account;
 
@@ -44,8 +43,7 @@ NSString *Label;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     //find CW via BLE
-    CwManager *cwManager = [CwManager sharedManager];
-    cwCard = cwManager.connectedCwCard;
+    cwCard = self.cwManager.connectedCwCard;
     //NSLog(@"currentAccountId = %ld",cwCard.currentAccountId);
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
@@ -166,25 +164,42 @@ NSString *Label;
         }
     }
     
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+    
     if (currentAccId != cwCard.currentAccountId) {
         [self showIndicatorView:@"loading address..."];
         
         [cwCard setDisplayAccount:cwCard.currentAccountId];
-        [cwCard getAccountInfo:cwCard.currentAccountId];
+        
+//        if (account.extKeys.count > 0) {
+//            [self didGetAccountAddresses:cwCard.currentAccountId];
+//            [self performSelectorOnMainThread:@selector(getCurrentAccountInfo) withObject:nil waitUntilDone:NO];
+//        } else {
+//            [self getCurrentAccountInfo];
+//        }
     } else {
-        [cwCard getAccountAddresses: account.accId];
-        [_tableAddressList reloadData];
+//        [cwCard getAccountAddresses: account.accId];
+//        [_tableAddressList reloadData];
     }
-    
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     
     if ([account.extKeys count] >0) {
         rowSelected = 0;
+        
+        [self didGetAccountAddresses:cwCard.currentAccountId];
+        [self performSelectorOnMainThread:@selector(getCurrentAccountInfo) withObject:nil waitUntilDone:NO];
     } else {
         rowSelected = -1;
+        
+        [self getCurrentAccountInfo];
     }
     
     [self setQRcodeDataforkey:rowSelected];
+    [_tableAddressList reloadData];
+}
+
+-(void) getCurrentAccountInfo
+{
+    [cwCard getAccountInfo:cwCard.currentAccountId];
 }
 
 #pragma marks - CwCard Delegates
@@ -194,7 +209,7 @@ NSString *Label;
     [self.actBusyIndicator stopAnimating];
     self.actBusyIndicator.hidden = YES;
     
-    [cwManager.connectedCwCard saveCwCardToFile]; 
+    [self.cwManager.connectedCwCard saveCwCardToFile];
 }
 
 -(void) didGenAddress: (CwAddress *) addr
@@ -235,14 +250,12 @@ NSString *Label;
 
 -(void) didGetAccountInfo: (NSInteger) accId
 {
-    NSLog(@"didGetAccountInfo accid = %d", accId);
+    NSLog(@"didGetAccountInfo accid = %ld", accId);
     if(accId == cwCard.currentAccountId) {
         account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
-        
-        if(accId == cwCard.currentAccountId) {
-            [cwCard getAccountAddresses:accId];
-        }
     }
+    
+    [cwCard getAccountAddresses:accId];
 }
 
 -(void) didGetAccountAddresses:(NSInteger)accId

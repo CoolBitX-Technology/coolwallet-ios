@@ -42,8 +42,6 @@ CwCard *cwCard;
     [super viewWillAppear:animated];
     self.cwManager.delegate = self;
     self.cwManager.connectedCwCard.delegate = self;
-    
-    [cwCard getModeState];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,7 +84,7 @@ CwCard *cwCard;
     self.actBusyIndicator.hidden = NO;
     [self.actBusyIndicator startAnimating];
     
-    [self.cwManager.connectedCwCard pinChlng];
+    [cwCard getModeState];
 }
 
 #pragma marks - CwCard Delegates
@@ -117,12 +115,22 @@ CwCard *cwCard;
 
 -(void) didGetModeState
 {
-    NSLog(@"didGetModeState mode = %d", cwCard.mode);
+    NSLog(@"didGetModeState mode = %@", cwCard.mode);
+    if (cwCard.mode.integerValue == CwCardModeNoHost) {
+        [self didEraseCw];
+    } else {
+        [self.cwManager.connectedCwCard getCwCardId];
+    }
+}
+
+-(void) didGetCwCardId
+{
+    [self.cwManager.connectedCwCard pinChlng];
 }
 
 -(void) didPinChlng
 {
-    
+    NSLog(@"didPinChlng");
     [self.cwManager.connectedCwCard eraseCw:NO Pin:@"12345678" NewPin:@"12345678"];
     //[self.cwManager.connectedCwCard eraseCw:NO Pin:self.txtPin.text NewPin:self.txtNewPin.text];
 }

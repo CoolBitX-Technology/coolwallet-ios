@@ -25,6 +25,9 @@ NSInteger rowSelect;
 bool isFirst = YES;
 
 @interface TabbarHomeViewController ()
+{
+//    CwCard *cwCard;
+}
 
 @property (strong, nonatomic) NSArray *accountButtons;
 @property (assign, nonatomic) BOOL waitAccountCreated;
@@ -41,37 +44,26 @@ bool isFirst = YES;
     [_refreshControl addTarget:self action:@selector(setAccountButton) forControlEvents:UIControlEventValueChanged];
     [self.tableTransaction addSubview:self.refreshControl]; //把RefreshControl加到TableView中
     
-    //find CW via BLE
-    cwManager = [CwManager sharedManager];
-    
-    cwCard = cwManager.connectedCwCard;
-    
     btcNet = [CwBtcNetWork sharedManager];
 
-    cwManager.delegate = self;
-    cwCard.delegate = self;
     btcNet.delegate = self;
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
     
-    [self getBitcoinRateforCurrency];
+    [self performSelectorOnMainThread:@selector(getBitcoinRateforCurrency) withObject:nil waitUntilDone:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    cwManager.delegate = self;
-    cwCard.delegate = self;
     btcNet.delegate = self;
     
-    NSLog(@"accid = %ld",cwCard.currentAccountId);
+    NSLog(@"accid = %ld",self.cwManager.connectedCwCard.currentAccountId);
     if (account != nil) {
         [self setAccountButton];
+    } else if (self.cwManager.connectedCwCard.currentAccountId != 0) {
+        [self.cwManager.connectedCwCard setDisplayAccount:0];
     }
-    //[self showIndicatorView:@"synchronizing data"];
-    //self.actBusyIndicator.hidden = NO;
-    //[self.actBusyIndicator startAnimating];
-    
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -85,32 +77,36 @@ bool isFirst = YES;
 
 -(void) getBitcoinRateforCurrency
 {
+    [self showIndicatorView:@"synchronizing data"];
+    
     rates = [btcNet getCurrRate];
     
     //find currId from the rates
-    NSNumber *rate = [rates objectForKey:cwCard.currId];
+    NSNumber *rate = [rates objectForKey:self.cwManager.connectedCwCard.currId];
     
     if (rate==nil) {
         //use USD as default currId
-        cwCard.currId = @"USD";
+        self.cwManager.connectedCwCard.currId = @"USD";
         rate = [rates objectForKey:@"USD"];
     }
     
     if (rate)
     {
-        cwCard.currRate = [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%f", [rate floatValue]*100]];
+        self.cwManager.connectedCwCard.currRate = [NSDecimalNumber decimalNumberWithString:[NSString stringWithFormat:@"%f", [rate floatValue]*100]];
         
         //update UI
         [self didGetCwCurrRate];
+    } else {
+        [self performDismiss];
     }
 }
 
 #pragma marks - Account Button Actions
 
 - (void)setAccountButton{
-    NSLog(@"TabbarHomeViewController, cwAccounts = %ld", [cwCard.cwAccounts count]);
+    NSLog(@"TabbarHomeViewController, cwAccounts = %ld", [self.cwManager.connectedCwCard.cwAccounts count]);
     
-    for(int i =0; i< [cwCard.cwAccounts count]; i++) {
+    for(int i =0; i< [self.cwManager.connectedCwCard.cwAccounts count]; i++) {
         UIButton *accountBtn = [self.accountButtons objectAtIndex:i];
         accountBtn.hidden = NO;
         
@@ -121,12 +117,11 @@ bool isFirst = YES;
         }
     }
     
-    NSLog(@"accid = %ld, refresh? %d,%d",cwCard.currentAccountId, self.refreshControl.isHidden, self.refreshControl.isRefreshing);
     if (self.refreshControl.isHidden) {
-        UIButton *selectedAccount = [self.accountButtons objectAtIndex:cwCard.currentAccountId];
+        UIButton *selectedAccount = [self.accountButtons objectAtIndex:self.cwManager.connectedCwCard.currentAccountId];
         [selectedAccount sendActionsForControlEvents:UIControlEventTouchUpInside];
     } else {
-        [self updateBalanceAndTxs:cwCard.currentAccountId];
+        [self updateBalanceAndTxs:self.cwManager.connectedCwCard.currentAccountId];
     }
     
 }
@@ -136,10 +131,10 @@ bool isFirst = YES;
         [self.refreshControl endRefreshing];
     }
     
-    NSInteger currentAccId = cwCard.currentAccountId;
+    NSInteger currentAccId = self.cwManager.connectedCwCard.currentAccountId;
     for (UIButton *btn in self.accountButtons) {
         if (sender == btn) {
-            cwCard.currentAccountId = [self.accountButtons indexOfObject:btn];
+            self.cwManager.connectedCwCard.currentAccountId = [self.accountButtons indexOfObject:btn];
             [btn setBackgroundColor:[UIColor colorAccountBackground]];
             [btn setSelected:YES];
         } else {
@@ -148,13 +143,13 @@ bool isFirst = YES;
         }
     }
     
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+    account = (CwAccount *) [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", self.cwManager.connectedCwCard.currentAccountId]];
     
-    if (currentAccId != cwCard.currentAccountId || isFirst) {
+    if (currentAccId != self.cwManager.connectedCwCard.currentAccountId || isFirst) {
         [self showIndicatorView:@"synchronizing data"];
         
-        [cwCard setDisplayAccount:cwCard.currentAccountId];
-        [cwCard getAccountInfo:cwCard.currentAccountId];
+        [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
+        [self.cwManager.connectedCwCard getAccountInfo:self.cwManager.connectedCwCard.currentAccountId];
     }
     
     [self SetBalanceText];
@@ -168,7 +163,7 @@ Boolean setBtnActionFlag;
     
     _lblBalance.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertBTCStringformUnit: (int64_t)account.balance], [[OCAppCommon getInstance] BitcoinUnit]];
     
-    _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:cwManager.connectedCwCard.currRate], cwCard.currId];
+    _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:self.cwManager.connectedCwCard.currRate], self.cwManager.connectedCwCard.currId];
 }
 
 - (void)SetTxkeys
@@ -206,13 +201,13 @@ Boolean setBtnActionFlag;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             //Update UI
-            NSLog(@"update %ld, current is %ld", accId, cwCard.currentAccountId);
-            if (accId == cwCard.currentAccountId) {
+            NSLog(@"update %ld, current is %ld", accId, self.cwManager.connectedCwCard.currentAccountId);
+            if (accId == self.cwManager.connectedCwCard.currentAccountId) {
                 [self SetBalanceText];
-                [cwCard setAccount: accId Balance: account.balance];
+                [self.cwManager.connectedCwCard setAccount: accId Balance: account.balance];
             } else {
-                CwAccount *updateAccount = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
-                [cwCard setAccount: accId Balance: updateAccount.balance];
+                CwAccount *updateAccount = [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
+                [self.cwManager.connectedCwCard setAccount: accId Balance: updateAccount.balance];
             }
         });
     });
@@ -233,12 +228,12 @@ Boolean setBtnActionFlag;
 }
 
 - (void)CreateAccount{
-    if (cwCard.hdwAcccountPointer < 5) {
+    if ([self.cwManager.connectedCwCard.hdwAcccountPointer integerValue] < 5) {
         //self.actBusyIndicator.hidden = NO;
         //[self.actBusyIndicator startAnimating];
         [self showIndicatorView:@"Creating Account"];
         
-        [cwCard newAccount:cwCard.hdwAcccountPointer Name:@""];
+        [self.cwManager.connectedCwCard newAccount:self.cwManager.connectedCwCard.hdwAcccountPointer.integerValue Name:@""];
     }
 }
 
@@ -310,44 +305,24 @@ Boolean setBtnActionFlag;
 
 #pragma marks - CwCardDelegate
 
--(void) didCwCardCommand
-{
-    NSLog(@"TabbarHomeViewController, didCwCardCommand");
-//    if(isFirst && cwCard.hdwAcccountPointer > 0) [self setAccountButton];
-    [cwCard saveCwCardToFile];
-    
-    //[self.actBusyIndicator stopAnimating];
-    //self.actBusyIndicator.hidden = YES;
-}
-
--(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
-{
-    NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
-                                                   message: msg
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    
-    [alert show];
-}
-
 -(void) didGetModeState
 {
-    NSLog(@"TabbarHomeViewController, card mode = %@", cwCard.mode);
-    if ([cwCard.mode integerValue] == CwCardModePerso) {
+    NSLog(@"TabbarHomeViewController, card mode = %@", self.cwManager.connectedCwCard.mode);
+    if ([self.cwManager.connectedCwCard.mode integerValue] == CwCardModePerso) {
         //goto Setting for Security Policy
+        [self performDismiss];
         [self performSegueWithIdentifier:@"SecuritySegue" sender:self];
     }else{
         [self showIndicatorView:@"synchronizing data"];
-        [cwCard syncFromCard];
+        [self.cwManager.connectedCwCard syncFromCard];
     }
 }
 
 -(void) didGetCwHdwStatus
 {
-    NSLog(@" TabbarHomeViewController, cwCard.hdwStatus = %@",cwCard.hdwStatus);
-    if ([cwCard.hdwStatus integerValue] == CwHdwStatusInactive || [cwCard.hdwStatus integerValue] == CwHdwStatusWaitConfirm) {
+    NSLog(@" TabbarHomeViewController, cwCard.hdwStatus = %@",self.cwManager.connectedCwCard.hdwStatus);
+    NSInteger hdwStatus = [self.cwManager.connectedCwCard.hdwStatus integerValue];
+    if (hdwStatus == CwHdwStatusInactive || hdwStatus == CwHdwStatusWaitConfirm) {
         //goto New Wallet
         [self performSegueWithIdentifier:@"CreateHdwSegue" sender:self];
     }
@@ -356,10 +331,10 @@ Boolean setBtnActionFlag;
 -(void) didGetCwHdwAccountPointer
 {
     //[self performDismiss];
-    NSLog(@"TabbarHomeViewController, didGetCwHdwAccointPointer = %@", cwCard.hdwAcccountPointer);
-    if ([cwCard.hdwAcccountPointer integerValue] == 0) {
+    NSLog(@"TabbarHomeViewController, didGetCwHdwAccointPointer = %@", self.cwManager.connectedCwCard.hdwAcccountPointer);
+    if ([self.cwManager.connectedCwCard.hdwAcccountPointer integerValue] == 0) {
         [self CreateAccount];
-        cwCard.currentAccountId = 0;
+        self.cwManager.connectedCwCard.currentAccountId = 0;
     }
     else {
         [self setAccountButton];
@@ -367,19 +342,12 @@ Boolean setBtnActionFlag;
     }
 }
 
-/*
- -(void) didGetAccounts
- {
- //[self.tableView reloadData];
- }
-*/
-
 -(void) didGetAccountInfo: (NSInteger) accId
 {
-    NSLog(@"TabbarHomeViewController, didGetAccountInfo = %ld, currentAccountId = %ld", accId, cwCard.currentAccountId);
+    NSLog(@"TabbarHomeViewController, didGetAccountInfo = %ld, currentAccountId = %ld", accId, self.cwManager.connectedCwCard.currentAccountId);
     
-    if(accId == cwCard.currentAccountId) {
-        [cwCard getAccountAddresses:accId];
+    if(accId == self.cwManager.connectedCwCard.currentAccountId) {
+        [self.cwManager.connectedCwCard getAccountAddresses:accId];
     }
 }
 
@@ -389,18 +357,17 @@ Boolean setBtnActionFlag;
     //clear the UIActivityIndicatorView
     //create activity indicator on the cell
     
-    NSLog(@"TabbarHomeViewController, didGetAccountAddresses = %ld, currentAccountId = %ld", accId, cwCard.currentAccountId);
+    NSLog(@"TabbarHomeViewController, didGetAccountAddresses = %ld, currentAccountId = %ld", accId, self.cwManager.connectedCwCard.currentAccountId);
 
-    if (accId != cwCard.currentAccountId) {
+    if (accId != self.cwManager.connectedCwCard.currentAccountId) {
         return;
     }
     
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+    account = (CwAccount *) [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", self.cwManager.connectedCwCard.currentAccountId]];
     
     NSLog(@"TabbarHomeViewController, %ld, transitions: %@", account.accId, account.transactions);
     if (account.lastUpdate == nil) {
         //get balance and transaction when there is no transaction yet.
-        
         dispatch_queue_t queue = dispatch_queue_create("com.dtco.CoolWallet", NULL);
         
         dispatch_async(queue, ^{
@@ -415,14 +382,10 @@ Boolean setBtnActionFlag;
 
 -(void) didGetTransactionByAccount:(NSInteger)accId
 {
-    NSLog(@"TabbarHomeViewController, currAccId: %ld, didGetTransactionByAccount: %ld", cwCard.currentAccountId, accId);
+    NSLog(@"TabbarHomeViewController, currAccId: %ld, didGetTransactionByAccount: %ld", self.cwManager.connectedCwCard.currentAccountId, accId);
     //code to be executed in the background
     dispatch_async(dispatch_get_main_queue(), ^{
-        //code to be executed on the main thread when background task is finished
-        //NSLog(@"account tx count = %lu", (unsigned long)account.transactions.count );
-        //[cwCard setAccount: accId Balance: account.balance];
-        
-        CwAccount *txAccount = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
+        CwAccount *txAccount = (CwAccount *) [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
         
         //get address publickey uf the unspent if needed
         for (CwUnspentTxIndex *utx in txAccount.unspentTxs)
@@ -438,10 +401,10 @@ Boolean setBtnActionFlag;
             }
             
             if (addr.publicKey==nil)
-                [cwCard getAddressPublickey:accId KeyChainId:utx.kcId KeyId:utx.kId];
+                [self.cwManager.connectedCwCard getAddressPublickey:accId KeyChainId:utx.kcId KeyId:utx.kId];
         }
         
-        if (accId == cwCard.currentAccountId) {
+        if (accId == self.cwManager.connectedCwCard.currentAccountId) {
             NSLog(@"TabbarHomeViewController, prepare to update tx records");
             [self SetTxkeys]; //this includes reloadData
             [self performDismiss];
@@ -454,10 +417,9 @@ Boolean setBtnActionFlag;
     NSLog(@"TabbarHomeViewController, didNewAccount: %ld", aid);
     
     //find CW via BLE
-    cwManager = [CwManager sharedManager];
+    self.cwManager = [CwManager sharedManager];
     
-    cwCard = cwManager.connectedCwCard;
-    [cwCard genAddress:aid KeyChainId:CwAddressKeyChainExternal];
+    [self.cwManager.connectedCwCard genAddress:aid KeyChainId:CwAddressKeyChainExternal];
     
     self.waitAccountCreated = YES;
 }
@@ -474,13 +436,13 @@ Boolean setBtnActionFlag;
     NSLog(@"TabbarHomeViewController, didGetCwCurrRate");
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
     [numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
-    NSString *numberAsString = [numberFormatter stringFromNumber: cwManager.connectedCwCard.currRate];
+    NSString *numberAsString = [numberFormatter stringFromNumber: self.cwManager.connectedCwCard.currRate];
     NSLog(@"TabbarHomeViewController, currRate = %@ ",numberAsString);
     //_lblFaitMoney.text = numberAsString;
     NSDecimalNumber *decNum = [NSDecimalNumber decimalNumberWithDecimal:[[numberFormatter numberFromString:numberAsString] decimalValue]];
-    [cwManager.connectedCwCard setCwCurrRate:decNum];
+    [self.cwManager.connectedCwCard setCwCurrRate:decNum];
     
-    _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:cwManager.connectedCwCard.currRate], cwCard.currId];
+    _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:self.cwManager.connectedCwCard.currRate], self.cwManager.connectedCwCard.currId];
     //self.txtExchangeRage.text = numberAsString;
 }
 
@@ -488,7 +450,7 @@ Boolean setBtnActionFlag;
 -(void) didSetCwCurrRate
 {
     //get mode state
-    [cwCard getModeState];
+    [self.cwManager.connectedCwCard getModeState];
 }
 
 -(void) didGenAddress:(CwAddress *)addr
@@ -503,55 +465,13 @@ Boolean setBtnActionFlag;
     }
 }
 
-
-- (void) showIndicatorView:(NSString *)Msg {
-    if (mHUD != nil) {
-        mHUD.labelText = Msg;
-        return;
-    }
-    
-    mHUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:mHUD];
-    
-    //如果设置此属性则当前的view置于后台
-    mHUD.dimBackground = YES;
-    mHUD.labelText = Msg;
-    
-    [mHUD show:YES];
-}
-
 - (void) performDismiss
 {
-    if(mHUD != nil) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-        //[mHUD removeFromSuperview];
-        //[mHUD release];
-        mHUD = nil;
-    }
+    [super performDismiss];
     
     if (self.refreshControl.isRefreshing) {
         [self.refreshControl endRefreshing];
     }
-}
-
-#pragma mark - CwManager Delegate
--(void) didDisconnectCwCard: (NSString *)cardName
-{
-    NSLog(@"TabbarHomeViewController, didDisconnectCwCard");
-    //Add a notification to the system
-    UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
-    notify.soundName = UILocalNotificationDefaultSoundName;
-    notify.applicationIconBadgeNumber=1;
-    [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
-    
-    // Get the storyboard named secondStoryBoard from the main bundle:
-    UIStoryboard *secondStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    // Load the view controller with the identifier string myTabBar
-    // Change UIViewController to the appropriate class
-    UIViewController *listCV = (UIViewController *)[secondStoryBoard instantiateViewControllerWithIdentifier:@"CwMain"];
-    // Then push the new view controller in the usual way:
-    [self.parentViewController presentViewController:listCV animated:YES completion:nil];
 }
 
 @end
