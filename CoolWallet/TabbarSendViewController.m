@@ -8,10 +8,11 @@
 
 #import "TabbarSendViewController.h"
 #import "OCAppCommon.h"
+#import "CwUnspentTxIndex.h"
+#import "CwBtcNetworkDelegate.h"
 
 CwCard *cwCard;
 CwAccount *account;
-CwBtcNetWork *btcNet;
 
 UIAlertView *OTPalert;
 UITextField *tfOTP;
@@ -21,10 +22,12 @@ NSDictionary *rates;
 
 long TxFee = 10000;
 
-@interface TabbarSendViewController ()
+@interface TabbarSendViewController () <CwBtcNetworkDelegate>
 
 @property (strong, nonatomic) CwAddress *genAddr;
 @property (assign, nonatomic) BOOL transactionBegin;
+@property (strong, nonatomic) CwBtcNetWork *btcNet;
+@property (strong, nonatomic) NSMutableArray *updateUnspendBalance;
 
 @end
 
@@ -35,9 +38,6 @@ long TxFee = 10000;
     // Do any additional setup after loading the view.
     //find CW via BLE
     
-    //NSLog(@"currentAccountId = %ld",cwCard.currentAccountId);
-    //btcNet = [CwBtcNetWork sharedManager];
-    
     cwCard = self.cwManager.connectedCwCard;
     cwCard.paymentAddress = @"";
     //cwCard.amount = 0;
@@ -46,8 +46,8 @@ long TxFee = 10000;
     [self addDecimalKeyboardDoneButton];
     
     self.transactionBegin = NO;
+    self.updateUnspendBalance = [NSMutableArray new];
 }
-
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -69,9 +69,6 @@ long TxFee = 10000;
     self.txtOtp.delegate = self;
     self.txtAmountFiatmoney.delegate =self;
     
-    //NSLog(@"account.accId = %d",account.accId);
-    [cwCard getAccountAddresses: account.accId];
-    
     //NSLog(@"payment address = %@", cwCard.paymentAddress);
     self.txtReceiverAddress.text = cwCard.paymentAddress;
     self.txtAmount.text = @"";
@@ -85,6 +82,16 @@ long TxFee = 10000;
     if (self.transactionBegin) {
         // TODO: alert cancel?
     }
+}
+
+-(CwBtcNetWork *) btcNet
+{
+    if (_btcNet == nil) {
+        _btcNet = [CwBtcNetWork sharedManager];
+        _btcNet.delegate = self;
+    }
+    
+    return _btcNet;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -105,50 +112,31 @@ long TxFee = 10000;
     
 }
 
-- (IBAction)btnGenOtp:(id)sender {
-    //get Wait OTP
-    self.actBusyIndicator.hidden = NO;
-    [self.actBusyIndicator startAnimating];
-    
-    self.txtOtp.text = @"";
-    
-    //self.lblOtp.hidden = YES;
-    //self.txtOtp.hidden = YES;
-    
-    //find an internal address with empty transactions, if no, creat a new internal address
-    [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
-    
-    /*
-    NSMutableArray *transactions = [[NSMutableArray alloc] init];
-    
-    [transactions addObject:self.txtReceiverAddress.text];
-    [cwCard prepareTransaction: transactions Amount: [self.txtAmount.text longLongValue] Address:self.txtReceiverAddress.text];
-     */
-}
-
-- (IBAction)btnVerifyOtp:(id)sender {
-    
-    //verify OTP
-    //self.btnVerifyOtp.hidden = YES;
-    [cwCard verifyTransactionOtp: self.txtOtp.text];
-    
-}
-
-
 - (IBAction)btnSendBitcoin:(id)sender {
     
     if([self.txtReceiverAddress.text compare:@""] == 0 ) return;
     if([self.txtAmount.text compare:@""] == 0 ) return;
     
-    //send OTP
-    [self showIndicatorView:@"Send..."];
-        
-    [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
+    self.transactionBegin = YES;
+    
+    if ([self.updateUnspendBalance containsObject:[NSString stringWithFormat:@"%ld", account.accId]] ) {
+        [self showIndicatorView:@"Update unspent balance..."];
+    } else {
+        //send OTP
+        [self sendBitcoin];
+    }
 }
 
 - (IBAction)btnScanQRcode:(id)sender {
     
     [self performSegueWithIdentifier:@"ScanQRSegue" sender:self];
+}
+
+-(void) sendBitcoin
+{
+    [self showIndicatorView:@"Send..."];
+    
+    [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
 }
 
 - (void)addDecimalKeyboardDoneButton
@@ -396,6 +384,14 @@ long TxFee = 10000;
     _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:self.cwManager.connectedCwCard.currRate], cwCard.currId];
 }
 
+-(void) updateAccountInfo:(CwAccount *)cwAccount
+{
+    [self.updateUnspendBalance addObject:[NSString stringWithFormat:@"%ld", cwAccount.accId]];
+    
+    [self.btcNet getBalanceByAccount: cwAccount.accId];
+    [self.btcNet getTransactionByAccount: cwAccount.accId];
+}
+
 -(void) sendPrepareTransaction
 {
     if (self.genAddr == nil) {
@@ -450,6 +446,35 @@ long TxFee = 10000;
     }
 }
 
+#pragma marks - CwBtcNetwork Delegates
+-(void) didGetTransactionByAccount:(NSInteger)accId
+{
+    CwAccount *txAccount = (CwAccount *) [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
+    
+    //get address publickey uf the unspent if needed
+    for (CwUnspentTxIndex *utx in txAccount.unspentTxs)
+    {
+        CwAddress *addr;
+        if (utx.kcId==0) {
+            //External Address
+            addr = txAccount.extKeys[utx.kId];
+        } else {
+            //Internal Address
+            addr = txAccount.intKeys[utx.kId];
+        }
+        
+        if (addr.publicKey==nil) {
+            [self.cwManager.connectedCwCard getAddressPublickey:accId KeyChainId:utx.kcId KeyId:utx.kId];
+        }
+    }
+    
+    [self.updateUnspendBalance removeObject:[NSString stringWithFormat:@"%ld", accId]];
+    
+    if (self.transactionBegin && accId == cwCard.currentAccountId) {
+        [self sendBitcoin];
+    }
+}
+
 #pragma marks - CwCard Delegates
 -(void) didCwCardCommand
 {
@@ -495,7 +520,7 @@ long TxFee = 10000;
 -(void) didGenAddress: (CwAddress *) addr;
 {
     NSLog(@"didGenAddress");
-    [btcNet registerNotifyByAccount:cwCard.currentAccountId];
+    [self.btcNet registerNotifyByAccount:cwCard.currentAccountId];
     
     for (NSString *accIndex in cwCard.cwAccounts) {
         CwAccount *cwAccount = [cwCard.cwAccounts objectForKey:accIndex];
@@ -507,7 +532,7 @@ long TxFee = 10000;
         NSArray *searchResult = [[cwAccount getAllAddresses] filteredArrayUsingPredicate:predicate];
         if (searchResult.count > 0) {
             CwAddress *address = searchResult[0];
-            [btcNet registerNotifyByAddress:address];
+            [self.btcNet registerNotifyByAddress:address];
             break;
         }
     }
@@ -533,6 +558,25 @@ long TxFee = 10000;
     NSLog(@"didGetAccountInfo = %ld", accId);
     if(accId == cwCard.currentAccountId) {
         [self SetBalanceText];
+        
+        if (account.lastUpdate == nil) {
+            [cwCard getAccountAddresses:accId];
+        }
+    }
+}
+
+-(void) didGetAccountAddresses:(NSInteger)accId
+{
+    if (accId == cwCard.currentAccountId) {
+        if (account.extKeys.count <= 0) {
+            return;
+        }
+        
+        CwAddress *address = [account.extKeys objectAtIndex:0];
+        if (address.address != nil) {
+            [self performSelectorOnMainThread:@selector(updateAccountInfo:) withObject:account waitUntilDone:NO];
+//            [self updateAccountInfo:accId];
+        }
     }
 }
 

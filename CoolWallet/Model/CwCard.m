@@ -926,16 +926,20 @@ NSArray *addresses;
     if (account==nil) {
         return;
     }
-    
+    NSLog(@"11111, getAccountAddresses: %ld, %s, %s", accountId, syncAccExtAddress, syncAccIntAddress);
     //get external addresses
     syncAccExtAddress[accountId]=YES;
-    for (int i=0; i<account.extKeyPointer; i++)
+    for (int i=0; i<account.extKeyPointer; i++) {
+        NSLog(@"extKey: %d", i);
         [self getAddressInfo:accountId KeyChainId: CwAddressKeyChainExternal KeyId: i];
+    }
     
     //get internal addresses
     syncAccIntAddress[accountId]=YES;
-    for (int i=0; i<account.intKeyPointer; i++)
+    for (int i=0; i<account.intKeyPointer; i++) {
+        NSLog(@"extKey: %d", i);
         [self getAddressInfo:accountId KeyChainId: CwAddressKeyChainInternal KeyId: i];
+    }
     
     if (syncAccExtAddress[accountId] && syncAccIntAddress[accountId]) {
         
@@ -1060,8 +1064,9 @@ NSArray *addresses;
     }
 }
 
--(void) getAddressInfo: (NSInteger)accountId KeyChainId: (NSInteger) keyChainId KeyId: (NSInteger) keyId; //didGenNextAddress
+-(void) getAddressInfo:(NSInteger)accountId KeyChainId:(NSInteger)keyChainId KeyId:(NSInteger)keyId; //didGenNextAddress
 {
+    NSLog(@"getAddressInfo: %ld, %ld, %ld", accountId, keyChainId, keyId);
     //get account from dictionary
     CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", accountId]];
     
@@ -5351,11 +5356,26 @@ NSArray *addresses;
                     NSError *_err = nil;
                     NSDictionary *JSON =[NSJSONSerialization JSONObjectWithData:parseResult options:0 error:&_err];
                     
-                    if(!(!_err && [@"success" isEqualToString:JSON[@"status"]]))
+//                    if(!(!_err && [@"success" isEqualToString:JSON[@"status"]]))
+//                    {
+//                        //call error delegate
+//                        if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
+//                            [self.delegate didSignTransactionError: JSON[@"message"]];
+//                        }
+//                    }
+//                    else
+//                    {
+//                        //call success delegate
+//                        if ([self.delegate respondsToSelector:@selector(didSignTransaction)]) {
+//                            [self.delegate didSignTransaction];
+//                        }
+//                    }
+                    
+                    if([JSON objectForKey:@"error"] != nil)
                     {
                         //call error delegate
                         if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
-                            [self.delegate didSignTransactionError: JSON[@"message"]];
+                            [self.delegate didSignTransactionError: [JSON objectForKey:@"error"]];
                         }
                     }
                     else

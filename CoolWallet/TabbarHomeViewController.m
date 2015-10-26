@@ -62,6 +62,7 @@ bool isFirst = YES;
     if (account != nil) {
         [self setAccountButton];
     } else if (self.cwManager.connectedCwCard.currentAccountId != 0) {
+        self.cwManager.connectedCwCard.currentAccountId = 0;
         [self.cwManager.connectedCwCard setDisplayAccount:0];
     }
 }

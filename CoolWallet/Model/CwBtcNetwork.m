@@ -1071,10 +1071,30 @@ BOOL didGetTransactionByAccountFlag[5];
     return err;
 }
 
+//- (PublishErr) publish:(CwTx*)tx result:(NSData **)result
+//{
+//    NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, pushURLStr]];
+//    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
+//    
+//    NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
+//    
+//    NSLog(@"tx raw: %@", postString);
+//    
+//    [httpRequest setURL:connection];
+//    [httpRequest setHTTPMethod:@"POST"];
+//    [httpRequest setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
+//    
+//    NSData *decodeTxJSON = [NSURLConnection sendSynchronousRequest:httpRequest returningResponse:nil error:nil];
+//    
+//    *result = [[NSData alloc] initWithData: decodeTxJSON];
+//    
+//    return PUBLISH_BASE;
+//}
+
 - (PublishErr) publish:(CwTx*)tx result:(NSData **)result
 {
-    NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, pushURLStr]];
-    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
+    NSURL *connection = [[NSURL alloc]initWithString:@"https://api-blockcypher-com-soziedsyodjk.runscope.net/v1/bcy/test/txs/push"];
+    NSString *postString = [NSString stringWithFormat:@"{\"tx\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
     
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
     
