@@ -926,18 +926,16 @@ NSArray *addresses;
     if (account==nil) {
         return;
     }
-    NSLog(@"11111, getAccountAddresses: %ld, %s, %s", accountId, syncAccExtAddress, syncAccIntAddress);
+    
     //get external addresses
     syncAccExtAddress[accountId]=YES;
     for (int i=0; i<account.extKeyPointer; i++) {
-        NSLog(@"extKey: %d", i);
         [self getAddressInfo:accountId KeyChainId: CwAddressKeyChainExternal KeyId: i];
     }
     
     //get internal addresses
     syncAccIntAddress[accountId]=YES;
     for (int i=0; i<account.intKeyPointer; i++) {
-        NSLog(@"extKey: %d", i);
         [self getAddressInfo:accountId KeyChainId: CwAddressKeyChainInternal KeyId: i];
     }
     
@@ -1172,7 +1170,8 @@ NSArray *addresses;
     //print IN and OUT of the tx
     for(CwTxin *txin in [unsignedTx inputs])
     {
-        NSLog(@"in :  %@ n:%ld %@", [txin addr], txin.n, [[txin amount]BTC]);
+        CwTx *tx = [account.transactions objectForKey:txin.tid];
+        NSLog(@"in :  %@ n:%ld %@, %@, %@, confirm: %ld", [txin addr], txin.n, [[txin amount]BTC], [[NSString alloc] initWithData:txin.signature encoding:NSUTF8StringEncoding], [[NSString alloc] initWithData:txin.scriptPub encoding:NSUTF8StringEncoding], tx.confirmations);
     }
     for (CwTxout* txout in [unsignedTx outputs])
     {

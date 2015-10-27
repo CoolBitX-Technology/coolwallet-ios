@@ -10,7 +10,8 @@
 #import <UIKit/UIKit.h>
 #import "CwBtcNetwork.h"
 //Used to receive balance change notification from block.io
-#import "SRWebSocket.h"
+//#import "SRWebSocket.h"
+#import "SRWebSocket+CW.h"
 #import "CwManager.h"
 #import "CwCard.h"
 #import "CwAccount.h"
@@ -33,7 +34,7 @@ static const NSString *unspentTxsURLStr  = @"address/unspent"; //query unspent, 
 static const NSString *unconfirmTxsURLStr = @"address/unconfirmed"; //query address unconfirmed txs, get the txs detail by tx/info
 static const NSString *txInfoURLStr      = @"tx/info";         //query tx infos
 
-@interface CwBtcNetWork ()  <SRWebSocketDelegate>
+@interface CwBtcNetWork ()  <CWSocketDelegate>
 @end
 
 BOOL didGetTransactionByAccountFlag[5];
@@ -59,13 +60,16 @@ BOOL didGetTransactionByAccountFlag[5];
     self = [super init];
     
     //connect to websocket
-    _webSocket.delegate = nil;
-    [_webSocket close];
+//    _webSocket.delegate = nil;
+//    [_webSocket close];
+//    
+//    _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"wss://n.block.io/"]]];
+//    _webSocket.delegate = self;
+//    
+//    [_webSocket open];
     
-    _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"wss://n.block.io/"]]];
-    _webSocket.delegate = self;
-    
-    [_webSocket open];
+    _webSocket = [SRWebSocket sharedSocket];
+    _webSocket.cwDelegate = self;
     
     //prepare cwCard
     cwManager = [CwManager sharedManager];
@@ -73,26 +77,14 @@ BOOL didGetTransactionByAccountFlag[5];
     return self;
 }
 
-#pragma mark - SRWebSocketDelegate
+#pragma mark - CWSocketDelegate
 
-- (void)webSocketDidOpen:(SRWebSocket *)webSocket;
-{
-    //NSLog(@"Websocket Connected");
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;
-{
-    NSLog(@":( Websocket Failed With Error %@", error);
-    
-    _webSocket = nil;
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
+-(void) didSocketReceiveMessage:(id)message
 {
     NSError *_err = nil;
     
     NSLog(@"Websocket Received \"%@\"", message);
-
+    
     cwCard = cwManager.connectedCwCard;
     
     //Got Balance Update Message
@@ -110,31 +102,31 @@ BOOL didGetTransactionByAccountFlag[5];
     {
         /*
          {
-            "type": "address",
-            "data": {
-                "network": "BTC",
-                "address": "3cBraN1Q...",
-                "balance_change": "0.01000000", // net balance change, can be negative
-                "amount_sent": "0.00000000",
-                "amount_received": "0.01000000",
-                "txid": "7af5cf9f2...", // the transaction's identifier (hash)
-                "confirmations": X, // X = {0,1,3} for Bitcoin
-                "is_green": false // was the transaction sent by a green address?
-            }
+         "type": "address",
+         "data": {
+         "network": "BTC",
+         "address": "3cBraN1Q...",
+         "balance_change": "0.01000000", // net balance change, can be negative
+         "amount_sent": "0.00000000",
+         "amount_received": "0.01000000",
+         "txid": "7af5cf9f2...", // the transaction's identifier (hash)
+         "confirmations": X, // X = {0,1,3} for Bitcoin
+         "is_green": false // was the transaction sent by a green address?
+         }
          }
          */
         
         NSString *addr = JSON[@"data"][@"address"];
-
+        
         int64_t balanceChangeNum = (int64_t)([JSON[@"data"][@"balance_change"] doubleValue] * 1e8 + ([JSON[@"data"][@"balance_change"] doubleValue]<0.0? -.5:.5));
         CwBtc *balanceChange = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:balanceChangeNum]];
-
+        
         int64_t amountReceivedNum = (int64_t)([JSON[@"data"][@"amount_received"] doubleValue] * 1e8 + ([JSON[@"data"][@"amount_received"] doubleValue]<0.0? -.5:.5));
         CwBtc *amountReceived = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountReceivedNum]];
         //CwBtc *amountSend = [CwBtc BTCWithBTC:[NSNumber numberWithFloat:[JSON[@"data"][@"amount_sent"] floatValue]]];
-
+        
         NSNumber *confirmations = JSON[@"data"][@"confirmations"];
-
+        
         //find addr in accounts
         BOOL foundAddr = NO;
         NSInteger foundAccId = -1;
@@ -167,7 +159,7 @@ BOOL didGetTransactionByAccountFlag[5];
                         foundAddr = YES;
                         foundExtInt = 1; //Internal Key
                         foundAccIndex = i;
-                    
+                        
                         //update address balance
                         add.balance = add.balance + [balanceChange.satoshi integerValue];
                         acc.intKeys[i]=add;
@@ -181,7 +173,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 acc.balance = acc.balance + [balanceChange.satoshi integerValue];
                 [cwCard.cwAccounts setObject:acc forKey:[NSString stringWithFormat: @"%ld", acc.accId]];
                 [cwCard setAccount:acc.accId Balance:acc.balance];
-
+                
                 //refresh account transaction
                 //Need a better way!
                 //[self getTransactionByAccount: acc.accId];
@@ -205,17 +197,6 @@ BOOL didGetTransactionByAccountFlag[5];
             [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
         }
     }
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
-{
-    NSLog(@"WebSocket closed");
-    _webSocket = nil;
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(NSData *)pongPayload;
-{
-    NSLog(@"Websocket received pong");
 }
 
 #pragma mark - Internal Functions
@@ -1020,7 +1001,7 @@ BOOL didGetTransactionByAccountFlag[5];
     GetUnspentTxsByAddrErr err = GETUNSPENTTXSBYADDR_BASE;
     NSError *_err;
     NSURLResponse *_response = nil;
-    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@?unconfirmed=1",serverSite,unspentTxsURLStr,addr] err:&_err response:&_response];
+    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,unspentTxsURLStr,addr] err:&_err response:&_response];
     
     
     NSLog(@"Get UnspentTxs by Address %@", addr);

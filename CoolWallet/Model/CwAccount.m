@@ -128,6 +128,11 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
         _unsignedTx.inputs = [[NSMutableArray alloc]init];
         for (CwUnspentTxIndex *utx in _selectedUtxs)
         {
+            CwTx *historyTx = [self.transactions objectForKey:[utx tid]];
+            if (historyTx.confirmations == 0) {
+                continue;
+            }
+            
             CwTxin *txin = [[CwTxin alloc]init];
             txin.accId = self.accId;
             txin.kcId = [utx kcId];

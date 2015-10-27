@@ -15,6 +15,8 @@
 #import "CwUnspentTxIndex.h"
 #import "NSDate+Localize.h"
 
+#import "BlockChain.h"
+
 CwBtcNetWork *btcNet;
 CwAccount *account;
 NSArray *sortedTxKeys;
@@ -197,7 +199,9 @@ Boolean setBtnActionFlag;
     //update balance
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         //Do background work
-        [btcNet getBalanceByAccount: accId];
+        BlockChain *blockChain = [[BlockChain alloc] init];
+        [blockChain getBalanceByAccountID:accId];
+        
         [btcNet getTransactionByAccount: accId];
         
         dispatch_async(dispatch_get_main_queue(), ^{

@@ -10,6 +10,7 @@
 #import "OCAppCommon.h"
 #import "CwUnspentTxIndex.h"
 #import "CwBtcNetworkDelegate.h"
+#import "BlockChain.h"
 
 CwCard *cwCard;
 CwAccount *account;
@@ -388,7 +389,9 @@ long TxFee = 10000;
 {
     [self.updateUnspendBalance addObject:[NSString stringWithFormat:@"%ld", cwAccount.accId]];
     
-    [self.btcNet getBalanceByAccount: cwAccount.accId];
+    BlockChain *blockChain = [[BlockChain alloc] init];
+    [blockChain getBalanceByAccountID:cwAccount.accId];
+    
     [self.btcNet getTransactionByAccount: cwAccount.accId];
 }
 
