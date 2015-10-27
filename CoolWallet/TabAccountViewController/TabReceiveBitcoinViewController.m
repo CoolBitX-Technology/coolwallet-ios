@@ -170,16 +170,6 @@ NSString *Label;
         [self showIndicatorView:@"loading address..."];
         
         [cwCard setDisplayAccount:cwCard.currentAccountId];
-        
-//        if (account.extKeys.count > 0) {
-//            [self didGetAccountAddresses:cwCard.currentAccountId];
-//            [self performSelectorOnMainThread:@selector(getCurrentAccountInfo) withObject:nil waitUntilDone:NO];
-//        } else {
-//            [self getCurrentAccountInfo];
-//        }
-    } else {
-//        [cwCard getAccountAddresses: account.accId];
-//        [_tableAddressList reloadData];
     }
     
     if ([account.extKeys count] >0) {

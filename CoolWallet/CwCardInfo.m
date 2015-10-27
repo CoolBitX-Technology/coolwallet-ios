@@ -68,7 +68,7 @@
 
 -(void) setSecurityPolicy_BtnEnable:(NSNumber *)securityPolicy_BtnEnable
 {
-    if (!securityPolicy_BtnEnable && !self.securityPolicy_OtpEnable) {
+    if (!securityPolicy_BtnEnable.boolValue && !self.securityPolicy_OtpEnable.boolValue) {
         _securityPolicy_OtpEnable = [NSNumber numberWithBool:YES];
     }
     

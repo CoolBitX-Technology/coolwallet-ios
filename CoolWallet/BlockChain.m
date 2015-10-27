@@ -51,7 +51,7 @@
         return GETBALANCEBYADDR_JSON;
     }
     
-    NSString *requestUrl = [NSString stringWithFormat:@"https://blockchain.info/multiaddr?active=%@", [addresses componentsJoinedByString:@"|"]];
+    NSString *requestUrl = [NSString stringWithFormat:@"https://blockchain.info/multiaddr?active=%@", [self joinAddresses:addresses]];
     NSLog(@"%@", [addresses componentsJoinedByString:@"|"]);
     
     NSURL *url = [NSURL URLWithString:[requestUrl stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
@@ -109,6 +109,11 @@
     }
     
     return GETBALANCEBYADDR_BASE;
+}
+
+-(NSString *) joinAddresses:(NSArray *)addresses
+{
+    return [addresses componentsJoinedByString:@"|"];
 }
 
 @end

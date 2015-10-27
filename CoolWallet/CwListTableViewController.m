@@ -263,11 +263,11 @@ NSString *segueIdentifier;
 {
     [self performDismiss];
     //Add a notification to the system
-    UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"CW Disconnected"];
-    notify.soundName = UILocalNotificationDefaultSoundName;
-    notify.applicationIconBadgeNumber=1;
-    [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
+//    UILocalNotification *notify = [[UILocalNotification alloc] init];
+//    notify.alertBody = [NSString stringWithFormat:@"CW Disconnected"];
+//    notify.soundName = UILocalNotificationDefaultSoundName;
+//    notify.applicationIconBadgeNumber=1;
+//    [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
     
     self.cwCards = nil;
     [self.tablev_cwlist reloadData];

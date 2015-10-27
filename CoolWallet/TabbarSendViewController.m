@@ -586,7 +586,7 @@ long TxFee = 10000;
 -(void) didPrepareTransaction: (NSString *)OTP
 {
     NSLog(@"didPrepareTransaction");
-    if (cwCard.securityPolicy_OtpEnable) {
+    if (cwCard.securityPolicy_OtpEnable.boolValue == YES) {
         [self performDismiss];
         
         self.btnSendBitcoin.hidden = NO;
@@ -598,7 +598,7 @@ long TxFee = 10000;
 
 -(void) didGetTapTapOtp: (NSString *)OTP
 {
-    if (cwCard.securityPolicy_OtpEnable) {
+    if (cwCard.securityPolicy_OtpEnable.boolValue == YES) {
         
         if(OTPalert != nil){
             tfOTP.text = OTP;
@@ -616,7 +616,7 @@ long TxFee = 10000;
 -(void) didVerifyOtp
 {
     NSLog(@"didVerifyOtp");
-    if (cwCard.securityPolicy_BtnEnable) {
+    if (cwCard.securityPolicy_BtnEnable.boolValue == YES) {
         //[self showIndicatorView:@"Press Button On the Card"];
         //self.lblPressButton.text = @"Press Button On the Card";
         [self performDismiss];
@@ -745,7 +745,8 @@ long TxFee = 10000;
 
 - (void) showOTPEnterView
 {
-    if(cwCard.securityPolicy_OtpEnable == NO) return;
+    if(cwCard.securityPolicy_OtpEnable.boolValue == NO) return;
+    
     OTPalert = [[UIAlertView alloc] initWithTitle:@"Please enter OTP" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     OTPalert.alertViewStyle = UIAlertViewStylePlainTextInput;
     OTPalert.tag = TAG_SEND_OTP;

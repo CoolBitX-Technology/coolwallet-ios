@@ -5280,7 +5280,7 @@ NSArray *addresses;
                 }
                 
                 //check security policy
-                if (self.securityPolicy_BtnEnable) {
+                if (self.securityPolicy_BtnEnable.boolValue) {
                     trxStatus = TrxStatusWaitBtn;
                     currentCmd.busy=NO;
                     [self BLE_ReadStatus];
