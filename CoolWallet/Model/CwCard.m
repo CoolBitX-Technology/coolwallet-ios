@@ -32,6 +32,8 @@
 
 #import "NSUserDefaults+RMSaveCustomObject.h"
 
+#import "mpbn_util.h"
+
 //#define CW_SOFT_SIMU
 
 //******************************************************
@@ -451,6 +453,37 @@ NSArray *addresses;
             
     }
     return str;
+}
+
+-(NSData *) signatureToLowS: (NSData *) signature
+{
+    //check if there is a high S
+    // S must between 0x1 and 0x7FFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF 5D576E73 57A4501D DFE92F46 681B20A0 (inclusive).
+    // If S is too high, simply replace it by S' = 0xFFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFE BAAEDCE6 AF48A03B BFD25E8C D0364141 - S.
+    
+    MPBN_WORD half[32] = {0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x5D, 0x57, 0x6E, 0x73, 0x57, 0xA4, 0x50, 0x1D, 0xDF, 0xE9, 0x2F, 0x46, 0x68, 0x1B, 0x20, 0xA0};
+    MPBN_WORD order[32] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0xBA, 0xAE, 0xDC, 0xE6, 0xAF, 0x48, 0xA0, 0x3B, 0xBF, 0xD2, 0x5E, 0x8C, 0xD0, 0x36, 0x41, 0x41};
+    
+    MPBN_WORD sig[32];
+    
+    Byte modifySig[64];
+    [signature getBytes:modifySig length:64];
+    
+    Byte *sigPtr = modifySig+32; //pointer to S
+    
+    for (int i=0; i<32; i++) {
+        MPBN_WORD *ptr = (MPBN_WORD *)sigPtr+i;
+        sig[i]= *ptr;
+    }
+    
+    //compare S with Half
+    if (mpbn_comp(sig, half, 32)>0) {
+        mpbn_sub(sig, order, sig, 32);
+    }
+    
+    memcpy(modifySig+32, (Byte *)sig, 32);
+    
+    return [NSData dataWithBytes:modifySig length:64];
 }
 
 //Card API
@@ -5310,6 +5343,13 @@ NSArray *addresses;
                 
                 //Store Signature to the array
                 NSData* signOfTx = [NSData dataWithBytes:data length:64];
+                
+                //check if there is a high S
+                // S must between 0x1 and 0x7FFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF 5D576E73 57A4501D DFE92F46 681B20A0 (inclusive).
+                // If S is too high, simply replace it by S' = 0xFFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFE BAAEDCE6 AF48A03B BFD25E8C D0364141 - S.
+                
+                signOfTx = [self signatureToLowS: signOfTx];
+                
                 ((CwTxin *) (currUnsignedTx.inputs[cmd.cmdP1])).signature = signOfTx;
                 
                 NSInteger status = trxStatus;
