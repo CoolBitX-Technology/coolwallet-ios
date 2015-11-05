@@ -778,7 +778,7 @@ BOOL didGetTransactionByAccountFlag[5];
     NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,allTxsURLStr,addr] err:&_err response:&_response];
     NSMutableArray* _txs = [[NSMutableArray alloc] init];
 
-    NSLog(@"Get HistoryTxs by Address %@", addr);
+    NSLog(@"Get HistoryTxs by Address %@, data: %@, err: %@", addr, data, _err);
     
     if(_err)
     {
@@ -1001,6 +1001,7 @@ BOOL didGetTransactionByAccountFlag[5];
     GetUnspentTxsByAddrErr err = GETUNSPENTTXSBYADDR_BASE;
     NSError *_err;
     NSURLResponse *_response = nil;
+//    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@?unconfirmed=1",serverSite,unspentTxsURLStr,addr] err:&_err response:&_response];
     NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,unspentTxsURLStr,addr] err:&_err response:&_response];
     
     
@@ -1025,8 +1026,8 @@ BOOL didGetTransactionByAccountFlag[5];
             
             for (NSDictionary *rawUnspentTx in rawUnspentTxs)
             {
-
-                int64_t amountNum = (int64_t)([rawUnspentTx[@"amount"] doubleValue] * 1e8 + ([rawUnspentTx[@"amount"] doubleValue]<0.0? -.5:.5));
+                double amountValue = [rawUnspentTx[@"amount"] doubleValue];
+                int64_t amountNum = (int64_t)(amountValue * 1e8 + (amountValue < 0.0 ? -.5:.5));
                 CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
                 
                 NSData* tid = [self hexstringToData:rawUnspentTx[@"tx"]];
@@ -1041,6 +1042,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 unspentTx.tid = tid;
                 unspentTx.unspentScriptPub = scriptPub;
                 unspentTx.unspentN = n;
+                unspentTx.confirmations = [[rawUnspentTx objectForKey:@"confirmations"] unsignedIntegerValue];
                 
                 [_unspentTxs addObject:unspentTx];
                 NSLog(@"    tid:%@ n:%lu amount:%@", tid, (unsigned long)n, amount.satoshi);
@@ -1052,30 +1054,10 @@ BOOL didGetTransactionByAccountFlag[5];
     return err;
 }
 
-//- (PublishErr) publish:(CwTx*)tx result:(NSData **)result
-//{
-//    NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, pushURLStr]];
-//    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
-//    
-//    NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
-//    
-//    NSLog(@"tx raw: %@", postString);
-//    
-//    [httpRequest setURL:connection];
-//    [httpRequest setHTTPMethod:@"POST"];
-//    [httpRequest setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
-//    
-//    NSData *decodeTxJSON = [NSURLConnection sendSynchronousRequest:httpRequest returningResponse:nil error:nil];
-//    
-//    *result = [[NSData alloc] initWithData: decodeTxJSON];
-//    
-//    return PUBLISH_BASE;
-//}
-
 - (PublishErr) publish:(CwTx*)tx result:(NSData **)result
 {
-    NSURL *connection = [[NSURL alloc]initWithString:@"https://api-blockcypher-com-soziedsyodjk.runscope.net/v1/btc/main/txs/push"];
-    NSString *postString = [NSString stringWithFormat:@"{\"tx\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
+    NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, pushURLStr]];
+    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
     
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
     
@@ -1091,6 +1073,26 @@ BOOL didGetTransactionByAccountFlag[5];
     
     return PUBLISH_BASE;
 }
+
+//- (PublishErr) publish:(CwTx*)tx result:(NSData **)result
+//{
+//    NSURL *connection = [[NSURL alloc]initWithString:@"https://api-blockcypher-com-soziedsyodjk.runscope.net/v1/btc/main/txs/push"];
+//    NSString *postString = [NSString stringWithFormat:@"{\"tx\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
+//    
+//    NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
+//    
+//    NSLog(@"tx raw: %@", postString);
+//    
+//    [httpRequest setURL:connection];
+//    [httpRequest setHTTPMethod:@"POST"];
+//    [httpRequest setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
+//    
+//    NSData *decodeTxJSON = [NSURLConnection sendSynchronousRequest:httpRequest returningResponse:nil error:nil];
+//    
+//    *result = [[NSData alloc] initWithData: decodeTxJSON];
+//    
+//    return PUBLISH_BASE;
+//}
 
 - (GetCurrErr) getCurrency:(NSNumber**)currency
 {

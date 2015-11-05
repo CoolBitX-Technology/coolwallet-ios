@@ -5395,26 +5395,11 @@ NSArray *addresses;
                     NSError *_err = nil;
                     NSDictionary *JSON =[NSJSONSerialization JSONObjectWithData:parseResult options:0 error:&_err];
                     
-//                    if(!(!_err && [@"success" isEqualToString:JSON[@"status"]]))
-//                    {
-//                        //call error delegate
-//                        if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
-//                            [self.delegate didSignTransactionError: JSON[@"message"]];
-//                        }
-//                    }
-//                    else
-//                    {
-//                        //call success delegate
-//                        if ([self.delegate respondsToSelector:@selector(didSignTransaction)]) {
-//                            [self.delegate didSignTransaction];
-//                        }
-//                    }
-                    
-                    if([JSON objectForKey:@"error"] != nil)
+                    if(!(!_err && [@"success" isEqualToString:JSON[@"status"]]))
                     {
                         //call error delegate
                         if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
-                            [self.delegate didSignTransactionError: [JSON objectForKey:@"error"]];
+                            [self.delegate didSignTransactionError: JSON[@"message"]];
                         }
                     }
                     else
@@ -5424,6 +5409,21 @@ NSArray *addresses;
                             [self.delegate didSignTransaction];
                         }
                     }
+                    
+//                    if([JSON objectForKey:@"error"] != nil)
+//                    {
+//                        //call error delegate
+//                        if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
+//                            [self.delegate didSignTransactionError: [JSON objectForKey:@"error"]];
+//                        }
+//                    }
+//                    else
+//                    {
+//                        //call success delegate
+//                        if ([self.delegate respondsToSelector:@selector(didSignTransaction)]) {
+//                            [self.delegate didSignTransaction];
+//                        }
+//                    }
                     
                     [self cwCmdTrxFinish];
                 }
