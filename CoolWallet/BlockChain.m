@@ -38,9 +38,83 @@
 {
     CwAccount *account = [self.cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accountID]];
     
-    NSMutableArray *cwAddresses = [account getAllAddresses];
+    NSString *addresses = [self joinAddressesByAccount:account];
+    if (addresses == nil) {
+        return GETBALANCEBYADDR_JSON;
+    }
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@%@", BlockChainBaseURL, MultiAddrAPI];
+    NSDictionary *params = @{@"active": addresses};
+    
+    [self getRequestUrl:requestUrl params:params success:^(NSDictionary *data) {
+        [account parseBlockChainAddrData:data];
+        [self.cwCard.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", accountID]];
+    } failure:^(NSError *err) {
+        NSLog(@"error: %@", err.description);
+    }];
+    
+    return GETBALANCEBYADDR_BASE;
+}
+
+-(void) getUnspentByAccountID:(NSInteger)accountID
+{
+    CwAccount *account = [self.cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accountID]];
+    
+    NSString *addresses = [self joinAddressesByAccount:account];
+    if (addresses == nil) {
+        return;
+    }
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@%@", BlockChainBaseURL, UnspentAPI];
+    
+    [self getRequestUrl:requestUrl params:nil success:^(NSDictionary *data) {
+        
+        [self.cwCard.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", accountID]];
+    } failure:^(NSError *err) {
+        NSLog(@"error: %@", err.description);
+    }];
+    
+    return;
+}
+
+-(void) getRequestUrl:(NSString *)url params:(NSDictionary *)params success:(void(^)(NSDictionary *json))success failure:(void(^)(NSError *err))failure
+{
+    if (params != nil && params.count > 0) {
+        NSMutableArray *paramArray = [NSMutableArray new];
+        for (NSString *key in params.keyEnumerator.allObjects) {
+            NSString *value = [params objectForKey:key];
+            [paramArray addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
+        }
+        
+        url = [NSString stringWithFormat:@"%@?%@", url, [paramArray componentsJoinedByString:@"&"]];
+    }
+    
+    NSURL *requestUrl = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+//    NSData *data = [NSData dataWithContentsOfURL:requestUrl];
+    
+    NSURLResponse *_response = nil;
+    NSError *_err = nil;
+    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&_response error:&_err];
+    
+    if (data) {
+        NSError *error;
+        NSDictionary *json =[NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        
+        if (json == nil) {
+            failure(error);
+        } else {
+            success(json);
+        }
+    } else {
+        failure(_err);
+    }
+}
+
+-(NSString *) joinAddressesByAccount:(CwAccount *)account
+{
     NSMutableArray *addresses = [NSMutableArray new];
-    for (CwAddress *cwAddress in cwAddresses) {
+    for (CwAddress *cwAddress in [account getAllAddresses]) {
         if (cwAddress.address == nil) {
             continue;
         }
@@ -48,72 +122,12 @@
     }
     
     if (addresses.count == 0) {
-        return GETBALANCEBYADDR_JSON;
+        return nil;
     }
     
-    NSString *requestUrl = [NSString stringWithFormat:@"https://blockchain.info/multiaddr?active=%@", [self joinAddresses:addresses]];
-    NSLog(@"%@", [addresses componentsJoinedByString:@"|"]);
-    
-    NSURL *url = [NSURL URLWithString:[requestUrl stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    
-    if (data) {
-        NSDictionary *json =[NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        if (json == nil) {
-            return GETBALANCEBYADDR_JSON;
-        }
-        
-        NSDictionary *wallet = [json objectForKey:@"wallet"];
-        NSDictionary *addresses = [json objectForKey:@"addresses"];
-        if (wallet == nil || addresses == nil) {
-            return GETBALANCEBYADDR_JSON;
-        }
-        
-        NSNumber *balance = [wallet objectForKey:@"final_balance"];
-        account.balance = balance.longLongValue;
-        
-        NSMutableDictionary *addrBalances = [NSMutableDictionary new];
-        for (NSDictionary *addr in addresses) {
-            NSNumber *balance = [NSNumber numberWithLongLong:(int64_t)[addr objectForKey:@"final_balance"]];
-            [addrBalances setObject:balance forKey:[addr objectForKey:@"address"]];
-        }
-        
-        for (NSString *addr in addresses) {
-            NSNumber *addrBalance = [addrBalances objectForKey:addr];
-            if (addrBalance == nil) {
-                continue;
-            }
-            
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.address = %@", addr];
-            NSArray *searchResult = [cwAddresses filteredArrayUsingPredicate:predicate];
-            if (searchResult.count == 0) {
-                continue;
-            }
-            
-            CwAddress *cwAddress = [searchResult objectAtIndex:0];
-            if (cwAddress.keyChainId == CwAddressKeyChainExternal) {
-                NSInteger index = [account.extKeys indexOfObject:cwAddress];
-                
-                cwAddress.balance = addrBalance.longLongValue;
-                [account.extKeys replaceObjectAtIndex:index withObject:cwAddress];
-            } else {
-                NSInteger index = [account.intKeys indexOfObject:cwAddress];
-                
-                cwAddress.balance = addrBalance.longLongValue;
-                [account.intKeys replaceObjectAtIndex:index withObject:cwAddress];
-            }
-            
-        }
-        
-        [self.cwCard.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", accountID]];
-    }
-    
-    return GETBALANCEBYADDR_BASE;
-}
-
--(NSString *) joinAddresses:(NSArray *)addresses
-{
-    return [addresses componentsJoinedByString:@"|"];
+    NSString *result = [addresses componentsJoinedByString:@"|"];
+    NSLog(@"%@", result);
+    return result;
 }
 
 @end

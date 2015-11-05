@@ -131,7 +131,6 @@ BOOL didGetTransactionByAccountFlag[5];
         BOOL foundAddr = NO;
         NSInteger foundAccId = -1;
         NSInteger foundExtInt = 0;
-        NSInteger foundAccIndex = -1;
         
         for (int a=0; a<cwCard.cwAccounts.count; a++)
         {
@@ -143,7 +142,6 @@ BOOL didGetTransactionByAccountFlag[5];
                     foundAccId = acc.accId;
                     foundAddr = YES;
                     foundExtInt = 0; //External Key
-                    foundAccIndex = i;
                     
                     //update address balance
                     add.balance = add.balance + [balanceChange.satoshi integerValue];
@@ -158,7 +156,6 @@ BOOL didGetTransactionByAccountFlag[5];
                         foundAccId = acc.accId;
                         foundAddr = YES;
                         foundExtInt = 1; //Internal Key
-                        foundAccIndex = i;
                         
                         //update address balance
                         add.balance = add.balance + [balanceChange.satoshi integerValue];
@@ -169,16 +166,27 @@ BOOL didGetTransactionByAccountFlag[5];
             }
             
             if (foundAddr) {
+                BOOL tidExist = NO;
+                NSString *tid = JSON[@"data"][@"txid"];
+                NSData *tidData = [self hexstringToData:tid];
+                for (NSData *txid in acc.transactions) {
+                    if ([tidData isEqualToData:txid]) {
+                        tidExist = YES;
+                        break;
+                    }
+                }
                 //update account balance
-                acc.balance = acc.balance + [balanceChange.satoshi integerValue];
-                [cwCard.cwAccounts setObject:acc forKey:[NSString stringWithFormat: @"%ld", acc.accId]];
-                [cwCard setAccount:acc.accId Balance:acc.balance];
+                if (!tidExist) {
+                    acc.balance = acc.balance + [balanceChange.satoshi integerValue];
+                    [cwCard.cwAccounts setObject:acc forKey:[NSString stringWithFormat: @"%ld", acc.accId]];
+                    [cwCard setAccount:acc.accId Balance:acc.balance];
+                }
                 
                 //refresh account transaction
                 //Need a better way!
                 //[self getTransactionByAccount: acc.accId];
                 
-                [self updateHistoryTxs:JSON[@"data"][@"txid"]];
+                [self updateHistoryTxs:tid];
                 
                 break;
             }

@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "CwBtcNetworkError.h"
 
+#define BlockChainBaseURL @"https://blockchain.info"
+#define MultiAddrAPI @"/multiaddr"
+#define UnspentAPI @"/unspent"
+
 @interface BlockChain : NSObject
 
 -(GetBalanceByAddrErr) getBalanceByAccountID:(NSInteger)accountID;

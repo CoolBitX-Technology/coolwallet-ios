@@ -28,6 +28,60 @@
     return self;
 }
 
+-(void) parseBlockChainAddrData:(NSDictionary *)data
+{
+    if (data == nil) {return;}
+    
+    NSDictionary *wallet = [data objectForKey:@"wallet"];
+    NSDictionary *addresses = [data objectForKey:@"addresses"];
+    if (wallet == nil || addresses == nil) {
+        return;
+    }
+    
+    NSNumber *balance = [wallet objectForKey:@"final_balance"];
+    self.balance = balance.longLongValue;
+    
+    NSMutableDictionary *addrBalances = [NSMutableDictionary new];
+    for (NSDictionary *addr in addresses) {
+        NSNumber *balance = [NSNumber numberWithLongLong:(int64_t)[addr objectForKey:@"final_balance"]];
+        [addrBalances setObject:balance forKey:[addr objectForKey:@"address"]];
+    }
+    
+    for (CwAddress *cwAddress in [self getAllAddresses]) {
+        NSNumber *addrBalance = [addrBalances objectForKey:cwAddress.address];
+        if (addrBalance == nil) {
+            continue;
+        }
+        
+        cwAddress.balance = addrBalance.longLongValue;
+        
+        if (cwAddress.keyChainId == CwAddressKeyChainExternal) {
+            NSInteger index = [self.extKeys indexOfObject:cwAddress];
+            [self.extKeys replaceObjectAtIndex:index withObject:cwAddress];
+        } else {
+            NSInteger index = [self.intKeys indexOfObject:cwAddress];
+            [self.intKeys replaceObjectAtIndex:index withObject:cwAddress];
+        }
+    }
+}
+
+-(void) parseBlockChainUnspentData:(NSDictionary *)data
+{
+    if (data == nil) {
+        return;
+    }
+    
+    NSArray *unspentData = [data objectForKey:@"unspent_outputs"];
+    if (unspentData.count == 0) {
+        self.unspentTxs = [NSMutableArray new];
+        return;
+    }
+    
+    for (NSDictionary *unspent in unspentData) {
+        
+    }
+}
+
 - (void) encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeInteger:self.accId forKey:@"AccId"];
     [encoder encodeObject:self.accName forKey:@"AccName"];

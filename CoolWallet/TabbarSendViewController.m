@@ -672,7 +672,7 @@ long TxFee = 10000;
         NSLog(@"account.balance: %lld, sato.longLongValue: %lld, fee: %ld", account.balance, [sato longLongValue], TxFee);
         NSLog(@"balance: %lld", balance);
         
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Send Bitcoin"
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Sent"
                                                        message: [NSString stringWithFormat:@"Send %@ BTC to %@", self.txtAmount.text, self.txtReceiverAddress.text]
                                                       delegate: nil
                                              cancelButtonTitle: nil
