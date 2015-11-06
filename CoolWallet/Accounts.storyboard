@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="pJk-oc-UYe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="pJk-oc-UYe">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -1151,23 +1151,12 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.0001 BTC" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xg6-A9-eBW">
-                                                    <rect key="frame" x="240" y="14" width="80" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="80" id="bY7-YD-hU1"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" red="0.0" green="0.7450980544090271" blue="0.18431372940540314" alpha="1" colorSpace="deviceRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="bwt-Ca-UHv" firstAttribute="leading" secondItem="kHO-tB-o6V" secondAttribute="leadingMargin" id="7HU-s7-wWp"/>
                                                 <constraint firstItem="bwt-Ca-UHv" firstAttribute="trailing" secondItem="kHO-tB-o6V" secondAttribute="trailingMargin" id="PCF-vk-mhv"/>
                                                 <constraint firstItem="fbt-pW-ztx" firstAttribute="leading" secondItem="kHO-tB-o6V" secondAttribute="leadingMargin" id="RZp-04-e4e"/>
-                                                <constraint firstItem="xg6-A9-eBW" firstAttribute="top" secondItem="kHO-tB-o6V" secondAttribute="topMargin" constant="6" id="aTx-yR-2N6"/>
                                                 <constraint firstItem="fbt-pW-ztx" firstAttribute="trailing" secondItem="kHO-tB-o6V" secondAttribute="trailingMargin" id="dh4-Kb-9Ab"/>
-                                                <constraint firstItem="xg6-A9-eBW" firstAttribute="trailing" secondItem="kHO-tB-o6V" secondAttribute="trailingMargin" id="klN-4n-JIl"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="calibratedRGB"/>

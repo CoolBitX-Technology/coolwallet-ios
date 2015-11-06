@@ -41,7 +41,7 @@ long TxFee = 10000;
     
     cwCard = self.cwManager.connectedCwCard;
     cwCard.paymentAddress = @"";
-    //cwCard.amount = 0;
+    cwCard.amount = 0;
     cwCard.label = @"";
     
     [self addDecimalKeyboardDoneButton];
@@ -72,9 +72,14 @@ long TxFee = 10000;
     
     //NSLog(@"payment address = %@", cwCard.paymentAddress);
     self.txtReceiverAddress.text = cwCard.paymentAddress;
-    self.txtAmount.text = @"";
+    if (cwCard.amount > 0) {
+        self.txtAmount.text = [[OCAppCommon getInstance] convertBTCStringformUnit: cwCard.amount];
+        [self doneAmountItem:self.txtAmount];
+    } else {
+        self.txtAmount.text = @"";
+        self.txtAmountFiatmoney.text = @"";
+    }
     self.txtNote.text = cwCard.label;
-    _txtAmountFiatmoney.text = @"";
     _lblFiatCurrency.text = cwCard.currId;
 }
 
@@ -82,6 +87,14 @@ long TxFee = 10000;
 {
     if (self.transactionBegin) {
         // TODO: alert cancel?
+    } else {
+        cwCard.paymentAddress = @"";
+        cwCard.amount = 0;
+        cwCard.label = @"";
+    }
+    
+    if (self.updateUnspendBalance.count > 0) {
+        [self performDismiss];
     }
 }
 
@@ -181,11 +194,11 @@ long TxFee = 10000;
         NSString *satoshi = [[OCAppCommon getInstance] convertBTCtoSatoshi:_txtAmount.text];
         NSString *fiatmoney =  [[OCAppCommon getInstance] convertFiatMoneyString:[satoshi longLongValue] currRate:self.cwManager.connectedCwCard.currRate];
         
-        _txtAmountFiatmoney.text = fiatmoney;
+        self.txtAmountFiatmoney.text = fiatmoney;
     }else{
-        _txtAmountFiatmoney.text = @"";
+        self.txtAmountFiatmoney.text = @"";
     }
-    [_txtAmount resignFirstResponder];
+    [self.txtAmount resignFirstResponder];
 }
 
 - (IBAction)doneAmountFiatmoney:(id)sender

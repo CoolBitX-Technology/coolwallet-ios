@@ -22,7 +22,6 @@ typedef NS_ENUM (NSInteger, CwAddressInfo) {
 
 @property NSInteger accountId;
 @property NSInteger keyChainId;
-@property int64_t balance;      //balance get from network
 @property NSInteger keyId;
 @property NSString *address;
 @property NSData *publicKey;

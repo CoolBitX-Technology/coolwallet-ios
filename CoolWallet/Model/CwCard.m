@@ -30,9 +30,12 @@
 
 #import "CwCardSoft.h"
 
+#import "OCAppCommon.h"
+
 #import "NSUserDefaults+RMSaveCustomObject.h"
 
 #import "mpbn_util.h"
+#import "tx.h"
 
 //#define CW_SOFT_SIMU
 
@@ -1164,10 +1167,10 @@ NSArray *addresses;
     //check unspends in the account
     CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", self.currentAccountId]];
     
-    //check amount vs balance
-    if (amount>account.balance) {
+    //check amount vs (balance - fee)
+    if (amount > account.balance - FEERATE) {
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
-            [self.delegate didPrepareTransactionError:@"Amount is lower then balance"];
+            [self.delegate didPrepareTransactionError:[NSString stringWithFormat:@"Amount is lower than balance\nTransaction fee: %@ BTC", [[OCAppCommon getInstance] convertBTCStringformUnit: FEERATE]]];
         }
         return;
     }
@@ -4915,7 +4918,6 @@ NSArray *addresses;
                             CwAddress *add = [[CwAddress alloc]init];
                             add.accountId = account.accId;
                             add.address = nil;
-                            add.balance = 0;
                             add.keyChainId = CwAddressKeyChainExternal; //external
                             add.keyId = i;
                             
@@ -4932,7 +4934,6 @@ NSArray *addresses;
                             CwAddress *add = [[CwAddress alloc]init];
                             add.accountId = account.accId;
                             add.address = nil;
-                            add.balance = 0;
                             add.keyChainId = CwAddressKeyChainInternal; //internal
                             add.keyId = i;
                             

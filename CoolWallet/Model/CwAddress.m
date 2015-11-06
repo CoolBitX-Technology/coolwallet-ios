@@ -13,7 +13,6 @@
 - (void) encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeInteger:self.accountId forKey:@"AddrAccId"];
     [encoder encodeInteger:self.keyChainId forKey:@"AddrKcid"];
-    [encoder encodeInt64:self.balance forKey:@"AddrBalance"];
     [encoder encodeInteger:self.keyId forKey:@"AddrKid"];
     [encoder encodeObject:self.address forKey:@"AddrAddress"];
     [encoder encodeObject:self.publicKey forKey:@"AddPubKey"];
@@ -23,7 +22,6 @@
 - (id)initWithCoder:(NSCoder *)decoder {
     self.accountId = [decoder decodeIntegerForKey:@"AddrAccId"];
     self.keyChainId = [decoder decodeIntegerForKey:@"AddrKcid"];
-    self.balance = [decoder decodeInt64ForKey:@"AddrBalance"];
     self.keyId = [decoder decodeIntegerForKey:@"AddrKid"];
     self.address = [decoder decodeObjectForKey:@"AddrAddress"];
     self.publicKey = [decoder decodeObjectForKey:@"AddPubKey"];

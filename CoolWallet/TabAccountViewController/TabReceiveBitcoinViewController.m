@@ -323,10 +323,6 @@ NSString *Label;
     
         UILabel *lblAddressText = (UILabel *)[cell viewWithTag:101];
         lblAddressText.text = addr.address;
-        
-        UILabel *lblAddressBalance = (UILabel *)[cell viewWithTag:102];
-        lblAddressBalance.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertBTCStringformUnit: (int64_t)addr.balance], [[OCAppCommon getInstance] BitcoinUnit]];
-    
     }
     // m/44'/0'/0'/0/0
     //cell.detailTextLabel.text = [NSString stringWithFormat: @"BIP32 Path: m/44'/0'/%ld'/%ld/%ld", (long)addr.accountId, (long)addr.keyChainId, (long)addr.keyId];

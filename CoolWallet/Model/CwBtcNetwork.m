@@ -142,10 +142,6 @@ BOOL didGetTransactionByAccountFlag[5];
                     foundAccId = acc.accId;
                     foundAddr = YES;
                     foundExtInt = 0; //External Key
-                    
-                    //update address balance
-                    add.balance = add.balance + [balanceChange.satoshi integerValue];
-                    acc.extKeys[i]=add;
                     break;
                 }
             }
@@ -155,11 +151,7 @@ BOOL didGetTransactionByAccountFlag[5];
                     if ([add.address isEqualToString:addr]) {
                         foundAccId = acc.accId;
                         foundAddr = YES;
-                        foundExtInt = 1; //Internal Key
-                        
-                        //update address balance
-                        add.balance = add.balance + [balanceChange.satoshi integerValue];
-                        acc.intKeys[i]=add;
+                        foundExtInt = 1; //Internal Key                        
                         break;
                     }
                 }
@@ -175,16 +167,12 @@ BOOL didGetTransactionByAccountFlag[5];
                         break;
                     }
                 }
-                //update account balance
+                
                 if (!tidExist) {
                     acc.balance = acc.balance + [balanceChange.satoshi integerValue];
                     [cwCard.cwAccounts setObject:acc forKey:[NSString stringWithFormat: @"%ld", acc.accId]];
                     [cwCard setAccount:acc.accId Balance:acc.balance];
                 }
-                
-                //refresh account transaction
-                //Need a better way!
-                //[self getTransactionByAccount: acc.accId];
                 
                 [self updateHistoryTxs:tid];
                 
@@ -474,7 +462,6 @@ BOOL didGetTransactionByAccountFlag[5];
         
     });
     
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         //NSLog(@"Get UnspentTxsByAddr: %@", add.address);
@@ -509,6 +496,15 @@ BOOL didGetTransactionByAccountFlag[5];
                         CwUnspentTxIndex *historyUnspentTxIndex = searchResult[0];
                         NSInteger index = [account.unspentTxs indexOfObject:historyUnspentTxIndex];
                         [account.unspentTxs replaceObjectAtIndex:index withObject:unspentTxIndex];
+                    }
+                }
+            }
+            
+            if (addrUnspentTxs.count == 0) {
+                for (CwUnspentTxIndex *unspentTx in account.unspentTxs) {
+                    if (unspentTx.kcId == addr.keyChainId && unspentTx.kId == addrIndex) {
+                        [account.unspentTxs removeObject:unspentTx];
+                        break;
                     }
                 }
             }
@@ -654,32 +650,6 @@ BOOL didGetTransactionByAccountFlag[5];
                         //update the balance of each address
                         NSNumber *bal = [addBalance valueForKey:@"balance"];
                         int64_t balance = (int64_t)([bal doubleValue] * 1e8 + ([bal doubleValue] < 0.0 ? -.5 : .5));
-                    
-                        //might be external address
-                        for (int i=0; i< account.extKeys.count; i++) {
-                            CwAddress *add =account.extKeys[i];
-                            if ([add.address isEqualToString:[addBalance valueForKey: @"address"]]) {
-                                add.balance = balance;
-                                account.extKeys[i]=add;
-                                //shouldn't have other address matches
-                                NSLog(@"     QueryAccountBalance: %@ balance: %lld", add.address, add.balance);
-                            
-                                break;
-                            }
-                        }
-                    
-                        for (int i=0; i< account.intKeys.count; i++) {
-                            CwAddress *add =account.intKeys[i];
-                            if ([add.address isEqualToString:[addBalance valueForKey: @"address"]]) {
-                                add.balance = balance;
-                                account.intKeys[i]=add;
-                                //shouldn't have other address matches
-                                NSLog(@"     QueryAccountBalance: %@ balance: %lld", add.address, add.balance);
-                            
-                                break;
-                            }
-                        }
-                    
                         //update account balance
                         account.balance += balance;
                     }
@@ -693,33 +663,6 @@ BOOL didGetTransactionByAccountFlag[5];
                     //update the balance of each address
                     NSNumber *bal = [jsonDictionary valueForKey:@"balance"];
                     int64_t balance = (int64_t)([bal doubleValue] * 1e8 + ([bal doubleValue] < 0.0 ? -.5 : .5));
-
-                
-                    //might be external address
-                    for (int i=0; i< account.extKeys.count; i++) {
-                        CwAddress *add =account.extKeys[i];
-                        if ([add.address isEqualToString:[jsonDictionary valueForKey: @"address"]]) {
-                            add.balance = balance;
-                            account.extKeys[i]=add;
-                            //shouldn't have other address matches
-                            NSLog(@"     QueryAccountBalance: %@ balance: %lld", add.address, add.balance);
-                        
-                            break;
-                        }
-                    }
-                
-                    for (int i=0; i< account.intKeys.count; i++) {
-                        CwAddress *add =account.intKeys[i];
-                        if ([add.address isEqualToString:[jsonDictionary valueForKey: @"address"]]) {
-                            add.balance = balance;
-                            account.intKeys[i]=add;
-                            //shouldn't have other address matches
-                            NSLog(@"     QueryAccountBalance: %@ balance: %lld", add.address, add.balance);
-                        
-                            break;
-                        }
-                    }
-                
                     //update account balance
                     account.balance += balance;
                 }
@@ -1009,9 +952,7 @@ BOOL didGetTransactionByAccountFlag[5];
     GetUnspentTxsByAddrErr err = GETUNSPENTTXSBYADDR_BASE;
     NSError *_err;
     NSURLResponse *_response = nil;
-//    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@?unconfirmed=1",serverSite,unspentTxsURLStr,addr] err:&_err response:&_response];
-    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,unspentTxsURLStr,addr] err:&_err response:&_response];
-    
+    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@?unconfirmed=1",serverSite,unspentTxsURLStr,addr] err:&_err response:&_response];
     
     NSLog(@"Get UnspentTxs by Address %@", addr);
     

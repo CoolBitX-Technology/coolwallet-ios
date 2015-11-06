@@ -36,7 +36,7 @@
 
 -(GetBalanceByAddrErr) getBalanceByAccountID:(NSInteger)accountID
 {
-    CwAccount *account = [self.cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accountID]];
+    CwAccount *account = [self.cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)accountID]];
     
     NSString *addresses = [self joinAddressesByAccount:account];
     if (addresses == nil) {
@@ -47,7 +47,7 @@
     NSDictionary *params = @{@"active": addresses};
     
     [self getRequestUrl:requestUrl params:params success:^(NSDictionary *data) {
-        [account parseBlockChainAddrData:data];
+        [account updateFromBlockChainAddrData:data];
         [self.cwCard.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", accountID]];
     } failure:^(NSError *err) {
         NSLog(@"error: %@", err.description);
