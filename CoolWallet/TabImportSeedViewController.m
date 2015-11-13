@@ -128,7 +128,6 @@ CwBtcNetWork *btcNet;
 
 - (IBAction)btnCreateHdw:(id)sender {
     NSString *seeds = [self.txtSeed.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
     NSString *seed = [NYMnemonic deterministicSeedStringFromMnemonicString: seeds
                                                                 passphrase: nil
                                                                   language: @"english"];

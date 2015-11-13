@@ -22,10 +22,8 @@
 +(id) sharedManager;
 
 - (GetTransactionByAccountErr) getTransactionByAccount: (NSInteger)accId;
-- (GetBalanceByAddrErr) getBalanceByAccount: (NSInteger)accId;
 - (RegisterNotifyByAddrErr) registerNotifyByAccount: (NSInteger)accId;
 - (void) registerNotifyByAddress:(CwAddress *)addr;
-- (GetBalanceByAddrErr) getBalanceByAddr: (NSString*)addr balance:(int64_t *)balance;
 - (GetAllTxsByAddrErr) getHistoryTxsByAddr: (NSString*)addr txs:(NSMutableArray**)txs;
 - (GetUnspentTxsByAddrErr) getUnspentTxsByAddr: (NSString*)addr unspentTxs:(NSMutableArray**)unspentTxs;
 

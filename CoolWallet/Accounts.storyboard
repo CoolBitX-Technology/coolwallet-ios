@@ -1279,7 +1279,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="btnAccount1:" destination="wAB-p2-fGw" eventType="touchUpInside" id="FTt-1y-QIJ"/>
+                                            <action selector="btnAccount:" destination="wAB-p2-fGw" eventType="touchUpInside" id="xe1-ru-vsu"/>
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ak1-f7-eZt">
@@ -1293,7 +1293,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="btnAccount2:" destination="wAB-p2-fGw" eventType="touchUpInside" id="dEr-My-hPO"/>
+                                            <action selector="btnAccount:" destination="wAB-p2-fGw" eventType="touchUpInside" id="wr3-Ss-fTd"/>
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCc-pB-vjv">
@@ -1307,7 +1307,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="btnAccount3:" destination="wAB-p2-fGw" eventType="touchUpInside" id="pso-CI-NJf"/>
+                                            <action selector="btnAccount:" destination="wAB-p2-fGw" eventType="touchUpInside" id="Bgh-xk-ifb"/>
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JW2-QL-1Xa">
@@ -1321,7 +1321,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="btnAccount4:" destination="wAB-p2-fGw" eventType="touchUpInside" id="6hX-aE-nzG"/>
+                                            <action selector="btnAccount:" destination="wAB-p2-fGw" eventType="touchUpInside" id="P88-e1-gVy"/>
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vae-9f-wJt">
@@ -1335,7 +1335,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="btnAccount5:" destination="wAB-p2-fGw" eventType="touchUpInside" id="bfV-gE-4ku"/>
+                                            <action selector="btnAccount:" destination="wAB-p2-fGw" eventType="touchUpInside" id="Uyl-4A-bPA"/>
                                         </connections>
                                     </button>
                                 </subviews>

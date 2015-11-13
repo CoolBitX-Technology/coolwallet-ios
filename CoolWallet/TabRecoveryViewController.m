@@ -252,6 +252,11 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     }
 }
 
+-(void)didGenAddressError
+{
+    //TODO: do something?
+}
+
 -(void) addLog: (NSString *)log {
     NSString *msg = [log stringByAppendingString:@"\n"];
     NSLog(@"%@",msg);

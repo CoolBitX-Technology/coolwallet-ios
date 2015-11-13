@@ -21,7 +21,9 @@
 #import "CwTxout.h"
 #import "CwUnspentTxIndex.h"
 #import "OCAppCommon.h"
+#import "CwUtils.h"
 
+#import "NSUserDefaults+RMSaveCustomObject.h"
 
 static const NSString *serverSite        = @"https://btc.blockr.io/api/v1";
 //static const NSString *serverSite        = @"http://btc-blockr-io-soziedsyodjk.runscope.net/api/v1";
@@ -160,7 +162,7 @@ BOOL didGetTransactionByAccountFlag[5];
             if (foundAddr) {
                 BOOL tidExist = NO;
                 NSString *tid = JSON[@"data"][@"txid"];
-                NSData *tidData = [self hexstringToData:tid];
+                NSData *tidData = [CwUtils hexstringToData:tid];
                 for (NSData *txid in acc.transactions) {
                     if ([tidData isEqualToData:txid]) {
                         tidExist = YES;
@@ -168,13 +170,13 @@ BOOL didGetTransactionByAccountFlag[5];
                     }
                 }
                 
-                if (!tidExist) {
+                if (!tidExist && acc.lastUpdate != nil) {
                     acc.balance = acc.balance + [balanceChange.satoshi integerValue];
                     [cwCard.cwAccounts setObject:acc forKey:[NSString stringWithFormat: @"%ld", acc.accId]];
                     [cwCard setAccount:acc.accId Balance:acc.balance];
                 }
                 
-                [self updateHistoryTxs:tid];
+                [self performSelectorInBackground:@selector(updateHistoryTxs:) withObject:tid];
                 
                 break;
             }
@@ -197,30 +199,6 @@ BOOL didGetTransactionByAccountFlag[5];
 
 #pragma mark - Internal Functions
 
-- (NSData*) hexstringToData:(NSString*)hexStr
-{
-    NSMutableData *data = [[NSMutableData alloc]initWithCapacity:32];
-    Byte byte;
-    
-    for (int i=0; 2*i<[hexStr length]; i++)
-    {
-        NSRange range = {2*i ,2};
-        byte = strtol([[hexStr substringWithRange:range] UTF8String], NULL, 16);
-        [data appendBytes:&byte length:1];
-        
-    }
-    return data;
-}
-
-- (NSString*) dataToHexstring:(NSData*)data
-{
-    NSString *hexStr = [NSString stringWithFormat:@"%@",data];
-    NSRange range = {1,[hexStr length]-2};
-    hexStr = [[hexStr substringWithRange:range] stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
-    return hexStr;
-}
-
 - (NSData*) HTTPRequestUsingGETMethodFrom:(NSString*)urlStr err:(NSError**)_err response:(NSURLResponse**)_response
 {
     NSURL *url = [[NSURL alloc]initWithString:urlStr];
@@ -230,6 +208,7 @@ BOOL didGetTransactionByAccountFlag[5];
     [httpRequest setHTTPMethod:@"GET"];
     [httpRequest setHTTPBody:nil];
     
+    [[NSURLCache sharedURLCache] removeCachedResponseForRequest:httpRequest];
     NSData *data = [NSURLConnection sendSynchronousRequest:httpRequest returningResponse:_response error:_err];
     
     return data;
@@ -296,6 +275,7 @@ BOOL didGetTransactionByAccountFlag[5];
     GetAllTxsByAddrErr err = GETALLTXSBYADDR_BASE;
     NSURLResponse *_response = nil;
     NSLog(@"updateHistoryTxs %@", tid);
+    
     NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,txInfoURLStr,tid] err:&_err response:&_response];
     
     if(_err)
@@ -313,47 +293,54 @@ BOOL didGetTransactionByAccountFlag[5];
         else
         {
             NSDictionary *data = [JSON objectForKey:@"data"];
-            NSMutableArray *txs = [NSMutableArray arrayWithArray:data[@"vins"]];
-            [txs addObjectsFromArray:data[@"vouts"]];
-            
-            NSMutableArray *allAddresses = [NSMutableArray new];
-            for (CwAccount *cwAccount in [cwCard.cwAccounts allValues]) {
-                if (cwAccount.transactions == nil) {
-                    continue;
-                }
-                
-                [allAddresses addObjectsFromArray:[cwAccount getAllAddresses]];
+            NSMutableArray *txs = [NSMutableArray new];
+            for (NSDictionary *tx in [data objectForKey:@"vins"]) {
+                [txs addObject:[tx objectForKey:@"address"]];
             }
-            NSLog(@"all address count: %ld", allAddresses.count);
-            NSMutableArray *txAddresses = [NSMutableArray new];
-            for (NSDictionary *txData in txs) {
-                NSString *address = [txData objectForKey:@"address"];
-                if ([txAddresses containsObject:address]) {
+            for (NSDictionary *tx in [data objectForKey:@"vouts"]) {
+                [txs addObject:[tx objectForKey:@"address"]];
+            }
+            
+            NSData* _tid = [CwUtils hexstringToData:tid];
+            
+            NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
+            [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+            [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+            
+            NSUInteger confirmations = [[data objectForKey:@"confirmations"] unsignedIntegerValue];
+            NSDate *timeUTC = [dateformat dateFromString:[data objectForKey:@"time_utc"]];
+            
+            for (CwAccount *cwAccount in [cwCard.cwAccounts allValues]) {
+                if (cwAccount.lastUpdate == nil) {
                     continue;
                 }
-                [txAddresses addObject:address];
                 
-                NSArray *searchResult = [allAddresses filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.address == %@", address]];
-                NSLog(@"tx address: %@, searchResult = %ld", address, searchResult.count);
-                if (searchResult.count > 0) {
-                    CwAddress *cwAddr = searchResult[0];
-                    CwAccount *cwAccount = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwAddr.accountId]];
-                    
-                    NSData* _tid = [self hexstringToData:tid];
-                    CwTx *historyTx = [cwAccount.transactions objectForKey:_tid];
-                    
-                    if (historyTx != nil) {
-                        NSUInteger confirmations = [[data objectForKey:@"confirmations"] unsignedIntegerValue];
-                        [historyTx setConfirmations:confirmations];
-                        [cwAccount.transactions setObject:historyTx forKey:_tid];
-                        [cwCard.cwAccounts setObject:cwAccount forKey:[NSString stringWithFormat:@"%ld", cwAccount.accId]];
-                        if ([self.delegate respondsToSelector:@selector(didGetTransactionByAccount:)]) {
-                            [self.delegate didGetTransactionByAccount:cwAccount.accId];
-                        }
-                    } else {
-                        [self getTransactionByAddress:cwAddr fromAccount:cwAccount];
-                    }
+                NSArray *txAddresses = [[cwAccount getAllAddresses] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.address in %@", txs]];
+                
+                if (txAddresses.count == 0) {
+                    continue;
                 }
+                
+                CwTx *historyTx = [cwAccount.transactions objectForKey:_tid];
+                if (historyTx) {
+                    [historyTx setConfirmations:confirmations];
+                    [historyTx setHistoryTime_utc:timeUTC];
+                    [cwAccount.transactions setObject:historyTx forKey:_tid];
+                } else {
+                    NSMutableArray *addresses = [NSMutableArray new];
+                    for (CwAddress *cwaddr in txAddresses) {
+                        [addresses addObject:cwaddr.address];
+                    }
+                    NSDictionary *updateTxs = [self queryHistoryTxs:addresses];
+                    [self syncAccountTransactions:updateTxs account:cwAccount];
+                }
+                
+                for (CwAddress *cwAddr in txAddresses) {
+                    NSLog(@"check '%@' unspent", cwAddr.address);
+                    [self getUnspentByAddress:cwAddr fromAccount:cwAccount];
+                }
+                
+                
             }
         }
     }
@@ -374,95 +361,87 @@ BOOL didGetTransactionByAccountFlag[5];
     CwAccount *account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)accId]];
     
     if (account.transactions == nil) {
-        account.transactions = [[NSMutableDictionary alloc]init];
-    }
-    if (account.unspentTxs == nil) {
-        account.unspentTxs = [[NSMutableArray alloc]init];
+        account.transactions = [[NSMutableDictionary alloc] init];
     }
     
+    if (account.unspentTxs == nil) {
+        account.unspentTxs = [[NSMutableArray alloc] init];
+    }
+    
+    [self getHistoryTxsByAccount:account];
+    
     for (CwAddress *address in [account getAllAddresses]) {
-        [self getTransactionByAddress:address fromAccount:account];
+        [self getUnspentByAddress:address fromAccount:account];
     }
 
     return err;
 }
 
--(void) getTransactionByAddress:(CwAddress *)addr fromAccount:(CwAccount *)account
+-(void) syncAccountTransactions:(NSDictionary *)historyTxData account:(CwAccount *)account
 {
+    NSLog(@"%@", historyTxData);
+    for (CwAddress *cwAddress in [account getAllAddresses]) {
+        NSArray *historyTxList = [historyTxData objectForKey:cwAddress.address];
+        if (!historyTxList) {
+            continue;
+        }
+        
+        for (CwTx *htx in historyTxList)
+        {
+            CwTx *record = [account.transactions objectForKey:htx.tid];
+            if(record)
+            {
+                //update amount
+                NSLog(@"Update Trx %@ amount %@ with %@, conifrm: %ld", record.tid, record.historyAmount.satoshi,  htx.historyAmount.satoshi, [htx confirmations]);
+                
+                if (cwAddress.historyTrx == nil) {
+                    record.historyAmount = [record.historyAmount add:htx.historyAmount];
+                } else {
+                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@", htx.tid];
+                    NSArray *searchResult = [cwAddress.historyTrx filteredArrayUsingPredicate:predicate];
+                    
+                    if (searchResult.count == 0) {
+                        record.historyAmount = [record.historyAmount add:htx.historyAmount];
+                    }
+                }
+                
+                //update confirmations
+                [record setConfirmations:[htx confirmations]];
+                [record setHistoryTime_utc:htx.historyTime_utc];
+                
+                [account.transactions setObject:record forKey:record.tid];
+            }
+            else
+            {
+                //add new txs
+                NSLog(@"Add New Trx %@ with amount %@", htx.tid, htx.historyAmount.satoshi);
+                [account.transactions setObject:htx forKey:htx.tid];
+            }
+        }
+        
+        cwAddress.historyTrx = [NSMutableArray arrayWithArray:historyTxList];
+        if (cwAddress.keyChainId == CwAddressKeyChainExternal) {
+            account.extKeys[cwAddress.keyId] = cwAddress;
+        } else {
+            account.intKeys[cwAddress.keyId] = cwAddress;
+        }
+        
+        cwAddress.historyUpdateFinish = YES;
+    }
+    
+    [self isGetTransactionByAccount: account.accId];
+}
+
+-(void) getUnspentByAddress:(CwAddress *)addr fromAccount:(CwAccount *)account
+{
+    NSLog(@"getUnspentByAddress: %@, keyChainId is %ld", addr.address, addr.keyChainId);
     if (addr.keyChainId != CwAddressKeyChainExternal && addr.keyChainId != CwAddressKeyChainInternal) {
         return;
     }
     
-    int addrIndex;
-    if (addr.keyChainId == CwAddressKeyChainExternal) {
-        addrIndex = (int)[account.extKeys indexOfObject:addr];
-    } else {
-        addrIndex = (int)[account.intKeys indexOfObject:addr];
-    }
-    
-    addr.historyUpdateFinish = NO;
     addr.unspendUpdateFinish = NO;
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSMutableArray *addrTxs;
-        if([self getHistoryTxsByAddr:addr.address txs:&addrTxs] != GETALLTXSBYADDR_BASE)
-        {
-            //err = GETTRXBYACCT_ALLTX;
-            //break;
-        }
-        else
-        {
-            for (CwTx *htx in addrTxs)
-            {
-                CwTx *record = [account.transactions objectForKey:htx.tid];
-                if(record)
-                {
-                    //update amount
-                    NSLog(@"Update Trx %@ amount %@ with %@, conifrm: %ld", record.tid, record.historyAmount.satoshi,  htx.historyAmount.satoshi, [htx confirmations]);
-                    
-                    if (addr.historyTrx == nil) {
-                        record.historyAmount = [record.historyAmount add:htx.historyAmount];
-                    } else {
-                        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@", htx.tid];
-                        NSArray *searchResult = [addr.historyTrx filteredArrayUsingPredicate:predicate];
-                        
-                        if (searchResult.count == 0) {
-                            record.historyAmount = [record.historyAmount add:htx.historyAmount];
-                        }
-                    }
-                    
-                    //update confirmations
-                    [record setConfirmations:[htx confirmations]];
-                    [record setHistoryTime_utc:htx.historyTime_utc];
-                    
-                    [account.transactions setObject:record forKey:record.tid];
-                }
-                else
-                {
-                    //add new txs
-                    NSLog(@"Add New Trx %@ with amount %@", htx.tid, htx.historyAmount.satoshi);
-                    [account.transactions setObject:htx forKey:htx.tid];
-                }
-            }
-            
-            addr.historyTrx = addrTxs;
-            if (addr.keyChainId == CwAddressKeyChainExternal) {
-                account.extKeys[addrIndex] = addr;
-            } else {
-                account.intKeys[addrIndex] = addr;
-            }
-        }
-        
-        addr.historyUpdateFinish = YES;
-        
-        [cwCard.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
-        
-        //check if all addresses of account synced
-        [self isGetTransactionByAccount: account.accId];
-        
-    });
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_queue_create("transaction.unspent", NULL), ^{
         
         //NSLog(@"Get UnspentTxsByAddr: %@", add.address);
         NSMutableArray *addrUnspentTxs;
@@ -481,6 +460,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 unspentTxIndex.n = [utx unspentN];
                 unspentTxIndex.amount = [utx unspentAmount];
                 unspentTxIndex.scriptPub =[utx unspentScriptPub];
+                unspentTxIndex.confirmations = [NSNumber numberWithInteger:utx.confirmations];
                 unspentTxIndex.kId = [addr keyId];
                 unspentTxIndex.kcId = [addr keyChainId];
                 
@@ -501,20 +481,20 @@ BOOL didGetTransactionByAccountFlag[5];
             }
             
             if (addrUnspentTxs.count == 0) {
-                for (CwUnspentTxIndex *unspentTx in account.unspentTxs) {
-                    if (unspentTx.kcId == addr.keyChainId && unspentTx.kId == addrIndex) {
-                        [account.unspentTxs removeObject:unspentTx];
-                        break;
-                    }
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.kcId = %ld and SELF.kId = %d", (long)addr.keyChainId, addr.keyId];
+                NSArray *predicateResult = [account.unspentTxs filteredArrayUsingPredicate:predicate];
+                NSLog(@"%@, %@: %lu", addr.address, predicate, (unsigned long)[predicateResult count]);
+                if (predicateResult.count > 0) {
+                    [account.unspentTxs removeObjectsInArray:predicateResult];
                 }
             }
             
             //add txs to address
             addr.unspendTrx = addrUnspentTxs;
             if (addr.keyChainId == CwAddressKeyChainExternal) {
-                account.extKeys[addrIndex] = addr;
+                account.extKeys[addr.keyId] = addr;
             } else {
-                account.intKeys[addrIndex] = addr;
+                account.intKeys[addr.keyId] = addr;
             }
         }
         
@@ -522,7 +502,7 @@ BOOL didGetTransactionByAccountFlag[5];
         
         //save account back to cwCard
         [cwCard.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
-
+        
         //check if all addresses of account synced
         [self isGetTransactionByAccount: account.accId];
         
@@ -543,6 +523,23 @@ BOOL didGetTransactionByAccountFlag[5];
     }
     
     if (isGetTrx && !didGetTransactionByAccountFlag[accId]) {
+        NSMutableArray *removedUnspents = [NSMutableArray new];
+        for (CwUnspentTxIndex *unspent in account.unspentTxs) {
+            NSLog(@"accId: %ld, unspent: %@,%ld,%ld,%ld, amount: %@", accId, [CwUtils dataToHexstring:unspent.tid], unspent.kcId, unspent.kId, unspent.n, unspent.amount);
+            
+            if (unspent.confirmations.intValue > 0) {
+                continue;
+            }
+            
+            CwTx *historyTx = [account.transactions objectForKey:unspent.tid];
+            for (CwTxin *txin in historyTx.inputs) {
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@ and n = %ld", txin.tid, txin.n];
+                NSArray *predicateResult = [account.unspentTxs filteredArrayUsingPredicate:predicate];
+                [removedUnspents addObjectsFromArray:predicateResult];
+            }
+        }
+        [account.unspentTxs removeObjectsInArray:removedUnspents];
+        
         //Call Delegate
         if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didGetTransactionByAccount:)]) {
             [self.delegate didGetTransactionByAccount:accId];
@@ -582,143 +579,137 @@ BOOL didGetTransactionByAccountFlag[5];
     addr.registerNotification = YES;
 }
 
-- (GetBalanceByAddrErr) getBalanceByAccount:(NSInteger) accId
+-(NSDictionary *) getHistoryTxsByAccount:(CwAccount *)account
 {
-    GetBalanceByAddrErr err = GETBALANCEBYADDR_BASE;
-    NSMutableArray *addrs = [[NSMutableArray alloc] init];
+    NSMutableDictionary *result = [NSMutableDictionary new];
     
-    cwCard = cwManager.connectedCwCard;
-    
-    NSError *_err = nil;
-    
-    NSLog(@"GetBalanceByAccount: %ld", (long)accId);
-    
-    CwAccount *account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)accId]];
-    
-    //add addresses to query string
-    for (int i=0; i< account.extKeys.count; i++) {
-        CwAddress *add =account.extKeys[i];
-        [addrs addObject:add];
-    }
-    for (int i=0; i< account.intKeys.count; i++) {
-        CwAddress *add =account.intKeys[i];
-        [addrs addObject:add];
-    }
-    
-    account.balance = 0;
-
-    while (addrs.count>0) {
-        NSInteger num=0;
-        if (addrs.count>20)
-            num=20;
-        else
-            num=addrs.count;
+    NSMutableArray *allAddresses = [account getAllAddresses];
+    NSMutableArray *paramAddresses = [NSMutableArray new];
+    for (CwAddress *cwAddress in allAddresses) {
+        cwAddress.historyUpdateFinish = NO;
         
-        NSString *stringURL = [NSString stringWithFormat:@"%@/%@/",serverSite,balanceURLStr];
-
-        //create stringURL
-        for (int i=0; i<num; i++) {
-            CwAddress *add = [addrs objectAtIndex:num-i-1];
-            [addrs removeObjectAtIndex:num-i-1];
-            stringURL = [stringURL stringByAppendingString: add.address];
-            stringURL = [stringURL stringByAppendingString:@","];
+        [paramAddresses addObject:cwAddress.address];
+        if (paramAddresses.count < 20 && cwAddress != allAddresses.lastObject) {
+            continue;
         }
-        //remove the last , and add "?confirmations=0"
-        stringURL = [stringURL substringToIndex:stringURL.length-1];
-        stringURL = [stringURL stringByAppendingString:@"?confirmations=0"];
-    
-        NSURL *url = [NSURL URLWithString:stringURL];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-
-        if(data)
-        {
-            NSDictionary *JSON =[NSJSONSerialization JSONObjectWithData:data options:0 error:&_err];
-            if(_err || ![@"success" isEqualToString:JSON[@"status"]] || !(JSON[@"data"]))
-            {
-                err = GETBALANCEBYADDR_JSON;
-            }
-            else
-            {
-                id jsonObject = [JSON valueForKey:@"data"];
-
-                if ([jsonObject isKindOfClass:[NSArray class]]) {
-                    NSArray *jsonArray = (NSArray *)jsonObject;
-                    //NSLog(@"its an array!");
-                    //NSLog(@"jsonArray - %@",jsonArray);
-                
-                    for (NSDictionary *addBalance in jsonArray) {
-                        //update the balance of each address
-                        NSNumber *bal = [addBalance valueForKey:@"balance"];
-                        int64_t balance = (int64_t)([bal doubleValue] * 1e8 + ([bal doubleValue] < 0.0 ? -.5 : .5));
-                        //update account balance
-                        account.balance += balance;
-                    }
-                
-                } else {
-                    NSDictionary *jsonDictionary = (NSDictionary *)jsonObject;
-                    //NSLog(@"its probably a dictionary");
-                    //NSLog(@"jsonDictionary - %@",jsonDictionary);
-
-                
-                    //update the balance of each address
-                    NSNumber *bal = [jsonDictionary valueForKey:@"balance"];
-                    int64_t balance = (int64_t)([bal doubleValue] * 1e8 + ([bal doubleValue] < 0.0 ? -.5 : .5));
-                    //update account balance
-                    account.balance += balance;
-                }
-            }
-        }
-        else
-        {
-            err = GETBALANCEBYADDR_NETWORK;
-            return err;
-        }
+        
+        [result setValuesForKeysWithDictionary:[self queryHistoryTxs:paramAddresses]];
+        
+        [paramAddresses removeAllObjects];
     }
     
-    [cwCard.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", accId]];
-    err = GETBALANCEBYADDR_BASE;
+    [self syncAccountTransactions:result account:account];
     
-    return err;
+    return result;
 }
 
-- (GetBalanceByAddrErr) getBalanceByAddr:(NSString*)addr balance:(int64_t *)balance
+-(NSDictionary *) queryHistoryTxs:(NSArray *)addresses
 {
-    GetBalanceByAddrErr err = GETBALANCEBYADDR_BASE;
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/%@/%@",serverSite,allTxsURLStr, [addresses componentsJoinedByString:@","]];
     
-    NSError *_err = nil;
+    NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
+    [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+    [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
     
-    NSString *stringURL = [NSString stringWithFormat:@"%@/%@/%@?confirmations=0",serverSite,balanceURLStr,addr];
-    NSURL *url = [NSURL URLWithString:stringURL];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    
-    NSLog(@"Get Balance by Address %@", addr);
-    
-    if(data)
-    {
-        NSDictionary *JSON =[NSJSONSerialization JSONObjectWithData:data options:0 error:&_err];
-        if(_err || ![@"success" isEqualToString:JSON[@"status"]] || !(JSON[@"data"] && JSON[@"data"][@"balance"]))
-        {
-            err = GETBALANCEBYADDR_JSON;
-        }
-        else
-        {
-            NSNumber *bal = JSON[@"data"][@"balance"];
-            *balance = (int64_t)([bal doubleValue] * 1e8 + ([bal doubleValue] < 0.0 ? -.5 : .5));
-            NSLog(@"    Balance: %lld", *balance);
-            err = GETBALANCEBYADDR_BASE;
+    NSMutableDictionary *result = [NSMutableDictionary new];
+    [self getRequestUrl:requestUrl params:nil success:^(NSDictionary *data) {
+        NSNumber *code = [data objectForKey:@"code"];
+        if (code.intValue != 200) {
+            NSLog(@"fail: %@, from url: %@", [data objectForKey:@"message"], requestUrl);
+            return;
         }
         
-        //register a notification of the address when balance change
-        NSString *msg = [NSString stringWithFormat:@"{\"network\": \"BTC\",\"type\": \"address\",\"address\": \"%@\"}", addr];
-        [_webSocket send:msg];
+        if ([[data objectForKey:@"data"] isKindOfClass:[NSArray class]]) {
+            NSArray *addrDataList = [data objectForKey:@"data"];
+            for (NSDictionary *addrData in addrDataList) {
+                NSString *address = [addrData objectForKey:@"address"];
+                if ([address isEqualToString:@""]) {
+                    continue;
+                }
+                
+                NSArray *txs = [addrData objectForKey:@"txs"];
+                NSMutableArray *addrTxs = [self getAddrTxs:txs];
+                
+                [result setObject:addrTxs forKey:address];
+            }
+        } else {
+            NSDictionary *addrData = [data objectForKey:@"data"];
+            NSString *address = [addrData objectForKey:@"address"];
+            NSArray *txs = [addrData objectForKey:@"txs"];
+            NSMutableArray *addrTxs = [self getAddrTxs:txs];
+            [result setObject:addrTxs forKey:address];
+        }
         
+    } failure:^(NSError *err) {
+        NSLog(@"error: %@", err.description);
+    }];
+    
+    NSDictionary *unconfirmedTxs = [self queryUnConfirmedTxs:addresses];
+    for (NSString *key in unconfirmedTxs) {
+        NSArray *unconfirmedTx = [unconfirmedTxs objectForKey:key];
+        if (unconfirmedTx.count == 0) {
+            continue;
+        }
+        NSMutableArray *transactionTxs = [NSMutableArray arrayWithArray:[result objectForKey:key]];
+        if (transactionTxs == nil) {
+            transactionTxs = [NSMutableArray new];
+        }
+        [transactionTxs addObjectsFromArray:unconfirmedTx];
+        [result setObject:transactionTxs forKey:key];
     }
-    else
-    {
-        err = GETBALANCEBYADDR_NETWORK;
-    }
+    
+    return result;
+}
 
-    return err;
+-(NSMutableArray *) getAddrTxs:(NSArray *)txs
+{
+    NSMutableArray *addrTxs = [NSMutableArray new];
+    for (NSDictionary *txData in txs) {
+        CwTx *tx = [self parseAddrTxData:txData];
+        if (tx == nil) {
+            continue;
+        }
+        [addrTxs addObject:tx];
+    }
+    
+    return addrTxs;
+}
+
+-(NSDictionary *) queryUnConfirmedTxs:(NSArray *)addresses
+{
+    NSString *requestUrl = [NSString stringWithFormat:@"%@/%@/%@",serverSite,unconfirmTxsURLStr, [addresses componentsJoinedByString:@","]];
+    
+    NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
+    [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+    [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    
+    NSMutableDictionary *result = [NSMutableDictionary new];
+    [self getRequestUrl:requestUrl params:nil success:^(NSDictionary *data) {
+        NSNumber *code = [data objectForKey:@"code"];
+        if (code.intValue != 200) {
+            NSLog(@"fail: %@, from url: %@", [data objectForKey:@"message"], requestUrl);
+            return;
+        }
+        
+        if ([[data objectForKey:@"data"] isKindOfClass:[NSArray class]]) {
+            NSArray *dataList = [data objectForKey:@"data"];
+            for (NSDictionary *addrData in dataList) {
+                NSArray *txs = [addrData objectForKey:@"unconfirmed"];
+                NSMutableArray *addrTxs = [self getAddrTxs:txs];
+                [result setObject:addrTxs forKey:[addrData objectForKey:@"address"]];
+            }
+        } else {
+            NSDictionary *addrData = [data objectForKey:@"data"];
+            NSArray *txs = [addrData objectForKey:@"unconfirmed"];
+            NSMutableArray *addrTxs = [self getAddrTxs:txs];
+            [result setObject:addrTxs forKey:[addrData objectForKey:@"address"]];
+        }
+        
+    } failure:^(NSError *err) {
+        NSLog(@"error: %@", err.description);
+    }];
+    
+    return result;
 }
 
 - (GetAllTxsByAddrErr) getHistoryTxsByAddr:(NSString*)addr txs:(NSMutableArray**)txs
@@ -748,84 +739,12 @@ BOOL didGetTransactionByAccountFlag[5];
             
             for (NSDictionary *rawTx in rawTxs)
             {
-
-                int64_t amountNum = (int64_t)([rawTx[@"amount"] doubleValue] * 1e8 + ([rawTx[@"amount"] doubleValue]<0.0? -.5:.5));
-                CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
-                
-                NSData* tid = [self hexstringToData:rawTx[@"tx"]];
-                NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
-                [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
-                [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
-                
-                CwTx *tx = [[CwTx alloc] init];
-                tx.txType = TypeHistoryTx;
-                tx.tid = tid;
-                tx.historyTime_utc = [dateformat dateFromString:rawTx[@"time_utc"]];
-                tx.historyAmount = amount;
-                tx.confirmations = [rawTx[@"confirmations"] unsignedIntegerValue];
-                tx.inputs = [[NSMutableArray alloc] init];
-                tx.outputs = [[NSMutableArray alloc] init];
-                
-                //get trxdetails
-                data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,txInfoURLStr,[self dataToHexstring:tid]] err:&_err response:&_response];
-                
-                if (_err)
-                {
-                    err = GETALLTXSBYADDR_NETWORK;
-                    break;
-                }
-                else
-                {
-                    NSDictionary *txDetail=[NSJSONSerialization JSONObjectWithData:data options:0 error:&_err];
-                    if(!(!_err && [@"success" isEqualToString:JSON[@"status"]] && JSON[@"data"]))
-                    {
-                        err = GETALLTXSBYADDR_JSON;
-                        break;
-                    }
-                    else
-                    {
-                        NSArray *txIns = txDetail[@"data"][@"vins"];
-                        NSArray *txOuts = txDetail[@"data"][@"vouts"];
-                        
-                        for (NSDictionary *txIn in txIns)
-                        {
-                            NSString *address = txIn[@"address"];
-                            int64_t amountNum = (int64_t)([txIn[@"amount"] doubleValue] * 1e8 + ([txIn[@"amount"] doubleValue]<0.0? -.5:.5));
-                            CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
-                            NSInteger n = [txIn[@"n"] integerValue];
-                            NSData* tid = [self hexstringToData:txIn[@"vout_tx"]];
-                            
-                            CwTxin *txin = [[CwTxin alloc] init];
-                            txin.tid = tid;
-                            txin.addr = address;
-                            txin.n = n;
-                            txin.amount = amount;
-                            
-                            [tx.inputs addObject:txin];
-                        }
-                        
-                        for (NSDictionary *txOut in txOuts)
-                        {
-                            NSString *address = txOut[@"address"];
-                            int64_t amountNum = (int64_t)([txOut[@"amount"] doubleValue] * 1e8 + ([txOut[@"amount"] doubleValue]<0.0? -.5:.5));
-                            CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
-                            
-                            NSInteger n = [txOut[@"n"] integerValue];
-                            BOOL isSpent = [txOut[@"is_spent"] boolValue];
-                            
-                            CwTxout *txout = [[CwTxout alloc] init];
-                            txout.addr = address;
-                            txout.amount = amount;
-                            txout.n = n;
-                            txout.isSpent = isSpent;
-                            
-                            [tx.outputs addObject:txout];
-                        }
-                    }
+                CwTx *tx = [self parseAddrTxData:rawTx];
+                if (tx == nil) {
+                    continue;
                 }
                 
                 [_txs addObject:tx];
-                NSLog(@"    tid:%@ amount:%@", tid, amount.satoshi);
             }
         }
     }
@@ -834,7 +753,26 @@ BOOL didGetTransactionByAccountFlag[5];
         return err;
     
     //get unconfirmed
-    data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,unconfirmTxsURLStr,addr] err:&_err response:&_response];
+    [_txs addObjectsFromArray:[self getUnConfirmedTxs:addr]];
+
+    
+    if (err==GETALLTXSBYADDR_BASE) {
+        *txs = _txs;
+
+    }
+    return err;
+    
+}
+
+-(NSMutableArray *) getUnConfirmedTxs:(NSString *)addr
+{
+    NSError *_err = nil;
+    GetAllTxsByAddrErr err = GETALLTXSBYADDR_BASE;
+    NSURLResponse *_response = nil;
+    
+    NSMutableArray *result = [NSMutableArray new];
+    
+    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,unconfirmTxsURLStr,addr] err:&_err response:&_response];
     
     NSLog(@"Get UnconfirmTxs by Address %@", addr);
     
@@ -858,7 +796,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 int64_t amountNum = (int64_t)([rawTx[@"amount"] doubleValue] * 1e8 + ([rawTx[@"amount"] doubleValue]<0.0? -.5:.5));
                 CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
                 
-                NSData* tid = [self hexstringToData:rawTx[@"tx"]];
+                NSData* tid = [CwUtils hexstringToData:rawTx[@"tx"]];
                 NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
                 [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
                 [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
@@ -873,7 +811,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 tx.outputs = [[NSMutableArray alloc] init];
                 
                 //get trxdetails
-                data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,txInfoURLStr,[self dataToHexstring:tid]] err:&_err response:&_response];
+                data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,txInfoURLStr,[CwUtils dataToHexstring:tid]] err:&_err response:&_response];
                 
                 if (_err)
                 {
@@ -896,12 +834,12 @@ BOOL didGetTransactionByAccountFlag[5];
                         for (NSDictionary *txIn in txIns)
                         {
                             NSString *address = txIn[@"address"];
-
+                            
                             int64_t amountNum = (int64_t)([txIn[@"amount"] doubleValue] * 1e8 + ([txIn[@"amount"] doubleValue]<0.0? -.5:.5));
                             CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
                             
                             NSInteger n = [txIn[@"n"] integerValue];
-                            NSData* tid = [self hexstringToData:txIn[@"vout_tx"]];
+                            NSData* tid = [CwUtils hexstringToData:txIn[@"vout_tx"]];
                             
                             CwTxin *txin = [[CwTxin alloc] init];
                             txin.tid = tid;
@@ -932,19 +870,14 @@ BOOL didGetTransactionByAccountFlag[5];
                         }
                     }
                 }
-
-                [_txs addObject:tx];
+                
+                [result addObject:tx];
                 NSLog(@"    tid:%@ amount:%@", tid, amount.satoshi);
             }
         }
     }
     
-    if (err==GETALLTXSBYADDR_BASE) {
-        *txs = _txs;
-
-    }
-    return err;
-    
+    return result;
 }
 
 - (GetUnspentTxsByAddrErr) getUnspentTxsByAddr:(NSString*)addr unspentTxs:(NSMutableArray**)unspentTxs
@@ -954,7 +887,7 @@ BOOL didGetTransactionByAccountFlag[5];
     NSURLResponse *_response = nil;
     NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@?unconfirmed=1",serverSite,unspentTxsURLStr,addr] err:&_err response:&_response];
     
-    NSLog(@"Get UnspentTxs by Address %@", addr);
+    NSLog(@"Get UnspentTxs by Address %@, err: %@", addr, _err);
     
     if(_err)
     {
@@ -965,7 +898,7 @@ BOOL didGetTransactionByAccountFlag[5];
         NSDictionary *JSON =[NSJSONSerialization JSONObjectWithData:data options:0 error:&_err];
         if(!(!_err && [@"success" isEqualToString:JSON[@"status"]] && JSON[@"data"] && JSON[@"data"][@"unspent"]))
         {
-            
+            NSLog(@"unspent error: %@", JSON);
             err = GETUNSPENTTXSBYADDR_JSON;
         }
         else
@@ -979,8 +912,8 @@ BOOL didGetTransactionByAccountFlag[5];
                 int64_t amountNum = (int64_t)(amountValue * 1e8 + (amountValue < 0.0 ? -.5:.5));
                 CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
                 
-                NSData* tid = [self hexstringToData:rawUnspentTx[@"tx"]];
-                NSData* scriptPub = [self hexstringToData:rawUnspentTx[@"script"]];
+                NSData* tid = [CwUtils hexstringToData:rawUnspentTx[@"tx"]];
+                NSData* scriptPub = [CwUtils hexstringToData:rawUnspentTx[@"script"]];
                 NSUInteger n = [rawUnspentTx[@"n"] unsignedIntegerValue];
                 
                 
@@ -1003,10 +936,109 @@ BOOL didGetTransactionByAccountFlag[5];
     return err;
 }
 
+-(void) queryTxInfo:(NSString *)tid success:(void(^)(NSMutableArray *inputs, NSMutableArray *outputs))success fail:(void(^)(NSError *err))fail
+{
+    NSError *_err;
+    NSURLResponse *_response;
+    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@", serverSite,txInfoURLStr,tid] err:&_err response:&_response];
+    
+    if (_err)
+    {
+        fail(_err);
+        return;
+    }
+    else
+    {
+        NSDictionary *txDetail=[NSJSONSerialization JSONObjectWithData:data options:0 error:&_err];
+        if(!(!_err && [@"success" isEqualToString:txDetail[@"status"]] && txDetail[@"data"]))
+        {
+            fail(_err);
+            return;
+        }
+        else
+        {
+            NSArray *txIns = txDetail[@"data"][@"vins"];
+            NSArray *txOuts = txDetail[@"data"][@"vouts"];
+            
+            NSMutableArray *inputs = [NSMutableArray new];
+            NSMutableArray *outputs = [NSMutableArray new];
+            
+            for (NSDictionary *txIn in txIns)
+            {
+                NSString *address = txIn[@"address"];
+                int64_t amountNum = (int64_t)([txIn[@"amount"] doubleValue] * 1e8 + ([txIn[@"amount"] doubleValue]<0.0? -.5:.5));
+                CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
+                NSInteger n = [txIn[@"n"] integerValue];
+                NSData* tid = [CwUtils hexstringToData:txIn[@"vout_tx"]];
+                
+                CwTxin *txin = [[CwTxin alloc] init];
+                txin.tid = tid;
+                txin.addr = address;
+                txin.n = n;
+                txin.amount = amount;
+                
+                [inputs addObject:txin];
+            }
+            
+            for (NSDictionary *txOut in txOuts)
+            {
+                NSString *address = txOut[@"address"];
+                int64_t amountNum = (int64_t)([txOut[@"amount"] doubleValue] * 1e8 + ([txOut[@"amount"] doubleValue]<0.0? -.5:.5));
+                CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
+                
+                NSInteger n = [txOut[@"n"] integerValue];
+                BOOL isSpent = [txOut[@"is_spent"] boolValue];
+                
+                CwTxout *txout = [[CwTxout alloc] init];
+                txout.addr = address;
+                txout.amount = amount;
+                txout.n = n;
+                txout.isSpent = isSpent;
+                
+                [outputs addObject:txout];
+            }
+            
+            success(inputs, outputs);
+        }
+    }
+}
+
+-(CwTx *) parseAddrTxData:(NSDictionary *)txData
+{
+    int64_t amountNum = (int64_t)([txData[@"amount"] doubleValue] * 1e8 + ([txData[@"amount"] doubleValue]<0.0? -.5:.5));
+    CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
+    
+    NSData* tid = [CwUtils hexstringToData:txData[@"tx"]];
+    NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
+    [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+    [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    
+    CwTx *tx = [[CwTx alloc] init];
+    tx.txType = TypeHistoryTx;
+    tx.tid = tid;
+    tx.historyTime_utc = [dateformat dateFromString:txData[@"time_utc"]];
+    tx.historyAmount = amount;
+    tx.confirmations = [txData objectForKey:@"confirmations"] != nil ? [txData[@"confirmations"] unsignedIntegerValue] : 0;
+    tx.inputs = [[NSMutableArray alloc] init];
+    tx.outputs = [[NSMutableArray alloc] init];
+    
+    //get trxdetails
+    [self queryTxInfo:[CwUtils dataToHexstring:tid] success:^(NSMutableArray *inputs, NSMutableArray *outputs) {
+        [tx.inputs addObjectsFromArray:inputs];
+        [tx.outputs addObjectsFromArray:outputs];
+    } fail:^(NSError *err) {
+        NSLog(@"error %@ at query Tx info: %@", err, [CwUtils dataToHexstring:tid]);
+    }];
+    
+    NSLog(@"    tid:%@ amount:%@", tid, amount.satoshi);
+    
+    return tx;
+}
+
 - (PublishErr) publish:(CwTx*)tx result:(NSData **)result
 {
     NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, pushURLStr]];
-    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
+    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[CwUtils dataToHexstring:[tx rawTx]]];
     
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
     
@@ -1052,7 +1084,7 @@ BOOL didGetTransactionByAccountFlag[5];
 - (DecodeErr) decode:(CwTx*)tx result:(NSData **)result
 {
     NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, decodeURLStr]];
-    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
+    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[CwUtils dataToHexstring:[tx rawTx]]];
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
     
     NSLog(@"tx raw: %@", postString);
@@ -1066,6 +1098,40 @@ BOOL didGetTransactionByAccountFlag[5];
     *result = [[NSData alloc] initWithData: decodeTxJSON];
     
     return DECODE_BASE;
+}
+
+-(void) getRequestUrl:(NSString *)url params:(NSDictionary *)params success:(void(^)(NSDictionary *json))success failure:(void(^)(NSError *err))failure
+{
+    if (params != nil && params.count > 0) {
+        NSMutableArray *paramArray = [NSMutableArray new];
+        for (NSString *key in params.keyEnumerator.allObjects) {
+            NSString *value = [params objectForKey:key];
+            [paramArray addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
+        }
+        
+        url = [NSString stringWithFormat:@"%@?%@", url, [paramArray componentsJoinedByString:@"&"]];
+    }
+    
+    NSURL *requestUrl = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+    //    NSData *data = [NSData dataWithContentsOfURL:requestUrl];
+    
+    NSURLResponse *_response = nil;
+    NSError *_err = nil;
+    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&_response error:&_err];
+    
+    if (data) {
+        NSError *error;
+        NSDictionary *json =[NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        
+        if (json == nil) {
+            failure(error);
+        } else {
+            success(json);
+        }
+    } else {
+        failure(_err);
+    }
 }
 
 @end

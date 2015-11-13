@@ -16,5 +16,6 @@
 @property NSUInteger kId;
 @property CwBtc* amount;
 @property NSData *scriptPub;
+@property NSNumber *confirmations;
 
 @end

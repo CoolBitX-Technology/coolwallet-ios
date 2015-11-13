@@ -42,23 +42,6 @@
     self.balance = balance.longLongValue;
 }
 
--(void) parseBlockChainUnspentData:(NSDictionary *)data
-{
-    if (data == nil) {
-        return;
-    }
-    
-    NSArray *unspentData = [data objectForKey:@"unspent_outputs"];
-    if (unspentData.count == 0) {
-        self.unspentTxs = [NSMutableArray new];
-        return;
-    }
-    
-    for (NSDictionary *unspent in unspentData) {
-        
-    }
-}
-
 - (void) encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeInteger:self.accId forKey:@"AccId"];
     [encoder encodeObject:self.accName forKey:@"AccName"];
@@ -110,6 +93,10 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
     CwBtc *unitFee = [CwBtc BTCWithSatoshi:[NSNumber numberWithLongLong:FEERATE]];
     for (CwUnspentTxIndex* utx in sortedUtxs)
     {
+        if (utx.confirmations.intValue == 0) {
+            continue;
+        }
+        
         if(blank >= 149)
         {
             [_selectedUtxs addObject:utx];
@@ -157,10 +144,11 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
         CwTx *_unsignedTx = [[CwTx alloc]init];
         _unsignedTx.txType = TypeUnsignedTx;
         _unsignedTx.inputs = [[NSMutableArray alloc]init];
+        
+        CwBtc *totalInputAcmout = [CwBtc BTCWithBTC:[NSNumber numberWithInt:0]];
         for (CwUnspentTxIndex *utx in _selectedUtxs)
         {
-            CwTx *historyTx = [self.transactions objectForKey:[utx tid]];
-            if (historyTx.confirmations == 0) {
+            if (utx.confirmations.intValue == 0) {
                 continue;
             }
             
@@ -189,6 +177,11 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
             txin.hashForSign = [[NSData alloc]init]; //init the hash for further usage
             
             [_unsignedTx.inputs addObject:txin];
+            
+            totalInputAcmout = [totalInputAcmout add:[utx amount]];
+            if ([totalInputAcmout greater:[amount add:_fee]]) {
+                break;
+            }
         }
         
         _unsignedTx.outputs = [[NSMutableArray alloc]init];
@@ -197,6 +190,7 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
         txout.amount = amount;
         [_unsignedTx.outputs addObject:txout];
         // Fixed address for change here!!
+        _change = [totalInputAcmout sub:[amount add:_fee]];
         if([[_change satoshi]longLongValue]!=0)
         {
             txout = [[CwTxout alloc]init];

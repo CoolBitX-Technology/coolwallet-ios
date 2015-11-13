@@ -333,6 +333,11 @@ Boolean setBtnActionFlag;
     }
 }
 
+-(void) didGetHosts
+{
+    NSLog(@"didGetHosts");
+}
+
 -(void) didGetCwHdwAccountPointer
 {
     //[self performDismiss];

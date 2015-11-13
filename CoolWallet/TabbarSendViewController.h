@@ -27,12 +27,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblBalance;
 @property (weak, nonatomic) IBOutlet UILabel *lblFaitMoney;
 
-- (IBAction)btnAccount1:(id)sender;
-- (IBAction)btnAccount2:(id)sender;
-- (IBAction)btnAccount3:(id)sender;
-- (IBAction)btnAccount4:(id)sender;
-- (IBAction)btnAccount5:(id)sender;
-
 @property (weak, nonatomic) IBOutlet UITextField *txtAmount;
 @property (weak, nonatomic) IBOutlet UITextField *txtNote;
 @property (weak, nonatomic) IBOutlet UITextField *txtReceiverAddress;

@@ -714,6 +714,7 @@ NSArray *addresses;
 
 -(void) loginHost //callback: didLoginHost
 {
+    syncHdwStatusFlag = NO;
     [self cwCmdBindLoginChlng];
     //call cwCmdBindLogin after get challenge;
 }
@@ -1100,7 +1101,6 @@ NSArray *addresses;
 
 -(void) getAddressInfo:(NSInteger)accountId KeyChainId:(NSInteger)keyChainId KeyId:(NSInteger)keyId; //didGenNextAddress
 {
-    NSLog(@"getAddressInfo: %ld, %ld, %ld", accountId, keyChainId, keyId);
     //get account from dictionary
     CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", accountId]];
     
@@ -1196,7 +1196,7 @@ NSArray *addresses;
     [account genUnsignedTxToAddrByAutoCoinSelection:recvAddress change: changeAddress amount:[CwBtc BTCWithSatoshi:[NSNumber numberWithLongLong:amount]] unsignedTx:&unsignedTx fee:&fee];
     
     //check unsigned tx
-    if (unsignedTx==nil) {
+    if (unsignedTx==nil || unsignedTx.inputs.count == 0) {
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
             [self.delegate didPrepareTransactionError:@"At least 1 confirmation needed before sending out."];
         }
