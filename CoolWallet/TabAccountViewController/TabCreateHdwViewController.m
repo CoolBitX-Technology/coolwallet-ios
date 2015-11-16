@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnWrittenDown;
 @property (weak, nonatomic) IBOutlet UIView *viewWrittenDown;
 @property (weak, nonatomic) IBOutlet UIButton *btnVerifySeed;
+@property (weak, nonatomic) IBOutlet UIButton *btnSeedType;
 
 
 - (IBAction)sliSeedLen:(UISlider *)sender;
@@ -169,6 +170,26 @@
 }
 
 #pragma marks - Actions
+- (IBAction)selectSeedType:(id)sender {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Generate seed on" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *englishAction = [UIAlertAction actionWithTitle:@"App (words)" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        self.swSeedOnCard.on = NO;
+        [self SetUIforSeedSwitch];
+        [self.btnSeedType setTitle:action.title forState:UIControlStateNormal];
+    }];
+    
+    UIAlertAction *numberAction = [UIAlertAction actionWithTitle:@"Card (numbers)" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        self.swSeedOnCard.on = YES;
+        [self SetUIforSeedSwitch];
+        [self.btnSeedType setTitle:action.title forState:UIControlStateNormal];
+    }];
+    
+    [alertController addAction:englishAction];
+    [alertController addAction:numberAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
 
 - (IBAction)sliSeedLen:(UISlider *)sender {
     int discreteValue = roundl([sender value]); // Rounds float to an integer
