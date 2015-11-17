@@ -1,14 +1,14 @@
 //
-//  CwUtils.m
-//  CoolWallet
+//  NSString+HexToBytes.m
+//  test.corebitcoin
 //
-//  Created by 鄭斐文 on 2015/11/11.
-//  Copyright © 2015年 MAC-BRYAN. All rights reserved.
+//  Created by 鄭斐文 on 2015/11/17.
+//  Copyright © 2015年 CoolBitx. All rights reserved.
 //
 
-#import "CwUtils.h"
+#import "NSString+HexToData.h"
 
-@implementation CwUtils
+@implementation NSString(HexToData)
 
 + (NSData*) hexstringToData:(NSString*)hexStr
 {

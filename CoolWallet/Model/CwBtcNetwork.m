@@ -21,9 +21,9 @@
 #import "CwTxout.h"
 #import "CwUnspentTxIndex.h"
 #import "OCAppCommon.h"
-#import "CwUtils.h"
 
 #import "NSUserDefaults+RMSaveCustomObject.h"
+#import "NSString+HexToData.h"
 
 static const NSString *serverSite        = @"https://btc.blockr.io/api/v1";
 //static const NSString *serverSite        = @"http://btc-blockr-io-soziedsyodjk.runscope.net/api/v1";
@@ -162,7 +162,7 @@ BOOL didGetTransactionByAccountFlag[5];
             if (foundAddr) {
                 BOOL tidExist = NO;
                 NSString *tid = JSON[@"data"][@"txid"];
-                NSData *tidData = [CwUtils hexstringToData:tid];
+                NSData *tidData = [NSString hexstringToData:tid];
                 for (NSData *txid in acc.transactions) {
                     if ([tidData isEqualToData:txid]) {
                         tidExist = YES;
@@ -301,7 +301,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 [txs addObject:[tx objectForKey:@"address"]];
             }
             
-            NSData* _tid = [CwUtils hexstringToData:tid];
+            NSData* _tid = [NSString hexstringToData:tid];
             
             NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
             [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
@@ -525,7 +525,7 @@ BOOL didGetTransactionByAccountFlag[5];
     if (isGetTrx && !didGetTransactionByAccountFlag[accId]) {
         NSMutableArray *removedUnspents = [NSMutableArray new];
         for (CwUnspentTxIndex *unspent in account.unspentTxs) {
-            NSLog(@"accId: %ld, unspent: %@,%ld,%ld,%ld, amount: %@", accId, [CwUtils dataToHexstring:unspent.tid], unspent.kcId, unspent.kId, unspent.n, unspent.amount);
+            NSLog(@"accId: %ld, unspent: %@,%ld,%ld,%ld, amount: %@", accId, [NSString dataToHexstring:unspent.tid], unspent.kcId, unspent.kId, unspent.n, unspent.amount);
             
             if (unspent.confirmations.intValue > 0) {
                 continue;
@@ -796,7 +796,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 int64_t amountNum = (int64_t)([rawTx[@"amount"] doubleValue] * 1e8 + ([rawTx[@"amount"] doubleValue]<0.0? -.5:.5));
                 CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
                 
-                NSData* tid = [CwUtils hexstringToData:rawTx[@"tx"]];
+                NSData* tid = [NSString hexstringToData:rawTx[@"tx"]];
                 NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
                 [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
                 [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
@@ -811,7 +811,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 tx.outputs = [[NSMutableArray alloc] init];
                 
                 //get trxdetails
-                data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,txInfoURLStr,[CwUtils dataToHexstring:tid]] err:&_err response:&_response];
+                data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,txInfoURLStr,[NSString dataToHexstring:tid]] err:&_err response:&_response];
                 
                 if (_err)
                 {
@@ -839,7 +839,7 @@ BOOL didGetTransactionByAccountFlag[5];
                             CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
                             
                             NSInteger n = [txIn[@"n"] integerValue];
-                            NSData* tid = [CwUtils hexstringToData:txIn[@"vout_tx"]];
+                            NSData* tid = [NSString hexstringToData:txIn[@"vout_tx"]];
                             
                             CwTxin *txin = [[CwTxin alloc] init];
                             txin.tid = tid;
@@ -912,8 +912,8 @@ BOOL didGetTransactionByAccountFlag[5];
                 int64_t amountNum = (int64_t)(amountValue * 1e8 + (amountValue < 0.0 ? -.5:.5));
                 CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
                 
-                NSData* tid = [CwUtils hexstringToData:rawUnspentTx[@"tx"]];
-                NSData* scriptPub = [CwUtils hexstringToData:rawUnspentTx[@"script"]];
+                NSData* tid = [NSString hexstringToData:rawUnspentTx[@"tx"]];
+                NSData* scriptPub = [NSString hexstringToData:rawUnspentTx[@"script"]];
                 NSUInteger n = [rawUnspentTx[@"n"] unsignedIntegerValue];
                 
                 
@@ -969,7 +969,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 int64_t amountNum = (int64_t)([txIn[@"amount"] doubleValue] * 1e8 + ([txIn[@"amount"] doubleValue]<0.0? -.5:.5));
                 CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
                 NSInteger n = [txIn[@"n"] integerValue];
-                NSData* tid = [CwUtils hexstringToData:txIn[@"vout_tx"]];
+                NSData* tid = [NSString hexstringToData:txIn[@"vout_tx"]];
                 
                 CwTxin *txin = [[CwTxin alloc] init];
                 txin.tid = tid;
@@ -1008,7 +1008,7 @@ BOOL didGetTransactionByAccountFlag[5];
     int64_t amountNum = (int64_t)([txData[@"amount"] doubleValue] * 1e8 + ([txData[@"amount"] doubleValue]<0.0? -.5:.5));
     CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
     
-    NSData* tid = [CwUtils hexstringToData:txData[@"tx"]];
+    NSData* tid = [NSString hexstringToData:txData[@"tx"]];
     NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
     [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
     [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
@@ -1023,11 +1023,11 @@ BOOL didGetTransactionByAccountFlag[5];
     tx.outputs = [[NSMutableArray alloc] init];
     
     //get trxdetails
-    [self queryTxInfo:[CwUtils dataToHexstring:tid] success:^(NSMutableArray *inputs, NSMutableArray *outputs) {
+    [self queryTxInfo:[NSString dataToHexstring:tid] success:^(NSMutableArray *inputs, NSMutableArray *outputs) {
         [tx.inputs addObjectsFromArray:inputs];
         [tx.outputs addObjectsFromArray:outputs];
     } fail:^(NSError *err) {
-        NSLog(@"error %@ at query Tx info: %@", err, [CwUtils dataToHexstring:tid]);
+        NSLog(@"error %@ at query Tx info: %@", err, [NSString dataToHexstring:tid]);
     }];
     
     NSLog(@"    tid:%@ amount:%@", tid, amount.satoshi);
@@ -1038,7 +1038,7 @@ BOOL didGetTransactionByAccountFlag[5];
 - (PublishErr) publish:(CwTx*)tx result:(NSData **)result
 {
     NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, pushURLStr]];
-    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[CwUtils dataToHexstring:[tx rawTx]]];
+    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[NSString dataToHexstring:[tx rawTx]]];
     
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
     
@@ -1084,7 +1084,7 @@ BOOL didGetTransactionByAccountFlag[5];
 - (DecodeErr) decode:(CwTx*)tx result:(NSData **)result
 {
     NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, decodeURLStr]];
-    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[CwUtils dataToHexstring:[tx rawTx]]];
+    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[NSString dataToHexstring:[tx rawTx]]];
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
     
     NSLog(@"tx raw: %@", postString);
