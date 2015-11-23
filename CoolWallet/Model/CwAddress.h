@@ -26,7 +26,7 @@ typedef NS_ENUM (NSInteger, CwAddressInfo) {
 @property NSString *address;
 @property NSData *publicKey;
 @property NSMutableArray *historyTrx;
-@property NSMutableArray *unspendTrx;
+//@property NSMutableArray *unspendTrx;
 @property NSString *note; //not sync with card
 @property BOOL registerNotification; //register notification of balance update
 

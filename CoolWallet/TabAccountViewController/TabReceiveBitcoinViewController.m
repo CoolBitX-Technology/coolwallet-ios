@@ -15,7 +15,6 @@
 #import "OCAppCommon.h"
 
 @interface TabReceiveBitcoinViewController ()  <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate>
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBusyIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *lblKeyId;
 @property (weak, nonatomic) IBOutlet UITextField *txtAddress;
 @property (weak, nonatomic) IBOutlet UILabel *lblBip32Path;
@@ -53,8 +52,6 @@ NSString *Label;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.actBusyIndicator.hidden=YES;
-    
     self.txtAddress.delegate = self;
     cwCard.delegate = self;
     
@@ -89,7 +86,7 @@ NSString *Label;
 - (IBAction)btnNewAddress:(id)sender {
     if (![cwCard enableGenAddressWithAccountId:account.accId]) {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Can't create address"
-                                                       message: nil
+                                                       message: @"Can't generate address because there are already five unused(in white color) addresses in this account"
                                                       delegate: nil
                                              cancelButtonTitle: nil
                                              otherButtonTitles:@"OK",nil];
@@ -98,8 +95,7 @@ NSString *Label;
         return;
     }
     
-    self.actBusyIndicator.hidden = NO;
-    [self.actBusyIndicator startAnimating];
+    [self showIndicatorView:@"create address"];
     
     [cwCard genAddress: account.accId KeyChainId: CwAddressKeyChainExternal];
 }
@@ -196,15 +192,13 @@ NSString *Label;
 -(void) didCwCardCommand
 {
     NSLog(@"didCwCardCommand");
-    [self.actBusyIndicator stopAnimating];
-    self.actBusyIndicator.hidden = YES;
-    
     [self.cwManager.connectedCwCard saveCwCardToFile];
 }
 
 -(void) didGenAddress: (CwAddress *) addr
 {
     NSLog(@"didGenAddress");
+    [self performDismiss];
     account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
 
     /*
@@ -323,6 +317,12 @@ NSString *Label;
     
         UILabel *lblAddressText = (UILabel *)[cell viewWithTag:101];
         lblAddressText.text = addr.address;
+        
+        if (addr.historyTrx.count > 0) {
+            [lblAddressText setTextColor:[UIColor grayColor]];
+        } else {
+            [lblAddressText setTextColor:[UIColor whiteColor]];
+        }
     }
     // m/44'/0'/0'/0/0
     //cell.detailTextLabel.text = [NSString stringWithFormat: @"BIP32 Path: m/44'/0'/%ld'/%ld/%ld", (long)addr.accountId, (long)addr.keyChainId, (long)addr.keyId];

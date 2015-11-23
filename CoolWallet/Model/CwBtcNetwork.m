@@ -453,48 +453,28 @@ BOOL didGetTransactionByAccountFlag[5];
         else
         {
             //add txs to account
-            for (CwTx *utx in addrUnspentTxs)
+            for (CwUnspentTxIndex *unspentTxIndex in addrUnspentTxs)
             {
-                CwUnspentTxIndex *unspentTxIndex = [[CwUnspentTxIndex alloc]init];
-                unspentTxIndex.tid = [NSData dataWithData:[utx tid]];
-                unspentTxIndex.n = [utx unspentN];
-                unspentTxIndex.amount = [utx unspentAmount];
-                unspentTxIndex.scriptPub =[utx unspentScriptPub];
-                unspentTxIndex.confirmations = [NSNumber numberWithInteger:utx.confirmations];
                 unspentTxIndex.kId = [addr keyId];
                 unspentTxIndex.kcId = [addr keyChainId];
                 
-                if (addr.unspendTrx == nil) {
-                    NSLog(@"Add unspentTxs to account %ld", account.accId);
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@", unspentTxIndex.tid];
+                NSArray *searchResult = [account.unspentTxs filteredArrayUsingPredicate:predicate];
+                if (searchResult.count == 0) {
                     [account.unspentTxs addObject:unspentTxIndex];
                 } else {
-                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@", unspentTxIndex.tid];
-                    NSArray *searchResult = [account.unspentTxs filteredArrayUsingPredicate:predicate];
-                    if (searchResult.count == 0) {
-                        [account.unspentTxs addObject:unspentTxIndex];
-                    } else {
-                        CwUnspentTxIndex *historyUnspentTxIndex = searchResult[0];
-                        NSInteger index = [account.unspentTxs indexOfObject:historyUnspentTxIndex];
-                        [account.unspentTxs replaceObjectAtIndex:index withObject:unspentTxIndex];
-                    }
+                    CwUnspentTxIndex *historyUnspentTxIndex = searchResult[0];
+                    NSInteger index = [account.unspentTxs indexOfObject:historyUnspentTxIndex];
+                    [account.unspentTxs replaceObjectAtIndex:index withObject:unspentTxIndex];
                 }
             }
             
             if (addrUnspentTxs.count == 0) {
                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.kcId = %ld and SELF.kId = %d", (long)addr.keyChainId, addr.keyId];
                 NSArray *predicateResult = [account.unspentTxs filteredArrayUsingPredicate:predicate];
-                NSLog(@"%@, %@: %lu", addr.address, predicate, (unsigned long)[predicateResult count]);
                 if (predicateResult.count > 0) {
                     [account.unspentTxs removeObjectsInArray:predicateResult];
                 }
-            }
-            
-            //add txs to address
-            addr.unspendTrx = addrUnspentTxs;
-            if (addr.keyChainId == CwAddressKeyChainExternal) {
-                account.extKeys[addr.keyId] = addr;
-            } else {
-                account.intKeys[addr.keyId] = addr;
             }
         }
         
@@ -916,15 +896,12 @@ BOOL didGetTransactionByAccountFlag[5];
                 NSData* scriptPub = [NSString hexstringToData:rawUnspentTx[@"script"]];
                 NSUInteger n = [rawUnspentTx[@"n"] unsignedIntegerValue];
                 
-                
-                CwTx *unspentTx = [[CwTx alloc] init ];
-                unspentTx.txType = TypeUnspentTx;
-                unspentTx.unspentAddr = addr;
-                unspentTx.unspentAmount = amount;
-                unspentTx.tid = tid;
-                unspentTx.unspentScriptPub = scriptPub;
-                unspentTx.unspentN = n;
-                unspentTx.confirmations = [[rawUnspentTx objectForKey:@"confirmations"] unsignedIntegerValue];
+                CwUnspentTxIndex *unspentTx = [[CwUnspentTxIndex alloc]init];
+                unspentTx.tid = [NSData dataWithData:tid];
+                unspentTx.n = n;
+                unspentTx.amount = amount;
+                unspentTx.scriptPub = scriptPub;
+                unspentTx.confirmations = [NSNumber numberWithInteger:[[rawUnspentTx objectForKey:@"confirmations"] unsignedIntegerValue]];
                 
                 [_unspentTxs addObject:unspentTx];
                 NSLog(@"    tid:%@ n:%lu amount:%@", tid, (unsigned long)n, amount.satoshi);
