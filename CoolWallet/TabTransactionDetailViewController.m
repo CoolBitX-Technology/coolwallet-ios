@@ -54,7 +54,7 @@ CwAccount *account;
     NSLog(@"tx utc = %@",[tx.historyTime_utc cwDateString]);
     NSLog(@"tx amount = %@", [NSString stringWithFormat: @"%.6f", tx.historyAmount.BTC.doubleValue]);
     NSLog(@"tid = %@",tx.tid);
-    NSLog(@"confirm = %ld",tx.confirmations);
+    NSLog(@"confirm = %@",tx.confirmations);
     NSLog(@"input = %@",tx.inputs);
     NSLog(@"output = %@",tx.outputs);
     
@@ -82,7 +82,7 @@ CwAccount *account;
     
     _lblTxDate.text = [tx.historyTime_utc cwDateString];
     //_lblTxDate.text = [NSString stringWithFormat: @"%@", tx.historyTime_utc];
-    _lblTxConfirm.text = [NSString stringWithFormat:@"%ld",tx.confirmations];
+    _lblTxConfirm.text = [NSString stringWithFormat:@"%@",tx.confirmations];
    // NSString* responseString = [[NSString alloc] initWithData:responseData encoding:NSNonLossyASCIIStringEncoding];
     //_lblTxId.text = [[NSString alloc] initWithData:tx.tid encoding:NSUTF8StringEncoding];
     

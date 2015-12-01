@@ -323,7 +323,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 
                 CwTx *historyTx = [cwAccount.transactions objectForKey:_tid];
                 if (historyTx) {
-                    [historyTx setConfirmations:confirmations];
+                    [historyTx setConfirmations:[NSNumber numberWithUnsignedInteger:confirmations]];
                     [historyTx setHistoryTime_utc:timeUTC];
                     [cwAccount.transactions setObject:historyTx forKey:_tid];
                 } else {
@@ -339,8 +339,6 @@ BOOL didGetTransactionByAccountFlag[5];
                     NSLog(@"check '%@' unspent", cwAddr.address);
                     [self getUnspentByAddress:cwAddr fromAccount:cwAccount];
                 }
-                
-                
             }
         }
     }
@@ -392,16 +390,20 @@ BOOL didGetTransactionByAccountFlag[5];
             if(record)
             {
                 //update amount
-                NSLog(@"Update Trx %@ amount %@ with %@, conifrm: %ld", record.tid, record.historyAmount.satoshi,  htx.historyAmount.satoshi, [htx confirmations]);
+                NSLog(@"Update Trx %@ amount %@ with %@, conifrm: %@", record.tid, record.historyAmount.satoshi,  htx.historyAmount.satoshi, [htx confirmations]);
                 
                 if (cwAddress.historyTrx == nil) {
-                    record.historyAmount = [record.historyAmount add:htx.historyAmount];
+//                    record.historyAmount = [record.historyAmount add:htx.historyAmount];
+                    CwBtc *btc = [record.historyAmount add:htx.historyAmount];
+                    record.amount_btc = btc.BTC;
                 } else {
                     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@", htx.tid];
                     NSArray *searchResult = [cwAddress.historyTrx filteredArrayUsingPredicate:predicate];
                     
                     if (searchResult.count == 0) {
-                        record.historyAmount = [record.historyAmount add:htx.historyAmount];
+//                        record.historyAmount = [record.historyAmount add:htx.historyAmount];
+                        CwBtc *btc = [record.historyAmount add:htx.historyAmount];
+                        record.amount_btc = btc.BTC;
                     }
                 }
                 
@@ -692,174 +694,6 @@ BOOL didGetTransactionByAccountFlag[5];
     return result;
 }
 
-- (GetAllTxsByAddrErr) getHistoryTxsByAddr:(NSString*)addr txs:(NSMutableArray**)txs
-{
-    NSError *_err = nil;
-    GetAllTxsByAddrErr err = GETALLTXSBYADDR_BASE;
-    NSURLResponse *_response = nil;
-    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,allTxsURLStr,addr] err:&_err response:&_response];
-    NSMutableArray* _txs = [[NSMutableArray alloc] init];
-
-    NSLog(@"Get HistoryTxs by Address %@, data: %@, err: %@", addr, data, _err);
-    
-    if(_err)
-    {
-        err = GETALLTXSBYADDR_NETWORK;
-    }
-    else
-    {
-        NSDictionary *JSON =[NSJSONSerialization JSONObjectWithData:data options:0 error:&_err];
-        if(!(!_err && [@"success" isEqualToString:JSON[@"status"]] && JSON[@"data"] && JSON[@"data"][@"txs"]))
-        {
-            err = GETALLTXSBYADDR_JSON;
-        }
-        else
-        {
-            NSArray* rawTxs = JSON[@"data"][@"txs"];
-            
-            for (NSDictionary *rawTx in rawTxs)
-            {
-                CwTx *tx = [self parseAddrTxData:rawTx];
-                if (tx == nil) {
-                    continue;
-                }
-                
-                [_txs addObject:tx];
-            }
-        }
-    }
-    
-    if (err != GETALLTXSBYADDR_BASE)
-        return err;
-    
-    //get unconfirmed
-    [_txs addObjectsFromArray:[self getUnConfirmedTxs:addr]];
-
-    
-    if (err==GETALLTXSBYADDR_BASE) {
-        *txs = _txs;
-
-    }
-    return err;
-    
-}
-
--(NSMutableArray *) getUnConfirmedTxs:(NSString *)addr
-{
-    NSError *_err = nil;
-    GetAllTxsByAddrErr err = GETALLTXSBYADDR_BASE;
-    NSURLResponse *_response = nil;
-    
-    NSMutableArray *result = [NSMutableArray new];
-    
-    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,unconfirmTxsURLStr,addr] err:&_err response:&_response];
-    
-    NSLog(@"Get UnconfirmTxs by Address %@", addr);
-    
-    if(_err)
-    {
-        err = GETALLTXSBYADDR_NETWORK;
-    }
-    else
-    {
-        NSDictionary *JSON =[NSJSONSerialization JSONObjectWithData:data options:0 error:&_err];
-        if(!(!_err && [@"success" isEqualToString:JSON[@"status"]] && JSON[@"data"] && JSON[@"data"][@"unconfirmed"]))
-        {
-            err = GETALLTXSBYADDR_JSON;
-        }
-        else
-        {
-            NSArray* rawTxs = JSON[@"data"][@"unconfirmed"];
-            
-            for (NSDictionary *rawTx in rawTxs)
-            {
-                int64_t amountNum = (int64_t)([rawTx[@"amount"] doubleValue] * 1e8 + ([rawTx[@"amount"] doubleValue]<0.0? -.5:.5));
-                CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
-                
-                NSData* tid = [NSString hexstringToData:rawTx[@"tx"]];
-                NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
-                [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
-                [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
-                
-                CwTx *tx = [[CwTx alloc] init];
-                tx.txType = TypeHistoryTx;
-                tx.tid = tid;
-                tx.historyTime_utc = [dateformat dateFromString:rawTx[@"time_utc"]];
-                tx.historyAmount = amount;
-                tx.confirmations = 0;
-                tx.inputs = [[NSMutableArray alloc] init];
-                tx.outputs = [[NSMutableArray alloc] init];
-                
-                //get trxdetails
-                data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,txInfoURLStr,[NSString dataToHexstring:tid]] err:&_err response:&_response];
-                
-                if (_err)
-                {
-                    err = GETALLTXSBYADDR_NETWORK;
-                    break;
-                }
-                else
-                {
-                    NSDictionary *txDetail=[NSJSONSerialization JSONObjectWithData:data options:0 error:&_err];
-                    if(!(!_err && [@"success" isEqualToString:JSON[@"status"]] && JSON[@"data"]))
-                    {
-                        err = GETALLTXSBYADDR_JSON;
-                        break;
-                    }
-                    else
-                    {
-                        NSArray *txIns = txDetail[@"data"][@"vins"];
-                        NSArray *txOuts = txDetail[@"data"][@"vouts"];
-                        
-                        for (NSDictionary *txIn in txIns)
-                        {
-                            NSString *address = txIn[@"address"];
-                            
-                            int64_t amountNum = (int64_t)([txIn[@"amount"] doubleValue] * 1e8 + ([txIn[@"amount"] doubleValue]<0.0? -.5:.5));
-                            CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
-                            
-                            NSInteger n = [txIn[@"n"] integerValue];
-                            NSData* tid = [NSString hexstringToData:txIn[@"vout_tx"]];
-                            
-                            CwTxin *txin = [[CwTxin alloc] init];
-                            txin.tid = tid;
-                            txin.addr = address;
-                            txin.n = n;
-                            txin.amount = amount;
-                            
-                            [tx.inputs addObject:txin];
-                        }
-                        
-                        for (NSDictionary *txOut in txOuts)
-                        {
-                            NSString *address = txOut[@"address"];
-                            
-                            int64_t amountNum = (int64_t)([txOut[@"amount"] doubleValue] * 1e8 + ([txOut[@"amount"] doubleValue]<0.0? -.5:.5));
-                            CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
-                            
-                            NSInteger n = [txOut[@"n"] integerValue];
-                            BOOL isSpent = [txOut[@"is_spent"] boolValue];
-                            
-                            CwTxout *txout = [[CwTxout alloc] init];
-                            txout.addr = address;
-                            txout.amount = amount;
-                            txout.n = n;
-                            txout.isSpent = isSpent;
-                            
-                            [tx.outputs addObject:txout];
-                        }
-                    }
-                }
-                
-                [result addObject:tx];
-                NSLog(@"    tid:%@ amount:%@", tid, amount.satoshi);
-            }
-        }
-    }
-    
-    return result;
-}
-
 - (GetUnspentTxsByAddrErr) getUnspentTxsByAddr:(NSString*)addr unspentTxs:(NSMutableArray**)unspentTxs
 {
     GetUnspentTxsByAddrErr err = GETUNSPENTTXSBYADDR_BASE;
@@ -982,34 +816,26 @@ BOOL didGetTransactionByAccountFlag[5];
 
 -(CwTx *) parseAddrTxData:(NSDictionary *)txData
 {
-    int64_t amountNum = (int64_t)([txData[@"amount"] doubleValue] * 1e8 + ([txData[@"amount"] doubleValue]<0.0? -.5:.5));
-    CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
-    
-    NSData* tid = [NSString hexstringToData:txData[@"tx"]];
-    NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
-    [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
-    [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
-    
-    CwTx *tx = [[CwTx alloc] init];
+    CwTx *tx = [RMMapper objectWithClass:[CwTx class] fromDictionary:txData];
     tx.txType = TypeHistoryTx;
-    tx.tid = tid;
-    tx.historyTime_utc = [dateformat dateFromString:txData[@"time_utc"]];
-    tx.historyAmount = amount;
-    tx.confirmations = [txData objectForKey:@"confirmations"] != nil ? [txData[@"confirmations"] unsignedIntegerValue] : 0;
-    tx.inputs = [[NSMutableArray alloc] init];
-    tx.outputs = [[NSMutableArray alloc] init];
     
     //get trxdetails
-    [self queryTxInfo:[NSString dataToHexstring:tid] success:^(NSMutableArray *inputs, NSMutableArray *outputs) {
+    [self performSelectorInBackground:@selector(queryTxDetail:) withObject:tx];
+    
+    NSLog(@"    tid:%@ amount:%@", tx.tid, tx.historyAmount.satoshi);
+    
+    return tx;
+}
+
+-(void) queryTxDetail:(CwTx *)tx
+{
+    NSString *tid = [NSString dataToHexstring:tx.tid];
+    [self queryTxInfo:tid success:^(NSMutableArray *inputs, NSMutableArray *outputs) {
         [tx.inputs addObjectsFromArray:inputs];
         [tx.outputs addObjectsFromArray:outputs];
     } fail:^(NSError *err) {
-        NSLog(@"error %@ at query Tx info: %@", err, [NSString dataToHexstring:tid]);
+        NSLog(@"error %@ at query Tx info: %@", err, tid);
     }];
-    
-    NSLog(@"    tid:%@ amount:%@", tid, amount.satoshi);
-    
-    return tx;
 }
 
 - (PublishErr) publish:(CwTx*)tx result:(NSData **)result

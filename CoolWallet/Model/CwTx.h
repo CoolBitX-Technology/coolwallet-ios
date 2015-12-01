@@ -10,20 +10,31 @@
 #import <Foundation/Foundation.h>
 #import "CwBtc.h"
 
+#import <RMMapper/RMMapper.h>
+#import "NSObject+RMArchivable.h"
+
 typedef enum{TypeUnsignedTx,TypeSignedTx,TypeUnspentTx,TypeHistoryTx} TxType;
 
-@interface CwTx : NSObject
+@interface CwTx : NSObject <RMMapping>
 
 @property TxType txType;
 
-@property NSData* tid;
+@property (nonatomic) NSString *tx;
+@property (nonatomic) NSDate* historyTime_utc;
+@property (nonatomic) NSNumber *confirmations;
+@property (nonatomic) NSNumber *amount_btc;
+@property (nonatomic) NSNumber *amount_multisig;
+
+@property (nonatomic, readonly) NSData* tid;
 @property NSMutableArray* inputs;        //CWTxin[]
 @property NSMutableArray* outputs;       //CWTxout[]
 @property NSData* rawTx;
 
-@property CwBtc* historyAmount;      //bitcoin value changed after this tx
-@property NSDate* historyTime_utc;
+@property (nonatomic, readonly) CwBtc* historyAmount;      //bitcoin value changed after this tx
 
-@property NSUInteger confirmations;
+
+//@property NSUInteger confirmations;
+
+@property (nonatomic, readonly) BOOL isCompleted;
 
 @end

@@ -67,7 +67,8 @@
 
 - (void)setBTC:(NSNumber *)BTC
 {
-    _satoshi = [NSNumber numberWithLongLong:(int64_t)([BTC doubleValue] * 1e8)+([BTC doubleValue] < 0.0 ? -.5 : .5)];
+    int64_t amount = (int64_t)(BTC.doubleValue * 1e8 + (BTC.doubleValue < 0.0 ? -.5:.5));
+    _satoshi = [NSNumber numberWithLongLong:amount];
 
     [self refresh];
 }
