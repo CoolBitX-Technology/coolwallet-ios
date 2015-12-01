@@ -1665,15 +1665,27 @@
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="btnSelectSeedType:" destination="J6u-aa-Iod" eventType="touchUpInside" id="iK2-2m-7es"/>
                                             <action selector="selectSeedType:" destination="FlM-fv-6BH" eventType="touchUpInside" id="soK-JK-deG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rzm-8H-biu">
+                                        <rect key="frame" x="260" y="39" width="28" height="28"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="28" id="HxM-VO-wdM"/>
+                                            <constraint firstAttribute="width" constant="28" id="TMJ-Xk-ge5"/>
+                                        </constraints>
+                                        <state key="normal" backgroundImage="downarrow-01.png"/>
+                                        <connections>
+                                            <action selector="selectSeedType:" destination="FlM-fv-6BH" eventType="touchUpInside" id="ADN-6C-uzb"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Lfx-F2-inM" firstAttribute="leading" secondItem="dFp-jW-gzJ" secondAttribute="leading" id="01A-Fp-BMA"/>
                                     <constraint firstItem="aGu-nW-zuq" firstAttribute="top" secondItem="ufY-OG-XX5" secondAttribute="bottom" constant="3" id="9VT-sW-9qz"/>
+                                    <constraint firstItem="rzm-8H-biu" firstAttribute="top" secondItem="ufY-OG-XX5" secondAttribute="bottom" constant="4" id="EqL-FN-oiQ"/>
                                     <constraint firstAttribute="trailing" secondItem="ufY-OG-XX5" secondAttribute="trailing" constant="8" id="G5c-SM-duF"/>
+                                    <constraint firstAttribute="trailing" secondItem="rzm-8H-biu" secondAttribute="trailing" id="GPb-Oq-YCH"/>
                                     <constraint firstItem="NOW-wa-2cA" firstAttribute="leading" secondItem="dFp-jW-gzJ" secondAttribute="leading" id="HmH-wL-SAF"/>
                                     <constraint firstItem="ufY-OG-XX5" firstAttribute="top" secondItem="dFp-jW-gzJ" secondAttribute="top" constant="4" id="M9S-7J-hpv"/>
                                     <constraint firstAttribute="trailing" secondItem="6Qy-Zf-uIl" secondAttribute="trailing" id="PPN-ua-wxf"/>
@@ -2431,18 +2443,7 @@ Press the button on the card to see the next set of numbers</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ovc-SH-R6g">
-                                <rect key="frame" x="272" y="106" width="28" height="28"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="Ces-ga-9Od"/>
-                                    <constraint firstAttribute="width" constant="28" id="w26-7i-eUI"/>
-                                </constraints>
-                                <state key="normal" backgroundImage="downarrow-01.png"/>
-                                <connections>
-                                    <action selector="btnSelectSeedType:" destination="J6u-aa-Iod" eventType="touchUpInside" id="ATu-Hr-zcU"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWR-Vk-qz2">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWR-Vk-qz2">
                                 <rect key="frame" x="60" y="430" width="200" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="VJL-wH-lQc"/>
@@ -2456,23 +2457,36 @@ Press the button on the card to see the next set of numbers</string>
                                     <action selector="btnCreateHdw:" destination="J6u-aa-Iod" eventType="touchUpInside" id="iAe-2D-26V"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ovc-SH-R6g">
+                                <rect key="frame" x="276" y="106" width="28" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="28" id="Xdu-R6-jQ1"/>
+                                    <constraint firstAttribute="height" constant="28" id="d5D-8J-x2Z"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="downarrow-01.png"/>
+                                <connections>
+                                    <action selector="btnSelectSeedType:" destination="J6u-aa-Iod" eventType="touchUpInside" id="ATu-Hr-zcU"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="slz-v5-3qg" firstAttribute="top" secondItem="CNg-Po-d4p" secondAttribute="bottom" constant="8" id="0hv-SD-Y3z"/>
-                            <constraint firstAttribute="trailing" secondItem="Ovc-SH-R6g" secondAttribute="trailing" constant="20" id="1CE-SO-kfY"/>
                             <constraint firstAttribute="trailing" secondItem="qdb-2T-K9H" secondAttribute="trailing" constant="16" id="5eg-eS-06D"/>
+                            <constraint firstAttribute="trailing" secondItem="Ovc-SH-R6g" secondAttribute="trailing" constant="16" id="60V-7H-4wb"/>
                             <constraint firstItem="oWR-Vk-qz2" firstAttribute="centerX" secondItem="TM0-HZ-iKj" secondAttribute="centerX" id="9pr-65-pmW"/>
                             <constraint firstItem="n8h-ET-Lxn" firstAttribute="leading" secondItem="TM0-HZ-iKj" secondAttribute="leading" constant="16" id="Afg-xX-BE0"/>
                             <constraint firstItem="cEr-OR-sOH" firstAttribute="leading" secondItem="TM0-HZ-iKj" secondAttribute="leading" constant="16" id="Dpz-wi-tt0"/>
                             <constraint firstAttribute="trailing" secondItem="cEr-OR-sOH" secondAttribute="trailing" constant="16" id="Dxo-ET-E8H"/>
                             <constraint firstItem="n8h-ET-Lxn" firstAttribute="top" secondItem="slz-v5-3qg" secondAttribute="bottom" constant="8" id="FZW-k4-py0"/>
+                            <constraint firstItem="oWR-Vk-qz2" firstAttribute="top" secondItem="n8h-ET-Lxn" secondAttribute="bottom" constant="35" id="Fap-nN-oWJ"/>
                             <constraint firstAttribute="trailing" secondItem="slz-v5-3qg" secondAttribute="trailing" constant="16" id="GKf-u5-oFf"/>
                             <constraint firstItem="qdb-2T-K9H" firstAttribute="top" secondItem="KDr-wj-JHx" secondAttribute="bottom" constant="16" id="SjO-TV-exM"/>
                             <constraint firstItem="CNg-Po-d4p" firstAttribute="leading" secondItem="TM0-HZ-iKj" secondAttribute="leading" constant="16" id="TAe-7r-Qft"/>
-                            <constraint firstItem="Ovc-SH-R6g" firstAttribute="top" secondItem="FEx-0E-meG" secondAttribute="bottom" constant="1" id="ZcD-bF-YbZ"/>
+                            <constraint firstItem="Ovc-SH-R6g" firstAttribute="top" secondItem="FEx-0E-meG" secondAttribute="bottom" constant="1" id="lRw-Kc-vbb"/>
                             <constraint firstItem="cEr-OR-sOH" firstAttribute="top" secondItem="qdb-2T-K9H" secondAttribute="bottom" constant="5" id="maE-9O-1QC"/>
                             <constraint firstAttribute="trailing" secondItem="CNg-Po-d4p" secondAttribute="trailing" constant="16" id="n1K-AS-P6T"/>
+                            <constraint firstItem="CNg-Po-d4p" firstAttribute="top" secondItem="Ovc-SH-R6g" secondAttribute="bottom" constant="14" id="ncm-YV-tUq"/>
                             <constraint firstItem="qdb-2T-K9H" firstAttribute="leading" secondItem="TM0-HZ-iKj" secondAttribute="leading" constant="16" id="qB6-MF-9qe"/>
                             <constraint firstAttribute="trailing" secondItem="n8h-ET-Lxn" secondAttribute="trailing" constant="16" id="swd-Jf-IGo"/>
                             <constraint firstItem="CNg-Po-d4p" firstAttribute="top" secondItem="cEr-OR-sOH" secondAttribute="bottom" constant="13" id="zS2-py-hgi"/>
