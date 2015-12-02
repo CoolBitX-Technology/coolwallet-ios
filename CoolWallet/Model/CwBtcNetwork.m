@@ -829,13 +829,24 @@ BOOL didGetTransactionByAccountFlag[5];
 
 -(void) queryTxDetail:(CwTx *)tx
 {
-    NSString *tid = [NSString dataToHexstring:tx.tid];
-    [self queryTxInfo:tid success:^(NSMutableArray *inputs, NSMutableArray *outputs) {
-        [tx.inputs addObjectsFromArray:inputs];
-        [tx.outputs addObjectsFromArray:outputs];
-    } fail:^(NSError *err) {
-        NSLog(@"error %@ at query Tx info: %@", err, tid);
-    }];
+    CwTx *cachedTx = [[NSUserDefaults standardUserDefaults] rm_customObjectForKey:tx.tx];
+    NSLog(@"queryTxDetail, %@, %@", tx.tx, cachedTx);
+    if (cachedTx == nil || cachedTx.confirmations.intValue < 6 || cachedTx.inputs.count == 0 || cachedTx.outputs.count == 0) {
+        NSString *tid = [NSString dataToHexstring:tx.tid];
+        [self queryTxInfo:tid success:^(NSMutableArray *inputs, NSMutableArray *outputs) {
+            [tx.inputs addObjectsFromArray:inputs];
+            [tx.outputs addObjectsFromArray:outputs];
+            
+            [[NSUserDefaults standardUserDefaults] rm_setCustomObject:tx forKey:tx.tx];
+        } fail:^(NSError *err) {
+            NSLog(@"error %@ at query Tx info: %@", err, tid);
+        }];
+    } else {
+        tx.inputs = cachedTx.inputs;
+        tx.outputs = cachedTx.outputs;
+        
+        [[NSUserDefaults standardUserDefaults] rm_setCustomObject:tx forKey:tx.tx];
+    }
 }
 
 - (PublishErr) publish:(CwTx*)tx result:(NSData **)result

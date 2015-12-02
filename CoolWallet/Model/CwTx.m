@@ -25,7 +25,7 @@
 
 -(NSArray *) rm_excludedProperties
 {
-    return @[@"isCompleted"];
+    return @[@"isCompleted", @"tid", @"historyAmount"];
 }
 
 -(id) init
