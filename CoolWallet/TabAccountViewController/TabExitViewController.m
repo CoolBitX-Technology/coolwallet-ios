@@ -10,6 +10,7 @@
 #import "CwManager.h"
 #import "CwCard.h"
 #import "SWRevealViewController.h"
+#import "CwBtcNetWork.h"
 
 @interface TabExitViewController ()
 - (IBAction)btnDisconnectCw:(id)sender;
@@ -74,6 +75,9 @@
 #pragma marks - Actions
 - (IBAction)btnDisconnectCw:(id)sender {
     [self showIndicatorView:@"Logout..."];
+    
+    CwBtcNetWork *network = [CwBtcNetWork sharedManager];
+    network.delegate = nil;
     
     [self.cwManager.connectedCwCard logoutHost];
 }

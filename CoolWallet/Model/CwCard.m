@@ -4564,10 +4564,6 @@ NSArray *addresses;
                     [self.delegate didGetCwCurrRate];
                 }
                 
-                if ([self.delegate respondsToSelector:@selector(didGetCwCurrRate)]) {
-                    [self.delegate didGetCwCurrRate];
-                }
-                
             } else{
                 NSLog(@"CwCmdIdSetCurrRate Error %04lX", (long)cmd.cmdResult);
             }

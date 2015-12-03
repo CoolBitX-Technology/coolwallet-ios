@@ -33,6 +33,7 @@ bool isFirst = YES;
 
 @property (strong, nonatomic) NSArray *accountButtons;
 @property (assign, nonatomic) BOOL waitAccountCreated;
+@property (strong, nonatomic) NSMutableArray *txSyncing;
 
 @end
 
@@ -51,13 +52,14 @@ bool isFirst = YES;
     btcNet.delegate = self;
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
+    self.txSyncing = [NSMutableArray new];
     
     [self performSelectorOnMainThread:@selector(getBitcoinRateforCurrency) withObject:nil waitUntilDone:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+        
     btcNet.delegate = self;
     
     NSLog(@"accid = %ld",self.cwManager.connectedCwCard.currentAccountId);
@@ -196,26 +198,33 @@ Boolean setBtnActionFlag;
 
 -(void) updateBalanceAndTxs:(NSInteger)accId
 {
-    //update balance
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        //Do background work
-        BlockChain *blockChain = [[BlockChain alloc] init];
-        [blockChain getBalanceByAccountID:accId];
+    NSString *accountId = [NSString stringWithFormat:@"%ld", accId];
+    if ([self.txSyncing containsObject:accountId]) {
+        return;
+    } else {
+        [self.txSyncing addObject:accountId];
         
-        [btcNet getTransactionByAccount: accId];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            //Update UI
-            NSLog(@"update %ld, current is %ld", accId, self.cwManager.connectedCwCard.currentAccountId);
-            if (accId == self.cwManager.connectedCwCard.currentAccountId) {
-                [self SetBalanceText];
-                [self.cwManager.connectedCwCard setAccount: accId Balance: account.balance];
-            } else {
-                CwAccount *updateAccount = [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
-                [self.cwManager.connectedCwCard setAccount: accId Balance: updateAccount.balance];
-            }
+        //update balance
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            //Do background work
+            BlockChain *blockChain = [[BlockChain alloc] init];
+            [blockChain getBalanceByAccountID:accId];
+            
+            [btcNet getTransactionByAccount: accId];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //Update UI
+                NSLog(@"update %ld, current is %ld", accId, self.cwManager.connectedCwCard.currentAccountId);
+                if (accId == self.cwManager.connectedCwCard.currentAccountId) {
+                    [self SetBalanceText];
+                    [self.cwManager.connectedCwCard setAccount: accId Balance: account.balance];
+                } else {
+                    CwAccount *updateAccount = [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
+                    [self.cwManager.connectedCwCard setAccount: accId Balance: updateAccount.balance];
+                }
+            });
         });
-    });
+    }
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -375,8 +384,11 @@ Boolean setBtnActionFlag;
     
     account = (CwAccount *) [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", self.cwManager.connectedCwCard.currentAccountId]];
     
-    NSLog(@"TabbarHomeViewController, %ld, transitions: %@", account.accId, account.transactions);
     if (account.lastUpdate == nil) {
+        if (account.transactions.count > 0) {
+            [self performDismiss];
+        }
+        
         //get balance and transaction when there is no transaction yet.
         dispatch_queue_t queue = dispatch_queue_create("com.dtco.CoolWallet", NULL);
         
@@ -395,7 +407,11 @@ Boolean setBtnActionFlag;
     NSLog(@"TabbarHomeViewController, currAccId: %ld, didGetTransactionByAccount: %ld", self.cwManager.connectedCwCard.currentAccountId, accId);
     //code to be executed in the background
     dispatch_async(dispatch_get_main_queue(), ^{
+        [self.cwManager.connectedCwCard saveCwCardToFile];
+        
         CwAccount *txAccount = (CwAccount *) [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
+        
+        [self.txSyncing removeObject:[NSString stringWithFormat:@"%ld", accId]];
         
         //get address publickey uf the unspent if needed
         for (CwUnspentTxIndex *utx in txAccount.unspentTxs)
@@ -465,7 +481,6 @@ Boolean setBtnActionFlag;
 
 -(void) didGenAddress:(CwAddress *)addr
 {
-    NSLog(@"addr: %@, keyChainId = %ld", addr, addr.keyChainId);
     if (self.waitAccountCreated) {
         self.waitAccountCreated = NO;
         

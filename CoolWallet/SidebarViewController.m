@@ -10,6 +10,7 @@
 
 @interface SidebarViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *versionLabel;
 @property (nonatomic, strong) NSArray *menuItems;
 @end
 
@@ -21,8 +22,12 @@
 {
     [super viewDidLoad];
     
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [self.versionLabel setText:[NSString stringWithFormat:@"V%@", version]];
+    
     menuItems = @[@"title", @"HostDevices", @"CoolWalletCard",@"Security",@"Settings",@"Logout"];
 }
+
 
 - (void)didReceiveMemoryWarning
 {

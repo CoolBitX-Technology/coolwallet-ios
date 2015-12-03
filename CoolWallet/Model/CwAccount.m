@@ -52,6 +52,7 @@
     [encoder encodeInteger:self.intKeyPointer forKey:@"IntKeyPtr"];
     [encoder encodeObject:self.extKeys forKey:@"ExtKeys"];
     [encoder encodeObject:self.intKeys forKey:@"IntKeys"];
+    [encoder encodeObject:self.transactions forKey:@"Transactions"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -64,6 +65,7 @@
     self.intKeyPointer = [decoder decodeIntegerForKey:@"IntKeyPtr"];
     self.extKeys = [decoder decodeObjectForKey:@"ExtKeys"];
     self.intKeys = [decoder decodeObjectForKey:@"IntKeys"];
+    self.transactions = [decoder decodeObjectForKey:@"Transactions"];
     
     return self;
 }

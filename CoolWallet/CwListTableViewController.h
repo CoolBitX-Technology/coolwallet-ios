@@ -19,6 +19,5 @@
 
 @property (weak, nonatomic) IBOutlet UIView *view_connecting;
 @property (weak, nonatomic) IBOutlet UITableView *tablev_cwlist;
-@property (weak, nonatomic) IBOutlet UIButton *bt_cwlater;
 
 @end

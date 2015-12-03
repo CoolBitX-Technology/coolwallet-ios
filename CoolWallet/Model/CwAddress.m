@@ -17,6 +17,7 @@
     [encoder encodeObject:self.address forKey:@"AddrAddress"];
     [encoder encodeObject:self.publicKey forKey:@"AddPubKey"];
     [encoder encodeObject:self.note forKey:@"AddNote"];
+    [encoder encodeObject:self.historyTrx forKey:@"AddHistoryTrx"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -26,6 +27,7 @@
     self.address = [decoder decodeObjectForKey:@"AddrAddress"];
     self.publicKey = [decoder decodeObjectForKey:@"AddPubKey"];
     self.note = [decoder decodeObjectForKey:@"AddNote"];
+    self.historyTrx = [decoder decodeObjectForKey:@"AddHistoryTrx"];
     
     return self;
 }

@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <RMMapper/RMMapper.h>
+#import "NSObject+RMArchivable.h"
 #import "CwCard.h"
 
 @class CwCard;
 
-@interface CwCardInfo : NSObject <RMMapping>
+@interface CwCardInfo : NSObject
 
 #pragma mark - CwProperties - Basic Info
 @property (copy, nonatomic) NSNumber *mode;

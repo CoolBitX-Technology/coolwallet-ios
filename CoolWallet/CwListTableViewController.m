@@ -14,6 +14,8 @@
 @interface CwListTableViewController ()
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *versionLabel;
+
 @property (strong, nonatomic) NSMutableArray *cwCards;
 @property (strong, nonatomic) CwCard *myCw;
 @property NSIndexPath *cellIndex;
@@ -22,7 +24,6 @@
 @implementation CwListTableViewController
 
 @synthesize tablev_cwlist;
-@synthesize bt_cwlater;
 @synthesize view_connecting;
 
 NSString *segueIdentifier;
@@ -35,6 +36,11 @@ NSString *segueIdentifier;
     self.cwMgr = [CwManager sharedManager];
     
     self.tablev_cwlist.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [self.versionLabel setText:[NSString stringWithFormat:@"V%@", version]];
+    
+    NSLog(@"CwListTableViewController: %f", self.view.bounds.size.width);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
