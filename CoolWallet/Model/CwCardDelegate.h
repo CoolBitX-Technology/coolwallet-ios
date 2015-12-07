@@ -47,6 +47,7 @@ typedef NS_ENUM (NSInteger, CwCardRSSI) {
 -(void) didPinLogout;
 
 -(void) didRegisterHost: (NSString *)OTP;
+-(void) didRegisterHostError:(NSInteger)errorId;
 -(void) didConfirmHost;
 -(void) didConfirmHostError:(NSInteger)errId;
 -(void) didEraseCw;     //erase wallet & hosts

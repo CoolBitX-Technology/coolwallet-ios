@@ -4326,6 +4326,9 @@ NSArray *addresses;
                     [self.delegate didRegisterHost:[[NSString alloc] initWithBytes:data+4 length:6 encoding:NSUTF8StringEncoding]];
                 }
             } else {
+                if ([self.delegate respondsToSelector:@selector(didRegisterHostError:)]) {
+                    [self.delegate didRegisterHostError:cmd.cmdResult];
+                }
                 NSLog(@"CwCmdIdBindRegInit Error %04lX", (long)cmd.cmdResult);
             }
             break;

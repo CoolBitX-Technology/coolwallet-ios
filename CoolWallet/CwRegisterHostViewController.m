@@ -91,21 +91,6 @@ CwCard *cwCard;
     [self.txtOtp resignFirstResponder];
 }
 
-/*
-//Alerts
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    //將按鈕的Title當作判斷的依據
-    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
-    if(alertView == alert_callphone) {
-        if([title isEqualToString:@"確定"]) {
-            NSLog(@"call phone");
-            //[[UIApplication sharedApplication]openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",phonenumber]]];
-        }
-    }
-    
-}*/
-
 
 #pragma mark - Navigation
 
@@ -222,16 +207,15 @@ CwCard *cwCard;
                 [self showIndicatorView:@"Login Host"];
             } else {
                 //need confirm
-                msg = @"Waiting for authorization from paired device.";
-                //self.lblCWstatus.text = @"CW Found, Need Authed Device to Confirm the Registration";
+                msg = @"Waiting for authorization from paired device";
                 
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle: nil
-                                                               message: msg
-                                                              delegate: nil
-                                                     cancelButtonTitle: nil
-                                                     otherButtonTitles:@"OK",nil];
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:msg preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    [self didLogoutHost];
+                }];
+                [alertController addAction:okAction];
                 
-                [alert show];
+                [self presentViewController:alertController animated:YES completion:nil];
                 
                 _btnRefreshInfo.hidden = NO;
             }
@@ -242,8 +226,6 @@ CwCard *cwCard;
             [self regHost:self];
         }
     }
-    
-    //[self reloadInputViews];
 }
 
 -(void) didGetCwCardId
@@ -315,6 +297,23 @@ CwCard *cwCard;
     //self.txtOtp.text = OTP;
 }
 
+-(void) didRegisterHostError:(NSInteger)errorId
+{
+    NSString *title = @"Unable to Pair";
+    NSString *message = nil;
+    if (errorId == ERR_BIND_HOSTFULL) {
+        message = @"Maximum number of 3 hosts have been paired with this card";
+    }
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self didLogoutHost];
+    }];
+    [alertController addAction:okAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 -(void) didConfirmHost {
     NSLog(@"didConfirmHost");
     self.actBusyIndicator.hidden = YES;
@@ -363,7 +362,7 @@ CwCard *cwCard;
     if (errId == ERR_BIND_REGRESP) {
         self.txtOtp.text = @"";
         
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Pair fail" message:@"OTP incorrect." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to Pair" message:@"OTP incorrect" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *tryAction = [UIAlertAction actionWithTitle:@"try again" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self regHost:self];
         }];
@@ -380,10 +379,10 @@ CwCard *cwCard;
     [self performDismiss];
 
     //Add a notification to the system
-    UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
-    notify.soundName = UILocalNotificationDefaultSoundName;
-    [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
+//    UILocalNotification *notify = [[UILocalNotification alloc] init];
+//    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
+//    notify.soundName = UILocalNotificationDefaultSoundName;
+//    [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
 
     // Get the storyboard named secondStoryBoard from the main bundle:
     UIStoryboard *secondStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
