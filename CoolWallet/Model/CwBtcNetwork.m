@@ -330,6 +330,7 @@ BOOL didGetTransactionByAccountFlag[5];
                     NSMutableArray *addresses = [NSMutableArray new];
                     for (CwAddress *cwaddr in txAddresses) {
                         [addresses addObject:cwaddr.address];
+                        cwaddr.historyUpdateFinish = NO;
                     }
                     NSDictionary *updateTxs = [self queryHistoryTxs:addresses];
                     [self syncAccountTransactions:updateTxs account:cwAccount];
@@ -369,6 +370,9 @@ BOOL didGetTransactionByAccountFlag[5];
     [self getHistoryTxsByAccount:account];
     
     for (CwAddress *address in [account getAllAddresses]) {
+        if (address.historyTrx != nil && address.historyTrx.count == 0) {
+            continue;
+        }
         [self getUnspentByAddress:address fromAccount:account];
     }
 
@@ -377,7 +381,6 @@ BOOL didGetTransactionByAccountFlag[5];
 
 -(void) syncAccountTransactions:(NSDictionary *)historyTxData account:(CwAccount *)account
 {
-    NSLog(@"%@", historyTxData);
     for (CwAddress *cwAddress in [account getAllAddresses]) {
         NSArray *historyTxList = [historyTxData objectForKey:cwAddress.address];
         if (!historyTxList) {

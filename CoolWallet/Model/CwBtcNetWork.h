@@ -13,6 +13,7 @@
 #import "CwBtc.h"
 #import "CwBtcNetworkDelegate.h"
 #import "CwAddress.h"
+#import "CwAccount.h"
 
 @interface CwBtcNetWork : NSObject
 
@@ -24,8 +25,9 @@
 - (GetTransactionByAccountErr) getTransactionByAccount: (NSInteger)accId;
 - (RegisterNotifyByAddrErr) registerNotifyByAccount: (NSInteger)accId;
 - (void) registerNotifyByAddress:(CwAddress *)addr;
-- (GetAllTxsByAddrErr) getHistoryTxsByAddr: (NSString*)addr txs:(NSMutableArray**)txs;
+- (NSDictionary *) queryHistoryTxs:(NSArray *)addresses;
 - (GetUnspentTxsByAddrErr) getUnspentTxsByAddr: (NSString*)addr unspentTxs:(NSMutableArray**)unspentTxs;
+-(void) syncAccountTransactions:(NSDictionary *)historyTxData account:(CwAccount *)account;
 
 - (PublishErr) publish:(CwTx*)tx result:(NSData **)result;
 - (DecodeErr) decode:(CwTx*)tx result:(NSData **)result;

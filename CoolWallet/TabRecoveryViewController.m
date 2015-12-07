@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UITextView *txtRecoveryLog;
 - (IBAction)btnRecovery:(id)sender;
 
+@property (nonatomic, strong) NSMutableDictionary *txDatas;
+
 @end
 
 CwManager *cwManager;
@@ -40,6 +42,8 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     cwManager = [CwManager sharedManager];
     cwCard = cwManager.connectedCwCard;
     btcNet = [CwBtcNetWork sharedManager];
+    
+    self.txDatas = [NSMutableDictionary new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -111,6 +115,9 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     if (cwCard.hdwStatus.integerValue != CwHdwStatusActive) {
         [self addLog: @"HDW is not created"];
     }
+    
+    for (int i=0; i<cwCard.hdwAcccountPointer.integerValue; i++)
+        [cwCard getAccountInfo: i];
 
     //if pointer is less then 5, creat all the rest of accounts
     for (NSInteger i=cwCard.hdwAcccountPointer.integerValue; i<5; i++) {
@@ -119,8 +126,6 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     
     if (cwCard.hdwAcccountPointer.integerValue == 5) {
         [self addLog: @"HDW accounts are ready"];
-        for (int i=0; i<cwCard.hdwAcccountPointer.integerValue; i++)
-            [cwCard getAccountInfo: i];
     }
 }
 
@@ -130,42 +135,11 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     
     if ([cwCard.hdwAcccountPointer integerValue] == 5) {
         [self addLog: @"HDW accounts are ready"];
-        for (int i=0; i<cwCard.hdwAcccountPointer.integerValue; i++)
-            [cwCard getAccountInfo: i];
     }
 }
 
 -(void) didGetAccountInfo:(NSInteger)accId {
     CwAccount *acc = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)accId]];
-    
-    //check existing ext keys
-    for (int i=0; i<acc.extKeyPointer; i++) {
-        //check transactions of each keys
-        CwAddress *addr = acc.extKeys[i];
-        NSMutableArray *addrTxs;
-        
-        [btcNet getHistoryTxsByAddr:addr.address txs: &addrTxs];
-        
-        addr.historyTrx = addrTxs;
-        
-        //set address back to acc
-        if (addr.keyChainId==CwAddressKeyChainExternal)
-            acc.extKeys[addr.keyId] = addr;
-        else
-            acc.intKeys[addr.keyId] = addr;
-        
-        [cwCard.cwAccounts setObject:acc forKey:[NSString stringWithFormat: @"%ld", acc.accId]];
-        
-        if (addrTxs.count>0) {
-            //clear the counter
-            accPtr[accId][CwAddressKeyChainExternal]=-1;
-        }
-        
-        if (addrTxs.count==0) {
-            if (accPtr[accId][CwAddressKeyChainExternal]==-1)
-                accPtr[accId][CwAddressKeyChainExternal]=addr.keyId;
-        }
-    }
     
     //gen address if the empty address < CwHdwRecoveryAddressWindow
     if (accPtr[accId][CwAddressKeyChainExternal] == -1 || acc.extKeyPointer-accPtr[accId][CwAddressKeyChainExternal]<CwHdwRecoveryAddressWindow) {
@@ -173,26 +147,7 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     } else {
         [self addLog: [NSString stringWithFormat:@"HDW accounts %ld external addresses recovered", (long)accId]];
     }
-    
-    //check int keys
-    for (int i=0; i<acc.intKeyPointer; i++) {
-        //check transactions of each keys
-        CwAddress *addr = acc.intKeys[i];
-        NSMutableArray *addrTxs;
-        
-        [btcNet getHistoryTxsByAddr:addr.address txs: &addrTxs];
-        
-        if (addrTxs.count>0) {
-            //clear the counter
-            accPtr[accId][CwAddressKeyChainInternal]=-1;
-        }
-        
-        if (addrTxs.count==0) {
-            if (accPtr[accId][CwAddressKeyChainInternal]==-1)
-                accPtr[accId][CwAddressKeyChainInternal]=addr.keyId;
-        }
-    }
-    
+
     //gen address if the empty address < 5
     if (accPtr[accId][CwAddressKeyChainInternal] == -1 || acc.intKeyPointer-accPtr[accId][CwAddressKeyChainInternal]<CwHdwRecoveryAddressWindow) {
         [cwCard genAddress:accId KeyChainId:CwAddressKeyChainInternal];
@@ -205,11 +160,8 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     [self setProgressPercent];
     
     CwAccount *acc = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)addr.accountId]];
-    NSMutableArray *addrTxs;
-    
-    [btcNet getHistoryTxsByAddr:addr.address txs: &addrTxs];
-    
-    addr.historyTrx = addrTxs;
+
+    addr = [self checkTransactions:addr];
     
     //set address back to acc
     if (addr.keyChainId==CwAddressKeyChainExternal)
@@ -219,17 +171,7 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     
     [cwCard.cwAccounts setObject:acc forKey:[NSString stringWithFormat: @"%ld", acc.accId]];
 
-    [self addLog: [NSString stringWithFormat:@"HDW accounts %ld keychain %ld addresses %ld created, trx:%ld", (long)addr.accountId, addr.keyChainId, addr.keyId, addrTxs.count]];
-
-    if (addrTxs.count>0) {
-        //clear the counter
-        accPtr[addr.accountId][addr.keyChainId]=-1;
-    }
-    
-    if (addrTxs.count==0) {
-        if (accPtr[addr.accountId][addr.keyChainId]==-1)
-            accPtr[addr.accountId][addr.keyChainId]=addr.keyId;
-    }
+    [self addLog: [NSString stringWithFormat:@"HDW accounts %ld keychain %ld addresses %ld created, trx:%ld", (long)addr.accountId, addr.keyChainId, addr.keyId, addr.historyTrx.count]];
     
     //gen address if the empty address < CwHdwRecoveryAddressWindow
     if (addr.keyChainId==CwAddressKeyChainExternal) {
@@ -257,6 +199,34 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     //TODO: do something?
 }
 
+-(CwAddress *) checkTransactions:(CwAddress *)address
+{
+    NSDictionary *trxs = [btcNet queryHistoryTxs:@[address.address]];
+    if (trxs == nil) {
+        if (accPtr[address.accountId][address.keyChainId] == -1) {
+            accPtr[address.accountId][address.keyChainId] = address.keyId;
+        }
+    } else {
+        address.historyTrx = [trxs objectForKey:address.address];
+        if (address.historyTrx.count > 0) {
+            accPtr[address.accountId][address.keyChainId] = -1;
+        } else {
+            if (accPtr[address.accountId][address.keyChainId] == -1) {
+                accPtr[address.accountId][address.keyChainId] = address.keyId;
+            }
+        }
+        
+        NSMutableDictionary *txs = [self.txDatas objectForKey:[NSString stringWithFormat:@"%ld", address.accountId]];
+        if (txs == nil) {
+            txs = [NSMutableDictionary new];
+        }
+        [txs setValuesForKeysWithDictionary:trxs];
+        [self.txDatas setObject:txs forKey:[NSString stringWithFormat:@"%ld", address.accountId]];
+    }
+    
+    return address;
+}
+
 -(void) addLog: (NSString *)log {
     NSString *msg = [log stringByAppendingString:@"\n"];
     NSLog(@"%@",msg);
@@ -273,6 +243,12 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     _progressView.progress = percent;
     
     if(acc_external == 5 && acc_internal == 5) {
+        for (CwAccount *account in [cwCard.cwAccounts allValues]) {
+            NSMutableDictionary *historyTxs = [self.txDatas objectForKey:[NSString stringWithFormat:@"%ld", account.accId]];
+            [btcNet syncAccountTransactions:historyTxs account:account];
+        }
+        
+        [cwCard saveCwCardToFile];
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
         UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
         [self.revealViewController pushFrontViewController:vc animated:YES];

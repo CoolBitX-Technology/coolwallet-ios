@@ -42,7 +42,6 @@
         _viewOnCardCheckSum.hidden = YES;
         _btnCreateWallet.hidden = YES;
         SeedArray = [mnemonic componentsSeparatedByString:@" "];
-        NSLog(@"SeedArray = %ld",[SeedArray count]);
         [self ShowSeedDetail];
     }
 }
