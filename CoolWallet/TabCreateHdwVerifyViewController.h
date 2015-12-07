@@ -10,8 +10,9 @@
 #import "CwCard.h"
 #import "CwManager.h"
 #import "NYMnemonic.h"
+#import "BaseViewController.h"
 
-@interface TabCreateHdwVerifyViewController:UIViewController <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate, UITextViewDelegate>
+@interface TabCreateHdwVerifyViewController:BaseViewController <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate, UITextViewDelegate>
 
 @property CwManager *cwManager;
 

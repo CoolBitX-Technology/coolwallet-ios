@@ -208,14 +208,9 @@ CwCard *cwCard;
             } else {
                 //need confirm
                 msg = @"Waiting for authorization from paired device";
-                
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:msg preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                [self showHintAlert:nil withMessage:msg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                     [self didLogoutHost];
-                }];
-                [alertController addAction:okAction];
-                
-                [self presentViewController:alertController animated:YES completion:nil];
+                }]];
                 
                 _btnRefreshInfo.hidden = NO;
             }
@@ -305,13 +300,9 @@ CwCard *cwCard;
         message = @"Maximum number of 3 hosts have been paired with this card";
     }
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    [self showHintAlert:title withMessage:message withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self didLogoutHost];
-    }];
-    [alertController addAction:okAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
+    }]];
 }
 
 -(void) didConfirmHost {
@@ -328,19 +319,12 @@ CwCard *cwCard;
         if ([cwCard.hostId integerValue] >= 0) {
             if ([cwCard.hostConfirmStatus integerValue] != CwHostConfirmStatusConfirmed) {
                 NSString *msg = @"Waiting for authorization from paired device.";
-                //self.lblCWstatus.text = @"CW Found, Need Authed Device to Confirm the Registration";
-                
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle: nil
-                                                               message: msg
-                                                              delegate: nil
-                                                     cancelButtonTitle: nil
-                                                     otherButtonTitles:@"OK",nil];
-                
-                [alert show];
+                [self showHintAlert:nil withMessage:msg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    [self didLogoutHost];
+                }]];
             }
             
         }
-        
     }else {
         /*
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CW Registered"
@@ -362,13 +346,10 @@ CwCard *cwCard;
     if (errId == ERR_BIND_REGRESP) {
         self.txtOtp.text = @"";
         
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to Pair" message:@"OTP incorrect" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *tryAction = [UIAlertAction actionWithTitle:@"try again" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self regHost:self];
         }];
-        [alertController addAction:tryAction];
-        
-        [self presentViewController:alertController animated:YES completion:nil];
+        [self showHintAlert:@"Unable to Pair" withMessage:@"OTP incorrect" withOKAction:tryAction];
     }
 }
 

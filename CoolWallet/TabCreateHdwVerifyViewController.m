@@ -22,10 +22,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.hidesBackButton = YES;
-    // Do any additional setup after loading the view.
-    //find CW via BLE
-    self.cwManager = [CwManager sharedManager];
-    self.cwManager.connectedCwCard.delegate = self;
     
     SelectPage =0;
     
@@ -43,6 +39,7 @@
         _btnCreateWallet.hidden = YES;
         SeedArray = [mnemonic componentsSeparatedByString:@" "];
         [self ShowSeedDetail];
+        [self showHintAlert];
     }
 }
 
@@ -73,6 +70,11 @@
     }
     //NSLog(@"showSeedStr = %@",showSeedStr);
     _lblSeedDetail.text = showSeedStr;
+}
+
+-(void) showHintAlert
+{
+    [self showHintAlert:@"IMPORTANT!" withMessage:@"This is the only time you can make a backup of your bitcoins." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
 }
 
 - (IBAction)btnCreateWallet:(id)sender {
