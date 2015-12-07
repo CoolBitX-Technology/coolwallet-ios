@@ -11,6 +11,7 @@
 #import "CwUnspentTxIndex.h"
 #import "CwBtcNetworkDelegate.h"
 #import "BlockChain.h"
+#import "tx.h"
 
 CwCard *cwCard;
 CwAccount *account;
@@ -134,6 +135,14 @@ long TxFee = 10000;
 - (IBAction)btnSendBitcoin:(id)sender {
     
     if([self.txtReceiverAddress.text compare:@""] == 0 ) return;
+    if (![self isValidBitcoinAddress:self.txtReceiverAddress.text]) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to send" message:@"Invalid Bitcoin address" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:okAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        return;
+    }
     if([self.txtAmount.text compare:@""] == 0 ) return;
     
     self.transactionBegin = YES;
@@ -217,6 +226,12 @@ long TxFee = 10000;
     [_txtAmountFiatmoney resignFirstResponder];
 }
 
+-(BOOL) isValidBitcoinAddress:(NSString *)address
+{
+    int verify = addrVerify([address cStringUsingEncoding:NSUTF8StringEncoding]);
+    return verify == ADDRESS_VERIFY_BASE;
+}
+
 #pragma marks - Account Button Actions
 
 - (void)setAccountButton{
@@ -282,7 +297,13 @@ long TxFee = 10000;
     [blockChain getBalanceByAccountID:cwAccount.accId];
     [self performSelectorOnMainThread:@selector(SetBalanceText) withObject:nil waitUntilDone:NO];
     
-    [self.btcNet getTransactionByAccount: cwAccount.accId];
+    if (![cwAccount isTransactionSyncing]) {
+        [self.btcNet getTransactionByAccount: cwAccount.accId];
+    } else {
+        if (!_btcNet) {
+            _btcNet = [self btcNet];
+        }
+    }
 }
 
 -(void) sendPrepareTransaction
@@ -566,7 +587,7 @@ long TxFee = 10000;
     
     if (self.transactionBegin) {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Sent"
-                                                       message: [NSString stringWithFormat:@"Send %@ BTC to %@", self.txtAmount.text, self.txtReceiverAddress.text]
+                                                       message: [NSString stringWithFormat:@"Sent %@ BTC to %@", self.txtAmount.text, self.txtReceiverAddress.text]
                                                       delegate: nil
                                              cancelButtonTitle: nil
                                              otherButtonTitles: @"OK",nil];

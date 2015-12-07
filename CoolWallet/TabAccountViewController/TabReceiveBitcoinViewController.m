@@ -85,8 +85,8 @@ NSString *Label;
 
 - (IBAction)btnNewAddress:(id)sender {
     if (![cwCard enableGenAddressWithAccountId:account.accId]) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Can't create address"
-                                                       message: @"Can't generate address because there are already five unused(in white color) addresses in this account"
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Unable to create new address"
+                                                       message: @"Maximum number of 5 unused addresses reached in this account"
                                                       delegate: nil
                                              cancelButtonTitle: nil
                                              otherButtonTitles:@"OK",nil];
@@ -249,14 +249,23 @@ NSString *Label;
     if (accId == cwCard.currentAccountId) {
         [self performDismiss];
         
+        NSString *selectedAddress = _lblAddress.text;
+        
         account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", accId]];
         
         if (account.extKeys.count > 0) {
-            [self setQRcodeDataforkey:0];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.address = %@", selectedAddress];
+            NSArray *result = [account.extKeys filteredArrayUsingPredicate:predicate];
+            if (result.count > 0) {
+                rowSelected = [account.extKeys indexOfObject:result[0]];
+            } else {
+                rowSelected = 0;
+            }
         } else {
-            [self setQRcodeDataforkey:-1];
+            rowSelected = -1;
         }
         
+        [self setQRcodeDataforkey:rowSelected];
         [self.tableAddressList reloadData];
     }
 }
@@ -445,7 +454,7 @@ void freeRawData(void *info, const void *data, size_t size) {
     //pasteboard.string = @"paste me somewhere";
     pasteboard.string = _lblAddress.text;
     
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Copy Address"
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Copied"
                                                      message:_lblAddress.text
                                                     delegate:self
                                            cancelButtonTitle:@"OK"

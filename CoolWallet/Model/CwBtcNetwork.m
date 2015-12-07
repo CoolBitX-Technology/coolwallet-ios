@@ -371,6 +371,7 @@ BOOL didGetTransactionByAccountFlag[5];
     
     for (CwAddress *address in [account getAllAddresses]) {
         if (address.historyTrx != nil && address.historyTrx.count == 0) {
+            address.unspendUpdateFinish = YES;
             continue;
         }
         [self getUnspentByAddress:address fromAccount:account];
@@ -525,13 +526,13 @@ BOOL didGetTransactionByAccountFlag[5];
         }
         [account.unspentTxs removeObjectsInArray:removedUnspents];
         
+        account.lastUpdate = [NSDate date];
+        
         //Call Delegate
         if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didGetTransactionByAccount:)]) {
             [self.delegate didGetTransactionByAccount:accId];
         }
         didGetTransactionByAccountFlag[accId] = YES;
-        
-        account.lastUpdate = [NSDate date];
     }
     
     return;

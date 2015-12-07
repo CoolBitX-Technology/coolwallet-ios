@@ -33,6 +33,7 @@ typedef NS_ENUM (NSInteger, CwAccountStatus) {
 
 @property NSDate *lastUpdate;
 
+-(BOOL) isTransactionSyncing;
 -(void) updateFromBlockChainAddrData:(NSDictionary *)data;
 
 - (GenTxErr) genUnsignedTxToAddrByAutoCoinSelection:(NSString*)destAddr change: (NSString*)changeAddr amount:(CwBtc*)amount unsignedTx:(CwTx**)unsignedTx fee:(CwBtc**)fee;

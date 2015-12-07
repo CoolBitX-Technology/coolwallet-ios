@@ -70,6 +70,18 @@
     return self;
 }
 
+-(BOOL) isTransactionSyncing
+{
+    for (CwAddress *address in [self getAllAddresses]) {
+        if (!address.historyUpdateFinish || !address.unspendUpdateFinish) {
+            return YES;
+            break;
+        }
+    }
+    
+    return NO;
+}
+
 NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
 {
     CwBtc* amount1 = [unspentTx1 amount];
