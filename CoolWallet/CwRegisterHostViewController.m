@@ -16,6 +16,8 @@
 #import "ViewController.h"
 #import "KeychainItemWrapper.h"
 
+CGFloat _currentMovedUpHeight = 0.0f;
+
 @interface CwRegisterHostViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtIdentifier;
@@ -25,6 +27,7 @@
 
 - (IBAction)regHost:(id)sender;
 - (IBAction)regHostConfirm:(id)sender;
+
 @end
 
 CwCard *cwCard;
@@ -48,6 +51,16 @@ CwCard *cwCard;
     self.txtDescription.text = [[UIDevice currentDevice] name];
     
     self.actBusyIndicator.hidden = NO;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
     
     //[self regHost:self];
     
@@ -91,6 +104,55 @@ CwCard *cwCard;
     [self.txtOtp resignFirstResponder];
 }
 
+-(void) keyboardWillShow:(NSNotification *)notification
+{
+    NSDictionary *info = [notification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    CGFloat deltaHeight = kbSize.height - (self.view.frame.size.height - self.viewOTPConfirm.frame.origin.y - self.txtOtp.frame.origin.y - self.txtOtp.frame.size.height);
+    
+    if (deltaHeight <= 0) {
+        _currentMovedUpHeight = 0.0f;
+        return;
+    }
+    
+    _currentMovedUpHeight = deltaHeight;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    self.view.frame = CGRectMake(self.view.frame.origin.x,
+                                           self.view.frame.origin.y - _currentMovedUpHeight,
+                                           self.view.frame.size.width,
+                                           self.view.frame.size.height);
+
+    [UIView commitAnimations];
+}
+
+
+-(void) keyboardWillHide:(NSNotification *)notification
+{
+    if (_currentMovedUpHeight <= 0) {
+        return;
+    }
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    self.view.frame = CGRectMake(self.view.frame.origin.x,
+                                           self.view.frame.origin.y + _currentMovedUpHeight,
+                                           self.view.frame.size.width,
+                                           self.view.frame.size.height);
+    
+    [UIView commitAnimations];
+    
+    _currentMovedUpHeight = 0.0f;
+}
 
 #pragma mark - Navigation
 
