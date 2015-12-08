@@ -263,7 +263,7 @@
                                 </constraints>
                             </imageView>
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="110" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Ow5-iq-AZG">
-                                <rect key="frame" x="0.0" y="236" width="320" height="303"/>
+                                <rect key="frame" x="8" y="236" width="304" height="303"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -321,10 +321,10 @@ pressing the button on card.</string>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="W47-Fe-yBC" secondAttribute="trailing" id="0kT-as-y3O"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Ow5-iq-AZG" secondAttribute="trailing" constant="-20" id="3fK-3b-fh5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ow5-iq-AZG" secondAttribute="trailing" constant="-12" id="3fK-3b-fh5"/>
                             <constraint firstItem="W47-Fe-yBC" firstAttribute="leading" secondItem="aZf-3Z-ebA" secondAttribute="leading" id="40Q-Os-FyZ"/>
                             <constraint firstItem="XSb-e0-Hvs" firstAttribute="top" secondItem="W47-Fe-yBC" secondAttribute="bottom" id="8HJ-qe-1KY"/>
-                            <constraint firstItem="Ow5-iq-AZG" firstAttribute="leading" secondItem="aZf-3Z-ebA" secondAttribute="leadingMargin" constant="-20" id="E6O-JD-tUC"/>
+                            <constraint firstItem="Ow5-iq-AZG" firstAttribute="leading" secondItem="aZf-3Z-ebA" secondAttribute="leadingMargin" constant="-12" id="E6O-JD-tUC"/>
                             <constraint firstItem="s5q-vF-vq9" firstAttribute="top" secondItem="czc-cD-g0m" secondAttribute="bottom" constant="35" id="G9z-E5-hsz"/>
                             <constraint firstItem="czc-cD-g0m" firstAttribute="top" secondItem="57n-Ed-ao7" secondAttribute="bottom" constant="40" id="Lvh-qY-Znm"/>
                             <constraint firstItem="W47-Fe-yBC" firstAttribute="top" secondItem="Ow5-iq-AZG" secondAttribute="bottom" constant="8" id="N2J-qu-4xZ"/>
