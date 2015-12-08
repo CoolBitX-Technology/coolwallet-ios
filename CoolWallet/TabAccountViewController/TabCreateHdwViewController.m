@@ -117,10 +117,10 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     if([segue.identifier compare:@"CreateVerifySegue"] == 0) {
-    TabCreateHdwVerifyViewController *vc  = [segue destinationViewController];
-    vc.mnemonic = mnemonic;
-    vc.SeedOnCard = self.swSeedOnCard.on;
-    vc.Seedlen = [self.lblSeedLen.text integerValue];
+        TabCreateHdwVerifyViewController *vc  = [segue destinationViewController];
+        vc.mnemonic = mnemonic;
+        vc.SeedOnCard = self.swSeedOnCard.on;
+        vc.Seedlen = [self.lblSeedLen.text integerValue];
     }
 }
 
@@ -171,6 +171,10 @@
 
 #pragma marks - Actions
 - (IBAction)selectSeedType:(id)sender {
+    if (!self.btnSeedType.enabled) {
+        return;
+    }
+    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Generate seed on" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     UIAlertAction *englishAction = [UIAlertAction actionWithTitle:@"App (words)" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
@@ -273,9 +277,7 @@
         //[self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue]];
         [self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue] * 6];
 
-        self.actBusyIndicator.hidden = NO;
-        [self.actBusyIndicator startAnimating];
-        [self showIndicatorView:@"Loading..."];
+        [self showIndicatorView:@"Generating seed, please wait"];
         
     } else {
         //send seed to Card
@@ -286,20 +288,18 @@
         //=> "d71de856f81a8acc65e6fc851a38d4d7ec216fd0796d0a6827a3ad6ed5511a30fa280f12eb2e47ed2ac03b5c462a0358d18d69fe4f985ec81778c1b370b652a8"
         [self.cwManager.connectedCwCard initHdw:self.txtHdwName.text BySeed:seed];
 
-        self.actBusyIndicator.hidden = NO;
-        [self.actBusyIndicator startAnimating];
+        [self showIndicatorView:@""];
     }
 }
 
 - (IBAction)btnConfirmHdw:(id)sender {
     //[self.cwManager.connectedCwCard initHdwConfirm];
     //self.cwManager.connectedCwCard initHdwConfirm:<#(NSString *)#>]
-    self.actBusyIndicator.hidden = NO;
-    [self.actBusyIndicator startAnimating];
+//    self.actBusyIndicator.hidden = NO;
+//    [self.actBusyIndicator startAnimating];
 }
 
 - (IBAction)btnWrittenDown:(id)sender {
-    NSLog(@"check = %d",checkWrittenDown);
     if(checkWrittenDown) {
         checkWrittenDown = NO;
         [self.btnWrittenDown setImage:[UIImage imageNamed:@"checkbox_empty.png"] forState:UIControlStateNormal];
@@ -351,13 +351,14 @@
     NSLog(@"didInitHdwByCard hdw!!");
     //disable btn
     self.btnCreateHdw.enabled = NO;
-    self.btnCreateHdw.backgroundColor = [UIColor grayColor];
     
     self.btnCreateHdw.hidden = YES;
     self.btnVerifySeed.hidden = NO;
     
     self.lblOnCardDetail.hidden = NO;
     self.viewWrittenDown.hidden = NO;
+    
+    self.btnSeedType.enabled = NO;
     
     //enable confirm btn
     //self.btnConfirmHdw.hidden = NO;
@@ -422,7 +423,8 @@
             return;
         }
     }
-     [self performSegueWithIdentifier:@"CreateVerifySegue" sender:self];
+    
+    [self performSegueWithIdentifier:@"CreateVerifySegue" sender:self];
 }
 
 - (IBAction)btnImportSeed:(id)sender {

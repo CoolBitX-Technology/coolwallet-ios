@@ -27,12 +27,18 @@
 @end
 
 @interface TabImportSeedViewController () <UITextFieldDelegate, UITextViewDelegate>
+{
+    CGFloat _currentMovedUpHeight;
+}
+
 @property (strong, nonatomic) NSArray *wordSeeds;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnSeedType;
 @property (weak, nonatomic) IBOutlet UITextView *txtSeed;
 
 @property (weak, nonatomic) IBOutlet UISwitch *swNumberSeed;
+
+@property (weak, nonatomic) IBOutlet UIView *seedsInputView;
 
 - (IBAction)btnCreateHdw:(id)sender;
 
@@ -45,6 +51,8 @@ CwBtcNetWork *btcNet;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _currentMovedUpHeight = 0.0f;
     //find CW via BLE
     cwCard = self.cwManager.connectedCwCard;
     btcNet = [CwBtcNetWork sharedManager];
@@ -52,6 +60,29 @@ CwBtcNetWork *btcNet;
     
     self.wordSeeds = [NYMnemonic getSeedsWithLanguage:@"english"];
     self.swNumberSeed.on = NO;
+}
+
+-(void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,6 +93,69 @@ CwBtcNetWork *btcNet;
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self.txtSeed resignFirstResponder];
+}
+
+-(void) keyboardWillShow:(NSNotification *)notification
+{    
+    NSDictionary *info = [notification userInfo];
+    CGRect rect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    CGFloat deltaHeight = (self.seedsInputView.frame.origin.y + self.seedsInputView.frame.size.height / 2) - rect.origin.y;
+    
+    if (deltaHeight <= 0) {
+        _currentMovedUpHeight = 0.0f;
+        return;
+    }
+    
+    _currentMovedUpHeight = deltaHeight;
+    
+    [self moveUpView:YES];
+}
+
+-(void) keyboardWillHide:(NSNotification *)notification
+{
+    [self moveUpView:NO];
+}
+
+-(void) moveUpView:(BOOL)shouldMove
+{
+    if (shouldMove) {
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.3];
+        [UIView setAnimationDelegate:self];
+        
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        
+        float adjustY = self.view.frame.origin.y;
+        if (adjustY < 0) {
+            adjustY += _currentMovedUpHeight;
+        } else {
+            adjustY = _currentMovedUpHeight;
+        }
+        
+        self.view.frame = CGRectMake(self.view.frame.origin.x,
+                                     self.view.frame.origin.y - adjustY,
+                                     self.view.frame.size.width,
+                                     self.view.frame.size.height);
+        
+        [UIView commitAnimations];
+        
+    } else if (_currentMovedUpHeight > 0) {
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.3];
+        [UIView setAnimationDelegate:self];
+        
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        
+        self.view.frame = CGRectMake(self.view.frame.origin.x,
+                                     self.view.frame.origin.y + _currentMovedUpHeight,
+                                     self.view.frame.size.width,
+                                     self.view.frame.size.height);
+        
+        [UIView commitAnimations];
+        
+        _currentMovedUpHeight = 0.0f;
+    }
 }
 
 #pragma mark - UITextFieldDelegate Delegates

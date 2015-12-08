@@ -16,9 +16,10 @@
 #import "ViewController.h"
 #import "KeychainItemWrapper.h"
 
-CGFloat _currentMovedUpHeight = 0.0f;
-
 @interface CwRegisterHostViewController () <UITextFieldDelegate>
+{
+    CGFloat _currentMovedUpHeight;
+}
 
 @property (weak, nonatomic) IBOutlet UITextField *txtIdentifier;
 @property (weak, nonatomic) IBOutlet UITextField *txtDescription;
@@ -37,6 +38,8 @@ CwCard *cwCard;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _currentMovedUpHeight = 0.0f;
+    
     //find CW via BLE
     cwCard = self.cwManager.connectedCwCard;
     
@@ -52,6 +55,15 @@ CwCard *cwCard;
     
     self.actBusyIndicator.hidden = NO;
     
+    self.viewOTPConfirm.hidden = YES;
+    
+    NSLog(@"txtIdentifier = %@",self.txtIdentifier.text);
+    NSLog(@"mode = %@",self.cwManager.connectedCwCard.mode);
+}
+
+- (void)viewWillAppear:(BOOL)animated {    
+    [super viewWillAppear:animated];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
@@ -61,15 +73,6 @@ CwCard *cwCard;
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    
-    //[self regHost:self];
-    
-    NSLog(@"txtIdentifier = %@",self.txtIdentifier.text);
-    NSLog(@"mode = %@",self.cwManager.connectedCwCard.mode);
-}
-
-- (void)viewWillAppear:(BOOL)animated {    
-    [super viewWillAppear:animated];
     
     [cwCard getModeState];
 
@@ -83,6 +86,9 @@ CwCard *cwCard;
 //Close the cwCard connection and goback to ListTable
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    
     long currentVCIndex = [self.navigationController.viewControllers indexOfObject:self.navigationController.topViewController];
     NSObject *listCV = [self.navigationController.viewControllers objectAtIndex:currentVCIndex];
     

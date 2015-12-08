@@ -19,5 +19,6 @@
 - (void) showIndicatorView:(NSString *)Msg;
 - (void) performDismiss;
 -(void) showHintAlert:(NSString *)title withMessage:(NSString *)message withOKAction:(UIAlertAction *)okAction;
+-(void) showHintAlert:(NSString *)title withMessage:(NSString *)message withActions:(NSArray *)actions;
 
 @end

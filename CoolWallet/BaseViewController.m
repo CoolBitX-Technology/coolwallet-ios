@@ -77,6 +77,17 @@ CwManager *cwManager;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+-(void) showHintAlert:(NSString *)title withMessage:(NSString *)message withActions:(NSArray *)actions
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+    for (UIAlertAction *action in actions) {
+        [alertController addAction:action];
+    }
+}
+
 #pragma mark - CwCard Delegates
 -(void) didCwCardCommand
 {

@@ -32,7 +32,6 @@
         _lblSeedVerifyCheck.hidden = YES;
         _lblSeedDetail.hidden = YES;
         _btnNextPage.hidden = YES;
-
     }else{
         _lblSeedOnCardCheck.hidden = YES;
         _viewOnCardCheckSum.hidden = YES;
@@ -143,14 +142,15 @@
 
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
 {
-    NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
-                                                   message: msg
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    
-    [alert show];
+    if (SeedOnCard) {
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Try again" style:UIAlertActionStyleDefault handler:nil];
+        
+        UIAlertAction *backAction = [UIAlertAction actionWithTitle:@"Regenerate" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }];
+        
+        [self showHintAlert:@"Checksum incorrect" withMessage:@"Please try again or generate seed again" withActions:@[okAction, backAction]];
+    }
 }
 
 -(void) didInitHdwBySeed
