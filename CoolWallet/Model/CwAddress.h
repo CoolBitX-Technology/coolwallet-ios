@@ -15,7 +15,8 @@ typedef NS_ENUM (NSInteger, CwAddressKeyChain) {
 
 typedef NS_ENUM (NSInteger, CwAddressInfo) {
     CwAddressInfoAddress = 0x00,
-    CwAddressInfoPublicKey = 0x01
+    CwAddressInfoPublicKey = 0x01,
+    CwAddressInfoKeyChainPublicKey = 0x02
 };
 
 @interface CwAddress : NSObject <NSCoding>
@@ -25,6 +26,7 @@ typedef NS_ENUM (NSInteger, CwAddressInfo) {
 @property NSInteger keyId;
 @property NSString *address;
 @property NSData *publicKey;
+@property NSData *keychainPublicKey;
 @property NSMutableArray *historyTrx;
 //@property NSMutableArray *unspendTrx;
 @property NSString *note; //not sync with card

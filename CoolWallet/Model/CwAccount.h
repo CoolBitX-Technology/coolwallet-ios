@@ -10,6 +10,7 @@
 #import "CwAccountError.h"
 #import "CwBtc.h"
 #import "CwTx.h"
+#import "CwKeyChain.h"
 
 typedef NS_ENUM (NSInteger, CwAccountStatus) {
     CwAccountStatusInactive = 0x00,
@@ -27,6 +28,9 @@ typedef NS_ENUM (NSInteger, CwAccountStatus) {
 
 @property NSMutableArray *extKeys;
 @property NSMutableArray *intKeys;
+
+@property CwKeychain *externalKeychain;
+@property CwKeychain *internalKeychain;
 
 @property NSMutableDictionary *transactions;         // CWTx[]
 @property NSMutableArray *unspentTxs;       // CWUnspentTxIndex[]

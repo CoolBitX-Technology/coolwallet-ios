@@ -13,20 +13,14 @@
 
 #define MAXLENGTH_CARDNAME 9
 
-@interface TabCardViewController () <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate>
-@property CwManager *cwManager;
+@interface TabCardViewController () <UITextFieldDelegate>
+//@property CwManager *cwManager;
 
+@property (nonatomic) int updateCount;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtCardName;
-@property (weak, nonatomic) IBOutlet UITextField *txtExchangeRage;
-@property (weak, nonatomic) IBOutlet UILabel *lblHdwStatus;
-@property (weak, nonatomic) IBOutlet UITextField *txtHdwName;
-@property (weak, nonatomic) IBOutlet UILabel *lblHdwAccountPointer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBusyIndicator;
-
-- (IBAction)btnUpdateCardName:(id)sender;
-- (IBAction)btnUpdateExchangeRate:(id)sender;
-- (IBAction)btnUpdateHdwName:(id)sender;
+@property (weak, nonatomic) IBOutlet UISwitch *fiatSwitch;
 
 @end
 
@@ -36,8 +30,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.txtCardName.delegate = self;
-    self.txtExchangeRage.delegate = self;
-    self.txtHdwName.delegate = self;
     
     //Navigate Bar UI effect
     SWRevealViewController *revealViewController = self.revealViewController;
@@ -67,7 +59,9 @@
      */
     
     //find CW via BLE
-    self.cwManager = [CwManager sharedManager];
+//    self.cwManager = [CwManager sharedManager];
+    
+    self.updateCount = 0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,10 +70,15 @@
     self.actBusyIndicator.hidden = NO;
     [self.actBusyIndicator startAnimating];
 
-    self.cwManager.connectedCwCard.delegate = self;
+//    self.cwManager.connectedCwCard.delegate = self;
     [self.cwManager.connectedCwCard getCwCardName];
-    //[self.cwManager.connectedCwCard getCwCurrRate]; //no need to get rate from card
-    [self.cwManager.connectedCwCard getCwHdwInfo];
+    
+    self.fiatSwitch.on = self.cwManager.connectedCwCard.cardFiatDisplay.boolValue;
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    self.updateCount = 0;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -95,14 +94,12 @@
 }
 
 - (BOOL)textField:(UITextField *) textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    NSLog(@"111, %d", textField == self.txtCardName);
+    
     if (textField == self.txtCardName) {
         NSUInteger oldLength = [textField.text length];
         NSUInteger replacementLength = [string length];
         NSUInteger rangeLength = range.length;
-        NSLog(@"old: %ld, replace: %ld, range: %ld", oldLength, replacementLength, rangeLength);
         NSUInteger newLength = oldLength - rangeLength + replacementLength;
-        NSLog(@"new: %ld", newLength);
         BOOL returnKey = [string rangeOfString: @"\n"].location != NSNotFound;
         
         return newLength <= MAXLENGTH_CARDNAME || returnKey;
@@ -111,41 +108,38 @@
     return true;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void) showUpdateResult
+{
+    if (self.updateCount > 0) {
+        return;
+    }
+    
+    [self showHintAlert:@"Updated!" withMessage:nil withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
 }
-*/
-
 
 #pragma marks -Actions
 
-- (IBAction)btnUpdateCardName:(id)sender {
+- (IBAction)btnUpdate:(id)sender {
+    if (self.updateCount > 0) {
+        return;
+    }
+    
     self.actBusyIndicator.hidden = NO;
     [self.actBusyIndicator startAnimating];
     
-    [self.cwManager.connectedCwCard setCwCardName:self.txtCardName.text];
-}
-
-- (IBAction)btnUpdateExchangeRate:(id)sender {
-    self.actBusyIndicator.hidden = NO;
-    [self.actBusyIndicator startAnimating];
+    if (![self.txtCardName.text isEqualToString:self.cwManager.connectedCwCard.cardName]) {
+        self.updateCount += 1;
+        [self.cwManager.connectedCwCard setCwCardName:self.txtCardName.text];
+    }
     
-    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
-    [formatter setNumberStyle: NSNumberFormatterDecimalStyle];
-    NSDecimalNumber *decNum = [NSDecimalNumber decimalNumberWithDecimal:[[formatter numberFromString:self.txtExchangeRage.text] decimalValue]];
-    [self.cwManager.connectedCwCard setCwCurrRate:decNum];
-}
-
-- (IBAction)btnUpdateHdwName:(id)sender {
-    self.actBusyIndicator.hidden = NO;
-    [self.actBusyIndicator startAnimating];
+    if (self.fiatSwitch.on != self.cwManager.connectedCwCard.cardFiatDisplay.boolValue) {
+        self.updateCount += 1;
+        [self.cwManager.connectedCwCard displayCurrency:self.fiatSwitch.on];
+    }
     
-    [self.cwManager.connectedCwCard setCwHdwName:self.txtHdwName.text];
+    if (self.updateCount <= 0) {
+        [self showUpdateResult];
+    }
 }
 
 #pragma marks -CwCard Delegate
@@ -158,77 +152,32 @@
 
 -(void) didGetCwCardName
 {
-    self.txtCardName.text = self.cwManager.connectedCwCard.cardName;
+    NSString *cardName = self.cwManager.connectedCwCard.cardName;
+    if (cardName == nil || cardName.length == 0) {
+        cardName = self.cwManager.connectedCwCard.cardId;
+    }
+    
+    self.txtCardName.text = cardName;
 }
 
 -(void) didSetCwCardName
 {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Card Name Set"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];
+    self.updateCount -= 1;
+    [self showUpdateResult];
+}
+
+-(void) didUpdateCurrencyDisplay
+{
+    self.updateCount -= 1;
+    [self showUpdateResult];
+}
+
+-(void) didUpdateCurrencyDisplayError:(NSInteger)errorCode
+{
+    self.updateCount -= 1;
+    [self showHintAlert:@"Update fail" withMessage:nil withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
     
-}
-
--(void) didGetCwCurrRate
-{
-    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-    [numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
-    NSString *numberAsString = [numberFormatter stringFromNumber: self.cwManager.connectedCwCard.currRate];
-    
-    self.txtExchangeRage.text = numberAsString;
-}
-
--(void) didSetCwCurrRate
-{
-    /*
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Currency Rate Set"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];*/
-}
-
--(void) didGetCwHdwStatus
-{
-    //status, name, account pointer
-    
-    switch ([self.cwManager.connectedCwCard.hdwStatus integerValue])
-    {
-        case CwHdwStatusInactive:
-            self.lblHdwStatus.text = @"Inactive";
-            break;
-        case CwHdwStatusWaitConfirm:
-            self.lblHdwStatus.text = @"WaitConfirm";
-            break;
-        case CwHdwStatusActive:
-            self.lblHdwStatus.text = @"Active";
-            break;
-    }
-}
-
--(void) didGetCwHdwName
-{
-    self.txtHdwName.text = self.cwManager.connectedCwCard.hdwName;
-}
-
--(void) didGetCwHdwAccointPointer
-{
-    self.lblHdwAccountPointer.text = [NSString stringWithFormat: @"%ld", (long)self.cwManager.connectedCwCard.hdwAcccountPointer];
-}
-
--(void) didSetCwHdwName
-{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"HDW Name Set"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];
-    
+    self.fiatSwitch.on = self.cwManager.connectedCwCard.cardFiatDisplay.boolValue;
 }
 
 #pragma mark - CwManager Delegate

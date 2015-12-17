@@ -40,6 +40,7 @@
 @property (copy, nonatomic) NSString *cardId;
 @property (copy, nonatomic) NSString *currId;
 @property (copy, nonatomic) NSDecimalNumber *currRate;
+@property (copy, nonatomic) NSNumber *cardFiatDisplay;
 
 #pragma mark - CwProperties - HDW Info
 @property (copy, nonatomic) NSNumber *hdwStatus;

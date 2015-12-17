@@ -164,6 +164,7 @@
 		EFFA18351B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFA18341B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m */; };
 		F45962901BDE3FF80046E4CE /* BlockChain.m in Sources */ = {isa = PBXBuildFile; fileRef = F459628F1BDE3FF80046E4CE /* BlockChain.m */; };
 		F45962931BDE411C0046E4CE /* SRWebSocket+CW.m in Sources */ = {isa = PBXBuildFile; fileRef = F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */; };
+		F485C2261C18066D00C26E11 /* CwKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = F485C2251C18066D00C26E11 /* CwKeychain.m */; };
 		F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */; };
 		F493F32F1BC6807600876710 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F493F32E1BC6807600876710 /* BaseViewController.m */; };
 		F49F76431BD8AFF800C335B9 /* downarrow-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */; };
@@ -428,6 +429,8 @@
 		F459628F1BDE3FF80046E4CE /* BlockChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockChain.m; sourceTree = "<group>"; };
 		F45962911BDE411C0046E4CE /* SRWebSocket+CW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRWebSocket+CW.h"; sourceTree = "<group>"; };
 		F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRWebSocket+CW.m"; sourceTree = "<group>"; };
+		F485C2241C18066D00C26E11 /* CwKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwKeychain.h; sourceTree = "<group>"; };
+		F485C2251C18066D00C26E11 /* CwKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwKeychain.m; sourceTree = "<group>"; };
 		F48C0DEF1BD78A33007CFBEE /* CwCardInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwCardInfo.h; sourceTree = "<group>"; };
 		F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwCardInfo.m; sourceTree = "<group>"; };
 		F493F32D1BC6807600876710 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
@@ -651,6 +654,8 @@
 				F459628F1BDE3FF80046E4CE /* BlockChain.m */,
 				F45962911BDE411C0046E4CE /* SRWebSocket+CW.h */,
 				F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */,
+				F485C2241C18066D00C26E11 /* CwKeychain.h */,
+				F485C2251C18066D00C26E11 /* CwKeychain.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1123,6 +1128,7 @@
 				F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */,
 				EFAC5FDE1AAD39620042FF8C /* TabScanTransactionViewController.m in Sources */,
 				EFAC5FD91AAD39620042FF8C /* TabCreateAccountViewController.m in Sources */,
+				F485C2261C18066D00C26E11 /* CwKeychain.m in Sources */,
 				EFAC5FDC1AAD39620042FF8C /* TabHostTableViewController.m in Sources */,
 				EFAB50B61AC02CFB003A2D3F /* TabbarAccountViewController.m in Sources */,
 				EFEDBE4A1B4CC3AC00E1A63E /* TabTransactionDetailViewController.m in Sources */,

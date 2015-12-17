@@ -83,6 +83,7 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 @property NSString *cardId;
 @property NSString *currId;
 @property NSDecimalNumber *currRate;
+@property NSNumber *cardFiatDisplay;
 
 #pragma mark - CwProperties - HDW Info
 @property NSNumber *hdwStatus;
@@ -176,6 +177,8 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 
 -(void) backToLoader: (NSString *)blotp;
 -(void) backTo7816FromLoader;
+
+-(void) displayCurrency:(BOOL)onoff;
 
 //Exchange Site Functions
 -(void) exGetRegStatus;

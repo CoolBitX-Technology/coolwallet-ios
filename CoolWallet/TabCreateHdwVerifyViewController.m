@@ -8,6 +8,7 @@
 
 #import "TabCreateHdwVerifyViewController.h"
 #import "SWRevealViewController.h"
+#import "CwCommandDefine.h"
 
 @implementation TabCreateHdwVerifyViewController 
 {
@@ -142,7 +143,7 @@
 
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
 {
-    if (SeedOnCard) {
+    if (cmdId == CwCmdIdHdwInitWalletGenConfirm) {
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Try again" style:UIAlertActionStyleDefault handler:nil];
         
         UIAlertAction *backAction = [UIAlertAction actionWithTitle:@"Regenerate" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {

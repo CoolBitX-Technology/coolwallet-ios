@@ -15,6 +15,7 @@
 #import "CwHost.h"
 #import "CwAddress.h"
 #import "CwCardInfo.h"
+#import "CwKeychain.h"
 
 #import "CwBtcNetwork.h"
 
@@ -531,6 +532,9 @@ NSArray *addresses;
     }
     
     if ([cardInfo.hostOtp isEqualToString:self.hostOtp]) {
+        if (cardInfo.cardFiatDisplay == nil) {
+            cardInfo.cardFiatDisplay = [NSNumber numberWithBool:YES];
+        }
         NSDictionary *dict = [RMMapper dictionaryForObject:cardInfo];
         [RMMapper populateObject:self fromDictionary:dict];
         self.cwHosts = [NSMutableDictionary dictionaryWithDictionary:self.cwHosts];
@@ -940,8 +944,22 @@ NSArray *addresses;
         [self cwCmdHdwQueryAccountInfo:CwHdwAccountInfoIntKeyPtr AccountId:accountId];
     }
     
+    if (account.externalKeychain == nil) {
+        [self cwCmdHdwQueryAccountKeyInfo:CwHdwAccountKeyInfoKeyChainPubKey
+                               KeyChainId:CwAddressKeyChainExternal
+                                AccountId:accountId
+                                    KeyId:1];
+    }
+    
+    if (account.internalKeychain == nil) {
+        [self cwCmdHdwQueryAccountKeyInfo:CwHdwAccountKeyInfoKeyChainPubKey
+                               KeyChainId:CwAddressKeyChainInternal
+                                AccountId:accountId
+                                    KeyId:1];
+    }
+    
     //check sync status
-    if (syncAccNameFlag[account.accId] && syncAccBalanceFlag[account.accId] && syncAccBlockAmountFlag[account.accId] && syncAccExtPtrFlag[account.accId] && syncAccIntPtrFlag[account.accId]) {
+    if (syncAccNameFlag[account.accId] && syncAccBalanceFlag[account.accId] && syncAccBlockAmountFlag[account.accId] && syncAccExtPtrFlag[account.accId] && syncAccIntPtrFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil) {
         // && syncAccExtAddress[account.accId] == account.extKeyPointer-1 && syncAccIntAddress[account.accId] == account.intKeyPointer-1
         
         //call delegate
@@ -1369,6 +1387,11 @@ NSArray *addresses;
 -(void) backTo7816FromLoader
 {
     [self loaderCmdBackTo7816Loader];
+}
+
+-(void) displayCurrency:(BOOL)onoff
+{
+    [self cwCmdTurnCurrency:onoff];
 }
 
 //Exchange Site Functions
@@ -3342,6 +3365,32 @@ NSArray *addresses;
     return CwCardRetSuccess;
 }
 
+- (NSInteger) cwCmdTurnCurrency:(BOOL)onoff
+{
+    CwCardCommand *cmd = [[CwCardCommand alloc] init];
+    
+    //input:
+    //none
+    
+    //output:
+    //cardName 32B
+    
+    //prepare commands
+    cmd.cmdPriority = CwCardCommandPriorityNone;
+    cmd.cmdCla = CwCmdIdTurnCurrencyCLA;
+    cmd.cmdId = CwCmdIdTurnCurrency;
+    cmd.cmdP1 = [[NSNumber numberWithBool:onoff] intValue];
+    cmd.cmdP2 = 0;
+    cmd.cmdInput = nil;
+    
+    //add command to array
+    [self cmdAdd: cmd];
+    
+    [self cmdProcessor];
+    
+    return CwCardRetSuccess;
+}
+
 #pragma marks FirmwareUpdate Commands
 - (NSInteger) cwCmdBackToLoader: (NSString *)otp
 {
@@ -4953,7 +5002,7 @@ NSArray *addresses;
                 //self.currentAccountId = account.accId;
                 
                 //check sync status
-                if (syncAccNameFlag[account.accId] && syncAccBalanceFlag[account.accId] && syncAccBlockAmountFlag[account.accId] && syncAccExtPtrFlag[account.accId] && syncAccIntPtrFlag[account.accId]) {
+                if (syncAccNameFlag[account.accId] && syncAccBalanceFlag[account.accId] && syncAccBlockAmountFlag[account.accId] && syncAccExtPtrFlag[account.accId] && syncAccIntPtrFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil) {
                     // && syncAccExtAddress[account.accId] == account.extKeyPointer-1 && syncAccIntAddress[account.accId] == account.intKeyPointer-1
                     
                     //call delegate
@@ -5173,6 +5222,7 @@ NSArray *addresses;
                 addr.keyId = keyId;
                 addr.keyChainId = cmd.cmdP2;
                 
+                CwKeychain *keychain = [CwKeychain new];
                 switch (cmd.cmdP1) {
                     case CwAddressInfoAddress:
                         //Address
@@ -5207,12 +5257,28 @@ NSArray *addresses;
                         addr.publicKey = [NSData dataWithBytes:data length:64];
                         
                         break;
+                    
+                    case CwAddressInfoKeyChainPublicKey:
+                        //Pulick Key of keychain
+                        //96B Binary: publicKey(64B) + chainCode(32B)
+                        
+                        keychain.keyChainId = [NSNumber numberWithInteger:addr.keyChainId];
+                        keychain.publicKey = [NSData dataWithBytes:data length:64];
+                        keychain.chainCode = [NSData dataWithBytes:data+64 length:32];
+                        NSLog(@"publicKey: %@, chainCode: %@", keychain.publicKey, keychain.chainCode);
+                        
+                        NSString *publickey = [CwBase58 base58WithData:[[NSData alloc] initWithBytes:data length:64]];
+                        NSString *chaincode = [CwBase58 base58WithData:[[NSData alloc] initWithBytes:data+64 length:32]];
+                        NSLog(@"base58, publicKey: %@, chainCode: %@", publickey, chaincode);
+                        break;
                 }
                 
                 if (addr.keyChainId == CwAddressKeyChainExternal) {
                     account.extKeys[keyId] = addr;
+                    account.externalKeychain = keychain;
                 } else if (addr.keyChainId == CwAddressKeyChainInternal) {
                     account.intKeys[keyId] = addr;
+                    account.internalKeychain = keychain;
                 }
                 
                 [self.cwAccounts setObject: account forKey: [NSString stringWithFormat: @"%ld", (long)addr.accountId]];
@@ -5245,10 +5311,41 @@ NSArray *addresses;
                             [self.delegate didGetAccountAddresses: account.accId];
                         }
                     }
+                } else if (cmd.cmdP1 == CwAddressInfoKeyChainPublicKey) {
+                    if (syncAccNameFlag[account.accId] && syncAccBalanceFlag[account.accId] && syncAccBlockAmountFlag[account.accId] && syncAccExtPtrFlag[account.accId] && syncAccIntPtrFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil) {
+                        // && syncAccExtAddress[account.accId] == account.extKeyPointer-1 && syncAccIntAddress[account.accId] == account.intKeyPointer-1
+                        
+                        //call delegate
+                        if ([self.delegate respondsToSelector:@selector(didGetAccountInfo:)]) {
+                            [self.delegate didGetAccountInfo:account.accId];
+                        }
+                    }
                 }
                 
-            } else{
+            } else {
                 NSLog(@"CwCmdIdHdwQueryAccountKeyInfo Error %04lX", (long)cmd.cmdResult);
+                if (cmd.cmdP1 == CwAddressInfoKeyChainPublicKey) {
+                    NSInteger accId = *(int32_t *)[cmd.cmdInput bytes];;
+                    CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", (long)accId]];
+                    if (account.externalKeychain == nil) {
+                        account.externalKeychain = [CwKeychain new];
+                        account.externalKeychain.keyChainId = [NSNumber numberWithInteger:CwAddressKeyChainExternal];
+                    } else if (account.internalKeychain == nil) {
+                        account.internalKeychain = [CwKeychain new];
+                        account.internalKeychain.keyChainId = [NSNumber numberWithInteger:CwAddressKeyChainInternal];
+                    }
+                    
+                    [self.cwAccounts setObject:account forKey: [NSString stringWithFormat: @"%ld", accId]];
+                    
+                    if (syncAccNameFlag[account.accId] && syncAccBalanceFlag[account.accId] && syncAccBlockAmountFlag[account.accId] && syncAccExtPtrFlag[account.accId] && syncAccIntPtrFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil) {
+                        // && syncAccExtAddress[account.accId] == account.extKeyPointer-1 && syncAccIntAddress[account.accId] == account.intKeyPointer-1
+                        
+                        //call delegate
+                        if ([self.delegate respondsToSelector:@selector(didGetAccountInfo:)]) {
+                            [self.delegate didGetAccountInfo:account.accId];
+                        }
+                    }
+                }
             }
             
             break;
@@ -5682,7 +5779,23 @@ NSArray *addresses;
                 NSLog(@"LoaderCmdIdVerifyMac Error %04lX", (long)cmd.cmdResult);
             }
             break;
-            
+        
+        case CwCmdIdTurnCurrency:
+            if (cmd.cmdResult == 0x9000) {
+                if (cmd.cmdP1 == 1) {
+                    self.cardFiatDisplay = [NSNumber numberWithBool:YES];
+                } else {
+                    self.cardFiatDisplay = [NSNumber numberWithBool:NO];
+                }
+                
+                if (self.delegate && [self.delegate respondsToSelector:@selector(didUpdateCurrencyDisplay)]) {
+                    [self.delegate didUpdateCurrencyDisplay];
+                }
+            } else {
+                if (self.delegate && [self.delegate respondsToSelector:@selector(didUpdateCurrencyDisplayError:)]) {
+                    [self.delegate didUpdateCurrencyDisplayError:cmd.cmdResult];
+                }
+            }
         default:
             break;
     }

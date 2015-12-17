@@ -529,7 +529,7 @@ BOOL didGetTransactionByAccountFlag[5];
         account.lastUpdate = [NSDate date];
         
         //Call Delegate
-        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didGetTransactionByAccount:)]) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(didGetTransactionByAccount:)]) {
             [self.delegate didGetTransactionByAccount:accId];
         }
         didGetTransactionByAccountFlag[accId] = YES;

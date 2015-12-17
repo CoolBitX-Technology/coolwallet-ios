@@ -71,8 +71,10 @@ bool isFirst = YES;
     }
 }
 
--(void)viewDidAppear:(BOOL)animated {
-    NSLog(@"TabbarHomeViewController, viewDidAppear");
+-(void)viewWillDisappear:(BOOL)animated {
+    self.cwManager.delegate = nil;
+    self.cwManager.connectedCwCard.delegate = nil;
+    btcNet.delegate = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -426,8 +428,9 @@ Boolean setBtnActionFlag;
                 addr = txAccount.intKeys[utx.kId];
             }
             
-            if (addr.publicKey==nil)
+            if (addr.publicKey==nil) {
                 [self.cwManager.connectedCwCard getAddressPublickey:accId KeyChainId:utx.kcId KeyId:utx.kId];
+            }
         }
         
         if (accId == self.cwManager.connectedCwCard.currentAccountId) {

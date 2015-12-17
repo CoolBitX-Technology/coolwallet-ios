@@ -23,6 +23,8 @@
         
         self.cwHosts = [NSMutableDictionary new];
         self.cwAccounts = [NSMutableDictionary new];
+        
+        self.cardFiatDisplay = [NSNumber numberWithBool:YES];
     }
     
     return self;
@@ -53,6 +55,7 @@
     self.hdwStatus = card.hdwStatus;
     self.cwAccounts = card.cwAccounts;
     self.cwHosts = card.cwHosts;
+    self.cardFiatDisplay = card.cardFiatDisplay;
     
     return self;
 }

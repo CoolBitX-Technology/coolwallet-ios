@@ -120,6 +120,9 @@ typedef NS_ENUM (NSInteger, CwCardRSSI) {
 
 -(void) didBackToSLE97Loader;
 
+-(void) didUpdateCurrencyDisplay;
+-(void) didUpdateCurrencyDisplayError:(NSInteger)errorCode;
+
 @end
 
 #endif
