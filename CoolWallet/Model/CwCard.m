@@ -5266,10 +5266,6 @@ NSArray *addresses;
                         keychain.publicKey = [NSData dataWithBytes:data length:64];
                         keychain.chainCode = [NSData dataWithBytes:data+64 length:32];
                         NSLog(@"publicKey: %@, chainCode: %@", keychain.publicKey, keychain.chainCode);
-                        
-                        NSString *publickey = [CwBase58 base58WithData:[[NSData alloc] initWithBytes:data length:64]];
-                        NSString *chaincode = [CwBase58 base58WithData:[[NSData alloc] initWithBytes:data+64 length:32]];
-                        NSLog(@"base58, publicKey: %@, chainCode: %@", publickey, chaincode);
                         break;
                 }
                 

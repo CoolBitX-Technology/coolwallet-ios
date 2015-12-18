@@ -19,8 +19,6 @@
 @property (weak, nonatomic) IBOutlet UITextView *txtRecoveryLog;
 - (IBAction)btnRecovery:(id)sender;
 
-@property (nonatomic, strong) NSMutableDictionary *txDatas;
-
 @end
 
 CwManager *cwManager;
@@ -42,8 +40,6 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     cwManager = [CwManager sharedManager];
     cwCard = cwManager.connectedCwCard;
     btcNet = [CwBtcNetWork sharedManager];
-    
-    self.txDatas = [NSMutableDictionary new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -215,13 +211,6 @@ NSInteger accPtr[5][2]; //store key index of each accounts
                 accPtr[address.accountId][address.keyChainId] = address.keyId;
             }
         }
-        
-        NSMutableDictionary *txs = [self.txDatas objectForKey:[NSString stringWithFormat:@"%ld", address.accountId]];
-        if (txs == nil) {
-            txs = [NSMutableDictionary new];
-        }
-        [txs setValuesForKeysWithDictionary:trxs];
-        [self.txDatas setObject:txs forKey:[NSString stringWithFormat:@"%ld", address.accountId]];
     }
     
     return address;
@@ -244,8 +233,7 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     
     if(acc_external == 5 && acc_internal == 5) {
         for (CwAccount *account in [cwCard.cwAccounts allValues]) {
-            NSMutableDictionary *historyTxs = [self.txDatas objectForKey:[NSString stringWithFormat:@"%ld", account.accId]];
-            [btcNet syncAccountTransactions:historyTxs account:account];
+            [btcNet refreshTxsFromAccountAddresses:account];
         }
         
         [cwCard saveCwCardToFile];

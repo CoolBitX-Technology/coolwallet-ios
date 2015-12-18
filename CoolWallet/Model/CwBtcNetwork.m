@@ -438,6 +438,40 @@ BOOL didGetTransactionByAccountFlag[5];
     [self isGetTransactionByAccount: account.accId];
 }
 
+-(void) refreshTxsFromAccountAddresses:(CwAccount *)account
+{
+    account.transactions = [NSMutableDictionary new];
+    for (CwAddress *cwAddress in [account getAllAddresses]) {
+        if (!cwAddress.historyTrx || cwAddress.historyTrx.count == 0) {
+            continue;
+        }
+        
+        for (CwTx *htx in cwAddress.historyTrx)
+        {
+            CwTx *record = [account.transactions objectForKey:htx.tid];
+            if(record)
+            {
+                //update amount
+                NSLog(@"Update Trx %@ amount %@ with %@, conifrm: %@", record.tid, record.historyAmount.satoshi,  htx.historyAmount.satoshi, [htx confirmations]);
+                CwBtc *btc = [record.historyAmount add:htx.historyAmount];
+                record.amount_btc = btc.BTC;
+                
+                //update confirmations
+                [record setConfirmations:[htx confirmations]];
+                [record setHistoryTime_utc:htx.historyTime_utc];
+                
+                [account.transactions setObject:record forKey:record.tid];
+            }
+            else
+            {
+                //add new txs
+                NSLog(@"Add New Trx %@ with amount %@", htx.tid, htx.historyAmount.satoshi);
+                [account.transactions setObject:htx forKey:htx.tid];
+            }
+        }
+    }
+}
+
 -(void) getUnspentByAddress:(CwAddress *)addr fromAccount:(CwAccount *)account
 {
     NSLog(@"getUnspentByAddress: %@, keyChainId is %ld", addr.address, addr.keyChainId);
