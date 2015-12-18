@@ -10,13 +10,22 @@
 #import "CwInfoViewController.h"
 #import "CwManager.h"
 #import "CwListTableViewController.h"
+#import "CwCommandDefine.h"
+#import "CwCardApduError.h"
 
 @interface CwEraseCwViewController () <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate>
+{
+    CGFloat _currentMovedUpHeight;
+}
+
 @property CwManager *cwManager;
 
+@property (weak, nonatomic) IBOutlet UILabel *resetHintLabel;
+@property (weak, nonatomic) IBOutlet UIView *otpConfirmView;
+@property (weak, nonatomic) IBOutlet UITextField *otpField;
+@property (weak, nonatomic) IBOutlet UIButton *resetBtn;
+
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBusyIndicator;
-@property (weak, nonatomic) IBOutlet UITextField *txtPin;
-@property (weak, nonatomic) IBOutlet UITextField *txtNewPin;
 - (IBAction)btnEraseCw:(id)sender;
 @end
 
@@ -32,16 +41,26 @@ CwCard *cwCard;
     
     cwCard = self.cwManager.connectedCwCard;
     
-    self.txtPin.delegate = self;
-    self.txtNewPin.delegate = self;
-
     self.actBusyIndicator.hidden = YES;
+    
+    self.resetHintLabel.hidden = NO;
+    self.otpConfirmView.hidden = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.cwManager.delegate = self;
     self.cwManager.connectedCwCard.delegate = self;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -60,15 +79,74 @@ CwCard *cwCard;
     }
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (!self.otpConfirmView.isHidden) {
+        [self.otpField resignFirstResponder];
+    }
 }
-*/
+
+- (void) startLoading
+{
+    self.actBusyIndicator.hidden = NO;
+    [self.actBusyIndicator startAnimating];
+}
+
+- (void) stopLoading
+{
+    [self.actBusyIndicator stopAnimating];
+    self.actBusyIndicator.hidden = YES;
+}
+
+-(void) keyboardWillShow:(NSNotification *)notification
+{
+    NSDictionary *info = [notification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    CGFloat deltaHeight = kbSize.height - (self.view.frame.size.height - self.otpConfirmView.frame.origin.y - self.otpField.frame.origin.y - self.otpField.frame.size.height);
+    
+    if (deltaHeight <= 0) {
+        _currentMovedUpHeight = 0.0f;
+        return;
+    }
+    
+    _currentMovedUpHeight = deltaHeight;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    self.view.frame = CGRectMake(self.view.frame.origin.x,
+                                 self.view.frame.origin.y - _currentMovedUpHeight,
+                                 self.view.frame.size.width,
+                                 self.view.frame.size.height);
+    
+    [UIView commitAnimations];
+}
+
+
+-(void) keyboardWillHide:(NSNotification *)notification
+{
+    if (_currentMovedUpHeight <= 0) {
+        return;
+    }
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    self.view.frame = CGRectMake(self.view.frame.origin.x,
+                                 self.view.frame.origin.y + _currentMovedUpHeight,
+                                 self.view.frame.size.width,
+                                 self.view.frame.size.height);
+    
+    [UIView commitAnimations];
+    
+    _currentMovedUpHeight = 0.0f;
+}
 
 
 #pragma marks - UITextFieldDelegate Delegates
@@ -81,10 +159,14 @@ CwCard *cwCard;
 #pragma marks - Actions
 
 - (IBAction)btnEraseCw:(id)sender {
-    self.actBusyIndicator.hidden = NO;
-    [self.actBusyIndicator startAnimating];
+    [self startLoading];
     
-    [cwCard getModeState];
+    if (self.otpConfirmView.isHidden) {
+        [cwCard getModeState];
+    } else {
+        // TODO: check OTP
+        [self.cwManager.connectedCwCard verifyResetOtp:self.otpField.text];
+    }
 }
 
 #pragma marks - CwCard Delegates
@@ -97,20 +179,19 @@ CwCard *cwCard;
 
 -(void) didCwCardCommand
 {
-    [self.actBusyIndicator stopAnimating];
-    self.actBusyIndicator.hidden = YES;
+    [self stopLoading];
 }
 
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
 {
-    NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
-                                                   message: msg
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    
-    [alert show];
+//    NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
+//    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
+//                                                   message: msg
+//                                                  delegate: nil
+//                                         cancelButtonTitle: nil
+//                                         otherButtonTitles:@"OK",nil];
+//    
+//    [alert show];
 }
 
 -(void) didGetModeState
@@ -125,7 +206,46 @@ CwCard *cwCard;
 
 -(void) didGetCwCardId
 {
+    [self.cwManager.connectedCwCard genResetOtp];
+//    [self.cwManager.connectedCwCard pinChlng];
+}
+
+-(void) didGenOTPWithError:(NSInteger)errId
+{
+    if (errId == -1) {
+        [self stopLoading];
+        
+        self.resetHintLabel.hidden = YES;
+        self.otpConfirmView.hidden = NO;
+        [self.resetBtn setTitle:@"Confirm" forState:UIControlStateNormal];
+    } else {
+        if (errId == ERR_CMD_NOT_SUPPORT) {
+            // old firmware, allow reset directly
+            [self.cwManager.connectedCwCard pinChlng];
+        } else {
+            // TODO: show msg?
+            [self stopLoading];
+        }
+    }
+}
+
+-(void) didVerifyOtp
+{
     [self.cwManager.connectedCwCard pinChlng];
+}
+
+-(void) didVerifyOtpError:(NSInteger)errId
+{
+    if (errId == ERR_TRX_VERIFY_OTP) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"OTP Error" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            self.otpField.text = @"";
+        }];
+        [alertController addAction:okAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
 }
 
 -(void) didPinChlng

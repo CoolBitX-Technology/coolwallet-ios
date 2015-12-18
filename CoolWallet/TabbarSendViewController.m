@@ -556,7 +556,7 @@ long TxFee = 10000;
     }
 }
 
--(void) didVerifyOtpError
+-(void) didVerifyOtpError:(NSInteger)errId
 {
     [self performDismiss];
     

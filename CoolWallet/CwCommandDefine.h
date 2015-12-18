@@ -111,9 +111,9 @@ typedef NS_ENUM (NSInteger, CwCmdId) {
     CwCmdIdMcuResetSe       = 0x60,
     CwCmdIdMcuQueryBatGague = 0x61,
     CwCmdIdMcuSetAccount    = 0x62,
-    CwCmdIdRestOTP          = 0x63,
-    CwCmdIdVerifyResetOTP   = 0x64,
-    CwCmdIdTurnCurrency     = 0x65,
+    CwCmdIdMcuGenOtp        = 0x63,
+    CwCmdIdMcuVerifyOtp     = 0x64,
+    CwCmdIdMcuDisplayUsd    = 0x65
 };
 
 /*
@@ -217,9 +217,9 @@ typedef NS_ENUM (NSInteger, CwCmdCLA) {
     CwCmdIdMcuResetSeCLA       = CwCmdClaKeepNone, //?
     CwCmdIdMcuQueryBatGagueCLA = CwCmdClaKeepNone, //?
     CwCmdIdMcuSetAccountCLA    = CwCmdClaKeepNone,
-    CwCmdIdRestOTPCLA          = CwCmdClaKeepNone,
-    CwCmdIdVerifyResetOTPCLA   = CwCmdClaKeepNone,
-    CwCmdIdTurnCurrencyCLA     = CwCmdClaKeepNone,
+    CwCmdIdMcuGenOtpCLA        = CwCmdClaKeepNone,
+    CwCmdIdMcuVerifyOtpCLA     = CwCmdClaKeepNone,
+    CwCmdIdMcuDisplayUsdCLA    = CwCmdClaKeepNone
 };
 
 typedef NS_ENUM (NSInteger, CwSecurityPolicyMask) {

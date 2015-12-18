@@ -452,6 +452,9 @@ NSArray *addresses;
         case CwCmdIdMcuResetSe:         str=@"[McuResetSe]"; break;
         case CwCmdIdMcuQueryBatGague:   str=@"[McuQueryBatGague]"; break;
         case CwCmdIdMcuSetAccount:      str=@"[McuSetAccount]"; break;
+        case CwCmdIdMcuGenOtp:          str=@"[McuGenOtp]"; break;
+        case CwCmdIdMcuVerifyOtp:       str=@"[McuVerifyOtp]"; break;
+        case CwCmdIdMcuDisplayUsd:      str=@"[McuDisplayUsd]"; break;
             
         default:                        str=@"[UnknownCmdId]"; break;
             
@@ -501,6 +504,21 @@ NSArray *addresses;
 -(void) setDisplayAccount: (NSInteger) accId
 {
     [self cwCmdMcuSetAccount:accId];
+}
+
+-(void) genResetOtp
+{
+    [self cwCmdMcuGenOtp];
+}
+
+-(void) verifyResetOtp: (NSString *)otp
+{
+    [self cwCmdMcuVerifyOtp: otp];
+}
+
+-(void) displayCurrency: (BOOL) option
+{
+    [self cwCmdMcuDisplayUsd:option];
 }
 
 //Load Commands
@@ -1387,11 +1405,6 @@ NSArray *addresses;
 -(void) backTo7816FromLoader
 {
     [self loaderCmdBackTo7816Loader];
-}
-
--(void) displayCurrency:(BOOL)onoff
-{
-    [self cwCmdTurnCurrency:onoff];
 }
 
 //Exchange Site Functions
@@ -3365,21 +3378,73 @@ NSArray *addresses;
     return CwCardRetSuccess;
 }
 
-- (NSInteger) cwCmdTurnCurrency:(BOOL)onoff
+- (NSInteger) cwCmdMcuGenOtp
 {
     CwCardCommand *cmd = [[CwCardCommand alloc] init];
     
-    //input:
+    //input
     //none
     
-    //output:
-    //cardName 32B
+    //output
+    //none
     
     //prepare commands
-    cmd.cmdPriority = CwCardCommandPriorityNone;
-    cmd.cmdCla = CwCmdIdTurnCurrencyCLA;
-    cmd.cmdId = CwCmdIdTurnCurrency;
-    cmd.cmdP1 = [[NSNumber numberWithBool:onoff] intValue];
+    cmd.cmdPriority = CwCardCommandPriorityTop;
+    cmd.cmdCla = CwCmdIdMcuGenOtpCLA;
+    cmd.cmdId = CwCmdIdMcuGenOtp;
+    cmd.cmdP1 = 0;
+    cmd.cmdP2 = 0;
+    cmd.cmdInput = nil;
+    
+    //add command to array
+    [self cmdAdd: cmd];
+    
+    [self cmdProcessor];
+    
+    return CwCardRetSuccess;
+}
+
+- (NSInteger) cwCmdMcuVerifyOtp: (NSString *)otp
+{
+    CwCardCommand *cmd = [[CwCardCommand alloc] init];
+    
+    //input
+    //none
+    
+    //output
+    //none
+    
+    //prepare commands
+    cmd.cmdPriority = CwCardCommandPriorityTop;
+    cmd.cmdCla = CwCmdIdMcuVerifyOtpCLA;
+    cmd.cmdId = CwCmdIdMcuVerifyOtp;
+    cmd.cmdP1 = 0;
+    cmd.cmdP2 = 0;
+    cmd.cmdInput = [otp dataUsingEncoding:NSUTF8StringEncoding]; //otp
+    
+    //add command to array
+    [self cmdAdd: cmd];
+    
+    [self cmdProcessor];
+    
+    return CwCardRetSuccess;
+}
+
+- (NSInteger) cwCmdMcuDisplayUsd: (NSInteger) option
+{
+    CwCardCommand *cmd = [[CwCardCommand alloc] init];
+    
+    //input
+    //none
+    
+    //output
+    //none
+    
+    //prepare commands
+    cmd.cmdPriority = CwCardCommandPriorityTop;
+    cmd.cmdCla = CwCmdIdMcuDisplayUsdCLA;
+    cmd.cmdId = CwCmdIdMcuDisplayUsd;
+    cmd.cmdP1 = option;
     cmd.cmdP2 = 0;
     cmd.cmdInput = nil;
     
@@ -5419,8 +5484,8 @@ NSArray *addresses;
                 }
             } else {
                 //call delegate
-                if ([self.delegate respondsToSelector:@selector(didVerifyOtpError)]) {
-                    [self.delegate didVerifyOtpError];
+                if ([self.delegate respondsToSelector:@selector(didVerifyOtpError:)]) {
+                    [self.delegate didVerifyOtpError:cmd.cmdResult];
                 }
                 NSLog(@"CwCmdIdTrxVerifyOtp Error %04lX", (long)cmd.cmdResult);
             }
@@ -5713,7 +5778,55 @@ NSArray *addresses;
             break;
             
             //Loader Commands
-            
+        
+        case CwCmdIdMcuGenOtp:
+            //output:
+            //none
+            if (cmd.cmdResult==0x9000) {
+                if ([self.delegate respondsToSelector:@selector(didGenOTPWithError:)]) {
+                    [self.delegate didGenOTPWithError:-1];
+                }
+            } else{
+                NSLog(@"CwCmdIdMcuGenOtp Error %04lX", (long)cmd.cmdResult);
+                if ([self.delegate respondsToSelector:@selector(didGenOTPWithError:)]) {
+                    [self.delegate didGenOTPWithError:cmd.cmdResult];
+                }
+            }
+            break;
+        
+        case CwCmdIdMcuVerifyOtp:
+            //output:
+            //none
+            if (cmd.cmdResult==0x9000) {
+                //call delegate
+                if ([self.delegate respondsToSelector:@selector(didVerifyOtp)]) {
+                    [self.delegate didVerifyOtp];
+                }
+            } else{
+                NSLog(@"CwCmdIdMcuVerifyOtp Error %04lX", (long)cmd.cmdResult);
+                if ([self.delegate respondsToSelector:@selector(didVerifyOtpError:)]) {
+                    [self.delegate didVerifyOtpError:cmd.cmdResult];
+                }
+            }
+            break;
+        
+        case CwCmdIdMcuDisplayUsd:
+            if (cmd.cmdResult == 0x9000) {
+                if (cmd.cmdP1 == 1) {
+                    self.cardFiatDisplay = [NSNumber numberWithBool:YES];
+                } else {
+                    self.cardFiatDisplay = [NSNumber numberWithBool:NO];
+                }
+                
+                if (self.delegate && [self.delegate respondsToSelector:@selector(didUpdateCurrencyDisplay)]) {
+                    [self.delegate didUpdateCurrencyDisplay];
+                }
+            } else {
+                if (self.delegate && [self.delegate respondsToSelector:@selector(didUpdateCurrencyDisplayError:)]) {
+                    [self.delegate didUpdateCurrencyDisplayError:cmd.cmdResult];
+                }
+            }
+        
         case CwCmdIdBackToLoader:
             //output:
             //none
@@ -5775,23 +5888,7 @@ NSArray *addresses;
                 NSLog(@"LoaderCmdIdVerifyMac Error %04lX", (long)cmd.cmdResult);
             }
             break;
-        
-        case CwCmdIdTurnCurrency:
-            if (cmd.cmdResult == 0x9000) {
-                if (cmd.cmdP1 == 1) {
-                    self.cardFiatDisplay = [NSNumber numberWithBool:YES];
-                } else {
-                    self.cardFiatDisplay = [NSNumber numberWithBool:NO];
-                }
-                
-                if (self.delegate && [self.delegate respondsToSelector:@selector(didUpdateCurrencyDisplay)]) {
-                    [self.delegate didUpdateCurrencyDisplay];
-                }
-            } else {
-                if (self.delegate && [self.delegate respondsToSelector:@selector(didUpdateCurrencyDisplayError:)]) {
-                    [self.delegate didUpdateCurrencyDisplayError:cmd.cmdResult];
-                }
-            }
+            
         default:
             break;
     }

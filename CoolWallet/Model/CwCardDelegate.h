@@ -55,6 +55,8 @@ typedef NS_ENUM (NSInteger, CwCardRSSI) {
 -(void) didLoginHost;
 -(void) didLogoutHost;
 
+-(void) didGenOTPWithError:(NSInteger)errId;
+
 -(void) didGetHosts;
 -(void) didApproveHost: (NSInteger) hostId;
 -(void) didRemoveHost: (NSInteger) hostId;
@@ -99,7 +101,7 @@ typedef NS_ENUM (NSInteger, CwCardRSSI) {
 -(void) didGetTapTapOtp: (NSString *)OTP;
 -(void) didGetButton;
 -(void) didVerifyOtp;
--(void) didVerifyOtpError;
+-(void) didVerifyOtpError:(NSInteger)errId;
 -(void) didSignTransaction;
 -(void) didSignTransactionError: (NSString *)errMsg;
 -(void) didCancelTransaction;

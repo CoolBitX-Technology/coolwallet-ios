@@ -360,35 +360,13 @@ pressing the button on card.</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="logo1.png" translatesAutoresizingMaskIntoConstraints="NO" id="6py-h7-tPs">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo1.png" translatesAutoresizingMaskIntoConstraints="NO" id="6py-h7-tPs">
                                 <rect key="frame" x="70" y="58" width="180" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="160" id="NKY-aH-EZN"/>
                                     <constraint firstAttribute="width" constant="180" id="bFf-hK-IC4"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Are you sure you want to reset your CoolWallet?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57x-PC-Jsi">
-                                <rect key="frame" x="51" y="246" width="219" height="50"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3f5-hP-8pT">
-                                <rect key="frame" x="50" y="304" width="220" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Enter New Pin to Erase CW" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mIc-N2-Jes">
-                                <rect key="frame" x="16" y="380" width="288" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bsy-Dz-mdD">
-                                <rect key="frame" x="16" y="409" width="288" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UEP-ij-kBO">
                                 <rect key="frame" x="60" y="491" width="200" height="30"/>
                                 <constraints>
@@ -418,43 +396,86 @@ pressing the button on card.</string>
                                     <action selector="BtnCancelAction:" destination="lem-0Z-PoJ" eventType="touchUpInside" id="xEw-c8-LLL"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="AwJ-Yc-2KK">
-                                <rect key="frame" x="150" y="20" width="20" height="20"/>
-                            </activityIndicatorView>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="OTP incorrect, please ty again" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C64-kL-Gio">
-                                <rect key="frame" x="41" y="371" width="238" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Are you sure you want to reset your CoolWallet?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57x-PC-Jsi">
+                                <rect key="frame" x="51" y="236" width="219" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="219" id="Xr6-Cn-OXS"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jsz-BB-1Sm">
+                                <rect key="frame" x="0.0" y="236" width="320" height="116"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Type in OTP shown on card" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBK-NO-SBS">
+                                        <rect key="frame" x="50" y="75" width="220" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ooG-4J-EnM">
+                                        <rect key="frame" x="50" y="37" width="220" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="220" id="QWj-x0-4cj"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" spellCheckingType="no" keyboardType="numberPad"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="lem-0Z-PoJ" id="hbg-ao-mWH"/>
+                                        </connections>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Confirm One Time Password (OTP)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kNT-5K-Yqu">
+                                        <rect key="frame" x="10" y="8" width="300" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="IBK-NO-SBS" firstAttribute="centerX" secondItem="jsz-BB-1Sm" secondAttribute="centerX" id="7VL-tA-Rgc"/>
+                                    <constraint firstItem="kNT-5K-Yqu" firstAttribute="centerX" secondItem="jsz-BB-1Sm" secondAttribute="centerX" id="CfP-ZR-4XR"/>
+                                    <constraint firstAttribute="height" constant="116" id="DGp-Zn-aPd"/>
+                                    <constraint firstItem="kNT-5K-Yqu" firstAttribute="top" secondItem="jsz-BB-1Sm" secondAttribute="top" constant="8" id="F4c-qX-8b2"/>
+                                    <constraint firstItem="IBK-NO-SBS" firstAttribute="top" secondItem="ooG-4J-EnM" secondAttribute="bottom" constant="8" id="Yhb-75-4vH"/>
+                                    <constraint firstItem="ooG-4J-EnM" firstAttribute="centerX" secondItem="jsz-BB-1Sm" secondAttribute="centerX" id="nHr-qc-nCL"/>
+                                    <constraint firstItem="ooG-4J-EnM" firstAttribute="top" secondItem="kNT-5K-Yqu" secondAttribute="bottom" constant="8" id="xMJ-xr-Keg"/>
+                                </constraints>
+                            </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="AwJ-Yc-2KK">
+                                <rect key="frame" x="150" y="28" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="NAM-JX-p2t"/>
+                                    <constraint firstAttribute="height" constant="20" id="Va7-Hv-pLk"/>
+                                </constraints>
+                                <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="AwJ-Yc-2KK" firstAttribute="centerX" secondItem="7Rz-jf-Tsq" secondAttribute="centerX" id="04X-Vx-f08"/>
+                            <constraint firstItem="jsz-BB-1Sm" firstAttribute="top" secondItem="6py-h7-tPs" secondAttribute="bottom" constant="18" id="C9K-Fs-GSG"/>
                             <constraint firstAttribute="centerX" secondItem="UEP-ij-kBO" secondAttribute="centerX" id="E1q-mC-e80"/>
-                            <constraint firstAttribute="centerX" secondItem="3f5-hP-8pT" secondAttribute="centerX" id="HJ0-83-JrJ"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="3f5-hP-8pT" secondAttribute="trailing" constant="34" id="IOI-Kx-7wb"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="57x-PC-Jsi" secondAttribute="trailing" constant="34" id="N3n-sl-DhF"/>
-                            <constraint firstItem="3f5-hP-8pT" firstAttribute="leading" secondItem="7Rz-jf-Tsq" secondAttribute="leadingMargin" constant="34" id="PZW-BB-D5G"/>
-                            <constraint firstAttribute="centerX" secondItem="C64-kL-Gio" secondAttribute="centerX" id="Qxa-OV-fxf"/>
-                            <constraint firstItem="3f5-hP-8pT" firstAttribute="top" secondItem="57x-PC-Jsi" secondAttribute="bottom" constant="8" id="SLu-qR-F4a"/>
+                            <constraint firstItem="AwJ-Yc-2KK" firstAttribute="top" secondItem="lZR-Ck-rjQ" secondAttribute="bottom" constant="8" id="Lzn-XT-0En"/>
+                            <constraint firstItem="jsz-BB-1Sm" firstAttribute="leading" secondItem="7Rz-jf-Tsq" secondAttribute="leading" id="QaW-I8-ZUQ"/>
                             <constraint firstAttribute="centerX" secondItem="qjh-VR-2Yk" secondAttribute="centerX" id="VLs-Da-yQN"/>
                             <constraint firstItem="UEP-ij-kBO" firstAttribute="top" secondItem="qjh-VR-2Yk" secondAttribute="bottom" constant="8" id="cRX-18-VuQ"/>
-                            <constraint firstItem="6py-h7-tPs" firstAttribute="top" secondItem="AwJ-Yc-2KK" secondAttribute="bottom" constant="20" id="hh2-MU-wwz"/>
-                            <constraint firstItem="57x-PC-Jsi" firstAttribute="top" secondItem="6py-h7-tPs" secondAttribute="bottom" constant="8" id="hl6-H7-Xob"/>
-                            <constraint firstAttribute="centerX" secondItem="6py-h7-tPs" secondAttribute="centerX" id="ml5-qj-MCj"/>
+                            <constraint firstAttribute="trailing" secondItem="jsz-BB-1Sm" secondAttribute="trailing" id="kw9-KK-dWd"/>
                             <constraint firstAttribute="centerX" secondItem="6py-h7-tPs" secondAttribute="centerX" id="nbc-xf-Jk5"/>
-                            <constraint firstItem="57x-PC-Jsi" firstAttribute="leading" secondItem="7Rz-jf-Tsq" secondAttribute="leadingMargin" constant="34" id="pew-r2-LgF"/>
+                            <constraint firstItem="6py-h7-tPs" firstAttribute="top" secondItem="AwJ-Yc-2KK" secondAttribute="bottom" constant="10" id="riJ-GJ-ixi"/>
                             <constraint firstAttribute="centerX" secondItem="57x-PC-Jsi" secondAttribute="centerX" id="rpU-vk-TLb"/>
+                            <constraint firstItem="57x-PC-Jsi" firstAttribute="top" secondItem="6py-h7-tPs" secondAttribute="bottom" constant="18" id="tg8-3a-nT3"/>
                             <constraint firstItem="dcb-iv-NvQ" firstAttribute="top" secondItem="UEP-ij-kBO" secondAttribute="bottom" constant="40" id="uwq-sI-dRv"/>
-                            <constraint firstItem="Bsy-Dz-mdD" firstAttribute="top" secondItem="mIc-N2-Jes" secondAttribute="bottom" constant="8" id="yCf-fV-Yfc"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Erase CW" id="q62-az-DPT"/>
                     <connections>
                         <outlet property="actBusyIndicator" destination="AwJ-Yc-2KK" id="UH4-Fw-a1e"/>
-                        <outlet property="txtNewPin" destination="Bsy-Dz-mdD" id="POL-Uu-1Ba"/>
-                        <outlet property="txtPin" destination="3f5-hP-8pT" id="WV9-s5-dMe"/>
+                        <outlet property="otpConfirmView" destination="jsz-BB-1Sm" id="KHj-Cn-1xs"/>
+                        <outlet property="otpField" destination="ooG-4J-EnM" id="U1u-ON-qQ5"/>
+                        <outlet property="resetBtn" destination="UEP-ij-kBO" id="NEG-VF-Y0t"/>
+                        <outlet property="resetHintLabel" destination="57x-PC-Jsi" id="m0j-Qr-RJY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kuj-ef-bqX" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -178,7 +178,9 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) backToLoader: (NSString *)blotp;
 -(void) backTo7816FromLoader;
 
--(void) displayCurrency:(BOOL)onoff;
+-(void) genResetOtp;
+-(void) verifyResetOtp: (NSString *)otp;
+-(void) displayCurrency: (BOOL) option;
 
 //Exchange Site Functions
 -(void) exGetRegStatus;
