@@ -23,6 +23,13 @@
         self.intKeys = [[NSMutableArray alloc] init];
         self.transactions = [[NSMutableDictionary alloc] init];
         self.unspentTxs = [[NSMutableArray alloc] init];
+        self.accName = @"";
+        self.balance = 0;
+        self.blockAmount = 0;
+        self.extKeyPointer = 0;
+        self.intKeyPointer = 0;
+        self.externalKeychain = nil;
+        self.internalKeychain = nil;
     }
 
     return self;
@@ -67,6 +74,9 @@
     self.intKeys = [decoder decodeObjectForKey:@"IntKeys"];
     self.transactions = [decoder decodeObjectForKey:@"Transactions"];
     
+    self.externalKeychain = nil;
+    self.internalKeychain = nil;
+    
     return self;
 }
 
@@ -80,6 +90,18 @@
     }
     
     return NO;
+}
+
+-(BOOL) isAllAddressSynced
+{
+    NSArray *allAddresses = [self getAllAddresses];
+    for (CwAddress *addr in allAddresses) {
+        if (addr.address == nil) {
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)

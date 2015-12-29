@@ -14,10 +14,9 @@
 #import "CwBtcNetwork.h"
 #import "SWRevealViewController.h"
 
-@interface TabRecoveryViewController ()  <CwManagerDelegate, CwCardDelegate>
+#define MAX_ACCOUNT 5
 
-@property (weak, nonatomic) IBOutlet UITextView *txtRecoveryLog;
-- (IBAction)btnRecovery:(id)sender;
+@interface TabRecoveryViewController ()  <CwManagerDelegate, CwCardDelegate>
 
 @end
 
@@ -30,6 +29,8 @@ int acc_external = 0;
 int acc_internal = 0;
 
 NSInteger accPtr[5][2]; //store key index of each accounts
+NSMutableArray *extKeySettingFinish;
+NSMutableArray *intKeySettingFinish;
 
 @implementation TabRecoveryViewController
 
@@ -40,14 +41,17 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     cwManager = [CwManager sharedManager];
     cwCard = cwManager.connectedCwCard;
     btcNet = [CwBtcNetWork sharedManager];
+    
+    _progressView.progress = 0;
+    extKeySettingFinish = [NSMutableArray new];
+    intKeySettingFinish = [NSMutableArray new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    _progressView.progress = 0;
+//    _progressView.progress = 0;
     cwManager.delegate = self;
     cwCard.delegate = self;
-    //self.txtRecoveryLog.text= @"";
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -61,19 +65,9 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 - (void)StartRecovery
 {
-    for(int i=0; i<5; i++) {
+    for(int i=0; i<MAX_ACCOUNT; i++) {
         accPtr[i][0]=-1;
         accPtr[i][1]=-1;
     }
@@ -82,21 +76,20 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     [cwCard getCwHdwInfo];
 }
 
-- (IBAction)btnRecovery:(id)sender {
-    self.txtRecoveryLog.text= @"";
-    [self addLog: @"Recovery begin"];
-    
-    
-    for(int i=0; i<5; i++) {
-        accPtr[i][0]=-1;
-        accPtr[i][1]=-1;
+-(void) recoveryAccount:(CwAccount *)account
+{
+    if (accPtr[account.accId][CwAddressKeyChainExternal] == -1 || account.extKeyPointer-accPtr[account.accId][CwAddressKeyChainExternal]<CwHdwRecoveryAddressWindow) {
+        
+        [cwCard genAddress:account.accId KeyChainId:CwAddressKeyChainExternal];
+    } else {
+        [self addLog: [NSString stringWithFormat:@"HDW accounts %ld external addresses recovered", (long)account.accId]];
     }
-
-    //check HDW Status
-    [cwCard getCwHdwInfo];
     
-    //check Accounts
-    //check Account Addresses
+    if (accPtr[account.accId][CwAddressKeyChainInternal] == -1 || account.intKeyPointer-accPtr[account.accId][CwAddressKeyChainInternal]<CwHdwRecoveryAddressWindow) {
+        [cwCard genAddress:account.accId KeyChainId:CwAddressKeyChainInternal];
+    } else {
+        [self addLog: [NSString stringWithFormat:@"HDW accounts %ld internal addresses recovered", (long)account.accId]];
+    }
 }
 
 -(void) didGetCwHdwStatus {
@@ -111,13 +104,13 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     if (cwCard.hdwStatus.integerValue != CwHdwStatusActive) {
         [self addLog: @"HDW is not created"];
     }
-    
-    for (int i=0; i<cwCard.hdwAcccountPointer.integerValue; i++)
-        [cwCard getAccountInfo: i];
-
-    //if pointer is less then 5, creat all the rest of accounts
-    for (NSInteger i=cwCard.hdwAcccountPointer.integerValue; i<5; i++) {
-        [cwCard newAccount:i Name:@""];
+    [self addLog:[NSString stringWithFormat:@"HdwAcccountPointer: %@", cwCard.hdwAcccountPointer]];
+    for (int i = 0; i < MAX_ACCOUNT; i++) {
+        if (i < cwCard.hdwAcccountPointer.integerValue) {
+            [cwCard getAccountInfo:i];
+        } else {
+            [cwCard newAccount:i Name:@""];
+        }
     }
     
     if (cwCard.hdwAcccountPointer.integerValue == 5) {
@@ -136,27 +129,14 @@ NSInteger accPtr[5][2]; //store key index of each accounts
 
 -(void) didGetAccountInfo:(NSInteger)accId {
     CwAccount *acc = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)accId]];
-    
-    //gen address if the empty address < CwHdwRecoveryAddressWindow
-    if (accPtr[accId][CwAddressKeyChainExternal] == -1 || acc.extKeyPointer-accPtr[accId][CwAddressKeyChainExternal]<CwHdwRecoveryAddressWindow) {
-        [cwCard genAddress:accId KeyChainId:CwAddressKeyChainExternal];
-    } else {
-        [self addLog: [NSString stringWithFormat:@"HDW accounts %ld external addresses recovered", (long)accId]];
-    }
-
-    //gen address if the empty address < 5
-    if (accPtr[accId][CwAddressKeyChainInternal] == -1 || acc.intKeyPointer-accPtr[accId][CwAddressKeyChainInternal]<CwHdwRecoveryAddressWindow) {
-        [cwCard genAddress:accId KeyChainId:CwAddressKeyChainInternal];
-    } else {
-        [self addLog: [NSString stringWithFormat:@"HDW accounts %ld internal addresses recovered", (long)accId]];
-    }
+    [self performSelectorInBackground:@selector(recoveryAccount:) withObject:acc];
 }
 
 -(void) didGenAddress:(CwAddress *)addr {
-    [self setProgressPercent];
+    [self performSelectorOnMainThread:@selector(setProgressPercent) withObject:nil waitUntilDone:NO];
     
     CwAccount *acc = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)addr.accountId]];
-
+    
     addr = [self checkTransactions:addr];
     
     //set address back to acc
@@ -165,18 +145,17 @@ NSInteger accPtr[5][2]; //store key index of each accounts
     else
         acc.intKeys[addr.keyId] = addr;
     
-    [cwCard.cwAccounts setObject:acc forKey:[NSString stringWithFormat: @"%ld", acc.accId]];
+    [cwCard.cwAccounts setObject:acc forKey:[NSString stringWithFormat: @"%ld", (long)acc.accId]];
 
-    [self addLog: [NSString stringWithFormat:@"HDW accounts %ld keychain %ld addresses %ld created, trx:%ld", (long)addr.accountId, addr.keyChainId, addr.keyId, addr.historyTrx.count]];
+    [self addLog: [NSString stringWithFormat:@"HDW accounts %ld keychain %ld addresses %ld created, trx:%lu", (long)addr.accountId, (long)addr.keyChainId, (long)addr.keyId, (unsigned long)addr.historyTrx.count]];
     
     //gen address if the empty address < CwHdwRecoveryAddressWindow
     if (addr.keyChainId==CwAddressKeyChainExternal) {
         if (accPtr[addr.accountId][addr.keyChainId] == -1 || acc.extKeyPointer-accPtr[addr.accountId][addr.keyChainId]<CwHdwRecoveryAddressWindow) {
             [cwCard genAddress:addr.accountId KeyChainId:addr.keyChainId];
-            
         } else{
             acc_external++;
-            [self setProgressPercent];
+            [self performSelectorOnMainThread:@selector(setProgressPercent) withObject:nil waitUntilDone:NO];
             [self addLog: [NSString stringWithFormat:@"HDW accounts %ld external addresses recovered", (long)addr.accountId]];
         }
     } else {
@@ -184,9 +163,37 @@ NSInteger accPtr[5][2]; //store key index of each accounts
             [cwCard genAddress:addr.accountId KeyChainId:addr.keyChainId];
         else{
             acc_internal++;
-            [self setProgressPercent];
+            [self performSelectorOnMainThread:@selector(setProgressPercent) withObject:nil waitUntilDone:NO];
             [self addLog: [NSString stringWithFormat:@"HDW accounts %ld internal addresses recovered", (long)addr.accountId]];
         }
+    }
+}
+
+-(void) didSetAccountExtKeyPtr:(NSInteger)accId keyPtr:(NSInteger)keyPtr
+{
+    if(acc_external == MAX_ACCOUNT && acc_internal == MAX_ACCOUNT) {
+        CwAccount *account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)accId]];
+        if (keyPtr == account.extKeyPointer) {
+            [extKeySettingFinish addObject:account];
+        } else if ([extKeySettingFinish containsObject:account]) {
+            [extKeySettingFinish removeObject:account];
+        }
+        
+        [self finishRecovery];
+    }
+}
+
+-(void) didSetAccountIntKeyPtr:(NSInteger)accId keyPtr:(NSInteger)keyPtr
+{
+    if(acc_external == MAX_ACCOUNT && acc_internal == MAX_ACCOUNT) {
+        CwAccount *account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)accId]];
+        if (keyPtr == account.intKeyPointer) {
+            [intKeySettingFinish addObject:account];
+        } else if ([intKeySettingFinish containsObject:account]) {
+            [intKeySettingFinish removeObject:account];
+        }
+        
+        [self finishRecovery];
     }
 }
 
@@ -198,7 +205,7 @@ NSInteger accPtr[5][2]; //store key index of each accounts
 -(CwAddress *) checkTransactions:(CwAddress *)address
 {
     NSDictionary *trxs = [btcNet queryHistoryTxs:@[address.address]];
-    if (trxs == nil) {
+    if (trxs == nil || trxs.count == 0) {
         if (accPtr[address.accountId][address.keyChainId] == -1) {
             accPtr[address.accountId][address.keyChainId] = address.keyId;
         }
@@ -219,28 +226,57 @@ NSInteger accPtr[5][2]; //store key index of each accounts
 -(void) addLog: (NSString *)log {
     NSString *msg = [log stringByAppendingString:@"\n"];
     NSLog(@"%@",msg);
-    //self.txtRecoveryLog.text = [self.txtRecoveryLog.text stringByAppendingString:msg];
 }
 
 -(void) setProgressPercent
 {
-    if(percent <0.9) {
+    if(percent <= 1) {
         percent += 0.012;
+        float limitPerAccount = 0.95 / (MAX_ACCOUNT * 2.0);
+        float maxPercentPerAccount = limitPerAccount * (acc_external + acc_internal + 2);
+        float minPercentPerAccount = limitPerAccount * (acc_external + acc_internal);
+        
+        if (percent > maxPercentPerAccount) {
+            percent = maxPercentPerAccount;
+        } else if (percent < minPercentPerAccount) {
+            percent = minPercentPerAccount;
+        }
     }
 
     NSLog(@"Progress = %f",percent);
     _progressView.progress = percent;
     
-    if(acc_external == 5 && acc_internal == 5) {
+    if(acc_external == MAX_ACCOUNT && acc_internal == MAX_ACCOUNT) {
+        [cwCard cmdClear];
         for (CwAccount *account in [cwCard.cwAccounts allValues]) {
-            [btcNet refreshTxsFromAccountAddresses:account];
+            [cwCard setAccount:account.accId ExtKeyPtr:account.extKeyPointer];
+            [cwCard setAccount:account.accId IntKeyPtr:account.intKeyPointer];
         }
-        
-        [cwCard saveCwCardToFile];
-        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
-        UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
-        [self.revealViewController pushFrontViewController:vc animated:YES];
     }
+}
+
+-(void) finishRecovery
+{
+    for (CwAccount *account in [cwCard.cwAccounts allValues]) {
+        if (account.externalKeychain.extendedPublicKey == nil || account.internalKeychain.extendedPublicKey == nil) {
+            continue;
+        }
+        if (![extKeySettingFinish containsObject:account] || ![intKeySettingFinish containsObject:account]) {
+            return;
+        }
+    }
+    
+    for (CwAccount *account in [cwCard.cwAccounts allValues]) {
+        [btcNet refreshTxsFromAccountAddresses:account];
+    }
+    
+    _progressView.progress = 1;
+    
+    [cwCard saveCwCardToFile];
+    
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
+    UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
+    [self.revealViewController pushFrontViewController:vc animated:YES];
 }
 
 #pragma marks - CwManagerDelegates

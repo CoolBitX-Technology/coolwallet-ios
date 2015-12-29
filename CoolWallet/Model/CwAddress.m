@@ -10,6 +10,15 @@
 
 @implementation CwAddress
 
+-(id) init {
+    if (self = [super init]) {
+        self.historyUpdateFinish = YES;
+        self.unspendUpdateFinish = YES;
+    }
+    
+    return self;
+}
+
 - (void) encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeInteger:self.accountId forKey:@"AddrAccId"];
     [encoder encodeInteger:self.keyChainId forKey:@"AddrKcid"];
@@ -28,6 +37,8 @@
     self.publicKey = [decoder decodeObjectForKey:@"AddPubKey"];
     self.note = [decoder decodeObjectForKey:@"AddNote"];
     self.historyTrx = [decoder decodeObjectForKey:@"AddHistoryTrx"];
+    self.historyUpdateFinish = YES;
+    self.unspendUpdateFinish = YES;
     
     return self;
 }

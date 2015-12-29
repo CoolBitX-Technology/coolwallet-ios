@@ -162,6 +162,10 @@
 		EFFA18311B450EA600FF8FC6 /* FrontViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFA182F1B450EA600FF8FC6 /* FrontViewController.m */; };
 		EFFA18321B450EA600FF8FC6 /* FrontViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EFFA18301B450EA600FF8FC6 /* FrontViewController.xib */; };
 		EFFA18351B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFA18341B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m */; };
+		F43E97BE1C27F20D00D03DA9 /* NSString+Base58.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E97BD1C27F20D00D03DA9 /* NSString+Base58.m */; };
+		F43E97C31C2808DC00D03DA9 /* NSData+Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E97C01C2808DC00D03DA9 /* NSData+Hash.m */; };
+		F43E97C41C2808DC00D03DA9 /* NSMutableData+Bitcoin.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E97C21C2808DC00D03DA9 /* NSMutableData+Bitcoin.m */; };
+		F43E97C71C2808F100D03DA9 /* NSData+Bitcoin.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E97C61C2808F100D03DA9 /* NSData+Bitcoin.m */; };
 		F45962901BDE3FF80046E4CE /* BlockChain.m in Sources */ = {isa = PBXBuildFile; fileRef = F459628F1BDE3FF80046E4CE /* BlockChain.m */; };
 		F45962931BDE411C0046E4CE /* SRWebSocket+CW.m in Sources */ = {isa = PBXBuildFile; fileRef = F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */; };
 		F485C2261C18066D00C26E11 /* CwKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = F485C2251C18066D00C26E11 /* CwKeychain.m */; };
@@ -425,6 +429,14 @@
 		EFFA18331B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabSettingBitcoinUnitViewController.h; sourceTree = "<group>"; };
 		EFFA18341B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabSettingBitcoinUnitViewController.m; sourceTree = "<group>"; };
 		F40A8D0D1BD613EE00D5940A /* CwCommandDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CwCommandDefine.h; sourceTree = "<group>"; };
+		F43E97BC1C27F20D00D03DA9 /* NSString+Base58.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Base58.h"; sourceTree = "<group>"; };
+		F43E97BD1C27F20D00D03DA9 /* NSString+Base58.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Base58.m"; sourceTree = "<group>"; };
+		F43E97BF1C2808DC00D03DA9 /* NSData+Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Hash.h"; sourceTree = "<group>"; };
+		F43E97C01C2808DC00D03DA9 /* NSData+Hash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Hash.m"; sourceTree = "<group>"; };
+		F43E97C11C2808DC00D03DA9 /* NSMutableData+Bitcoin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableData+Bitcoin.h"; sourceTree = "<group>"; };
+		F43E97C21C2808DC00D03DA9 /* NSMutableData+Bitcoin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableData+Bitcoin.m"; sourceTree = "<group>"; };
+		F43E97C51C2808F100D03DA9 /* NSData+Bitcoin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Bitcoin.h"; sourceTree = "<group>"; };
+		F43E97C61C2808F100D03DA9 /* NSData+Bitcoin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Bitcoin.m"; sourceTree = "<group>"; };
 		F459628E1BDE3FF80046E4CE /* BlockChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockChain.h; sourceTree = "<group>"; };
 		F459628F1BDE3FF80046E4CE /* BlockChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockChain.m; sourceTree = "<group>"; };
 		F45962911BDE411C0046E4CE /* SRWebSocket+CW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRWebSocket+CW.h"; sourceTree = "<group>"; };
@@ -570,6 +582,14 @@
 		A2B6E7D51BD28813001B1592 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				F43E97C51C2808F100D03DA9 /* NSData+Bitcoin.h */,
+				F43E97C61C2808F100D03DA9 /* NSData+Bitcoin.m */,
+				F43E97BF1C2808DC00D03DA9 /* NSData+Hash.h */,
+				F43E97C01C2808DC00D03DA9 /* NSData+Hash.m */,
+				F43E97C11C2808DC00D03DA9 /* NSMutableData+Bitcoin.h */,
+				F43E97C21C2808DC00D03DA9 /* NSMutableData+Bitcoin.m */,
+				F43E97BC1C27F20D00D03DA9 /* NSString+Base58.h */,
+				F43E97BD1C27F20D00D03DA9 /* NSString+Base58.m */,
 				F4E4128E1BFB1D91003CFACF /* NSString+HexToData.h */,
 				F4E4128F1BFB1D91003CFACF /* NSString+HexToData.m */,
 				A2B6E7D61BD28879001B1592 /* NSDate+Localize.h */,
@@ -700,9 +720,9 @@
 				EFAC5FC11AAD39620042FF8C /* TabAddressTableViewController.h */,
 				EFAC5FC21AAD39620042FF8C /* TabAddressTableViewController.m */,
 				EFAB50B41AC02CFB003A2D3F /* TabbarAccountViewController.h */,
+				EFAB50B51AC02CFB003A2D3F /* TabbarAccountViewController.m */,
 				EFA9D58A1ABA6850005C27F2 /* TabbarHomeViewController.h */,
 				EFA9D58B1ABA6850005C27F2 /* TabbarHomeViewController.m */,
-				EFAB50B51AC02CFB003A2D3F /* TabbarAccountViewController.m */,
 				EFA9D5871ABA67F2005C27F2 /* TabbarSendViewController.h */,
 				EFA9D5881ABA67F2005C27F2 /* TabbarSendViewController.m */,
 				EFAC5FC31AAD39620042FF8C /* TabCardViewController.h */,
@@ -1131,6 +1151,7 @@
 				F485C2261C18066D00C26E11 /* CwKeychain.m in Sources */,
 				EFAC5FDC1AAD39620042FF8C /* TabHostTableViewController.m in Sources */,
 				EFAB50B61AC02CFB003A2D3F /* TabbarAccountViewController.m in Sources */,
+				F43E97C41C2808DC00D03DA9 /* NSMutableData+Bitcoin.m in Sources */,
 				EFEDBE4A1B4CC3AC00E1A63E /* TabTransactionDetailViewController.m in Sources */,
 				EFCF9A601B32C8810076091B /* NYMnemonic.m in Sources */,
 				93CF96C419EE56A100466DAF /* BindSuccessViewController.m in Sources */,
@@ -1151,6 +1172,8 @@
 				F4E412901BFB1D91003CFACF /* NSString+HexToData.m in Sources */,
 				EFCF9A4F1B32C8810076091B /* BRPaymentRequest.m in Sources */,
 				F493F32F1BC6807600876710 /* BaseViewController.m in Sources */,
+				F43E97C31C2808DC00D03DA9 /* NSData+Hash.m in Sources */,
+				F43E97BE1C27F20D00D03DA9 /* NSString+Base58.m in Sources */,
 				EFE204261B4A837A00F3D8F6 /* Base58.c in Sources */,
 				EFEF1BCE1B4124DA00373B0E /* MBProgressHUD.m in Sources */,
 				EFCF9A541B32C8810076091B /* CwCard.m in Sources */,
@@ -1193,6 +1216,7 @@
 				EFFA18351B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m in Sources */,
 				EF698CF11A78DC4E00A943B9 /* CwEraseCwViewController.m in Sources */,
 				EFEE57E21B7AFA7400E5999B /* sha256.m in Sources */,
+				F43E97C71C2808F100D03DA9 /* NSData+Bitcoin.m in Sources */,
 				F4FD98711BE8B46500968A8E /* mpbn_util.c in Sources */,
 				93CF969C19EE1A0200466DAF /* AppDelegate.m in Sources */,
 				EFAC5C4F1AC25A7000320EA6 /* qrinput.c in Sources */,
@@ -1324,6 +1348,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CoolWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1340,6 +1365,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: CoolBitX Technology Ltd. (87HB2LFXY3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: CoolBitX Technology Ltd. (87HB2LFXY3)";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CoolWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

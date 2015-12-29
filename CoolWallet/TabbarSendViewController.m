@@ -30,6 +30,8 @@ long TxFee = 10000;
 @property (assign, nonatomic) BOOL transactionBegin;
 @property (strong, nonatomic) CwBtcNetWork *btcNet;
 @property (strong, nonatomic) NSMutableArray *updateUnspendBalance;
+@property (strong, nonatomic) NSMutableArray *unspentAddresses;
+@property (strong, nonatomic) NSMutableDictionary *publicKeyUpdate;
 
 @property (strong, nonatomic) NSArray *accountButtons;
 
@@ -51,23 +53,24 @@ long TxFee = 10000;
     
     self.transactionBegin = NO;
     self.updateUnspendBalance = [NSMutableArray new];
+    self.unspentAddresses = [NSMutableArray new];
+    self.publicKeyUpdate = [NSMutableDictionary new];
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSLog(@"will appear");
+    
     self.actBusyIndicator.hidden=YES;
     self.navigationController.navigationBar.hidden = NO;
     //self.txtAddress.delegate = self;
     cwCard.delegate = self;
+    self.btcNet.delegate = self;
     
     //[cwCard getCwHdwInfo];
     
     [self setAccountButton];
-    
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
     
     self.txtReceiverAddress.delegate = self;
     self.txtAmount.delegate = self;
@@ -90,6 +93,10 @@ long TxFee = 10000;
 
 -(void) viewWillDisappear:(BOOL)animated
 {
+    if (self.btcNet && self.btcNet.delegate == self) {
+        self.btcNet.delegate = nil;
+    }
+    
     if (self.transactionBegin) {
         // TODO: alert cancel?
     } else {
@@ -99,6 +106,7 @@ long TxFee = 10000;
     }
     
     if (self.updateUnspendBalance.count > 0) {
+        self.transactionBegin = NO;
         [self performDismiss];
         [self.updateUnspendBalance removeAllObjects];
     }
@@ -108,7 +116,6 @@ long TxFee = 10000;
 {
     if (_btcNet == nil) {
         _btcNet = [CwBtcNetWork sharedManager];
-        _btcNet.delegate = self;
     }
     
     return _btcNet;
@@ -147,7 +154,7 @@ long TxFee = 10000;
     
     self.transactionBegin = YES;
     
-    if ([self.updateUnspendBalance containsObject:[NSString stringWithFormat:@"%ld", account.accId]] ) {
+    if ([self.updateUnspendBalance containsObject:[NSString stringWithFormat:@"%ld", (long)account.accId]] ) {
         [self showIndicatorView:@"Update unspent balance..."];
     } else {
         //send OTP
@@ -235,7 +242,6 @@ long TxFee = 10000;
 #pragma marks - Account Button Actions
 
 - (void)setAccountButton{
-    NSLog(@"cwAccounts = %ld", [cwCard.cwAccounts count]);
     for(int i =0; i< [cwCard.cwAccounts count]; i++) {
         UIButton *accountBtn = [self.accountButtons objectAtIndex:i];
         accountBtn.hidden = NO;
@@ -274,7 +280,7 @@ long TxFee = 10000;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
     
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)cwCard.currentAccountId]];
     
     [cwCard getAccountInfo:cwCard.currentAccountId];
     [self SetBalanceText];
@@ -282,7 +288,7 @@ long TxFee = 10000;
 
 - (void)SetBalanceText
 {
-    CwAccount *account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+    CwAccount *account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)cwCard.currentAccountId]];
     //_lblBalance.text = [NSString stringWithFormat: @"%lld BTC", (int64_t)account.balance];
     _lblBalance.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertBTCStringformUnit: (int64_t)account.balance], [[OCAppCommon getInstance] BitcoinUnit]];
     
@@ -291,19 +297,16 @@ long TxFee = 10000;
 
 -(void) updateAccountInfo:(CwAccount *)cwAccount
 {
-    [self.updateUnspendBalance addObject:[NSString stringWithFormat:@"%ld", cwAccount.accId]];
+    NSString *accountId = [NSString stringWithFormat:@"%ld", (long)cwAccount.accId];
+    if (![self.updateUnspendBalance containsObject:accountId]) {
+        [self.updateUnspendBalance addObject:accountId];
+    }
     
     BlockChain *blockChain = [[BlockChain alloc] init];
     [blockChain getBalanceByAccountID:cwAccount.accId];
     [self performSelectorOnMainThread:@selector(SetBalanceText) withObject:nil waitUntilDone:NO];
     
-    if (![cwAccount isTransactionSyncing]) {
-        [self.btcNet getTransactionByAccount: cwAccount.accId];
-    } else {
-        if (!_btcNet) {
-            _btcNet = [self btcNet];
-        }
-    }
+    [self.btcNet getTransactionByAccount: cwAccount.accId];
 }
 
 -(void) sendPrepareTransaction
@@ -313,6 +316,10 @@ long TxFee = 10000;
     }
     
     self.transactionBegin = YES;
+    if (![self isGetAllPublicKeyByAccount:cwCard.currentAccountId]) {
+        return;
+    }
+    
     NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
     [cwCard prepareTransaction: [sato longLongValue] Address:self.txtReceiverAddress.text Change: self.genAddr.address];
 }
@@ -360,36 +367,67 @@ long TxFee = 10000;
     }
 }
 
-#pragma marks - CwBtcNetwork Delegates
--(void) didGetTransactionByAccount:(NSInteger)accId
+-(void) checkUnspentPublicKeyByAccount:(NSInteger)accId
 {
-    CwAccount *txAccount = (CwAccount *) [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
+    CwAccount *txAccount = (CwAccount *) [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)accId]];
     
     //get address publickey uf the unspent if needed
     for (CwUnspentTxIndex *utx in txAccount.unspentTxs)
     {
         CwAddress *addr;
         if (utx.kcId==0) {
-            //External Address
             addr = txAccount.extKeys[utx.kId];
         } else {
-            //Internal Address
             addr = txAccount.intKeys[utx.kId];
         }
         
-        if (addr.publicKey==nil) {
+        if (addr.publicKey==nil && ![self.unspentAddresses containsObject:addr]) {
+            [self.unspentAddresses addObject:addr];
             [self.cwManager.connectedCwCard getAddressPublickey:accId KeyChainId:utx.kcId KeyId:utx.kId];
         }
     }
+}
+
+-(BOOL) isGetAllPublicKeyByAccount:(NSInteger)accId
+{
+    CwAccount *txAccount = (CwAccount *) [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)accId]];
     
-    NSString *accountId = [NSString stringWithFormat:@"%ld", accId];
+    BOOL result = YES;
+    //get address publickey uf the unspent if needed
+    for (CwUnspentTxIndex *utx in txAccount.unspentTxs)
+    {
+        CwAddress *addr;
+        if (utx.kcId==0) {
+            addr = txAccount.extKeys[utx.kId];
+        } else {
+            addr = txAccount.intKeys[utx.kId];
+        }
+        
+        if (addr.publicKey == nil) {
+            result = NO;
+            break;
+        }
+    }
+    
+    return result;
+}
+
+#pragma marks - CwBtcNetwork Delegates
+-(void) didGetTransactionByAccount:(NSInteger)accId
+{
+    if (accId != cwCard.currentAccountId) {
+        return;
+    }
+    
+    [self checkUnspentPublicKeyByAccount:accId];
+    
+    NSString *accountId = [NSString stringWithFormat:@"%ld", (long)accId];
     if ([self.updateUnspendBalance containsObject:accountId]) {
         [self.updateUnspendBalance removeObject:accountId];
     }
     
     if (self.transactionBegin && accId == cwCard.currentAccountId) {
         [self performSelectorOnMainThread:@selector(sendBitcoin) withObject:nil waitUntilDone:YES];
-//        [self sendBitcoin];
     }
 }
 
@@ -479,12 +517,14 @@ long TxFee = 10000;
 
 -(void) didGetAccountInfo: (NSInteger) accId
 {
-    NSLog(@"didGetAccountInfo = %ld", accId);
+    NSLog(@"didGetAccountInfo = %ld", (long)accId);
     if(accId == cwCard.currentAccountId) {
         [self SetBalanceText];
         
         if (account.lastUpdate == nil) {
             [cwCard getAccountAddresses:accId];
+        } else {
+            [self checkUnspentPublicKeyByAccount:accId];
         }
     }
 }
@@ -499,6 +539,32 @@ long TxFee = 10000;
         CwAddress *address = [account.extKeys objectAtIndex:0];
         if (address.address != nil) {
             [self performSelectorInBackground:@selector(updateAccountInfo:) withObject:account];
+        }
+    }
+}
+
+-(void) didGetAddressPublicKey:(CwAddress *)address
+{
+    if ([self.unspentAddresses containsObject:address]) {
+        [self.unspentAddresses removeObject:address];
+    }
+    
+    if (address.accountId != account.accId) {
+        return;
+    }
+    
+    if (self.transactionBegin) {
+        BOOL isUnspentAddress = NO;
+        for (CwUnspentTxIndex *utx in account.unspentTxs)
+        {
+            if (utx.kcId == address.keyChainId && utx.kId == address.keyId) {
+                isUnspentAddress = YES;
+                break;
+            }
+        }
+        
+        if (isUnspentAddress && [self isGetAllPublicKeyByAccount:account.accId]) {
+            [self sendPrepareTransaction];
         }
     }
 }

@@ -22,6 +22,8 @@
 #import "CwUnspentTxIndex.h"
 #import "OCAppCommon.h"
 
+#import "BlockChain.h"
+
 #import "NSUserDefaults+RMSaveCustomObject.h"
 #import "NSString+HexToData.h"
 
@@ -351,13 +353,24 @@ BOOL didGetTransactionByAccountFlag[5];
 {
     GetTransactionByAccountErr err = GETTRXBYACCT_BASE;
     
+    cwCard = cwManager.connectedCwCard;
+    
+    CwAccount *account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)accId]];
+    
+    if ([account isTransactionSyncing]) {
+        return err;
+    }
+    
+    BlockChain *blockChain = [[BlockChain alloc] init];
+    [blockChain getBalanceByAccountID:accId];
+    
     didGetTransactionByAccountFlag[accId] = NO;
     
     NSLog(@"Get Transaction By Account %ld", (long)accId);
     
-    cwCard = cwManager.connectedCwCard;
-
-    CwAccount *account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)accId]];
+//    cwCard = cwManager.connectedCwCard;
+//
+//    CwAccount *account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)accId]];
     
     if (account.transactions == nil) {
         account.transactions = [[NSMutableDictionary alloc] init];
@@ -365,6 +378,11 @@ BOOL didGetTransactionByAccountFlag[5];
     
     if (account.unspentTxs == nil) {
         account.unspentTxs = [[NSMutableArray alloc] init];
+    }
+    
+    for (CwAddress *address in [account getAllAddresses]) {
+        address.historyUpdateFinish = NO;
+        address.unspendUpdateFinish = NO;
     }
     
     [self getHistoryTxsByAccount:account];
@@ -376,6 +394,8 @@ BOOL didGetTransactionByAccountFlag[5];
         }
         [self getUnspentByAddress:address fromAccount:account];
     }
+    
+    [self isGetTransactionByAccount:account.accId];
 
     return err;
 }
@@ -383,6 +403,8 @@ BOOL didGetTransactionByAccountFlag[5];
 -(void) syncAccountTransactions:(NSDictionary *)historyTxData account:(CwAccount *)account
 {
     for (CwAddress *cwAddress in [account getAllAddresses]) {
+        cwAddress.historyUpdateFinish = YES;
+        
         NSArray *historyTxList = [historyTxData objectForKey:cwAddress.address];
         if (!historyTxList) {
             continue;
@@ -431,8 +453,6 @@ BOOL didGetTransactionByAccountFlag[5];
         } else {
             account.intKeys[cwAddress.keyId] = cwAddress;
         }
-        
-        cwAddress.historyUpdateFinish = YES;
     }
     
     [self isGetTransactionByAccount: account.accId];
@@ -474,7 +494,7 @@ BOOL didGetTransactionByAccountFlag[5];
 
 -(void) getUnspentByAddress:(CwAddress *)addr fromAccount:(CwAccount *)account
 {
-    NSLog(@"getUnspentByAddress: %@, keyChainId is %ld", addr.address, addr.keyChainId);
+    NSLog(@"getUnspentByAddress: %@, keyChainId is %ld", addr.address, (long)addr.keyChainId);
     if (addr.keyChainId != CwAddressKeyChainExternal && addr.keyChainId != CwAddressKeyChainInternal) {
         return;
     }
@@ -533,20 +553,10 @@ BOOL didGetTransactionByAccountFlag[5];
 - (void) isGetTransactionByAccount: (NSInteger) accId
 {
     CwAccount *account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)accId]];
-    BOOL isGetTrx = YES;
     
-    for (CwAddress *address in [account getAllAddresses]) {
-        if (!address.historyUpdateFinish || !address.unspendUpdateFinish) {
-            isGetTrx = NO;
-            break;
-        }
-    }
-    
-    if (isGetTrx && !didGetTransactionByAccountFlag[accId]) {
+    if (![account isTransactionSyncing] && !didGetTransactionByAccountFlag[accId]) {
         NSMutableArray *removedUnspents = [NSMutableArray new];
         for (CwUnspentTxIndex *unspent in account.unspentTxs) {
-            NSLog(@"accId: %ld, unspent: %@,%ld,%ld,%ld, amount: %@", accId, [NSString dataToHexstring:unspent.tid], unspent.kcId, unspent.kId, unspent.n, unspent.amount);
-            
             if (unspent.confirmations.intValue > 0) {
                 continue;
             }

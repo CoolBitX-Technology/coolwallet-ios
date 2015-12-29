@@ -114,7 +114,7 @@ CwCard *cwCard;
 {
     NSDictionary *info = [notification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    CGFloat deltaHeight = kbSize.height - (self.view.frame.size.height - self.viewOTPConfirm.frame.origin.y - self.txtOtp.frame.origin.y - self.txtOtp.frame.size.height);
+    CGFloat deltaHeight = kbSize.height - (self.view.frame.size.height - self.viewOTPConfirm.frame.origin.y - self.viewOTPConfirm.frame.size.height);
     
     if (deltaHeight <= 0) {
         _currentMovedUpHeight = 0.0f;
@@ -243,10 +243,7 @@ CwCard *cwCard;
         [self didLoginHost];
         [self showIndicatorView:@"Login Host"];
     } else {
-        //self.lblFwVersion.text = @"";
-        //self.lblUid.text = @"";
         [cwCard getCwInfo];
-        [cwCard getCwCardId];
     }
 }
 

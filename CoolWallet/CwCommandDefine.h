@@ -240,7 +240,8 @@ typedef NS_ENUM (NSInteger, CwHdwAccountInfo) {
     CwHdwAccountInfoBalance     = 0x01,
     CwHdwAccountInfoExtKeyPtr   = 0x02,
     CwHdwAccountInfoIntKeyPtr   = 0x03,
-    CwHdwAccountInfoBlockAmount = 0x04
+    CwHdwAccountInfoBlockAmount = 0x04,
+    CwHdwAccountInfoAll         = 0x05
 };
 
 typedef NS_ENUM (NSInteger, CwHdwAccountKeyInfo) {

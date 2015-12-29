@@ -13,8 +13,12 @@
 #import "CwAddress.h"
 #import "UIColor+CustomColors.h"
 #import "OCAppCommon.h"
+#import "CwBtcNetWork.h"
 
-@interface TabReceiveBitcoinViewController ()  <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate>
+@interface TabReceiveBitcoinViewController ()  <CwBtcNetworkDelegate, UITextFieldDelegate>
+
+@property (strong, nonatomic) CwBtcNetWork *btcNet;
+
 @property (weak, nonatomic) IBOutlet UILabel *lblKeyId;
 @property (weak, nonatomic) IBOutlet UITextField *txtAddress;
 @property (weak, nonatomic) IBOutlet UILabel *lblBip32Path;
@@ -55,8 +59,19 @@ NSString *Label;
     self.txtAddress.delegate = self;
     cwCard.delegate = self;
     
-    [self setAccountButton];
+    if (!self.btcNet) {
+        self.btcNet = [CwBtcNetWork sharedManager];
+    }
+    self.btcNet.delegate = self;
     
+    [self setAccountButton];
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    if (self.btcNet && self.btcNet.delegate == self) {
+        self.btcNet.delegate = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -160,7 +175,7 @@ NSString *Label;
         }
     }
     
-    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", cwCard.currentAccountId]];
+    account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)cwCard.currentAccountId]];
     
     if (currentAccId != cwCard.currentAccountId) {
         [self showIndicatorView:@"loading address..."];
@@ -168,7 +183,7 @@ NSString *Label;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
     
-    if ([account.extKeys count] >0) {
+    if ([account.extKeys count] > 0) {
         rowSelected = 0;
         
         [self didGetAccountAddresses:cwCard.currentAccountId];
@@ -188,6 +203,11 @@ NSString *Label;
     [cwCard getAccountInfo:cwCard.currentAccountId];
 }
 
+-(void) getAccountTransactions:(CwAccount *)account
+{
+    [self.btcNet getTransactionByAccount:account.accId];
+}
+
 #pragma marks - CwCard Delegates
 -(void) didCwCardCommand
 {
@@ -201,14 +221,6 @@ NSString *Label;
     [self performDismiss];
     account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
 
-    /*
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"New Address Created"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];
-    */
     rowSelected = account.extKeyPointer-1;
     [self setQRcodeDataforkey:account.extKeyPointer-1];
     
@@ -216,25 +228,10 @@ NSString *Label;
     //[cwCard getAccountAddresses: account.accId];
     [self.tableAddressList reloadData];
 }
-/*
--(void) didGetAddressInfo
-{
-    account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
-    
-    [self.tableAddressList reloadData];
-    NSLog(@"exkey count = %d, rowselected = %d", [account.extKeys count], rowSelected);
-    if([account.extKeys count] > 0)
-    {
-        
-        if(rowSelected == -1) rowSelected = 0;
-        [self setQRcodeDataforkey:rowSelected];
-        
-    }
-}*/
 
 -(void) didGetAccountInfo: (NSInteger) accId
 {
-    NSLog(@"didGetAccountInfo accid = %ld", accId);
+    NSLog(@"didGetAccountInfo accid = %ld", (long)accId);
     if(accId == cwCard.currentAccountId) {
         account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
     }
@@ -244,29 +241,49 @@ NSString *Label;
 
 -(void) didGetAccountAddresses:(NSInteger)accId
 {
-    NSLog(@"didGetAccountAddresses: %ld", accId);
+    NSLog(@"didGetAccountAddresses: %ld", (long)accId);
     
-    if (accId == cwCard.currentAccountId) {
-        [self performDismiss];
-        
-        NSString *selectedAddress = _lblAddress.text;
-        
-        account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", accId]];
-        
-        if (account.extKeys.count > 0) {
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.address = %@", selectedAddress];
-            NSArray *result = [account.extKeys filteredArrayUsingPredicate:predicate];
-            if (result.count > 0) {
-                rowSelected = [account.extKeys indexOfObject:result[0]];
-            } else {
-                rowSelected = 0;
-            }
-        } else {
-            rowSelected = -1;
+    if (accId != cwCard.currentAccountId) {
+        return;
+    }
+    
+    [self performDismiss];
+    
+    NSString *selectedAddress = _lblAddress.text;
+    
+    account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)accId]];
+    
+    if (account.extKeys.count > 0) {
+        if (account.lastUpdate == nil) {
+            [self performSelectorInBackground:@selector(getAccountTransactions:) withObject:account];
         }
         
-        [self setQRcodeDataforkey:rowSelected];
-        [self.tableAddressList reloadData];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.address = %@", selectedAddress];
+        NSArray *result = [account.extKeys filteredArrayUsingPredicate:predicate];
+        if (result.count > 0) {
+            rowSelected = [account.extKeys indexOfObject:result[0]];
+        } else {
+            rowSelected = 0;
+        }
+    } else {
+        rowSelected = -1;
+    }
+    
+    [self setQRcodeDataforkey:rowSelected];
+    [self.tableAddressList reloadData];
+}
+
+#pragma mark - CwBtcNetwork Delegate
+-(void) didGetTransactionByAccount:(NSInteger)accId
+{
+    NSLog(@"didGetTransactionByAccount: %ld", (long)accId);
+    
+    if (accId != cwCard.currentAccountId) {
+        return;
+    }
+    
+    if (rowSelected >= 0) {
+        [self.tableAddressList performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
     }
 }
 

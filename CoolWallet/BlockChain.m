@@ -48,7 +48,7 @@
     
     [self getRequestUrl:requestUrl params:params success:^(NSDictionary *data) {
         [account updateFromBlockChainAddrData:data];
-        [self.cwCard.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", accountID]];
+        [self.cwCard.cwAccounts setObject:account forKey:[NSString stringWithFormat: @"%ld", (long)accountID]];
     } failure:^(NSError *err) {
         NSLog(@"error: %@", err.description);
     }];

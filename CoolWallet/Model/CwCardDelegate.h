@@ -88,13 +88,14 @@ typedef NS_ENUM (NSInteger, CwCardRSSI) {
 -(void) didGetAccountInfo: (NSInteger) accId;
 -(void) didSetAccountName;
 -(void) didSetAccountBalance;
--(void) didSetAccountExtKeyPtr;
--(void) didSetAccountIntKeyPtr;
+-(void) didSetAccountExtKeyPtr:(NSInteger) accId keyPtr:(NSInteger)keyPtr;
+-(void) didSetAccountIntKeyPtr:(NSInteger) accId keyPtr:(NSInteger)keyPtr;
 
 -(void) didGenAddress: (CwAddress *) addr;
 -(void) didGenAddressError;
 -(void) didGetAccountAddresses: (NSInteger) accId;
 -(void) didGetAddressInfo;
+-(void) didGetAddressPublicKey:(CwAddress *)addr;
 
 -(void) didPrepareTransaction: (NSString *)OTP;
 -(void) didPrepareTransactionError: (NSString *)errMsg;

@@ -1,10 +1,23 @@
 PODS:
+  - CoreBitcoin (0.6.7):
+    - ISO8601DateFormatter
+    - OpenSSL-Universal (= 1.0.1.j-2)
+  - ISO8601DateFormatter (0.7)
+  - OpenSSL-Universal (1.0.1.j-2)
   - RMMapper (1.1.5)
 
 DEPENDENCIES:
+  - CoreBitcoin (from `https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec`)
   - RMMapper
 
+EXTERNAL SOURCES:
+  CoreBitcoin:
+    :podspec: https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec
+
 SPEC CHECKSUMS:
+  CoreBitcoin: a433aa8592755cd94bc603dfc215492e869aa473
+  ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
+  OpenSSL-Universal: 438433f1eaa4f7fbc787445c2e520c522ef0f024
   RMMapper: 21122d753c736d975f6c61e674afce8db73579af
 
 COCOAPODS: 0.39.0

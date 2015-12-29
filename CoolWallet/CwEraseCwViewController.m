@@ -102,7 +102,7 @@ CwCard *cwCard;
 {
     NSDictionary *info = [notification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    CGFloat deltaHeight = kbSize.height - (self.view.frame.size.height - self.otpConfirmView.frame.origin.y - self.otpField.frame.origin.y - self.otpField.frame.size.height);
+    CGFloat deltaHeight = kbSize.height - (self.view.frame.size.height - self.otpConfirmView.frame.origin.y - self.otpConfirmView.frame.size.height);
     
     if (deltaHeight <= 0) {
         _currentMovedUpHeight = 0.0f;
