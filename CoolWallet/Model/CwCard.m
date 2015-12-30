@@ -1357,7 +1357,7 @@ NSArray *addresses;
     for(CwTxin *txin in [unsignedTx inputs])
     {
         CwTx *tx = [account.transactions objectForKey:txin.tid];
-        NSLog(@"in :  %@ n:%ld %@, %@, %@, confirm: %@", [txin addr], txin.n, [[txin amount]BTC], [[NSString alloc] initWithData:txin.signature encoding:NSUTF8StringEncoding], [[NSString alloc] initWithData:txin.scriptPub encoding:NSUTF8StringEncoding], tx.confirmations);
+        NSLog(@"in :  %@ n:%ld, %@ BTC, confirm: %@", [txin addr], txin.n, [[txin amount]BTC], tx.confirmations);
     }
     for (CwTxout* txout in [unsignedTx outputs])
     {
@@ -1401,11 +1401,9 @@ NSArray *addresses;
 
 -(void) signTransaction //didSignTransaction
 {
-    //if (trxStatus == TrxStatusGetBtn) {
     for (int i=0; i<currUnsignedTx.inputs.count; i++) {
         [self cwCmdTrxSign:i];
     }
-    //}
 }
 
 -(void) cancelTrancation
@@ -4817,7 +4815,6 @@ NSArray *addresses;
             if (cmd.cmdResult==0x9000) {
                 syncCardIdFlag = YES;
                 self.cardId = [[NSString alloc] initWithBytes:data length:8 encoding:NSUTF8StringEncoding];
-                
                 if ([self.delegate respondsToSelector:@selector(didGetCwCardId)]) {
                     [self.delegate didGetCwCardId];
                 }

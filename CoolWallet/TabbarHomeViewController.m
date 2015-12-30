@@ -48,8 +48,6 @@ bool isFirst = YES;
     [self.tableTransaction addSubview:self.refreshControl]; //把RefreshControl加到TableView中
     
     btcNet = [CwBtcNetWork sharedManager];
-
-    btcNet.delegate = self;
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
     self.txSyncing = [NSMutableArray new];
@@ -116,7 +114,7 @@ bool isFirst = YES;
 #pragma marks - Account Button Actions
 
 - (void)setAccountButton{
-    NSLog(@"TabbarHomeViewController, cwAccounts = %d", [self.cwManager.connectedCwCard.cwAccounts count]);
+    NSLog(@"TabbarHomeViewController, cwAccounts = %lu", (unsigned long)[self.cwManager.connectedCwCard.cwAccounts count]);
     
     for(int i =0; i< [self.cwManager.connectedCwCard.cwAccounts count]; i++) {
         UIButton *accountBtn = [self.accountButtons objectAtIndex:i];

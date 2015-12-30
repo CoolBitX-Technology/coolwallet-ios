@@ -597,6 +597,7 @@ long TxFee = 10000;
 
 -(void) didGetButton
 {
+    NSLog(@"didGetButton");
     [cwCard signTransaction];
 }
 
