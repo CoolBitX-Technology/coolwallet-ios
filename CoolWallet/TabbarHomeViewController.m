@@ -372,7 +372,7 @@ Boolean setBtnActionFlag;
 {
     NSLog(@"TabbarHomeViewController, didGetAccountInfo = %ld, currentAccountId = %ld", (long)accId, (long)self.cwManager.connectedCwCard.currentAccountId);
     
-    if(accId == self.cwManager.connectedCwCard.currentAccountId) {
+    if(accId == self.cwManager.connectedCwCard.currentAccountId && !self.waitAccountCreated) {
         isFirst = false;
         [self.cwManager.connectedCwCard getAccountAddresses:accId];
     }

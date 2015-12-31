@@ -232,7 +232,8 @@ typedef NS_ENUM (NSInteger, CwSecurityPolicyMask) {
 typedef NS_ENUM (NSInteger, CwHdwInfo) {
     CwHdwInfoStatus             = 0x00,
     CwHdwInfoName               = 0x01,
-    CwHdwInfoAccountPointer     = 0x02
+    CwHdwInfoAccountPointer     = 0x02,
+    CwHdwInfoAll                = 0x03
 };
 
 typedef NS_ENUM (NSInteger, CwHdwAccountInfo) {

@@ -850,7 +850,7 @@ NSArray *addresses;
 -(void) getCwHdwInfo
 {
     if (syncHdwStatusFlag == NO) {
-        [self cwCmdHdwQueryWalletInfo:CwHdwInfoStatus];
+        [self cwCmdHdwQueryWalletInfo:CwHdwInfoAll];
     } else {
         //call delegate
         if ([self.delegate respondsToSelector:@selector(didGetCwHdwStatus)]) {
@@ -4966,6 +4966,48 @@ NSArray *addresses;
             if (cmd.cmdResult==0x9000) {
                 
                 switch (cmd.cmdP1) {
+                    case CwHdwInfoAll:
+                        self.hdwStatus = [NSNumber numberWithInteger:data[0]];
+                        self.hdwName = [[NSString alloc] initWithBytes:data+1 length:32 encoding:NSUTF8StringEncoding];
+                        
+                        syncHdwStatusFlag = YES;
+                        syncHdwNameFlag = YES;
+                        
+                        if ([self.delegate respondsToSelector:@selector(didGetCwHdwStatus)]) {
+                            [self.delegate didGetCwHdwStatus];
+                        }
+                        
+                        if (self.hdwStatus.integerValue != CwHdwStatusActive) {
+                            return;
+                        }
+                        
+                        if ([self.delegate respondsToSelector:@selector(didGetCwHdwName)]) {
+                            [self.delegate didGetCwHdwName];
+                        }
+                        
+                        NSUInteger accountPointer;
+                        [[NSData dataWithBytes:data+33 length:4] getBytes:&accountPointer length:4];
+                        self.hdwAcccountPointer = [NSNumber numberWithInteger:(int32_t)accountPointer];
+                        
+                        syncHdwAccPtrFlag = YES;
+                        for (int i=0; i<[self.hdwAcccountPointer integerValue]; i++) {
+                            //get account from dictionary
+                            CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", (long)i]];
+                            
+                            if (account==nil) {
+                                account = [[CwAccount alloc] init];
+                                account.accId = i;
+                                
+                                //add the host to the dictionary with accountId as Key.
+                                [self.cwAccounts setObject: account forKey: [NSString stringWithFormat: @"%ld", (long)i]];
+                            }
+                        }
+                        
+                        if ([self.delegate respondsToSelector:@selector(didGetCwHdwAccountPointer)]) {
+                            [self.delegate didGetCwHdwAccountPointer];
+                        }
+                        
+                        break;
                     case CwHdwInfoStatus:
                         self.hdwStatus = [NSNumber numberWithInteger:data[0]];
                         syncHdwStatusFlag = YES;
@@ -5012,16 +5054,6 @@ NSArray *addresses;
                     case CwHdwInfoAccountPointer:
                         self.hdwAcccountPointer = [NSNumber numberWithInteger:*(int32_t *)data];
                         syncHdwAccPtrFlag = YES;
-                        
-                        //get account info
-                        //[self getAccounts];
-                        
-                        /*
-                         //get account keyspointers
-                         for (int i=0; i<self.hdwAcccountPointer; i++) {
-                            [self cwCmdHdwQueryAccountInfo:CwHdwAccountInfoExtKeyPtr AccountId:i];
-                            [self cwCmdHdwQueryAccountInfo:CwHdwAccountInfoIntKeyPtr AccountId:i];
-                         }*/
                         
                         for (int i=0; i<[self.hdwAcccountPointer integerValue]; i++) {
                             //get account from dictionary
