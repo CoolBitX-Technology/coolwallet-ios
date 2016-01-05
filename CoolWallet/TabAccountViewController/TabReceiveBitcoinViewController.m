@@ -205,7 +205,7 @@ NSString *Label;
 
 -(void) getAccountTransactions:(CwAccount *)account
 {
-    [self.btcNet getTransactionByAccount:account.accId];
+    [self.btcNet getBalanceAndTransactionByAccount:account.accId];
 }
 
 #pragma marks - CwCard Delegates

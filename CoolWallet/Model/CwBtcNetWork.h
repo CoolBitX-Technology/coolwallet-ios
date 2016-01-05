@@ -22,6 +22,7 @@
 //used for Singleton
 +(id) sharedManager;
 
+- (GetTransactionByAccountErr) getBalanceAndTransactionByAccount:(NSInteger)accId;
 - (GetTransactionByAccountErr) getTransactionByAccount: (NSInteger)accId;
 - (RegisterNotifyByAddrErr) registerNotifyByAccount: (NSInteger)accId;
 - (void) registerNotifyByAddress:(CwAddress *)addr;

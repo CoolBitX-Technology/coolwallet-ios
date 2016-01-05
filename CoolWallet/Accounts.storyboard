@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="pJk-oc-UYe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="pJk-oc-UYe">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -297,7 +297,7 @@
                         <viewControllerLayoutGuide type="bottom" id="nJe-Do-IgI"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="soJ-Cp-B3b">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PXa-or-gui">
@@ -342,7 +342,7 @@
                                     </label>
                                 </subviews>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ae8-Q5-aDE">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ae8-Q5-aDE">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                 <subviews>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Td3-4I-HYD">
@@ -599,10 +599,10 @@
                         <viewControllerLayoutGuide type="bottom" id="Cq1-jU-Fbc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jbO-Kp-ge0">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYu-mP-na7">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYu-mP-na7">
                                 <rect key="frame" x="0.0" y="8" width="320" height="435"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receive from" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yYF-Zh-Wzi">
@@ -801,7 +801,7 @@
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wwP-t0-c2q">
-                                <rect key="frame" x="60" y="527" width="200" height="30"/>
+                                <rect key="frame" x="60" y="463" width="200" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="9oc-ol-pqL"/>
                                     <constraint firstAttribute="height" constant="30" id="yg5-5k-oCU"/>
@@ -849,10 +849,10 @@
                         <viewControllerLayoutGuide type="bottom" id="4eL-tr-5z2"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="EbX-vV-Rbv">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="x.png" translatesAutoresizingMaskIntoConstraints="NO" id="Gbj-t9-f1g">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="x.png" translatesAutoresizingMaskIntoConstraints="NO" id="Gbj-t9-f1g">
                                 <rect key="frame" x="85" y="58" width="150" height="150"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="BtY-FX-62l"/>
@@ -937,7 +937,7 @@
                                     <constraint firstItem="uB1-8f-pgG" firstAttribute="leading" secondItem="Gtj-9r-8Lw" secondAttribute="leading" constant="8" id="tLi-eB-HXU"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dMh-16-sUm">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dMh-16-sUm">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                 <subviews>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g0p-Ah-bCv">
@@ -1064,7 +1064,7 @@
                                     <constraint firstItem="AoB-Jc-soZ" firstAttribute="leading" secondItem="Fw3-mc-BUZ" secondAttribute="trailing" id="uUG-IU-jss"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Nd-6g-vFi">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Nd-6g-vFi">
                                 <rect key="frame" x="16" y="417" width="288" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="phd-fO-u2Y"/>
@@ -1172,10 +1172,10 @@
                         <viewControllerLayoutGuide type="bottom" id="RsC-2T-ykA"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="m7U-rq-Wh7">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J0u-Y9-WMO">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J0u-Y9-WMO">
                                 <rect key="frame" x="0.0" y="58" width="320" height="60"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="0 BTC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JWd-U9-CNZ">
@@ -1204,7 +1204,7 @@
                                     <constraint firstItem="JWd-U9-CNZ" firstAttribute="top" secondItem="J0u-Y9-WMO" secondAttribute="top" id="x5H-gz-C14"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nqG-bx-gcF">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nqG-bx-gcF">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                 <subviews>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fid-WA-oVr">
@@ -1306,11 +1306,11 @@
                                     <constraint firstItem="JW2-QL-1Xa" firstAttribute="leading" secondItem="aCc-pB-vjv" secondAttribute="trailing" id="uC7-bH-NDY"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xCL-CA-evD">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xCL-CA-evD">
                                 <rect key="frame" x="0.0" y="126" width="320" height="378"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BBg-Vx-SWD">
-                                        <rect key="frame" x="15" y="17" width="60" height="21"/>
+                                        <rect key="frame" x="15" y="17" width="60" height="20.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="TRJ-7c-CSE"/>
                                         </constraints>
@@ -1327,7 +1327,7 @@
                                         </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7xr-FY-fxK">
-                                        <rect key="frame" x="15" y="65" width="60" height="21"/>
+                                        <rect key="frame" x="15" y="64" width="60" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -1366,7 +1366,7 @@
                                         </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ypF-hM-jrp">
-                                        <rect key="frame" x="261" y="65" width="45" height="21"/>
+                                        <rect key="frame" x="261" y="65" width="45" height="20.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="45" id="iLU-cX-x1T"/>
                                         </constraints>
@@ -1375,7 +1375,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="USD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cES-s5-Hb9">
-                                        <rect key="frame" x="261" y="103" width="45" height="21"/>
+                                        <rect key="frame" x="261" y="102" width="45" height="20.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="45" id="dQa-dU-Ceo"/>
                                         </constraints>
@@ -2028,7 +2028,7 @@ Press the button on the card to see the next set of numbers</string>
                         <viewControllerLayoutGuide type="bottom" id="p72-tu-1Gr"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="E4j-86-zY8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E49-dq-VfG">
@@ -2214,7 +2214,7 @@ Press the button on the card to see the next set of numbers</string>
                                 <color key="separatorColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CreateNewWallet" id="mck-O3-rm2">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="50"/>
+                                        <rect key="frame" x="0.0" y="86" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mck-O3-rm2" id="euW-1c-7EG">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="49.5"/>
@@ -2239,7 +2239,7 @@ Press the button on the card to see the next set of numbers</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RecoverOldWallet" id="9RU-Uj-Lby">
-                                        <rect key="frame" x="0.0" y="72" width="320" height="50"/>
+                                        <rect key="frame" x="0.0" y="136" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9RU-Uj-Lby" id="Wg0-h1-Dg1">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="49.5"/>
@@ -2757,7 +2757,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <viewControllerLayoutGuide type="bottom" id="g4U-SH-QHE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pgb-Vj-w4X">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VlG-3V-FVb">
@@ -3008,26 +3008,26 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="miZ-1g-IJU">
-                                <rect key="frame" x="0.0" y="26" width="320" height="521"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="miZ-1g-IJU">
+                                <rect key="frame" x="0.0" y="28" width="320" height="519"/>
                                 <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="title" rowHeight="50" id="KEc-2N-fPy">
-                                        <rect key="frame" x="0.0" y="28" width="320" height="50"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="title" rowHeight="44" id="KEc-2N-fPy">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" tableViewCell="KEc-2N-fPy" id="BJG-wy-Vvg">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo2.png" translatesAutoresizingMaskIntoConstraints="NO" id="YeC-yD-vRk">
-                                                    <rect key="frame" x="88" y="1" width="145" height="41"/>
+                                                    <rect key="frame" x="88" y="2" width="145" height="39"/>
                                                 </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="HostDevices" id="tat-cB-HFg">
-                                        <rect key="frame" x="0.0" y="78" width="320" height="50"/>
+                                        <rect key="frame" x="0.0" y="72" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="tat-cB-HFg" id="66M-5S-TsL">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
@@ -3060,7 +3060,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CoolWalletCard" id="gMC-1J-fsG">
-                                        <rect key="frame" x="0.0" y="128" width="320" height="50"/>
+                                        <rect key="frame" x="0.0" y="122" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="gMC-1J-fsG" id="HtG-p0-EbW">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
@@ -3093,7 +3093,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Security" id="afJ-kH-vhB">
-                                        <rect key="frame" x="0.0" y="178" width="320" height="50"/>
+                                        <rect key="frame" x="0.0" y="172" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="afJ-kH-vhB" id="wkm-VJ-g2D">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
@@ -3126,7 +3126,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Settings" id="RAu-Of-WmV">
-                                        <rect key="frame" x="0.0" y="228" width="320" height="50"/>
+                                        <rect key="frame" x="0.0" y="222" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="RAu-Of-WmV" id="WE1-xc-Qev">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
@@ -3159,7 +3159,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Logout" id="CJY-OL-5NJ">
-                                        <rect key="frame" x="0.0" y="278" width="320" height="50"/>
+                                        <rect key="frame" x="0.0" y="272" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="CJY-OL-5NJ" id="KJv-wj-rva">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
@@ -3198,13 +3198,9 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                     <outlet property="delegate" destination="ndD-qJ-a0n" id="yeH-Zc-dUa"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="version" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aIR-U1-wKf">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="version" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aIR-U1-wKf">
                                 <rect key="frame" x="0.0" y="547" width="320" height="21"/>
                                 <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="320" id="Int-rt-tvW"/>
-                                    <constraint firstAttribute="height" constant="21" id="P3i-uz-SdQ"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.47058823529999999" green="0.47058823529999999" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -3212,12 +3208,13 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="EXA-q9-oEl" firstAttribute="top" secondItem="aIR-U1-wKf" secondAttribute="bottom" id="C9x-JB-KT5"/>
-                            <constraint firstItem="aIR-U1-wKf" firstAttribute="leading" secondItem="ynZ-yw-R3u" secondAttribute="leading" id="QAp-Au-UVQ"/>
-                            <constraint firstItem="aIR-U1-wKf" firstAttribute="top" secondItem="miZ-1g-IJU" secondAttribute="bottom" id="aJ3-QY-wka"/>
+                            <constraint firstItem="aIR-U1-wKf" firstAttribute="leading" secondItem="ynZ-yw-R3u" secondAttribute="leading" id="Ih3-2e-oNC"/>
+                            <constraint firstAttribute="trailing" secondItem="aIR-U1-wKf" secondAttribute="trailing" id="RAl-5l-EjF"/>
+                            <constraint firstItem="aIR-U1-wKf" firstAttribute="top" secondItem="miZ-1g-IJU" secondAttribute="bottom" id="Ufv-si-Vhj"/>
                             <constraint firstItem="miZ-1g-IJU" firstAttribute="leading" secondItem="ynZ-yw-R3u" secondAttribute="leading" id="eDw-bf-QFO"/>
+                            <constraint firstItem="EXA-q9-oEl" firstAttribute="top" secondItem="aIR-U1-wKf" secondAttribute="bottom" id="lz1-aR-3W9"/>
                             <constraint firstAttribute="trailing" secondItem="miZ-1g-IJU" secondAttribute="trailing" id="rpe-Sf-mEA"/>
-                            <constraint firstItem="miZ-1g-IJU" firstAttribute="top" secondItem="DWU-k5-AUt" secondAttribute="bottom" constant="6" id="zEJ-oP-4w2"/>
+                            <constraint firstItem="miZ-1g-IJU" firstAttribute="top" secondItem="DWU-k5-AUt" secondAttribute="bottom" id="zEJ-oP-4w2"/>
                         </constraints>
                     </view>
                     <connections>
@@ -3402,7 +3399,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="+" width="1675" height="1530"/>
+        <image name="+" width="301" height="240"/>
         <image name="add.png" width="29" height="29"/>
         <image name="button-short.png" width="800" height="200"/>
         <image name="button.png" width="1645" height="206"/>
@@ -3432,7 +3429,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <image name="x.png" width="417" height="417"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="BaF-zy-sDT"/>
-        <segue reference="gzi-1q-gb8"/>
+        <segue reference="uP1-PA-axM"/>
+        <segue reference="STV-Uv-a0a"/>
     </inferredMetricsTieBreakers>
 </document>

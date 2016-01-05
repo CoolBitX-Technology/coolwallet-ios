@@ -215,8 +215,6 @@ Boolean setBtnActionFlag;
             BlockChain *blockChain = [[BlockChain alloc] init];
             [blockChain getBalanceByAccountID:accId];
             
-            [btcNet getTransactionByAccount: accId];
-            
             dispatch_async(dispatch_get_main_queue(), ^{
                 //Update UI
                 NSLog(@"update %ld, current is %ld", (long)accId, (long)self.cwManager.connectedCwCard.currentAccountId);
@@ -228,6 +226,8 @@ Boolean setBtnActionFlag;
                     [self.cwManager.connectedCwCard setAccount: accId Balance: updateAccount.balance];
                 }
             });
+            
+            [btcNet getTransactionByAccount: accId];
         });
     }
 }

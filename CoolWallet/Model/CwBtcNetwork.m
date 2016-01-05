@@ -349,6 +349,14 @@ BOOL didGetTransactionByAccountFlag[5];
     return err;
 }
 
+- (GetTransactionByAccountErr) getBalanceAndTransactionByAccount:(NSInteger)accId
+{
+    BlockChain *blockChain = [[BlockChain alloc] init];
+    [blockChain getBalanceByAccountID:accId];
+    
+    return [self getTransactionByAccount:accId];
+}
+
 - (GetTransactionByAccountErr) getTransactionByAccount:(NSInteger)accId
 {
     GetTransactionByAccountErr err = GETTRXBYACCT_BASE;
@@ -361,16 +369,9 @@ BOOL didGetTransactionByAccountFlag[5];
         return err;
     }
     
-    BlockChain *blockChain = [[BlockChain alloc] init];
-    [blockChain getBalanceByAccountID:accId];
-    
     didGetTransactionByAccountFlag[accId] = NO;
     
     NSLog(@"Get Transaction By Account %ld", (long)accId);
-    
-//    cwCard = cwManager.connectedCwCard;
-//
-//    CwAccount *account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)accId]];
     
     if (account.transactions == nil) {
         account.transactions = [[NSMutableDictionary alloc] init];
