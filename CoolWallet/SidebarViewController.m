@@ -30,27 +30,6 @@
 #endif
     
     menuItems = @[@"title", @"HostDevices", @"CoolWalletCard",@"Security",@"Settings",@"Logout"];
-    
-//    NSArray *widthConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
-//                                                                        options: NSLayoutFormatDirectionLeadingToTrailing
-//                                                                        metrics:nil
-//                                                                          views:@{@"view" : self.versionLabel}];
-//    NSArray *centerConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view]|"
-//                                                                         options: NSLayoutFormatDirectionLeadingToTrailing
-//                                                                         metrics:nil
-//                                                                           views:@{@"view" : self.versionLabel}];
-//    [self.versionLabel.superview addConstraints:widthConstraints];
-//    [self.versionLabel.superview addConstraints:centerConstraints];
-    
-    NSLog(@"self.versionLabel.width = %f", self.versionLabel.frame.size.width);
-}
-
--(void)viewDidLayoutSubviews
-{
-    NSLog(@"view.width = %f", self.view.frame.size.width);
-    NSLog(@"self.versionLabel.width = %f", self.versionLabel.frame.size.width);
-    NSLog(@"self.SideTableView.width = %f", self.SideTableView.frame.size.width);
-    
 }
 
 - (void)didReceiveMemoryWarning
