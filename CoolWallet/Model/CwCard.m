@@ -5962,6 +5962,7 @@ NSArray *addresses;
                     [self.delegate didUpdateCurrencyDisplayError:cmd.cmdResult];
                 }
             }
+            break;
         
         case CwCmdIdBackToLoader:
             //output:
