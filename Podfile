@@ -5,3 +5,5 @@ platform :ios, '8.0'
 
 pod 'CoreBitcoin', :podspec => 'https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec'
 pod 'RMMapper'
+pod 'Fabric'
+pod 'Crashlytics'

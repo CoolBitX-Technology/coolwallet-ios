@@ -202,14 +202,18 @@ CwBtcNetWork *btcNet;
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Choose your seed type" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     UIAlertAction *englishAction = [UIAlertAction actionWithTitle:@"My seeds is in words" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        self.swNumberSeed.on = NO;
         self.txtSeed.text = @"";
+        [self.txtSeed setKeyboardType:UIKeyboardTypeASCIICapable];
+        [self.txtSeed reloadInputViews];
+        self.swNumberSeed.on = NO;
         [self.btnSeedType setTitle:action.title forState:UIControlStateNormal];
     }];
     
     UIAlertAction *numberAction = [UIAlertAction actionWithTitle:@"My seeds is in numbers" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        self.swNumberSeed.on = YES;
         self.txtSeed.text = @"";
+        [self.txtSeed setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
+        [self.txtSeed reloadInputViews];
+        self.swNumberSeed.on = YES;
         [self.btnSeedType setTitle:action.title forState:UIControlStateNormal];
     }];
     

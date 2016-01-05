@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 //#import "SWRevealViewController.h"
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
