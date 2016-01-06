@@ -232,18 +232,20 @@ CwCard *cwCard;
             break;
     }
 
-    
-    //update Views
-    //self.lblMode.text = [NSString stringWithFormat: @"%@ (%ld)", modeStr, (long)cwCard.mode];
-    //self.lblState.text = [@(cwCard.state) stringValue];
     NSLog(@"mode = %@", modeStr);
     //action according to the mode
-    if ([cwCard.mode integerValue] == CwCardModePerso || [cwCard.mode integerValue] == CwCardModeNormal) {
-        //already loggin, goto Accounts story board
-        [self didLoginHost];
-        [self showIndicatorView:@"Login Host"];
-    } else {
-        [cwCard getCwInfo];
+    switch (cwCard.mode.integerValue) {
+        case CwCardModeNormal:
+            [self didPersoSecurityPolicy];
+            break;
+            
+        case CwCardModePerso:
+            [cwCard persoSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:NO];
+            break;
+            
+        default:
+            [cwCard getCwInfo];
+            break;
     }
 }
 
@@ -295,6 +297,11 @@ CwCard *cwCard;
 
 
 -(void) didLoginHost
+{
+    [cwCard getModeState];
+}
+
+-(void) didPersoSecurityPolicy
 {
     [self performDismiss];
     

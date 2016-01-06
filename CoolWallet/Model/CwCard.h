@@ -127,6 +127,7 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) approveHost: (NSInteger) hostId; //didApproveHost
 -(void) removeHost: (NSInteger) hostId; //didRemoveHost
 
+-(void) defaultPersoSecurityPolicy;
 -(void) persoSecurityPolicy: (BOOL)otpEnable ButtonEnable: (BOOL)btnEnable DisplayAddressEnable: (BOOL) addEnable WatchDogEnable: (BOOL)wdEnable;
 
 -(void) getSecurityPolicy;

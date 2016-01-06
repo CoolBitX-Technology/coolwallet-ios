@@ -9,8 +9,16 @@
 #import "BindSuccessViewController.h"
 #import "ViewController.h"
 
-CwManager *cwManager;
-CwCard *cwCard;
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
+@interface BindSuccessViewController() {
+    CwManager *cwManager;
+    CwCard *cwCard;
+    BOOL waitCardModeState;
+}
+
+@end
+
 
 @implementation BindSuccessViewController 
 
@@ -19,8 +27,7 @@ CwCard *cwCard;
     
     //find CW via BLE
     cwManager = [CwManager sharedManager];
-    cwCard = cwManager.connectedCwCard;
-    
+    cwCard = cwManager.connectedCwCard;    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -29,6 +36,8 @@ CwCard *cwCard;
     cwCard.delegate = self;
     cwManager.delegate = self;
     
+    waitCardModeState = YES;
+    [cwCard getModeState];
 }
 
 - (IBAction)BtnNextToAccounts:(id)sender {
@@ -42,6 +51,22 @@ CwCard *cwCard;
 }
 
 #pragma mark - CwCard Delegates
+-(void) didGetModeState
+{
+    waitCardModeState = NO;
+    
+    if (cwCard.mode.integerValue == CwCardModePerso) {
+        [cwCard defaultPersoSecurityPolicy];
+    } else {
+        [self didLoginHost];
+    }
+}
+
+-(void) didPersoSecurityPolicy
+{
+    [self didLoginHost];
+}
+
 -(void) didLoginHost
 {
     

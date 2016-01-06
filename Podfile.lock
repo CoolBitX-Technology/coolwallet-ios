@@ -7,12 +7,20 @@ PODS:
   - Fabric (1.6.1)
   - ISO8601DateFormatter (0.7)
   - OpenSSL-Universal (1.0.1.j-2)
+  - ReactiveCocoa (2.5):
+    - ReactiveCocoa/UI (= 2.5)
+  - ReactiveCocoa/Core (2.5):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.5)
+  - ReactiveCocoa/UI (2.5):
+    - ReactiveCocoa/Core
   - RMMapper (1.1.5)
 
 DEPENDENCIES:
   - CoreBitcoin (from `https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec`)
   - Crashlytics
   - Fabric
+  - ReactiveCocoa (~> 2.5)
   - RMMapper
 
 EXTERNAL SOURCES:
@@ -25,6 +33,7 @@ SPEC CHECKSUMS:
   Fabric: bf0ceb04e7c924090efc5f8c55e4fbcca189e0a0
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
   OpenSSL-Universal: 438433f1eaa4f7fbc787445c2e520c522ef0f024
+  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   RMMapper: 21122d753c736d975f6c61e674afce8db73579af
 
 COCOAPODS: 0.39.0

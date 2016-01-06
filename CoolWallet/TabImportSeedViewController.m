@@ -234,6 +234,10 @@ CwBtcNetWork *btcNet;
     NSLog(@"HDW seed: %@", seed);
     
     //=> "d71de856f81a8acc65e6fc851a38d4d7ec216fd0796d0a6827a3ad6ed5511a30fa280f12eb2e47ed2ac03b5c462a0358d18d69fe4f985ec81778c1b370b652a8"
+    
+    if (self.swNumberSeed.on) {
+        [self.cwManager.connectedCwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:YES];
+    }
     [self.cwManager.connectedCwCard initHdw:@"" BySeed:seed];
     
     [self showIndicatorView:@"Start init CoolWallet..."];
@@ -266,13 +270,31 @@ CwBtcNetWork *btcNet;
     }
 }
 
-#pragma marks - CwCard Delegate
-
--(void) didInitHdwBySeed
+-(void) finish
 {
     [self performDismiss];
     
     [self performSegueWithIdentifier:@"RecoverySegue" sender:self];
+}
+
+#pragma marks - CwCard Delegate
+
+-(void) didInitHdwBySeed
+{
+    if (self.swNumberSeed.on) {
+        [self.cwManager.connectedCwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:NO];
+    } else {
+        [self finish];
+    }
+}
+
+-(void) didSetSecurityPolicy
+{
+    NSLog(@"security policy: OTP(%@)/PressButton(%@)/Wachdog(%@)/DisplayAddress(%@)", self.cwManager.connectedCwCard.securityPolicy_OtpEnable, self.cwManager.connectedCwCard.securityPolicy_BtnEnable, self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable, self.cwManager.connectedCwCard.securityPolicy_DisplayAddressEnable);
+    
+    if (self.swNumberSeed.on && !self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable.boolValue) {
+        [self finish];
+    }
 }
 
 @end

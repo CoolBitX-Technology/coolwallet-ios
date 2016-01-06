@@ -7,3 +7,4 @@ pod 'CoreBitcoin', :podspec => 'https://raw.github.com/oleganza/CoreBitcoin/mast
 pod 'RMMapper'
 pod 'Fabric'
 pod 'Crashlytics'
+pod 'ReactiveCocoa', '~> 2.5'

@@ -17,31 +17,37 @@
 #define MAX_ACCOUNT 5
 
 @interface TabRecoveryViewController ()  <CwManagerDelegate, CwCardDelegate>
+{
+    CwManager *cwManager;
+    CwCard *cwCard;
+    CwBtcNetWork *btcNet;
+    
+    float percent;
+    int acc_external;
+    int acc_internal;
+    
+    NSInteger accPtr[5][2]; //store key index of each accounts
+    NSMutableArray *extKeySettingFinish;
+    NSMutableArray *intKeySettingFinish;
+}
 
 @end
-
-CwManager *cwManager;
-CwCard *cwCard;
-CwBtcNetWork *btcNet;
-
-float percent = 0;
-int acc_external = 0;
-int acc_internal = 0;
-
-NSInteger accPtr[5][2]; //store key index of each accounts
-NSMutableArray *extKeySettingFinish;
-NSMutableArray *intKeySettingFinish;
 
 @implementation TabRecoveryViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"TabRecoveryViewController viewDidLoad");
+    
     self.navigationItem.hidesBackButton = YES;
     // Do any additional setup after loading the view.
     cwManager = [CwManager sharedManager];
     cwCard = cwManager.connectedCwCard;
     btcNet = [CwBtcNetWork sharedManager];
     
+    percent = 0;
+    acc_external = 0;
+    acc_internal = 0;
     _progressView.progress = 0;
     extKeySettingFinish = [NSMutableArray new];
     intKeySettingFinish = [NSMutableArray new];
@@ -49,14 +55,13 @@ NSMutableArray *intKeySettingFinish;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//    _progressView.progress = 0;
     cwManager.delegate = self;
     cwCard.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSLog(@"viewDidAppear");
+    NSLog(@"TabRecoveryViewController viewDidAppear");
     [self StartRecovery];
 }
 

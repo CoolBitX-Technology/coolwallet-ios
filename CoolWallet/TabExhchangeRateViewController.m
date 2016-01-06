@@ -87,8 +87,11 @@
     UILabel *lblRate = (UILabel *)[cell viewWithTag:100];
     lblRate.text = [currIds objectAtIndex:indexPath.row];
     
-    if([self.cwManager.connectedCwCard.currId compare:lblRate.text] == 0) cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    else cell.accessoryType = UITableViewCellAccessoryNone;
+    if(self.cwManager.connectedCwCard.currId != nil && [self.cwManager.connectedCwCard.currId compare:lblRate.text] == 0) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
     
     return cell;
 }

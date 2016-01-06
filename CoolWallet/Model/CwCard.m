@@ -771,6 +771,11 @@ NSArray *addresses;
     [self cwCmdBindRegRemove:hostId];
 }
 
+-(void) defaultPersoSecurityPolicy
+{
+    [self persoSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:NO];
+}
+
 -(void) persoSecurityPolicy: (BOOL)otpEnable ButtonEnable: (BOOL)btnEnable DisplayAddressEnable: (BOOL) addEnable WatchDogEnable: (BOOL)wdEnable
 {
     self.securityPolicy_OtpEnable = [NSNumber numberWithBool:otpEnable];
@@ -4690,13 +4695,14 @@ NSArray *addresses;
         case CwCmdIdBindLogout:
             //output:
             //none
-            if (cmd.cmdResult==0x9000) {
-                
-            } else {
-                NSLog(@"CwCmdIdBindLogout Error %04lX", (long)cmd.cmdResult);
-            }
             if ([self.delegate respondsToSelector:@selector(didLogoutHost)]) {
                 [self.delegate didLogoutHost];
+            }
+            
+            if (cmd.cmdResult==0x9000) {
+                [self init];
+            } else {
+                NSLog(@"CwCmdIdBindLogout Error %04lX", (long)cmd.cmdResult);
             }
             break;
         case CwCmdIdBindFindHostId:

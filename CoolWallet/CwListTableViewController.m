@@ -30,6 +30,8 @@ NSString *segueIdentifier;
 
 - (void)viewDidLoad {
     
+    [super viewDidLoad];
+    
     self.cwCards = [[NSMutableArray alloc] init];
 
     //find CW via BLE
@@ -38,9 +40,7 @@ NSString *segueIdentifier;
     self.tablev_cwlist.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [self.versionLabel setText:[NSString stringWithFormat:@"V%@", version]];
-    
-    NSLog(@"CwListTableViewController: %f", self.view.bounds.size.width);
+    [self.versionLabel setText:[NSString stringWithFormat:@"V%@", version]];    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -78,7 +78,6 @@ NSString *segueIdentifier;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    NSLog(@"count = %d",[self.cwCards count]);
     return [self.cwCards count];
 }
 
@@ -162,6 +161,7 @@ NSString *segueIdentifier;
     self.cellIndex = indexPath;
     
     self.myCw = [self.cwCards objectAtIndex:indexPath.row];
+    
     /*
     //fill the UUID as the credential
     self.myCw.devCredential = [[[[UIDevice currentDevice] identifierForVendor] UUIDString] stringByReplacingOccurrencesOfString:@"-" withString:@""];*/
@@ -204,7 +204,6 @@ NSString *segueIdentifier;
     self.myCw = [self.cwCards objectAtIndex:indexPath.row];
     
     [self.tablev_cwlist reloadData];
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -248,14 +247,27 @@ NSString *segueIdentifier;
 
 -(void) didScanCwCards: (NSMutableArray *) cwCards
 {
-    NSLog(@"didScanCwCards");
-    self.cwCards = [NSMutableArray arrayWithArray:cwCards];
+    BOOL shouldReload = NO;
+    for (CwCard *card in cwCards) {
+        if ([card.peripheral.name isEqualToString:@"CoolWallet "]) {
+            continue;
+        }
+        
+        NSArray *searchResult = [self.cwCards filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.peripheral.name == %@", card.peripheral.name]];
+        if (searchResult.count <= 0) {
+            shouldReload = YES;
+            break;
+        }
+    }
     
-    self.view_connecting.hidden = YES;
-    self.tablev_cwlist.hidden = NO;
-    //self.bt_cwlater.hidden = NO;
-    
-    [self.tablev_cwlist reloadData];
+    if (shouldReload) {
+        self.cwCards = [NSMutableArray arrayWithArray:cwCards];
+        
+        self.view_connecting.hidden = YES;
+        self.tablev_cwlist.hidden = NO;
+        
+        [self.tablev_cwlist reloadData];
+    }
 }
 
 -(void) didConnectCwCard:(CwCard *)cwCard
