@@ -9,12 +9,9 @@
 #import "BindSuccessViewController.h"
 #import "ViewController.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
-
 @interface BindSuccessViewController() {
     CwManager *cwManager;
     CwCard *cwCard;
-    BOOL waitCardModeState;
 }
 
 @end
@@ -27,7 +24,7 @@
     
     //find CW via BLE
     cwManager = [CwManager sharedManager];
-    cwCard = cwManager.connectedCwCard;    
+    cwCard = cwManager.connectedCwCard;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -35,41 +32,20 @@
     
     cwCard.delegate = self;
     cwManager.delegate = self;
-    
-    waitCardModeState = YES;
-    [cwCard getModeState];
 }
 
 - (IBAction)BtnNextToAccounts:(id)sender {
     [cwCard loginHost];
-    
-    /*
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
-    ViewController *myVC = (ViewController *)[storyboard instantiateViewControllerWithIdentifier:@"RevealViewController"];
-    [self.navigationController presentViewController:myVC animated:YES completion:nil];
-    */
 }
 
 #pragma mark - CwCard Delegates
--(void) didGetModeState
+-(void) didLoginHost
 {
-    waitCardModeState = NO;
-    
-    if (cwCard.mode.integerValue == CwCardModePerso) {
-        [cwCard defaultPersoSecurityPolicy];
-    } else {
-        [self didLoginHost];
-    }
+    [cwCard defaultPersoSecurityPolicy];
 }
 
 -(void) didPersoSecurityPolicy
 {
-    [self didLoginHost];
-}
-
--(void) didLoginHost
-{
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
     ViewController *myVC = (ViewController *)[storyboard instantiateViewControllerWithIdentifier:@"RevealViewController"];
     [self.navigationController presentViewController:myVC animated:YES completion:nil];
