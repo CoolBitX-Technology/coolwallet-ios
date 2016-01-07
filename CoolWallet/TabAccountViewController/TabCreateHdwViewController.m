@@ -205,31 +205,6 @@
 - (IBAction)swSeedOnCard:(UISwitch *)sender {
     
     [self SetUIforSeedSwitch];
-    /*
-    [self updateSeedLen];
-    
-    if (sender.on) {
-        //update seed length
-        self.txtSeed.hidden=YES;
-        self.txtSeed2.hidden =YES;
-        self.lblOnCardDetail.hidden = YES;
-        self.viewWrittenDown.hidden = YES;
-        [self.btnVerifySeed setTitle:@"Next" forState:UIControlStateNormal];
-        
-        self.btnCreateHdw.hidden = NO;
-        self.btnVerifySeed.hidden = YES;
-    } else {
-        self.txtSeed.hidden=NO;
-        self.txtSeed2.hidden=NO;
-        self.lblOnCardDetail.hidden = YES;
-        self.viewWrittenDown.hidden = YES;
-        self.btnCreateHdw.hidden = YES;
-        self.btnVerifySeed.hidden = NO;
-        [self.btnVerifySeed setTitle:@"Verify" forState:UIControlStateNormal];
-    }
-    
-    [self SetBtnwrittenDownToDefult];
-     */
 }
 
 - (void)SetUIforSeedSwitch
@@ -272,11 +247,13 @@
 - (IBAction)btnCreateHdw:(id)sender {
 
     if (self.swSeedOnCard.on) {
-        NSLog(@"name = %@, len = %d",self.txtHdwName.text, [self.lblSeedLen.text integerValue]);
+        NSLog(@"name = %@, len = %d",self.txtHdwName.text, (int)self.lblSeedLen.text.length);
         //ask card to generate seed
         //[self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue]];
+        
+        [self.cwManager.connectedCwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:YES];
         [self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue] * 6];
-
+        
         [self showIndicatorView:@"Generating seed, please wait"];
         
     } else {
@@ -329,21 +306,14 @@
     [alert show];
 }
 
--(void) didInitHdwBySeed
+-(void) didSetSecurityPolicy
 {
-    /*
-    //disable btn
-    self.btnCreateHdw.enabled = NO;
-    self.btnCreateHdw.backgroundColor = [UIColor grayColor];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"HDW Created"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];
-
-    //back to previous controller
-    [self.navigationController popViewControllerAnimated:YES];*/
+    CwCard *cwCard = self.cwManager.connectedCwCard;
+    NSLog(@"security policy: OTP(%@)/PressButton(%@)/Wachdog(%@)/DisplayAddress(%@)", cwCard.securityPolicy_OtpEnable, cwCard.securityPolicy_BtnEnable, cwCard.securityPolicy_WatchDogEnable, cwCard.securityPolicy_DisplayAddressEnable);
+    
+//    if (self.swSeedOnCard.on && self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable.boolValue) {
+//        [self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue] * 6];
+//    }
 }
 
 -(void) didInitHdwByCard

@@ -80,22 +80,13 @@
 - (IBAction)btnCreateWallet:(id)sender {
     NSLog(@"btnCreateWallet  SeedOnCard = %d",SeedOnCard);
     if (SeedOnCard) {
-        //ask card to generate seed
-        //[self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue]];
-        /*
-        [self.cwManager.connectedCwCard initHdw:@"" ByCard:Seedlen];
-        
-        self.actBusyIndicator.hidden = NO;
-        [self.actBusyIndicator startAnimating];
-         */
-        
+        if (self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable.boolValue) {
+            [self.cwManager.connectedCwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:NO];
+        }
         [self.cwManager.connectedCwCard initHdwConfirm: self.tfCheckSum.text];
         
         self.actBusyIndicator.hidden = NO;
         [self.actBusyIndicator startAnimating];
-        
-        //[self didInitHdwBySeed];
-        
     } else {
         //send seed to Card
         NSString *seed = [NYMnemonic deterministicSeedStringFromMnemonicString:self.mnemonic
@@ -170,23 +161,6 @@
 
 }
 
--(void) didInitHdwByCard
-{
-    NSLog(@"didInitHdwByCard");
-    //disable btn
-    self.btnCreateWallet.enabled = NO;
-    //self.btnCreateHdw.backgroundColor = [UIColor grayColor];
-    /*
-    //enable confirm btn
-    self.btnConfirmHdw.hidden = NO;
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Please Backup Seed and Confirm"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];
-    */
-}
 //create wallet finish
 -(void) didInitHdwConfirm
 {

@@ -5534,18 +5534,20 @@ NSArray *addresses;
                 if (cmd.cmdP1 == CwAddressInfoKeyChainPublicKey && (cmd.cmdResult == ERR_HDW_ACCINFOID || cmd.cmdResult == ERR_CMD_NOT_SUPPORT)) {
                     NSInteger accId = *(int32_t *)[cmd.cmdInput bytes];;
                     CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", (long)accId]];
-                    if (account.externalKeychain == nil) {
-                        account.externalKeychain = [CwKeychain new];
-                    } else if (account.internalKeychain == nil) {
-                        account.internalKeychain = [CwKeychain new];
-                    }
-                    
-                    [self.cwAccounts setObject:account forKey: [NSString stringWithFormat: @"%ld", (long)accId]];
-                    
-                    if (syncAccInfoFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil) {
-                        //call delegate
-                        if ([self.delegate respondsToSelector:@selector(didGetAccountInfo:)]) {
-                            [self.delegate didGetAccountInfo:account.accId];
+                    if (account != nil) {
+                        if (account.externalKeychain == nil) {
+                            account.externalKeychain = [CwKeychain new];
+                        } else if (account.internalKeychain == nil) {
+                            account.internalKeychain = [CwKeychain new];
+                        }
+                        
+                        [self.cwAccounts setObject:account forKey: [NSString stringWithFormat: @"%ld", (long)accId]];
+                        
+                        if (syncAccInfoFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil) {
+                            //call delegate
+                            if ([self.delegate respondsToSelector:@selector(didGetAccountInfo:)]) {
+                                [self.delegate didGetAccountInfo:account.accId];
+                            }
                         }
                     }
                 }

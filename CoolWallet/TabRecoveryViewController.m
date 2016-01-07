@@ -62,7 +62,8 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     NSLog(@"TabRecoveryViewController viewDidAppear");
-    [self StartRecovery];
+    
+    [cwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,6 +95,19 @@
         [cwCard genAddress:account.accId KeyChainId:CwAddressKeyChainInternal];
     } else {
         [self addLog: [NSString stringWithFormat:@"HDW accounts %ld internal addresses recovered", (long)account.accId]];
+    }
+}
+
+-(void) didSetSecurityPolicy
+{    
+    if (cwCard.securityPolicy_WatchDogEnable.boolValue) {
+        [self StartRecovery];
+    } else {
+        if (acc_external == MAX_ACCOUNT && acc_internal == MAX_ACCOUNT) {
+            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
+            UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
+            [self.revealViewController pushFrontViewController:vc animated:YES];
+        }
     }
 }
 
@@ -235,9 +249,9 @@
 
 -(void) setProgressPercent
 {
-    if(percent <= 1) {
+    if(percent <= 0.9) {
         percent += 0.012;
-        float limitPerAccount = 0.95 / (MAX_ACCOUNT * 2.0);
+        float limitPerAccount = 0.9 / (MAX_ACCOUNT * 2.0);
         float maxPercentPerAccount = limitPerAccount * (acc_external + acc_internal + 2);
         float minPercentPerAccount = limitPerAccount * (acc_external + acc_internal);
         
@@ -253,6 +267,7 @@
     
     if(acc_external == MAX_ACCOUNT && acc_internal == MAX_ACCOUNT) {
         [cwCard cmdClear];
+        
         for (CwAccount *account in [cwCard.cwAccounts allValues]) {
             [cwCard setAccount:account.accId ExtKeyPtr:account.extKeyPointer];
             [cwCard setAccount:account.accId IntKeyPtr:account.intKeyPointer];
@@ -279,9 +294,7 @@
     
     [cwCard saveCwCardToFile];
     
-    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
-    UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
-    [self.revealViewController pushFrontViewController:vc animated:YES];
+    [cwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:NO];
 }
 
 #pragma marks - CwManagerDelegates

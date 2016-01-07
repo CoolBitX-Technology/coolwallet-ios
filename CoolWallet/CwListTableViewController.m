@@ -248,15 +248,29 @@ NSString *segueIdentifier;
 -(void) didScanCwCards: (NSMutableArray *) cwCards
 {
     BOOL shouldReload = NO;
-    for (CwCard *card in cwCards) {
-        if ([card.peripheral.name isEqualToString:@"CoolWallet "]) {
-            continue;
+    if (cwCards.count != self.cwCards.count) {
+        shouldReload = YES;
+    } else {
+        for (CwCard *card in cwCards) {
+            if ([card.peripheral.name isEqualToString:@"CoolWallet "]) {
+                continue;
+            }
+            
+            NSArray *searchResult = [self.cwCards filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.peripheral.name == %@", card.peripheral.name]];
+            if (searchResult.count <= 0) {
+                shouldReload = YES;
+                break;
+            }
         }
         
-        NSArray *searchResult = [self.cwCards filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.peripheral.name == %@", card.peripheral.name]];
-        if (searchResult.count <= 0) {
-            shouldReload = YES;
-            break;
+        if (!shouldReload) {
+            for (CwCard *card in self.cwCards) {
+                NSArray *searchResult = [cwCards filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.peripheral.name == %@", card.peripheral.name]];
+                if (searchResult.count <= 0) {
+                    [self.cwCards removeObject:card];
+                    shouldReload = YES;
+                }
+            }
         }
     }
     

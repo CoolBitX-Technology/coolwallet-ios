@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CwManager.h"
 #import "CwHost.h"
 #import "BaseViewController.h"
 
-@interface BindSuccessViewController:UIViewController <CwManagerDelegate, CwCardDelegate>
+@interface BindSuccessViewController:BaseViewController
 
 - (IBAction)BtnNextToAccounts:(id)sender;
 @end

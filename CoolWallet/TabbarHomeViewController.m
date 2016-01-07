@@ -17,18 +17,15 @@
 
 #import "BlockChain.h"
 
+NSDictionary *rates;
 CwBtcNetWork *btcNet;
 CwAccount *account;
-NSArray *sortedTxKeys;
-
-NSDictionary *rates;
-NSInteger rowSelect;
-
-bool isFirst = YES;
 
 @interface TabbarHomeViewController ()
 {
-//    CwCard *cwCard;
+    NSArray *sortedTxKeys;
+    NSInteger rowSelect;
+    bool isFirst;
 }
 
 @property (strong, nonatomic) NSArray *accountButtons;
@@ -48,6 +45,8 @@ bool isFirst = YES;
     [self.tableTransaction addSubview:self.refreshControl]; //把RefreshControl加到TableView中
     
     btcNet = [CwBtcNetWork sharedManager];
+    
+    isFirst = YES;
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
     self.txSyncing = [NSMutableArray new];
