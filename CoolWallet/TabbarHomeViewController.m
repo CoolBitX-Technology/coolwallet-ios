@@ -7,6 +7,7 @@
 //
 
 #import "TabbarHomeViewController.h"
+#import "TabbarAccountViewController.h"
 #import "UIColor+CustomColors.h"
 #import "SWRevealViewController.h"
 #import "OCAppCommon.h"
@@ -21,7 +22,7 @@ NSDictionary *rates;
 CwBtcNetWork *btcNet;
 CwAccount *account;
 
-@interface TabbarHomeViewController ()
+@interface TabbarHomeViewController () <UITabBarControllerDelegate>
 {
     NSArray *sortedTxKeys;
     NSInteger rowSelect;
@@ -50,11 +51,16 @@ CwAccount *account;
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
     self.txSyncing = [NSMutableArray new];
+    
+    NSLog(@"parant: %@", self.parentViewController);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-        
+    
+    TabbarAccountViewController *parantViewController = (TabbarAccountViewController *)self.parentViewController;
+    parantViewController.delegate = self;
+    
     btcNet.delegate = self;
     
     if (account != nil) {
@@ -74,6 +80,9 @@ CwAccount *account;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
+    TabbarAccountViewController *parantViewController = (TabbarAccountViewController *)self.parentViewController;
+    parantViewController.delegate = nil;
+    
     if (btcNet.delegate && btcNet.delegate == self) {
         btcNet.delegate = nil;
     }
@@ -82,6 +91,11 @@ CwAccount *account;
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{    
+    return [self isLoadingFinish];
 }
 
 -(void) getBitcoinRateforCurrency

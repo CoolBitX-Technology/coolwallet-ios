@@ -71,6 +71,11 @@ CwManager *cwManager;
     }
 }
 
+-(BOOL) isLoadingFinish
+{
+    return mHUD == nil;
+}
+
 -(void) showHintAlert:(NSString *)title withMessage:(NSString *)message withOKAction:(UIAlertAction *)okAction
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
