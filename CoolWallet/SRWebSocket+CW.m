@@ -52,12 +52,11 @@ static id<CWSocketDelegate> const * const CWDelegate;
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;
 {
-    NSLog(@":( Websocket Failed With Error %@", error);
-    
-//    sharedInstance = nil;
+    NSLog(@"%@:( Websocket Failed With Error %@", webSocket, error);
+    sharedInstance = nil;
     
     // try reopen socket after 5 seconds
-    [self performSelector:@selector(open) withObject:nil afterDelay:5];
+    [SRWebSocket performSelector:@selector(sharedSocket) withObject:nil afterDelay:3];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
