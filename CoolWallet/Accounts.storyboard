@@ -1161,7 +1161,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WvP-2k-Dbl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11692" y="557"/>
+            <point key="canvasLocation" x="-11626" y="557"/>
         </scene>
         <!--Tabbar Send View Controller-->
         <scene sceneID="z1i-g9-dlb">
@@ -1801,7 +1801,7 @@ Press the button on the card to see the next set of numbers</string>
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-10085" y="501"/>
+            <point key="canvasLocation" x="-11401" y="2847"/>
         </scene>
         <!--Address Book-->
         <scene sceneID="MFo-0R-fhg">
@@ -1868,7 +1868,7 @@ Press the button on the card to see the next set of numbers</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h3D-90-6ce" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9609" y="-239"/>
+            <point key="canvasLocation" x="-7825" y="-1159"/>
         </scene>
         <!--Settings-->
         <scene sceneID="tiR-0n-JHn">
@@ -1968,7 +1968,7 @@ Press the button on the card to see the next set of numbers</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HiS-kt-9Vg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9212" y="-239"/>
+            <point key="canvasLocation" x="-10092" y="-239"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="SUb-Hd-fIT">
@@ -1985,7 +1985,7 @@ Press the button on the card to see the next set of numbers</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cdl-up-dSv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10085" y="-998"/>
+            <point key="canvasLocation" x="-11621" y="1339"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BzU-cS-g5e">
@@ -2001,7 +2001,7 @@ Press the button on the card to see the next set of numbers</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PRW-4F-RFI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9609" y="-999"/>
+            <point key="canvasLocation" x="-7825" y="-1919"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="oby-WA-akS">
@@ -2017,7 +2017,26 @@ Press the button on the card to see the next set of numbers</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KrB-lj-EK5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9212" y="-999"/>
+            <point key="canvasLocation" x="-10092" y="-999"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="zx5-pp-kV2">
+            <objects>
+                <navigationController id="ahN-MJ-ddW" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="Oil-eI-pty">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="OGz-dN-pAy" kind="relationship" relationship="rootViewController" id="FCt-Vi-hUS"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dGF-WX-gtk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-9624" y="-998"/>
         </scene>
         <!--Scan QR Code-->
         <scene sceneID="4Hy-an-OSn">
@@ -2292,7 +2311,7 @@ Press the button on the card to see the next set of numbers</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sYo-ID-md2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10085" y="-239"/>
+            <point key="canvasLocation" x="-11621" y="2098"/>
         </scene>
         <!--Import Seed-->
         <scene sceneID="u4P-8g-s8F">
@@ -2432,7 +2451,7 @@ Press the button on the card to see the next set of numbers</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="75R-Qg-G9d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10522" y="510"/>
+            <point key="canvasLocation" x="-11862" y="2847"/>
         </scene>
         <!--Create HD Wallet-->
         <scene sceneID="P1x-Ko-DQK">
@@ -2576,7 +2595,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q0e-ko-uYY" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="SnN-MT-gEj" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-10085" y="1230"/>
+            <point key="canvasLocation" x="-11401" y="3567"/>
         </scene>
         <!--Create New Contact-->
         <scene sceneID="3vS-YG-GE5">
@@ -2599,7 +2618,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QIJ-Ot-ety" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9609" y="520"/>
+            <point key="canvasLocation" x="-7417" y="-208"/>
         </scene>
         <!--Bitcoin Units preferences-->
         <scene sceneID="8eW-2H-XVk">
@@ -2694,7 +2713,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bZU-C4-UJ5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9212" y="520"/>
+            <point key="canvasLocation" x="-10664" y="557"/>
         </scene>
         <!--CW Card-->
         <scene sceneID="uXb-j2-edL">
@@ -3158,14 +3177,14 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <segue destination="h4S-em-NaY" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="z7N-y2-oGl"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Logout" id="CJY-OL-5NJ">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Exchange" id="CJY-OL-5NJ">
                                         <rect key="frame" x="0.0" y="272" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="CJY-OL-5NJ" id="KJv-wj-rva">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Logout" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9dz-cB-ORR">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Exchange" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9dz-cB-ORR">
                                                     <rect key="frame" x="85" y="8" width="210" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3188,7 +3207,40 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="k1k-Rz-p6W" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="55T-M7-uc6"/>
+                                            <segue destination="ahN-MJ-ddW" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="ItS-1X-v4t"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Logout" id="Ia5-ZL-3uD">
+                                        <rect key="frame" x="0.0" y="322" width="320" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="Ia5-ZL-3uD" id="4MF-g3-cQA">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Logout" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQ2-Pi-Shj">
+                                                    <rect key="frame" x="85" y="8" width="210" height="29"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="logout.png" translatesAutoresizingMaskIntoConstraints="NO" id="FHJ-fE-mE8">
+                                                    <rect key="frame" x="30" y="8" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="6Mi-R4-11d"/>
+                                                        <constraint firstAttribute="height" constant="30" id="qlu-xm-NYl"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="bQ2-Pi-Shj" secondAttribute="centerY" id="FRE-J1-x4L"/>
+                                                <constraint firstItem="bQ2-Pi-Shj" firstAttribute="leading" secondItem="FHJ-fE-mE8" secondAttribute="trailing" constant="25" id="Jum-Hu-xgm"/>
+                                                <constraint firstItem="FHJ-fE-mE8" firstAttribute="leading" secondItem="4MF-g3-cQA" secondAttribute="leadingMargin" constant="20" id="PtI-hT-yaq"/>
+                                                <constraint firstAttribute="centerY" secondItem="FHJ-fE-mE8" secondAttribute="centerY" id="pko-rO-fxt"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="k1k-Rz-p6W" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="C89-iK-6UK"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -3224,7 +3276,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AsB-cw-sTG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11626" y="-1766"/>
+            <point key="canvasLocation" x="-10864" y="-1934"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="7D1-VX-Hma">
@@ -3246,7 +3298,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pLN-ea-JxB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11226" y="-1766"/>
+            <point key="canvasLocation" x="-10408" y="-1934"/>
         </scene>
         <!--Reveal View Controller-->
         <scene sceneID="rp3-9n-ZVo">
@@ -3268,7 +3320,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ySx-Z6-2RE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11626" y="-2481"/>
+            <point key="canvasLocation" x="-10880" y="-2649"/>
         </scene>
         <!--Exchange Rate-->
         <scene sceneID="KVU-zy-ojh">
@@ -3326,7 +3378,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XF4-PT-WQ8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8861" y="520"/>
+            <point key="canvasLocation" x="-10065" y="557"/>
         </scene>
         <!--Recover HD Wallet-->
         <scene sceneID="bbw-3m-PbM">
@@ -3395,7 +3447,58 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4O2-An-QF9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10522" y="1230"/>
+            <point key="canvasLocation" x="-11862" y="3567"/>
+        </scene>
+        <!--Exchange-->
+        <scene sceneID="mMs-cC-mbQ">
+            <objects>
+                <viewController id="OGz-dN-pAy" customClass="TabExchangeViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="R40-fu-ssz"/>
+                        <viewControllerLayoutGuide type="bottom" id="Yhy-QX-Cuh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="KZZ-3C-83h">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo2.png" translatesAutoresizingMaskIntoConstraints="NO" id="1YX-v3-nwZ">
+                                <rect key="frame" x="40" y="71" width="240" height="75"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sln-8V-miQ">
+                                <rect key="frame" x="87" y="185" width="149" height="30"/>
+                                <state key="normal" title="Session Create" backgroundImage="button-short.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="createSession:" destination="OGz-dN-pAy" eventType="touchUpInside" id="G2f-sJ-KFO"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TMI-0W-PHW">
+                                <rect key="frame" x="93" y="368" width="124" height="30"/>
+                                <state key="normal" title="Sign up now" backgroundImage="button-short.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="signupEx:" destination="OGz-dN-pAy" eventType="touchUpInside" id="gZC-aO-K7l"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Exchange" id="xuZ-Bx-vT4">
+                        <barButtonItem key="leftBarButtonItem" image="cancel.png" id="zwB-Wd-khj">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="OaN-he-2so" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="brK-em-gbO"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2uv-7Y-16S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-9624" y="-244"/>
         </scene>
     </scenes>
     <resources>
@@ -3429,7 +3532,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <image name="x.png" width="417" height="417"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="brK-em-gbO"/>
         <segue reference="uP1-PA-axM"/>
-        <segue reference="STV-Uv-a0a"/>
     </inferredMetricsTieBreakers>
 </document>

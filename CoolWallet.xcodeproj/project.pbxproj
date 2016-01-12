@@ -174,6 +174,8 @@
 		F49F76431BD8AFF800C335B9 /* downarrow-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */; };
 		F4E412901BFB1D91003CFACF /* NSString+HexToData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E4128F1BFB1D91003CFACF /* NSString+HexToData.m */; };
 		F4FD98711BE8B46500968A8E /* mpbn_util.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FD986F1BE8B46500968A8E /* mpbn_util.c */; };
+		F4FF8D0D1C45104F00863E54 /* TabExchangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FF8D0C1C45104F00863E54 /* TabExchangeViewController.m */; };
+		F4FF8D101C4513B700863E54 /* CwExchange.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FF8D0F1C4513B700863E54 /* CwExchange.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -452,6 +454,10 @@
 		F4E4128F1BFB1D91003CFACF /* NSString+HexToData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HexToData.m"; sourceTree = "<group>"; };
 		F4FD986F1BE8B46500968A8E /* mpbn_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mpbn_util.c; path = C_API/mpbn_util.c; sourceTree = "<group>"; };
 		F4FD98701BE8B46500968A8E /* mpbn_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mpbn_util.h; path = C_API/mpbn_util.h; sourceTree = "<group>"; };
+		F4FF8D0B1C45104F00863E54 /* TabExchangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabExchangeViewController.h; sourceTree = "<group>"; };
+		F4FF8D0C1C45104F00863E54 /* TabExchangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabExchangeViewController.m; sourceTree = "<group>"; };
+		F4FF8D0E1C4513B700863E54 /* CwExchange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExchange.h; path = Model/CwExchange.h; sourceTree = "<group>"; };
+		F4FF8D0F1C4513B700863E54 /* CwExchange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExchange.m; path = Model/CwExchange.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -676,6 +682,8 @@
 				F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */,
 				F485C2241C18066D00C26E11 /* CwKeychain.h */,
 				F485C2251C18066D00C26E11 /* CwKeychain.m */,
+				F4FF8D0E1C4513B700863E54 /* CwExchange.h */,
+				F4FF8D0F1C4513B700863E54 /* CwExchange.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -757,6 +765,8 @@
 				EFF6DD0D1B9434480089E093 /* TabCreateWalletSelectViewController.m */,
 				EFF6DD0F1B9542880089E093 /* TabExhchangeRateViewController.h */,
 				EFF6DD101B9542880089E093 /* TabExhchangeRateViewController.m */,
+				F4FF8D0B1C45104F00863E54 /* TabExchangeViewController.h */,
+				F4FF8D0C1C45104F00863E54 /* TabExchangeViewController.m */,
 			);
 			name = TabAccountViewController;
 			sourceTree = "<group>";
@@ -1182,6 +1192,7 @@
 				EFAC5C4D1AC25A7000320EA6 /* qrenc.c in Sources */,
 				EFF1ACC019EFF1CA00DD0BCB /* OCAppCommon.mm in Sources */,
 				EFAC5FDD1AAD39620042FF8C /* TabReceiveBitcoinViewController.m in Sources */,
+				F4FF8D0D1C45104F00863E54 /* TabExchangeViewController.m in Sources */,
 				EFAC5C4E1AC25A7000320EA6 /* qrencode.c in Sources */,
 				F4E412901BFB1D91003CFACF /* NSString+HexToData.m in Sources */,
 				EFCF9A4F1B32C8810076091B /* BRPaymentRequest.m in Sources */,
@@ -1190,6 +1201,7 @@
 				F43E97BE1C27F20D00D03DA9 /* NSString+Base58.m in Sources */,
 				EFE204261B4A837A00F3D8F6 /* Base58.c in Sources */,
 				EFEF1BCE1B4124DA00373B0E /* MBProgressHUD.m in Sources */,
+				F4FF8D101C4513B700863E54 /* CwExchange.m in Sources */,
 				EFCF9A541B32C8810076091B /* CwCard.m in Sources */,
 				F45962931BDE411C0046E4CE /* SRWebSocket+CW.m in Sources */,
 				EFEE57E31B7AFA7400E5999B /* tx.m in Sources */,

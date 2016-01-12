@@ -29,7 +29,7 @@
     [self.versionLabel setText:[NSString stringWithFormat:@"%@(%@)", self.versionLabel.text, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
 #endif
     
-    menuItems = @[@"title", @"HostDevices", @"CoolWalletCard",@"Security",@"Settings",@"Logout"];
+    menuItems = @[@"title", @"HostDevices", @"CoolWalletCard", @"Security", @"Settings", @"Exchange", @"Logout"];
 }
 
 - (void)didReceiveMemoryWarning
