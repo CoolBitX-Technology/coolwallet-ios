@@ -35,6 +35,7 @@ typedef NS_ENUM (NSInteger, CwAccountStatus) {
 @property NSMutableDictionary *transactions;         // CWTx[]
 @property NSMutableArray *unspentTxs;       // CWUnspentTxIndex[]
 
+@property BOOL infoSynced;
 @property NSDate *lastUpdate;
 
 -(BOOL) isTransactionSyncing;

@@ -187,6 +187,7 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) exGetRegStatus;
 -(void) exGetOtp;
 -(void) exSessionInit: (NSData *)svrChlng;
+-(void) exSessionInit: (NSData *)svrChlng withComplete:(void (^)(NSData *seResp, NSData *seChlng))complete withError:(void (^)(NSInteger errorCode))error;
 -(void) exSessionEstab: (NSData *)svrResp;
 -(void) exSessionLogout;
 -(void) exBlockInfo: (NSData *)okTkn;

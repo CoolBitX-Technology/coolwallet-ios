@@ -119,8 +119,22 @@ Byte PreHostOtpKey6[32] = {
     0x18, 0xF3, 0xFB, 0x2D, 0x6D, 0x06, 0xA6, 0x21, 0xD3, 0xAA, 0x54, 0xE1, 0x54, 0x89, 0xB6, 0x66,
     0xE8, 0x01, 0xD4, 0x1C, 0xB7, 0x62, 0x65, 0xE7, 0xFA, 0x49, 0xBE, 0x51, 0x7E, 0x17, 0x64, 0xD0};
 
+@interface RMMapper(CwCard)
+
+@end
+
+@implementation RMMapper(CwCard)
+
++ (NSArray *)systemExcludedProperties {
+    return @[@"observationInfo",@"hash",@"description",@"debugDescription",@"superclass", @"exSessionInitCompleteBlock", @"exSessionInitErrorBlock"];
+}
+
+@end
 
 @interface CwCard () <CBPeripheralDelegate>
+
+@property (copy) void (^exSessionInitCompleteBlock)(NSData *seResp, NSData *seChlng);
+@property (copy) void (^exSessionInitErrorBlock)(NSInteger errorCode);
 
 @end
 
@@ -276,76 +290,9 @@ NSArray *addresses;
                 @"delegate",
                 @"bleName", @"rssi", @"connected", @"peripheral", @"lastUpdate",
                 @"currentAccountId", @"paymentAddress", @"amount", @"label",
+                @"exSessionInitCompleteBlock", @"exSessionInitErrorBlock",
              ];
 }
-
-//- (void) encodeWithCoder:(NSCoder *)encoder {
-//    //basic info
-//    [encoder encodeObject:self.fwVersion forKey:@"fwVersion"];
-//    [encoder encodeObject:self.uid forKey:@"uid"];
-//    
-//    //host info
-//    //[encoder encodeObject:self.devCredential forKey:@"devCredential"];
-//    [encoder encodeObject:self.currId forKey:@"currId"];
-//    [encoder encodeObject:self.currRate forKey:@"currRate"];
-//    
-//    //hosts
-//    [encoder encodeObject:self.cwHosts forKey:@"cwHosts"];
-//    
-//    //Security Policy
-//    [encoder encodeBool:self.securityPolicy_OtpEnable forKey:@"spOtp"];
-//    [encoder encodeBool:self.securityPolicy_BtnEnable forKey:@"spBtn"];
-//    [encoder encodeBool:self.securityPolicy_DisplayAddressEnable forKey:@"spAddr"];
-//    [encoder encodeBool:self.securityPolicy_WatchDogEnable forKey:@"spDog"];
-//    [encoder encodeBool:self.securityPolicy_WatchDogScale forKey:@"spDogScale"];
-//    
-//    //CardInfo
-//    [encoder encodeObject:self.cardName forKey:@"carName"];
-//    [encoder encodeObject:self.cardId forKey:@"cardId"];
-//    
-//    //HdwInfo
-//    [encoder encodeInteger:self.hdwStatus forKey:@"hdwStatus"];
-//    [encoder encodeObject:self.hdwName forKey:@"hdwName"];
-//    [encoder encodeInteger:self.hdwAcccountPointer forKey:@"hdwAccountPointer"];
-//    
-//    //Accounts
-//    [encoder encodeObject:self.cwAccounts forKey:@"cwAccounts"];
-//}
-
-//- (id)initWithCoder:(NSCoder *)decoder {
-//    //basic info
-//    self.fwVersion = [decoder decodeObjectForKey:@"fwVersion"];
-//    self.uid = [decoder decodeObjectForKey:@"uid"];
-//    
-//    //host info
-//    //self.devCredential = [decoder decodeObjectForKey:@"devCredential"];
-//    self.currId = [decoder decodeObjectForKey:@"currId"];
-//    self.currRate = [decoder decodeObjectForKey:@"currRate"];
-//    
-//    //hosts
-//    self.cwHosts = [decoder decodeObjectForKey:@"cwHosts"];
-//    
-//    //security policy
-//    self.securityPolicy_OtpEnable = [decoder decodeBoolForKey:@"spOtp"];
-//    self.securityPolicy_BtnEnable =[decoder decodeBoolForKey:@"spBtn"];
-//    self.securityPolicy_DisplayAddressEnable = [decoder decodeBoolForKey:@"spAddr"];
-//    self.securityPolicy_WatchDogEnable = [decoder decodeBoolForKey:@"spDog"];
-//    self.securityPolicy_WatchDogScale = [decoder decodeBoolForKey:@"spDogScale"];
-//    
-//    //CardInfo
-//    self.cardName = [decoder decodeObjectForKey:@"carName"];
-//    self.cardId = [decoder decodeObjectForKey:@"cardId"];
-//    
-//    //HdwInfo
-//    self.hdwStatus = [decoder decodeIntegerForKey:@"hdwStatus"];
-//    self.hdwName = [decoder decodeObjectForKey:@"hdwName"];
-//    self.hdwAcccountPointer = [decoder decodeIntegerForKey:@"hdwAccountPointer"];
-//    
-//    //Accounts
-//    self.cwAccounts = [decoder decodeObjectForKey:@"cwAccounts"];
-//    
-//    return self;
-//}
 
 -(void) prepareService
 {
@@ -958,9 +905,9 @@ NSArray *addresses;
                                     KeyId:1];
     }
     
+    account.infoSynced = syncAccInfoFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil;
     //check sync status
-    if (syncAccInfoFlag[accountId] && account.externalKeychain != nil && account.internalKeychain != nil) {
-        
+    if (account.infoSynced) {
         //call delegate
         if ([self.delegate respondsToSelector:@selector(didGetAccountInfo:)]) {
             [self.delegate didGetAccountInfo:account.accId];
@@ -1537,6 +1484,13 @@ NSArray *addresses;
 
 -(void) exSessionInit: (NSData *)svrChlng
 {
+    [self cwCmdExSessionInit:svrChlng];
+}
+
+-(void) exSessionInit: (NSData *)svrChlng withComplete:(void (^)(NSData *seResp, NSData *seChlng))complete withError:(void (^)(NSInteger errorCode))error
+{
+    self.exSessionInitCompleteBlock = complete;
+    self.exSessionInitErrorBlock = error;
     [self cwCmdExSessionInit:svrChlng];
 }
 
@@ -5237,8 +5191,9 @@ NSArray *addresses;
                  }*/
                 //self.currentAccountId = account.accId;
                 
+                account.infoSynced = syncAccInfoFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil;
                 //check sync status
-                if (syncAccInfoFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil) {
+                if (account.infoSynced) {
                     //call delegate
                     if ([self.delegate respondsToSelector:@selector(didGetAccountInfo:)]) {
                         [self.delegate didGetAccountInfo:account.accId];
@@ -5517,7 +5472,8 @@ NSArray *addresses;
                         }
                     }
                 } else if (cmd.cmdP1 == CwAddressInfoKeyChainPublicKey) {
-                    if (syncAccInfoFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil) {
+                    account.infoSynced = syncAccInfoFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil;
+                    if (account.infoSynced) {
                         //call delegate
                         if ([self.delegate respondsToSelector:@selector(didGetAccountInfo:)]) {
                             [self.delegate didGetAccountInfo:account.accId];
@@ -5543,7 +5499,8 @@ NSArray *addresses;
                         
                         [self.cwAccounts setObject:account forKey: [NSString stringWithFormat: @"%ld", (long)accId]];
                         
-                        if (syncAccInfoFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil) {
+                        account.infoSynced = syncAccInfoFlag[account.accId] && account.externalKeychain != nil && account.internalKeychain != nil;
+                        if (account.infoSynced) {
                             //call delegate
                             if ([self.delegate respondsToSelector:@selector(didGetAccountInfo:)]) {
                                 [self.delegate didGetAccountInfo:account.accId];
@@ -5791,8 +5748,19 @@ NSArray *addresses;
                     [self.delegate didExSessionInit:[NSData dataWithBytes:data length:16] SeChlng: [NSData dataWithBytes:data+16 length:16]];
                 }
                 
+                if (self.exSessionInitCompleteBlock) {
+                    self.exSessionInitCompleteBlock([NSData dataWithBytes:data length:16], [NSData dataWithBytes:data+16 length:16]);
+                    self.exSessionInitCompleteBlock = nil;
+                    self.exSessionInitErrorBlock = nil;
+                }
+                
             } else {
                 NSLog(@"CwCmdIdExSessionInit Error %04lX", (long)cmd.cmdResult);
+                if (self.exSessionInitCompleteBlock) {
+                    self.exSessionInitErrorBlock((long)cmd.cmdResult);
+                    self.exSessionInitCompleteBlock = nil;
+                    self.exSessionInitErrorBlock = nil;
+                }
             }
             
             break;

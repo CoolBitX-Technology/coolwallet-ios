@@ -10,4 +10,11 @@
 
 @interface CwExchange : NSObject
 
+@property (assign, nonatomic) BOOL loginSessionFinish;
+@property (strong, nonatomic) NSData *loginSession;
+
++(id)sharedInstance;
+-(void) createExSession;
+-(void) syncCardInfo;
+
 @end

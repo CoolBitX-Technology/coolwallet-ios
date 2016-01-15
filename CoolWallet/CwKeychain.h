@@ -17,6 +17,8 @@ typedef NS_ENUM (NSInteger, CwKeychainType) {
 
 @interface CwKeychain : BTCKeychain
 
+@property (readonly) NSString *hexPublicKey;
+@property (readonly) NSString *hexChainCode;
 @property (readonly) NSNumber *keyChainId;
 @property (readonly) NSNumber *currentKeyIndex;
 

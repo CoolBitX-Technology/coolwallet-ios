@@ -13,6 +13,8 @@
 
 @interface CwKeychain()
 
+@property (readwrite) NSString *hexPublicKey;
+@property (readwrite) NSString *hexChainCode;
 @property (readwrite) NSNumber *keyChainId;
 
 @property (assign, nonatomic) int keyIndex;
@@ -42,8 +44,10 @@
     }
     
     NSString *extendedKey = [[NSString stringWithFormat:@"%@%@%@%@%@%@", version, depth, fingerprint, childNumber, chainCode, key] hexToBase58check];
-    
+
     self = [super initWithExtendedKey:extendedKey];
+    self.hexPublicKey = key;
+    self.hexChainCode = chainCode;
     self.keyChainId = [NSNumber numberWithInt:keychainType];
     self.keyIndex = -1;
     self.retry_count = 0;

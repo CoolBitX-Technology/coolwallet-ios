@@ -30,6 +30,7 @@
         self.intKeyPointer = 0;
         self.externalKeychain = nil;
         self.internalKeychain = nil;
+        self.infoSynced = NO;
     }
 
     return self;
@@ -76,6 +77,8 @@
     
     self.externalKeychain = nil;
     self.internalKeychain = nil;
+    
+    self.infoSynced = NO;
     
     return self;
 }
