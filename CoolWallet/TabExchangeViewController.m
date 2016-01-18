@@ -34,7 +34,7 @@
 
 - (IBAction)createSession:(UIButton *)sender {
     [self showIndicatorView:@"Create Session..."];
-    [self.exchange createExSession];
+    [self.exchange loginExSession];
     
     @weakify(self);
     [RACObserve(self.exchange, loginSessionFinish) subscribeNext:^(NSNumber *finished) {
@@ -58,6 +58,8 @@
     } else {
         [self.exchange syncCardInfo];
     }
+    
+    [self.exchange syncCardInfo];
 }
 
 @end

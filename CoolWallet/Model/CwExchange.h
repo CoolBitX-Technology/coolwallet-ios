@@ -14,7 +14,7 @@
 @property (strong, nonatomic) NSData *loginSession;
 
 +(id)sharedInstance;
--(void) createExSession;
+-(void) loginExSession;
 -(void) syncCardInfo;
 
 @end
