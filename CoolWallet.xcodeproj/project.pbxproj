@@ -168,6 +168,9 @@
 		F43E97C71C2808F100D03DA9 /* NSData+Bitcoin.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E97C61C2808F100D03DA9 /* NSData+Bitcoin.m */; };
 		F45962901BDE3FF80046E4CE /* BlockChain.m in Sources */ = {isa = PBXBuildFile; fileRef = F459628F1BDE3FF80046E4CE /* BlockChain.m */; };
 		F45962931BDE411C0046E4CE /* SRWebSocket+CW.m in Sources */ = {isa = PBXBuildFile; fileRef = F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */; };
+		F47EAA921C4E178700FEDE26 /* button_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = F47EAA8F1C4E178700FEDE26 /* button_frame.png */; };
+		F47EAA931C4E178700FEDE26 /* ex_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F47EAA901C4E178700FEDE26 /* ex_icon.png */; };
+		F47EAA941C4E178700FEDE26 /* ex_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F47EAA911C4E178700FEDE26 /* ex_logo.png */; };
 		F485C2261C18066D00C26E11 /* CwKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = F485C2251C18066D00C26E11 /* CwKeychain.m */; };
 		F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */; };
 		F493F32F1BC6807600876710 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F493F32E1BC6807600876710 /* BaseViewController.m */; };
@@ -443,6 +446,9 @@
 		F459628F1BDE3FF80046E4CE /* BlockChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockChain.m; sourceTree = "<group>"; };
 		F45962911BDE411C0046E4CE /* SRWebSocket+CW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRWebSocket+CW.h"; sourceTree = "<group>"; };
 		F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRWebSocket+CW.m"; sourceTree = "<group>"; };
+		F47EAA8F1C4E178700FEDE26 /* button_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_frame.png; sourceTree = "<group>"; };
+		F47EAA901C4E178700FEDE26 /* ex_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ex_icon.png; sourceTree = "<group>"; };
+		F47EAA911C4E178700FEDE26 /* ex_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ex_logo.png; sourceTree = "<group>"; };
 		F485C2241C18066D00C26E11 /* CwKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwKeychain.h; sourceTree = "<group>"; };
 		F485C2251C18066D00C26E11 /* CwKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwKeychain.m; sourceTree = "<group>"; };
 		F48C0DEF1BD78A33007CFBEE /* CwCardInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwCardInfo.h; sourceTree = "<group>"; };
@@ -830,6 +836,9 @@
 		EFF1ACC219EFFCEA00DD0BCB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				F47EAA8F1C4E178700FEDE26 /* button_frame.png */,
+				F47EAA901C4E178700FEDE26 /* ex_icon.png */,
+				F47EAA911C4E178700FEDE26 /* ex_logo.png */,
 				F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */,
 				EFA340DA1AA6B81B0035AC6D /* add.png */,
 				EFEF1BC71B41039A00373B0E /* add@2x.png */,
@@ -1021,6 +1030,7 @@
 				EFA341351AA6B81C0035AC6D /* settings.png in Resources */,
 				EFEF8DB71B4A32AC004427B8 /* Main.storyboard in Resources */,
 				EFA3411F1AA6B81C0035AC6D /* icon-2.png in Resources */,
+				F47EAA921C4E178700FEDE26 /* button_frame.png in Resources */,
 				EFA3411C1AA6B81C0035AC6D /* home.png in Resources */,
 				EFA341271AA6B81C0035AC6D /* logo1.png in Resources */,
 				EFA3412C1AA6B81C0035AC6D /* menu-icon@2x.png in Resources */,
@@ -1065,10 +1075,12 @@
 				EFA341151AA6B81C0035AC6D /* cwcard-1.png in Resources */,
 				EFA341111AA6B81C0035AC6D /* checkbox_full.png in Resources */,
 				EFA341191AA6B81C0035AC6D /* home-grey.png in Resources */,
+				F47EAA931C4E178700FEDE26 /* ex_icon.png in Resources */,
 				EFA341361AA6B81C0035AC6D /* transaction.png in Resources */,
 				EFAA905F1AB91A8500D6A03E /* receive-grey@2x.png in Resources */,
 				EFA3410E1AA6B81C0035AC6D /* button-red.png in Resources */,
 				EFA341231AA6B81C0035AC6D /* link_page3.png in Resources */,
+				F47EAA941C4E178700FEDE26 /* ex_logo.png in Resources */,
 				EFA3413F1AA6FEDE0035AC6D /* CwInfoViewCell.xib in Resources */,
 				EFA341341AA6B81C0035AC6D /* send.png in Resources */,
 				EFA341131AA6B81C0035AC6D /* cw_connect1.png in Resources */,

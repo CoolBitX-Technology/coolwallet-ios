@@ -3190,7 +3190,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="logout.png" translatesAutoresizingMaskIntoConstraints="NO" id="uvK-6F-Bvj">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ex_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="uvK-6F-Bvj">
                                                     <rect key="frame" x="30" y="8" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="mqU-0t-AXd"/>
@@ -3461,11 +3461,39 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo2.png" translatesAutoresizingMaskIntoConstraints="NO" id="1YX-v3-nwZ">
-                                <rect key="frame" x="40" y="71" width="240" height="75"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ex_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="1YX-v3-nwZ">
+                                <rect key="frame" x="40" y="89" width="240" height="75"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="bja-lA-WGb"/>
+                                    <constraint firstAttribute="height" constant="75" id="kaX-t7-q2g"/>
+                                </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TMI-0W-PHW">
+                                <rect key="frame" x="32" y="345" width="256" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="bfV-AW-Hu6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Sign up now" backgroundImage="button_frame.png">
+                                    <color key="titleColor" red="0.68235294117647061" green="0.56470588235294117" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="highlighted" backgroundImage="button_frame.png"/>
+                                <connections>
+                                    <action selector="signupEx:" destination="OGz-dN-pAy" eventType="touchUpInside" id="gZC-aO-K7l"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trade with other CoolWallet holders on CoolBitX Exchange" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9az-Ux-MP8">
+                                <rect key="frame" x="32" y="172" width="256" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="52" id="tj5-Xm-9Ym"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sln-8V-miQ">
-                                <rect key="frame" x="87" y="185" width="149" height="30"/>
+                                <rect key="frame" x="86" y="433" width="149" height="30"/>
                                 <state key="normal" title="Session Create" backgroundImage="button-short.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -3473,17 +3501,18 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                     <action selector="createSession:" destination="OGz-dN-pAy" eventType="touchUpInside" id="G2f-sJ-KFO"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TMI-0W-PHW">
-                                <rect key="frame" x="93" y="368" width="124" height="30"/>
-                                <state key="normal" title="Sign up now" backgroundImage="button-short.png">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="signupEx:" destination="OGz-dN-pAy" eventType="touchUpInside" id="gZC-aO-K7l"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="9az-Ux-MP8" firstAttribute="leading" secondItem="KZZ-3C-83h" secondAttribute="leading" constant="32" id="LIs-9c-v3v"/>
+                            <constraint firstItem="1YX-v3-nwZ" firstAttribute="top" secondItem="R40-fu-ssz" secondAttribute="bottom" constant="89" id="Q5j-Ph-5Z4"/>
+                            <constraint firstAttribute="trailing" secondItem="TMI-0W-PHW" secondAttribute="trailing" constant="32" id="TEo-F5-8bh"/>
+                            <constraint firstItem="9az-Ux-MP8" firstAttribute="top" secondItem="1YX-v3-nwZ" secondAttribute="bottom" constant="8" id="WjM-tN-apz"/>
+                            <constraint firstAttribute="trailing" secondItem="9az-Ux-MP8" secondAttribute="trailing" constant="32" id="YQj-Fa-mFQ"/>
+                            <constraint firstItem="1YX-v3-nwZ" firstAttribute="centerX" secondItem="KZZ-3C-83h" secondAttribute="centerX" id="evN-sa-VGM"/>
+                            <constraint firstItem="TMI-0W-PHW" firstAttribute="top" secondItem="9az-Ux-MP8" secondAttribute="bottom" constant="121" id="gXr-Kh-llc"/>
+                            <constraint firstItem="TMI-0W-PHW" firstAttribute="leading" secondItem="KZZ-3C-83h" secondAttribute="leading" constant="32" id="zqf-D3-3JO"/>
+                        </constraints>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Exchange" id="xuZ-Bx-vT4">
@@ -3506,6 +3535,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <image name="add.png" width="29" height="29"/>
         <image name="button-short.png" width="800" height="200"/>
         <image name="button.png" width="1645" height="206"/>
+        <image name="button_frame.png" width="1333" height="204"/>
         <image name="camera.png" width="22" height="22"/>
         <image name="cameraguide" width="234" height="234"/>
         <image name="cancel.png" width="22" height="22"/>
@@ -3513,6 +3543,8 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <image name="checkbox_empty.png" width="32" height="32"/>
         <image name="cwcard.png" width="66" height="66"/>
         <image name="downarrow-01.png" width="33" height="33"/>
+        <image name="ex_icon.png" width="275" height="275"/>
+        <image name="ex_logo.png" width="1042" height="333"/>
         <image name="exit" width="25" height="25"/>
         <image name="flash" width="253" height="77"/>
         <image name="home-grey.png" width="35" height="32"/>

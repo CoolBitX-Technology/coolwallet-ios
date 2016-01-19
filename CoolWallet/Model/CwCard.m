@@ -126,7 +126,9 @@ Byte PreHostOtpKey6[32] = {
 @implementation RMMapper(CwCard)
 
 + (NSArray *)systemExcludedProperties {
-    return @[@"observationInfo",@"hash",@"description",@"debugDescription",@"superclass", @"exSessionInitCompleteBlock", @"exSessionInitErrorBlock"];
+    return @[@"observationInfo",@"hash",@"description",@"debugDescription",@"superclass",
+             @"exSessionInitCompleteBlock", @"exSessionInitErrorBlock",
+             @"exSessionEstablishCompleteBlock", @"exSessionEstablishErrorBlock"];
 }
 
 @end
@@ -135,6 +137,8 @@ Byte PreHostOtpKey6[32] = {
 
 @property (copy) void (^exSessionInitCompleteBlock)(NSData *seResp, NSData *seChlng);
 @property (copy) void (^exSessionInitErrorBlock)(NSInteger errorCode);
+@property (copy) void (^exSessionEstablishCompleteBlock)(void);
+@property (copy) void (^exSessionEstablishErrorBlock)(NSInteger errorCode);
 
 @end
 
@@ -1482,11 +1486,6 @@ NSArray *addresses;
     [self cwCmdExGetOtp];
 }
 
--(void) exSessionInit: (NSData *)svrChlng
-{
-    [self cwCmdExSessionInit:svrChlng];
-}
-
 -(void) exSessionInit: (NSData *)svrChlng withComplete:(void (^)(NSData *seResp, NSData *seChlng))complete withError:(void (^)(NSInteger errorCode))error
 {
     self.exSessionInitCompleteBlock = complete;
@@ -1494,8 +1493,10 @@ NSArray *addresses;
     [self cwCmdExSessionInit:svrChlng];
 }
 
--(void) exSessionEstab: (NSData *)svrResp
+-(void) exSessionEstab: (NSData *)svrResp withComplete:(void (^)(void))complete withError:(void (^)(NSInteger errorCode))error
 {
+    self.exSessionEstablishCompleteBlock = complete;
+    self.exSessionEstablishErrorBlock = error;
     [self cwCmdExSessionEstab:svrResp];
 }
 
@@ -5750,18 +5751,17 @@ NSArray *addresses;
                 
                 if (self.exSessionInitCompleteBlock) {
                     self.exSessionInitCompleteBlock([NSData dataWithBytes:data length:16], [NSData dataWithBytes:data+16 length:16]);
-                    self.exSessionInitCompleteBlock = nil;
-                    self.exSessionInitErrorBlock = nil;
                 }
                 
             } else {
                 NSLog(@"CwCmdIdExSessionInit Error %04lX", (long)cmd.cmdResult);
                 if (self.exSessionInitCompleteBlock) {
                     self.exSessionInitErrorBlock((long)cmd.cmdResult);
-                    self.exSessionInitCompleteBlock = nil;
-                    self.exSessionInitErrorBlock = nil;
                 }
             }
+            
+            self.exSessionInitCompleteBlock = nil;
+            self.exSessionInitErrorBlock = nil;
             
             break;
             
@@ -5772,9 +5772,19 @@ NSArray *addresses;
                 if ([self.delegate respondsToSelector:@selector(didExSessionEstab)]) {
                     [self.delegate didExSessionEstab];
                 }
+                
+                if (self.exSessionEstablishCompleteBlock) {
+                    self.exSessionEstablishCompleteBlock();
+                }
             } else {
                 NSLog(@"CwCmdIdExSessionEstab Error %04lX", (long)cmd.cmdResult);
+                if (self.exSessionEstablishErrorBlock) {
+                    self.exSessionEstablishErrorBlock(cmd.cmdResult);
+                }
             }
+            
+            self.exSessionEstablishCompleteBlock = nil;
+            self.exSessionInitErrorBlock = nil;
             
             break;
             

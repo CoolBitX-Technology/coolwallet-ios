@@ -24,6 +24,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    UIImage* myImage = [UIImage imageNamed:@"ex_icon.png"];
+    UIImageView* myImageView = [[UIImageView alloc] initWithImage:myImage];
+    
+    float x = self.navigationController.navigationBar.frame.size.width/2 - 80;
+    myImageView.frame = CGRectMake(x, 8, 30, 30);
+    [self.navigationController.navigationBar addSubview:myImageView];
+    
     self.exchange = [CwExchange sharedInstance];
 }
 
@@ -57,9 +65,7 @@
         [self showHintAlert:@"session fail" withMessage:@"can't create session with exchange site" withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
     } else {
         [self.exchange syncCardInfo];
-    }
-    
-    [self.exchange syncCardInfo];
+    }    
 }
 
 @end

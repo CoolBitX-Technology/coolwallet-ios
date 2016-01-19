@@ -63,13 +63,16 @@
     @weakify(self);
     RACSignal *createSignal = [self signalCreateExSession];
     
-    [[[createSignal flattenMap:^RACStream *(id response) {
+    [[[[createSignal flattenMap:^RACStream *(NSDictionary *response) {
         @strongify(self);
         return [self signalInitSessionFromCard:self.sessionSvrChlng];
     }] flattenMap:^RACStream *(id value) {
         @strongify(self);
         NSLog(@"value: %@", value);
         return [self signalEstablishExSessionWithChallenge:self.sessionChlng andResponse:self.sessionResponse];
+    }] flattenMap:^RACStream *(NSDictionary *response) {
+        
+        return [self signalEstablishSessionFromCard:self.sessionSvrResponse];
     }] subscribeNext:^(id response) {
         @strongify(self);
         NSLog(@"response: %@", response);
@@ -169,9 +172,10 @@
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
         [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-            
+            NSString *hexString = [responseObject objectForKey:@"challenge"];
+            NSLog(@"hexString: %@", hexString);
             @strongify(self);
-            self.sessionSvrChlng = [NSString hexstringToData:[responseObject objectForKey:@"challenge"]];
+            self.sessionSvrChlng = [NSString hexstringToData:hexString];
             
             [subscriber sendNext:responseObject];
             [subscriber sendCompleted];
@@ -211,7 +215,7 @@
 
 -(RACSignal*)signalEstablishExSessionWithChallenge:(NSData *)challenge andResponse:(NSData *)response {
     NSString *url = [NSString stringWithFormat:@"%@%@/%@", ExBaseUrl, ExSession, self.card.cardId];
-    NSDictionary *dict = @{@"challenge": challenge, @"response": response};
+    NSDictionary *dict = @{@"challenge": [NSString dataToHexstring:challenge], @"response": [NSString dataToHexstring:response]};
     
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -219,7 +223,12 @@
         
         AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
         [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-            NSLog(@"%@", responseObject);
+            NSLog(@"session establish: %@", responseObject);
+            
+            NSString *hexString = [responseObject objectForKey:@"response"];
+            NSLog(@"hexString: %@", hexString);
+            self.sessionSvrResponse = [NSString hexstringToData:hexString];
+            
             [subscriber sendNext:responseObject];
             [subscriber sendCompleted];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
@@ -231,6 +240,27 @@
     
     return signal;
 }
+
+-(RACSignal *)signalEstablishSessionFromCard:(NSData *)svrResp
+{
+    @weakify(self);
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        [self.card exSessionEstab:svrResp withComplete:^() {
+            [subscriber sendNext:nil];
+            [subscriber sendCompleted];
+        } withError:^(NSInteger errorCode) {
+            NSError *error = [NSError errorWithDomain:@"Card Cmd Error" code:errorCode userInfo:nil];
+            [subscriber sendError:error];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
 
 -(RACSignal*)signalSyncCardInfo {
     NSString *url = [NSString stringWithFormat:@"%@%@", ExBaseUrl, self.card.cardId];
