@@ -11,6 +11,8 @@
 #import "CwCard.h"
 #import "KeychainItemWrapper.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
 @interface CwListTableViewController ()
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -40,7 +42,18 @@ NSString *segueIdentifier;
     self.tablev_cwlist.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [self.versionLabel setText:[NSString stringWithFormat:@"V%@", version]];    
+    [self.versionLabel setText:[NSString stringWithFormat:@"V%@", version]];
+    
+    @weakify(self)
+    [[[[RACObserve(self, cwCards) filter:^BOOL(NSMutableArray *cards) {
+        return cards != nil && cards.count > 0;
+    }] distinctUntilChanged] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(id value) {
+        @strongify(self)
+        self.view_connecting.hidden = YES;
+        self.tablev_cwlist.hidden = NO;
+        
+        [self.tablev_cwlist reloadData];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -247,41 +260,7 @@ NSString *segueIdentifier;
 
 -(void) didScanCwCards: (NSMutableArray *) cwCards
 {
-    BOOL shouldReload = NO;
-    if (cwCards.count != self.cwCards.count) {
-        shouldReload = YES;
-    } else {
-        for (CwCard *card in cwCards) {
-            if ([card.peripheral.name isEqualToString:@"CoolWallet "]) {
-                continue;
-            }
-            
-            NSArray *searchResult = [self.cwCards filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.peripheral.name == %@", card.peripheral.name]];
-            if (searchResult.count <= 0) {
-                shouldReload = YES;
-                break;
-            }
-        }
-        
-        if (!shouldReload) {
-            for (CwCard *card in self.cwCards) {
-                NSArray *searchResult = [cwCards filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.peripheral.name == %@", card.peripheral.name]];
-                if (searchResult.count <= 0) {
-                    [self.cwCards removeObject:card];
-                    shouldReload = YES;
-                }
-            }
-        }
-    }
-    
-    if (shouldReload) {
-        self.cwCards = [NSMutableArray arrayWithArray:cwCards];
-        
-        self.view_connecting.hidden = YES;
-        self.tablev_cwlist.hidden = NO;
-        
-        [self.tablev_cwlist reloadData];
-    }
+    self.cwCards = [NSMutableArray arrayWithArray:cwCards];
 }
 
 -(void) didConnectCwCard:(CwCard *)cwCard

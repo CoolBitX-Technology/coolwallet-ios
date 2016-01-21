@@ -18,6 +18,9 @@
 
 #import "BlockChain.h"
 
+#import "CwExchange.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
 NSDictionary *rates;
 CwBtcNetWork *btcNet;
 CwAccount *account;
@@ -32,6 +35,8 @@ CwAccount *account;
 @property (strong, nonatomic) NSArray *accountButtons;
 @property (assign, nonatomic) BOOL waitAccountCreated;
 @property (strong, nonatomic) NSMutableArray *txSyncing;
+
+@property (strong, nonatomic) RACSignal *cardSignal;
 
 @end
 
@@ -51,8 +56,6 @@ CwAccount *account;
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
     self.txSyncing = [NSMutableArray new];
-    
-    NSLog(@"parant: %@", self.parentViewController);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -91,6 +94,29 @@ CwAccount *account;
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void) checkAndLoginExSite
+{
+    CwExchange *exchange = [CwExchange sharedInstance];
+    if (!exchange.loginSessionFinish) {
+        self.cardSignal = [[[RACObserve(self.cwManager, connectedCwCard) filter:^BOOL(CwCard *card) {
+            return card != nil && card.cardId.length != 0;
+        }] map:^RACStream *(CwCard *card) {
+            NSLog(@"connect card: %@<%@>", card, card.cardId);
+            return RACObserve(card, hdwStatus);
+        }] switchToLatest];
+        
+        [[[[self.cardSignal filter:^BOOL(NSNumber *hdwStatus) {
+            NSLog(@"hdwStatus: %@", hdwStatus);
+            return hdwStatus.integerValue != CwHdwStatusInactive && hdwStatus.integerValue != CwHdwStatusWaitConfirm;
+        }] take:1]
+          subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityBackground name:@"ExSessionLogin"]]
+         subscribeNext:^(id value) {
+             NSLog(@"subscribeNext");
+             [exchange loginExSession];
+         }];
+    }
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
@@ -359,6 +385,7 @@ Boolean setBtnActionFlag;
         [self performSegueWithIdentifier:@"CreateHdwSegue" sender:self];
     } else {
         [self getBitcoinRateforCurrency];
+        [self checkAndLoginExSite];
     }
 }
 

@@ -201,7 +201,7 @@ typedef NS_ENUM (NSInteger, CwCmdCLA) {
     CwCmdIdExRegStatusCLA      = CwCmdClaKeepMemory,
     CwCmdIdExGetOtpCLA         = CwCmdClaKeepMemory,
     CwCmdIdExSessionInitCLA    = CwCmdClaKeepMemory, //?
-    CwCmdIdExSessionEstabCLA   = CwCmdClaKeepFlash, //?
+    CwCmdIdExSessionEstabCLA   = CwCmdClaKeepMemory, //?
     CwCmdIdExSessionLogoutCLA  = CwCmdClaKeepFlash, //?
     CwCmdIdExBlockInfoCLA      = CwCmdClaKeepFlash, //?
     CwCmdIdExBlockBtcCLA       = CwCmdClaKeepFlash, //?

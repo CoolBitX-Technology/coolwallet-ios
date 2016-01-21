@@ -1543,7 +1543,7 @@ NSArray *addresses;
     CwCardCommand *cmd = [[CwCardCommand alloc] init];
     
     //prepare commands
-    cmd.cmdPriority = CwCardCommandPriorityExclusive;
+    cmd.cmdPriority = CwCardCommandPriorityTop;
     cmd.cmdCla = CwCmdIdGetModeStateCLA;
     cmd.cmdId = CwCmdIdGetModeState;
     cmd.cmdP1 = 0;
@@ -3939,7 +3939,7 @@ NSArray *addresses;
     //none
     
     //prepare commands
-    cmd.cmdPriority = CwCardCommandPriorityNone;
+    cmd.cmdPriority = CwCardCommandPriorityTop;
     cmd.cmdCla = CwCmdIdExSessionLogoutCLA;
     cmd.cmdId = CwCmdIdExSessionLogout;
     cmd.cmdP1 = 0;

@@ -47,19 +47,47 @@
 {
     self = [super init];
     if (self) {
-        CwManager *manager = [CwManager sharedManager];
-        self.card = manager.connectedCwCard;
-        self.syncedAccount = [NSMutableArray new];
-        self.cardInfoSynced = NO;
+        [self observeConnectedCard];
     }
     
     return self;
 }
 
+-(void) observeConnectedCard
+{
+    @weakify(self)
+    CwManager *manager = [CwManager sharedManager];
+    RAC(self, card) = [RACObserve(manager, connectedCwCard) filter:^BOOL(CwCard *card) {
+        @strongify(self)
+        return ![card.cardId isEqualToString:self.card.cardId];
+    }];
+    
+    [[RACObserve(self, card) distinctUntilChanged] subscribeNext:^(CwCard *card) {
+        NSLog(@"card changed: %@", card);
+        @strongify(self)
+        self.syncedAccount = [NSMutableArray new];
+        self.cardInfoSynced = NO;
+        self.loginSessionFinish = NO;
+        self.loginSession = nil;
+    }];
+    
+    RACSignal *accountNumberSignal = [[RACObserve(self, card) map:^id(CwCard *card) {
+        return RACObserve(card, hdwAcccountPointer);
+    }] switchToLatest];
+    
+    [[accountNumberSignal distinctUntilChanged] subscribeNext:^(NSNumber *counter) {
+        NSLog(@"hdwAcccountPointer: %@", counter);
+    }];
+}
+
 -(void) loginExSession
 {
+    [self.card exGetOtp];
+    
     self.loginSessionFinish = NO;
     
+    CwManager *manager = [CwManager sharedManager];
+    NSLog(@"card: %@, %@", self.card, manager.connectedCwCard);
     @weakify(self);
     RACSignal *createSignal = [self signalCreateExSession];
     
@@ -78,11 +106,16 @@
         NSLog(@"response: %@", response);
         self.loginSession = [NSData init];
         self.loginSessionFinish = YES;
+        
+        [self syncCardInfo];
     } error:^(NSError *error) {
         @strongify(self);
         NSLog(@"error(%ld): %@", error.code, error);
         self.loginSession = nil;
         self.loginSessionFinish = YES;
+        
+//        self.loginSession = [NSData new];
+//        [self syncCardInfo];
     }];
 }
 
@@ -100,7 +133,6 @@
 
 -(void) observeAccount:(CwAccount *)account
 {
-    self.loginSession = [NSData new];
     if (!self.loginSessionFinish || self.loginSession == nil) {
         return;
     }
@@ -145,17 +177,17 @@
 
 -(void) observeHdwAccountAddrCount:(CwAccount *)account
 {
-    RACSignal *signal = [[RACSignal combineLatest:@[RACObserve(account, extKeyPointer), RACObserve(account, intKeyPointer)]
-                                          reduce:^(NSNumber *extCount, NSNumber *intCount) {
-                                              BOOL skip = !self.cardInfoSynced || (extCount.intValue == 0 && intCount.intValue ==0);
-                                              
-                                              return [NSNumber numberWithBool:skip];
-                                          }] skipWhileBlock:^BOOL(NSNumber *skip) {
-                                              return skip.boolValue;
-                                          }];
-    
     @weakify(self)
-    [[[signal distinctUntilChanged] flattenMap:^RACStream *(NSNumber *skip) {
+    RACSignal *signal = [[[RACSignal combineLatest:@[RACObserve(account, extKeyPointer), RACObserve(account, intKeyPointer)]
+                                          reduce:^(NSNumber *extCount, NSNumber *intCount) {
+                                              int counter = (extCount.intValue + intCount.intValue);
+                                              return @(counter);
+                                          }] skipWhileBlock:^BOOL(NSNumber *counter) {
+                                              @strongify(self)
+                                              return counter.intValue * self.cardInfoSynced <= 0;
+                                          }] distinctUntilChanged];
+    
+    [[signal flattenMap:^RACStream *(NSArray *counter) {
         @strongify(self)
         return [self signalSyncAccountInfo:account];
     }] subscribeNext:^(id response) {
