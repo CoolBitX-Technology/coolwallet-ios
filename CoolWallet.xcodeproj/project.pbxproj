@@ -16,7 +16,10 @@
 		93CF96B319EE1A0200466DAF /* CoolWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF96B219EE1A0200466DAF /* CoolWalletTests.m */; };
 		93CF96BE19EE1DA200466DAF /* CALayer+ColorConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF96BD19EE1DA200466DAF /* CALayer+ColorConfig.m */; };
 		93CF96C419EE56A100466DAF /* BindSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF96C319EE56A100466DAF /* BindSuccessViewController.m */; };
+		A267298B1C561155005F452A /* CwExBuyOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = A267298A1C561155005F452A /* CwExBuyOrder.m */; };
 		A2B6E7D81BD28879001B1592 /* NSDate+Localize.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */; };
+		A2F29F1A1C55FE7100C75E91 /* CwExOrderBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */; };
+		A2F29F1D1C56042600C75E91 /* CwExSellOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F29F1C1C56042600C75E91 /* CwExSellOrder.m */; };
 		EF09E9261BA6C00200C8DCD0 /* TabRecoveryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF09E9251BA6C00200C8DCD0 /* TabRecoveryViewController.m */; };
 		EF698CE21A78C36300A943B9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF698CE11A78C36300A943B9 /* Security.framework */; };
 		EF698CE41A78C36D00A943B9 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF698CE31A78C36D00A943B9 /* CoreBluetooth.framework */; };
@@ -211,8 +214,14 @@
 		93CF96BD19EE1DA200466DAF /* CALayer+ColorConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+ColorConfig.m"; sourceTree = "<group>"; };
 		93CF96C219EE56A100466DAF /* BindSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindSuccessViewController.h; sourceTree = "<group>"; };
 		93CF96C319EE56A100466DAF /* BindSuccessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindSuccessViewController.m; sourceTree = "<group>"; };
+		A26729891C561155005F452A /* CwExBuyOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExBuyOrder.h; path = Model/CwExBuyOrder.h; sourceTree = "<group>"; };
+		A267298A1C561155005F452A /* CwExBuyOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExBuyOrder.m; path = Model/CwExBuyOrder.m; sourceTree = "<group>"; };
 		A2B6E7D61BD28879001B1592 /* NSDate+Localize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Localize.h"; sourceTree = "<group>"; };
 		A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Localize.m"; sourceTree = "<group>"; };
+		A2F29F181C55FE7100C75E91 /* CwExOrderBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExOrderBase.h; path = Model/CwExOrderBase.h; sourceTree = "<group>"; };
+		A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExOrderBase.m; path = Model/CwExOrderBase.m; sourceTree = "<group>"; };
+		A2F29F1B1C56042600C75E91 /* CwExSellOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExSellOrder.h; path = Model/CwExSellOrder.h; sourceTree = "<group>"; };
+		A2F29F1C1C56042600C75E91 /* CwExSellOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExSellOrder.m; path = Model/CwExSellOrder.m; sourceTree = "<group>"; };
 		B28B6DD8D9D122F6EE9EC294 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF09E9241BA6C00200C8DCD0 /* TabRecoveryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabRecoveryViewController.h; sourceTree = "<group>"; };
 		EF09E9251BA6C00200C8DCD0 /* TabRecoveryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabRecoveryViewController.m; sourceTree = "<group>"; };
@@ -690,6 +699,12 @@
 				F485C2251C18066D00C26E11 /* CwKeychain.m */,
 				F4FF8D0E1C4513B700863E54 /* CwExchange.h */,
 				F4FF8D0F1C4513B700863E54 /* CwExchange.m */,
+				A2F29F181C55FE7100C75E91 /* CwExOrderBase.h */,
+				A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */,
+				A2F29F1B1C56042600C75E91 /* CwExSellOrder.h */,
+				A2F29F1C1C56042600C75E91 /* CwExSellOrder.m */,
+				A26729891C561155005F452A /* CwExBuyOrder.h */,
+				A267298A1C561155005F452A /* CwExBuyOrder.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1180,6 +1195,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93CF969F19EE1A0200466DAF /* ViewController.m in Sources */,
+				A2F29F1D1C56042600C75E91 /* CwExSellOrder.m in Sources */,
 				EFAC5FEF1AAD9D4C0042FF8C /* SidebarViewController.m in Sources */,
 				F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */,
 				EFAC5FDE1AAD39620042FF8C /* TabScanTransactionViewController.m in Sources */,
@@ -1208,6 +1224,7 @@
 				EFAC5C4E1AC25A7000320EA6 /* qrencode.c in Sources */,
 				F4E412901BFB1D91003CFACF /* NSString+HexToData.m in Sources */,
 				EFCF9A4F1B32C8810076091B /* BRPaymentRequest.m in Sources */,
+				A2F29F1A1C55FE7100C75E91 /* CwExOrderBase.m in Sources */,
 				F493F32F1BC6807600876710 /* BaseViewController.m in Sources */,
 				F43E97C31C2808DC00D03DA9 /* NSData+Hash.m in Sources */,
 				F43E97BE1C27F20D00D03DA9 /* NSString+Base58.m in Sources */,
@@ -1256,6 +1273,7 @@
 				EFEE57E21B7AFA7400E5999B /* sha256.m in Sources */,
 				F43E97C71C2808F100D03DA9 /* NSData+Bitcoin.m in Sources */,
 				F4FD98711BE8B46500968A8E /* mpbn_util.c in Sources */,
+				A267298B1C561155005F452A /* CwExBuyOrder.m in Sources */,
 				93CF969C19EE1A0200466DAF /* AppDelegate.m in Sources */,
 				EFAC5C4F1AC25A7000320EA6 /* qrinput.c in Sources */,
 				EFCF9A521B32C8810076091B /* CwBtc.m in Sources */,

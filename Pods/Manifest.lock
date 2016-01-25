@@ -20,14 +20,14 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - CoreBitcoin (0.6.7):
+  - CoreBitcoin (0.6.8.1):
     - ISO8601DateFormatter
-    - OpenSSL-Universal (= 1.0.1.j-2)
-  - Crashlytics (3.5.0):
-    - Fabric (~> 1.6.0)
-  - Fabric (1.6.1)
+    - OpenSSL-Universal (= 1.0.1.16)
+  - Crashlytics (3.6.0):
+    - Fabric (~> 1.6.3)
+  - Fabric (1.6.4)
   - ISO8601DateFormatter (0.7)
-  - OpenSSL-Universal (1.0.1.j-2)
+  - OpenSSL-Universal (1.0.1.16)
   - ReactiveCocoa (2.5):
     - ReactiveCocoa/UI (= 2.5)
   - ReactiveCocoa/Core (2.5):
@@ -51,11 +51,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  CoreBitcoin: a433aa8592755cd94bc603dfc215492e869aa473
-  Crashlytics: fabfd45d0e8b8dc936c682b97e302b9a49a1c827
-  Fabric: bf0ceb04e7c924090efc5f8c55e4fbcca189e0a0
+  CoreBitcoin: 4ac6f6a61e543f08399c2fe57496d4fdcbaf74f9
+  Crashlytics: e4e8d02914f2608fbc7bf42b1a7af838b0db67a2
+  Fabric: ed41fd62173c6bdea24ab02c9d7707161eabb750
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
-  OpenSSL-Universal: 438433f1eaa4f7fbc787445c2e520c522ef0f024
+  OpenSSL-Universal: 85ef63bf81d0741b03c8719cd29685c37c59518d
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   RMMapper: 21122d753c736d975f6c61e674afce8db73579af
 
