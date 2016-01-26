@@ -57,7 +57,6 @@ CwCard *cwCard;
     
     self.viewOTPConfirm.hidden = YES;
     
-    NSLog(@"txtIdentifier = %@",self.txtIdentifier.text);
     NSLog(@"mode = %@",self.cwManager.connectedCwCard.mode);
 }
 

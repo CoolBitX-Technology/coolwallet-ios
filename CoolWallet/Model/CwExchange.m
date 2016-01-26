@@ -16,14 +16,14 @@
 
 #define ExBaseUrl @"http://xsm.coolbitx.com:8080/api/res/cw/"
 #define ExSession @"session"
+#define ExSessionLogout @"session/logout"
 
 @interface CwExchange()
 
+@property (readwrite, assign) ExSessionStatus sessionStatus;
+
 @property (strong, nonatomic) CwCard *card;
-@property (strong, nonatomic) NSData *sessionSvrChlng;
-@property (strong, nonatomic) NSData *sessionResponse;
-@property (strong, nonatomic) NSData *sessionChlng;
-@property (strong, nonatomic) NSData *sessionSvrResponse;
+@property (strong, nonatomic) NSString *loginSession;
 
 @property (strong, nonatomic) NSMutableArray *syncedAccount;
 @property (assign, nonatomic) BOOL cardInfoSynced;
@@ -67,55 +67,70 @@
         @strongify(self)
         self.syncedAccount = [NSMutableArray new];
         self.cardInfoSynced = NO;
-        self.loginSessionFinish = NO;
-        self.loginSession = nil;
+        
+        if (self.sessionStatus != ExSessionNone) {
+            [self logoutExSession];
+        }
     }];
     
-    RACSignal *accountNumberSignal = [[RACObserve(self, card) map:^id(CwCard *card) {
-        return RACObserve(card, hdwAcccountPointer);
-    }] switchToLatest];
-    
-    [[accountNumberSignal distinctUntilChanged] subscribeNext:^(NSNumber *counter) {
-        NSLog(@"hdwAcccountPointer: %@", counter);
+    [[RACObserve(self, sessionStatus) filter:^BOOL(NSNumber *sessionStatus) {
+        return sessionStatus.intValue == ExSessionNone;
+    }] subscribeNext:^(NSNumber *sessionStatus) {
+        @strongify(self)
+        self.loginSession = nil;
     }];
 }
 
 -(void) loginExSession
 {
-    [self.card exGetOtp];
+    self.sessionStatus = ExSessionNone;
     
-    self.loginSessionFinish = NO;
-    
-    CwManager *manager = [CwManager sharedManager];
-    NSLog(@"card: %@, %@", self.card, manager.connectedCwCard);
     @weakify(self);
     RACSignal *createSignal = [self signalCreateExSession];
     
     [[[[createSignal flattenMap:^RACStream *(NSDictionary *response) {
         @strongify(self);
-        return [self signalInitSessionFromCard:self.sessionSvrChlng];
-    }] flattenMap:^RACStream *(id value) {
-        @strongify(self);
-        NSLog(@"value: %@", value);
-        return [self signalEstablishExSessionWithChallenge:self.sessionChlng andResponse:self.sessionResponse];
-    }] flattenMap:^RACStream *(NSDictionary *response) {
+        NSString *hexString = [response objectForKey:@"challenge"];
         
-        return [self signalEstablishSessionFromCard:self.sessionSvrResponse];
-    }] subscribeNext:^(id response) {
+        return [self signalInitSessionFromCard:[NSString hexstringToData:hexString]];
+    }] flattenMap:^RACStream *(NSDictionary *cardResponse) {
         @strongify(self);
-        NSLog(@"response: %@", response);
-        self.loginSession = [NSData init];
-        self.loginSessionFinish = YES;
+        NSData *seResp = [cardResponse objectForKey:@"seResp"];
+        NSData *seChlng = [cardResponse objectForKey:@"seChlng"];
+        
+        return [self signalEstablishExSessionWithChallenge:seChlng andResponse:seResp];
+    }] flattenMap:^RACStream *(NSDictionary *response) {
+        @strongify(self);
+        NSString *hexString = [response objectForKey:@"response"];
+        
+        return [self signalEstablishSessionFromCard:[NSString hexstringToData:hexString]];
+    }] subscribeNext:^(id cardResponse) {
+        @strongify(self);
+        self.sessionStatus = ExSessionLogin;
         
         [self syncCardInfo];
     } error:^(NSError *error) {
         @strongify(self);
         NSLog(@"error(%ld): %@", error.code, error);
-        self.loginSession = nil;
-        self.loginSessionFinish = YES;
+        self.sessionStatus = ExSessionFail;
         
-//        self.loginSession = [NSData new];
-//        [self syncCardInfo];
+        [self logoutExSession];
+    }];
+}
+
+-(void) logoutExSession
+{
+    NSString *url = [NSString stringWithFormat:@"%@%@", ExBaseUrl, ExSessionLogout];
+    
+    AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        if (self.sessionStatus != ExSessionFail) {
+            self.sessionStatus = ExSessionNone;
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        if (self.sessionStatus != ExSessionFail) {
+            self.sessionStatus = ExSessionNone;
+        }
     }];
 }
 
@@ -131,19 +146,40 @@
     }
 }
 
+-(void) observeHdwAccountPointer
+{
+    RACSignal *accountNumberSignal = [[RACObserve(self, card) map:^id(CwCard *card) {
+        return RACObserve(card, hdwAcccountPointer);
+    }] switchToLatest];
+    
+    @weakify(self);
+    [[[accountNumberSignal distinctUntilChanged] skipUntilBlock:^BOOL(NSNumber *counter) {
+        @strongify(self)
+        return self.sessionStatus == ExSessionLogin;
+    }] subscribeNext:^(NSNumber *counter) {
+        @strongify(self);
+        NSLog(@"observeHdwAccountPointer: %@", counter);
+        for (int index = (int)self.syncedAccount.count; index < counter.intValue; index++) {
+            CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", index]];
+            [self observeAccount:account];
+            [self observeHdwAccountAddrCount:account];
+        }
+    }];
+}
+
 -(void) observeAccount:(CwAccount *)account
 {
-    if (!self.loginSessionFinish || self.loginSession == nil) {
+    if (self.sessionStatus != ExSessionLogin) {
         return;
     }
     
     @weakify(self);
-    RACDisposable *disposable = [[RACObserve(account, infoSynced) distinctUntilChanged] subscribeNext:^(NSNumber *synced) {
+    RACDisposable *disposable = [[[RACObserve(account, infoSynced) distinctUntilChanged] filter:^BOOL(NSNumber *synced) {
+        @strongify(self);
+        return synced.boolValue && ![self.syncedAccount containsObject:account];
+    }] subscribeNext:^(NSNumber *synced) {
         @strongify(self);
         NSLog(@"account: %ld, synced: %d, self.syncAccountCount = %lu", account.accId, synced.boolValue, (unsigned long)self.syncedAccount.count);
-        if ([self.syncedAccount containsObject:account] || !synced.boolValue) {
-            return;
-        }
         
         [self.syncedAccount addObject:account];
         
@@ -161,20 +197,6 @@
     }];
 }
 
--(void) observeHdwAccountPointer
-{
-    @weakify(self);
-    [[RACObserve(self.card, hdwAcccountPointer) distinctUntilChanged] subscribeNext:^(NSNumber *counter) {
-        @strongify(self);
-        NSLog(@"observeHdwAccountPointer: %@", counter);
-        for (int index = (int)self.syncedAccount.count; index < counter.intValue; index++) {
-            CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", index]];
-            [self observeAccount:account];
-            [self observeHdwAccountAddrCount:account];
-        }
-    }];
-}
-
 -(void) observeHdwAccountAddrCount:(CwAccount *)account
 {
     @weakify(self)
@@ -187,13 +209,18 @@
                                               return counter.intValue * self.cardInfoSynced <= 0;
                                           }] distinctUntilChanged];
     
-    [[signal flattenMap:^RACStream *(NSArray *counter) {
+    RACDisposable *disposable = [[signal flattenMap:^RACStream *(NSArray *counter) {
         @strongify(self)
         return [self signalSyncAccountInfo:account];
     }] subscribeNext:^(id response) {
         NSLog(@"sync account %ld completed: %@", account.accId, response);
     } error:^(NSError *error) {
         NSLog(@"sync account error: %@", error);
+    }];
+    
+    [account.rac_willDeallocSignal subscribeNext:^(id value) {
+        NSLog(@"%@ will dealloc", value);
+        [disposable dispose];
     }];
 }
 
@@ -202,15 +229,20 @@
     
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        self.sessionStatus = ExSessionProcess;
+        
         AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
         [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-            NSString *hexString = [responseObject objectForKey:@"challenge"];
-            NSLog(@"hexString: %@", hexString);
-            @strongify(self);
-            self.sessionSvrChlng = [NSString hexstringToData:hexString];
+            self.loginSession = [operation.response.allHeaderFields objectForKey:@"Set-Cookie"];
             
-            [subscriber sendNext:responseObject];
-            [subscriber sendCompleted];
+            NSString *hexString = [responseObject objectForKey:@"challenge"];
+            if (hexString.length == 0) {
+                [subscriber sendError:[NSError errorWithDomain:@"Not exchange site member." code:900 userInfo:nil]];
+            } else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             [subscriber sendError:error];
         }];
@@ -227,12 +259,10 @@
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
         
-        [self.card exSessionInit:self.sessionSvrChlng withComplete:^(NSData *seResp, NSData *seChlng) {
+        [self.card exSessionInit:srvChlng withComplete:^(NSData *seResp, NSData *seChlng) {
             NSLog(@"seResp: %@, seChlng: %@", seResp, seChlng);
-            self.sessionResponse = seResp;
-            self.sessionChlng = seChlng;
             
-            [subscriber sendNext:nil];
+            [subscriber sendNext:@{@"seResp": seResp, @"seChlng": seChlng}];
             [subscriber sendCompleted];
         } withError:^(NSInteger errorCode) {
             NSError *error = [NSError errorWithDomain:@"Card Cmd Error" code:errorCode userInfo:nil];
@@ -255,12 +285,6 @@
         
         AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
         [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-            NSLog(@"session establish: %@", responseObject);
-            
-            NSString *hexString = [responseObject objectForKey:@"response"];
-            NSLog(@"hexString: %@", hexString);
-            self.sessionSvrResponse = [NSString hexstringToData:hexString];
-            
             [subscriber sendNext:responseObject];
             [subscriber sendCompleted];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
@@ -374,6 +398,9 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer=[AFJSONRequestSerializer serializer];
+    if (self.loginSession != nil) {
+        [manager.requestSerializer setValue:self.loginSession forHTTPHeaderField:@"Set-Cookie"];
+    }
     
     return manager;
 }

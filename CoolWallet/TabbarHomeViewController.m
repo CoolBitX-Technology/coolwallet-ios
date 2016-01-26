@@ -30,13 +30,12 @@ CwAccount *account;
     NSArray *sortedTxKeys;
     NSInteger rowSelect;
     bool isFirst;
+    CwAccount *account;
 }
 
 @property (strong, nonatomic) NSArray *accountButtons;
 @property (assign, nonatomic) BOOL waitAccountCreated;
 @property (strong, nonatomic) NSMutableArray *txSyncing;
-
-@property (strong, nonatomic) RACSignal *cardSignal;
 
 @end
 
@@ -65,13 +64,6 @@ CwAccount *account;
     parantViewController.delegate = self;
     
     btcNet.delegate = self;
-    
-    if (account != nil) {
-        [self setAccountButton];
-    } else if (self.cwManager.connectedCwCard.currentAccountId != 0) {
-        self.cwManager.connectedCwCard.currentAccountId = 0;
-        [self.cwManager.connectedCwCard setDisplayAccount:0];
-    }
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -79,6 +71,8 @@ CwAccount *account;
     if (account == nil) {
         [self showIndicatorView:@"checking data"];
         [self.cwManager.connectedCwCard getModeState];
+    } else {
+        [self setAccountButton];
     }
 }
 
@@ -99,15 +93,15 @@ CwAccount *account;
 -(void) checkAndLoginExSite
 {
     CwExchange *exchange = [CwExchange sharedInstance];
-    if (!exchange.loginSessionFinish) {
-        self.cardSignal = [[[RACObserve(self.cwManager, connectedCwCard) filter:^BOOL(CwCard *card) {
+    if (exchange.sessionStatus == ExSessionNone) {
+        RACSignal *cardSignal = [[[RACObserve(self.cwManager, connectedCwCard) filter:^BOOL(CwCard *card) {
             return card != nil && card.cardId.length != 0;
         }] map:^RACStream *(CwCard *card) {
             NSLog(@"connect card: %@<%@>", card, card.cardId);
             return RACObserve(card, hdwStatus);
         }] switchToLatest];
         
-        [[[[self.cardSignal filter:^BOOL(NSNumber *hdwStatus) {
+        [[[[cardSignal filter:^BOOL(NSNumber *hdwStatus) {
             NSLog(@"hdwStatus: %@", hdwStatus);
             return hdwStatus.integerValue != CwHdwStatusInactive && hdwStatus.integerValue != CwHdwStatusWaitConfirm;
         }] take:1]
@@ -217,7 +211,7 @@ Boolean setBtnActionFlag;
 
 - (void)SetTxkeys
 {
-    NSLog(@"TabbarHomeViewController, %ld trans = %d", (long)account.accId, [account.transactions count]);
+    NSLog(@"TabbarHomeViewController, %ld trans = %lu", (long)account.accId, (unsigned long)[account.transactions count]);
     
     if([account.transactions count] == 0 ) {
         [_tableTransaction reloadData];

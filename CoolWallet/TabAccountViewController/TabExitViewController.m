@@ -81,7 +81,7 @@
     network.delegate = nil;
     
     CwExchange *exchange = [CwExchange sharedInstance];
-    if (exchange.loginSession != nil) {
+    if (exchange.sessionStatus == ExSessionLogin) {
         [self.cwManager.connectedCwCard exSessionLogout];
     } else {
         [self.cwManager.connectedCwCard logoutHost];

@@ -8,10 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+
+typedef NS_ENUM (int, ExSessionStatus) {
+    ExSessionNone,
+    ExSessionProcess,
+    ExSessionLogin,
+    ExSessionFail
+};
+
 @interface CwExchange : NSObject
 
-@property (assign, nonatomic) BOOL loginSessionFinish;
-@property (strong, nonatomic) NSData *loginSession;
+@property (readonly, assign) ExSessionStatus sessionStatus;
 
 +(id)sharedInstance;
 -(void) loginExSession;
