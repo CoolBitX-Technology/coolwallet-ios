@@ -212,7 +212,8 @@ long TxFee = 10000;
 - (IBAction)doneAmountItem:(id)sender
 {
     if([_txtAmount.text compare:@""] != 0) {
-        NSString *satoshi = [[OCAppCommon getInstance] convertBTCtoSatoshi:_txtAmount.text];
+        NSString *amount = [_txtAmount.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+        NSString *satoshi = [[OCAppCommon getInstance] convertBTCtoSatoshi:amount];
         NSString *fiatmoney =  [[OCAppCommon getInstance] convertFiatMoneyString:[satoshi longLongValue] currRate:self.cwManager.connectedCwCard.currRate];
         
         self.txtAmountFiatmoney.text = fiatmoney;
@@ -320,7 +321,8 @@ long TxFee = 10000;
         return;
     }
     
-    NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
+    NSString *amount = [self.txtAmount.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+    NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:amount];
     [cwCard prepareTransaction: [sato longLongValue] Address:self.txtReceiverAddress.text Change: self.genAddr.address];
 }
 
