@@ -26,4 +26,9 @@
     return [self localizeDateString:@"dd MMM yyyy hh:mm a"];
 }
 
+-(NSString *) exDateString
+{
+    return [self localizeDateString:@"hh:mm aaa dd MMM"];
+}
+
 @end

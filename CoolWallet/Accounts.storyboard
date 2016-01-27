@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="pJk-oc-UYe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="pJk-oc-UYe">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -2799,7 +2799,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         <rect key="frame" x="10" y="65" width="300" height="1"/>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Enable One Time Password (OTP) on transactions " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Njd-cf-Wfa">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Enable One Time Password (OTP) on transactions " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Njd-cf-Wfa">
                                         <rect key="frame" x="8" y="2" width="241" height="68"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3466,8 +3466,8 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zop-xA-Ob9">
-                                <rect key="frame" x="137" y="408" width="46" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zop-xA-Ob9">
+                                <rect key="frame" x="137" y="307" width="46" height="30"/>
                                 <state key="normal" title="Login">
                                     <color key="titleColor" red="0.68235294120000001" green="0.56470588239999997" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -3479,12 +3479,14 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <color key="backgroundColor" red="0.10196078431372549" green="0.10196078431372549" blue="0.10196078431372549" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="9az-Ux-MP8" firstAttribute="leading" secondItem="KZZ-3C-83h" secondAttribute="leading" constant="32" id="LIs-9c-v3v"/>
+                            <constraint firstItem="TMI-0W-PHW" firstAttribute="top" secondItem="zop-xA-Ob9" secondAttribute="bottom" constant="8" id="MLg-nh-X62"/>
                             <constraint firstItem="1YX-v3-nwZ" firstAttribute="top" secondItem="R40-fu-ssz" secondAttribute="bottom" constant="89" id="Q5j-Ph-5Z4"/>
                             <constraint firstAttribute="trailing" secondItem="TMI-0W-PHW" secondAttribute="trailing" constant="32" id="TEo-F5-8bh"/>
                             <constraint firstItem="9az-Ux-MP8" firstAttribute="top" secondItem="1YX-v3-nwZ" secondAttribute="bottom" constant="8" id="WjM-tN-apz"/>
                             <constraint firstAttribute="trailing" secondItem="9az-Ux-MP8" secondAttribute="trailing" constant="32" id="YQj-Fa-mFQ"/>
                             <constraint firstItem="1YX-v3-nwZ" firstAttribute="centerX" secondItem="KZZ-3C-83h" secondAttribute="centerX" id="evN-sa-VGM"/>
                             <constraint firstItem="TMI-0W-PHW" firstAttribute="top" secondItem="9az-Ux-MP8" secondAttribute="bottom" constant="121" id="gXr-Kh-llc"/>
+                            <constraint firstItem="zop-xA-Ob9" firstAttribute="centerX" secondItem="KZZ-3C-83h" secondAttribute="centerX" id="nB2-z9-X68"/>
                             <constraint firstItem="TMI-0W-PHW" firstAttribute="leading" secondItem="KZZ-3C-83h" secondAttribute="leading" constant="32" id="zqf-D3-3JO"/>
                         </constraints>
                     </view>
@@ -3506,7 +3508,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <!--Exchange-->
         <scene sceneID="2kp-Hd-Zce">
             <objects>
-                <viewController id="hDj-Rv-ioi" sceneMemberID="viewController">
+                <viewController id="hDj-Rv-ioi" customClass="ExMatchedOrderViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Z48-kQ-UXU"/>
                         <viewControllerLayoutGuide type="bottom" id="mHh-m2-xfa"/>
@@ -3563,39 +3565,39 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="22" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f0p-kQ-Ixr">
-                                        <rect key="frame" x="8" y="45" width="304" height="199"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="22" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f0p-kQ-Ixr">
+                                        <rect key="frame" x="0.0" y="45" width="320" height="199"/>
                                         <color key="backgroundColor" red="0.29411764709999999" green="0.28627450980000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="separatorColor" red="0.40000000000000002" green="0.396078431372549" blue="0.39215686274509803" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="sectionIndexBackgroundColor" red="0.29411764705882354" green="0.28627450980392155" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="sectionIndexBackgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HeaderCell" rowHeight="22" id="Ewc-it-aIM">
-                                                <rect key="frame" x="0.0" y="28" width="304" height="22"/>
+                                                <rect key="frame" x="0.0" y="28" width="320" height="22"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ewc-it-aIM" id="ie3-WJ-r5J">
-                                                    <rect key="frame" x="0.0" y="0.0" width="304" height="21.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="21.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount(BTC)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECZ-2e-sGU">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Amount(BTC)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECZ-2e-sGU">
                                                             <rect key="frame" x="8" y="0.0" width="87" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GD0-BZ-4Z9">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GD0-BZ-4Z9">
                                                             <rect key="frame" x="95" y="0.0" width="87" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expiration time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eG-gA-iT7">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Expiration time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eG-gA-iT7">
                                                             <rect key="frame" x="182" y="0.0" width="87" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" red="0.29411764709999999" green="0.28627450980000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="2eG-gA-iT7" secondAttribute="trailing" constant="35" id="3Rt-kN-131"/>
@@ -3613,16 +3615,16 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                         <constraint firstItem="GD0-BZ-4Z9" firstAttribute="width" secondItem="2eG-gA-iT7" secondAttribute="width" id="xyF-gl-2Sa"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
-                                                <color key="backgroundColor" red="0.29411764709999999" green="0.28627450980000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="OrderCell" rowHeight="44" id="FB2-ww-IcK">
-                                                <rect key="frame" x="0.0" y="50" width="304" height="44"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="OrderCell" rowHeight="44" id="FB2-ww-IcK" customClass="ExOrderCell">
+                                                <rect key="frame" x="0.0" y="50" width="320" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FB2-ww-IcK" id="Qbg-hv-Sfn">
-                                                    <rect key="frame" x="0.0" y="0.0" width="271" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.00000001" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JU-qp-woo">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.00000001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JU-qp-woo">
                                                             <rect key="frame" x="8" y="11" width="87" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3641,7 +3643,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" red="0.29411764709999999" green="0.28627450980000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstItem="eVW-nI-Yb6" firstAttribute="leading" secondItem="5JU-qp-woo" secondAttribute="trailing" id="1RK-Nn-YPB"/>
                                                         <constraint firstAttribute="trailing" secondItem="H8W-wS-kaA" secondAttribute="trailing" constant="2" id="5V8-Ip-46d"/>
@@ -3654,15 +3656,22 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                         <constraint firstItem="H8W-wS-kaA" firstAttribute="leading" secondItem="eVW-nI-Yb6" secondAttribute="trailing" id="sSg-GP-aBO"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
-                                                <color key="backgroundColor" red="0.29411764709999999" green="0.28627450980000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <connections>
+                                                    <outlet property="amountBTCLabel" destination="5JU-qp-woo" id="Sn1-EG-fyk"/>
+                                                    <outlet property="priceLabel" destination="eVW-nI-Yb6" id="48d-st-WIg"/>
+                                                    <outlet property="timeLabel" destination="H8W-wS-kaA" id="4Fw-Rl-vYK"/>
                                                     <segue destination="hnS-GJ-oPb" kind="push" id="kCd-ih-hMI"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="hDj-Rv-ioi" id="KsT-Ga-ouf"/>
+                                            <outlet property="delegate" destination="hDj-Rv-ioi" id="7qT-2c-Dtl"/>
+                                        </connections>
                                     </tableView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Matched sell orders" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12y-wM-zWV">
-                                        <rect key="frame" x="8" y="257.5" width="304" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Matched buy orders" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12y-wM-zWV">
+                                        <rect key="frame" x="8" y="257" width="304" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="YEK-oK-yns"/>
                                         </constraints>
@@ -3670,39 +3679,39 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VQT-vY-3Ag">
-                                        <rect key="frame" x="8" y="289" width="304" height="199"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VQT-vY-3Ag">
+                                        <rect key="frame" x="0.0" y="286.5" width="320" height="201.5"/>
                                         <color key="backgroundColor" red="0.29411764709999999" green="0.28627450980000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="separatorColor" red="0.40000000000000002" green="0.39607843139999999" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="sectionIndexBackgroundColor" red="0.29411764705882354" green="0.28627450980392155" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="sectionIndexBackgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HeaderCell" rowHeight="22" id="Ztb-65-rKF">
-                                                <rect key="frame" x="0.0" y="28" width="304" height="22"/>
+                                                <rect key="frame" x="0.0" y="28" width="320" height="22"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ztb-65-rKF" id="3yJ-Zw-nGq">
-                                                    <rect key="frame" x="0.0" y="0.0" width="304" height="21.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="21.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount(BTC)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDg-Sq-bxa">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Amount(BTC)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDg-Sq-bxa">
                                                             <rect key="frame" x="8" y="0.0" width="87" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3aF-b8-72j">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3aF-b8-72j">
                                                             <rect key="frame" x="95" y="0.0" width="87" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expiration time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kpR-QU-JtI">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Expiration time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kpR-QU-JtI">
                                                             <rect key="frame" x="182" y="0.0" width="87" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" red="0.29411764709999999" green="0.28627450980000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="kpR-QU-JtI" secondAttribute="trailing" constant="35" id="01v-WF-gVe"/>
@@ -3720,16 +3729,16 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                         <constraint firstItem="hDg-Sq-bxa" firstAttribute="top" secondItem="3yJ-Zw-nGq" secondAttribute="top" id="gA3-dr-Ra6"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
-                                                <color key="backgroundColor" red="0.29411764709999999" green="0.28627450980000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="OrderCell" rowHeight="44" id="2b9-C4-Fdb">
-                                                <rect key="frame" x="0.0" y="50" width="304" height="44"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="OrderCell" rowHeight="44" id="2b9-C4-Fdb" customClass="ExOrderCell">
+                                                <rect key="frame" x="0.0" y="50" width="320" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2b9-C4-Fdb" id="vgj-1N-NJ4">
-                                                    <rect key="frame" x="0.0" y="0.0" width="271" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.00000001" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I1s-Zd-6fT">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.00000001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I1s-Zd-6fT">
                                                             <rect key="frame" x="8" y="11" width="87" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3748,7 +3757,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" red="0.29411764709999999" green="0.28627450980000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstItem="I1s-Zd-6fT" firstAttribute="width" secondItem="IXm-Tm-oZc" secondAttribute="width" id="2jd-fh-XMr"/>
                                                         <constraint firstItem="I1s-Zd-6fT" firstAttribute="centerY" secondItem="vgj-1N-NJ4" secondAttribute="centerY" id="PjW-U7-1jG"/>
@@ -3761,24 +3770,33 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                         <constraint firstItem="fcx-uk-vbS" firstAttribute="centerY" secondItem="vgj-1N-NJ4" secondAttribute="centerY" id="t84-dQ-ezo"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
-                                                <color key="backgroundColor" red="0.29411764709999999" green="0.28627450980000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <connections>
+                                                    <outlet property="amountBTCLabel" destination="I1s-Zd-6fT" id="qnp-J1-mRC"/>
+                                                    <outlet property="priceLabel" destination="IXm-Tm-oZc" id="x9B-fC-aEx"/>
+                                                    <outlet property="timeLabel" destination="fcx-uk-vbS" id="LNI-eG-677"/>
+                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="hDj-Rv-ioi" id="WZd-uw-x4H"/>
+                                            <outlet property="delegate" destination="hDj-Rv-ioi" id="nAW-4b-n9y"/>
+                                        </connections>
                                     </tableView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="12y-wM-zWV" firstAttribute="centerY" secondItem="ybr-hI-9sv" secondAttribute="centerY" constant="16" id="1QN-vQ-dgC"/>
-                                    <constraint firstItem="f0p-kQ-Ixr" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="8" id="2TN-K2-K8G"/>
+                                    <constraint firstItem="f0p-kQ-Ixr" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" id="2TN-K2-K8G"/>
                                     <constraint firstAttribute="trailing" secondItem="aUr-6J-4VA" secondAttribute="trailing" constant="8" id="CKT-dr-XSj"/>
                                     <constraint firstItem="12y-wM-zWV" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="8" id="Eww-WN-Bzd"/>
                                     <constraint firstItem="VQT-vY-3Ag" firstAttribute="leading" secondItem="f0p-kQ-Ixr" secondAttribute="leading" id="LO4-gS-1YX"/>
                                     <constraint firstItem="f0p-kQ-Ixr" firstAttribute="top" secondItem="aUr-6J-4VA" secondAttribute="bottom" constant="8" id="MyF-mP-PXu"/>
-                                    <constraint firstItem="VQT-vY-3Ag" firstAttribute="height" secondItem="f0p-kQ-Ixr" secondAttribute="height" id="ZLu-3R-Fp0"/>
+                                    <constraint firstItem="VQT-vY-3Ag" firstAttribute="height" secondItem="f0p-kQ-Ixr" secondAttribute="height" constant="2.5" id="ZLu-3R-Fp0"/>
                                     <constraint firstItem="aUr-6J-4VA" firstAttribute="top" secondItem="ybr-hI-9sv" secondAttribute="top" constant="16" id="aJL-em-Lfi"/>
                                     <constraint firstItem="aUr-6J-4VA" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="8" id="bpu-t7-PQJ"/>
                                     <constraint firstAttribute="bottom" secondItem="VQT-vY-3Ag" secondAttribute="bottom" constant="16" id="e3G-xa-TfO"/>
-                                    <constraint firstAttribute="trailing" secondItem="f0p-kQ-Ixr" secondAttribute="trailing" constant="8" id="fsJ-nU-KF6"/>
+                                    <constraint firstAttribute="trailing" secondItem="f0p-kQ-Ixr" secondAttribute="trailing" id="fsJ-nU-KF6"/>
                                     <constraint firstItem="VQT-vY-3Ag" firstAttribute="trailing" secondItem="f0p-kQ-Ixr" secondAttribute="trailing" id="iGG-9R-qZw"/>
                                     <constraint firstItem="VQT-vY-3Ag" firstAttribute="top" secondItem="12y-wM-zWV" secondAttribute="bottom" constant="8" id="jz1-Jc-GJK"/>
                                     <constraint firstAttribute="trailing" secondItem="12y-wM-zWV" secondAttribute="trailing" constant="8" id="wfz-CJ-5p2"/>
@@ -3805,6 +3823,10 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableViewBuy" destination="VQT-vY-3Ag" id="fIa-Lp-RSE"/>
+                        <outlet property="tableViewSell" destination="f0p-kQ-Ixr" id="YzW-tc-SGH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8L5-CM-AmC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

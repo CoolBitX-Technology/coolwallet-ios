@@ -12,17 +12,12 @@
 #import "NSString+HexToData.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#import <AFNetworking/AFNetworking.h>
-
-#define ExBaseUrl @"http://xsm.coolbitx.com:8080/api/res/cw/"
-#define ExSession @"session"
-#define ExSessionLogout @"session/logout"
 
 @interface CwExchange()
 
 @property (readwrite, assign) ExSessionStatus sessionStatus;
 
-@property (strong, nonatomic) CwCard *card;
+@property (readwrite, nonatomic) CwCard *card;
 @property (strong, nonatomic) NSString *loginSession;
 
 @property (strong, nonatomic) NSMutableArray *syncedAccount;
@@ -63,20 +58,14 @@
     }];
     
     [[RACObserve(self, card) distinctUntilChanged] subscribeNext:^(CwCard *card) {
-        NSLog(@"card changed: %@", card);
         @strongify(self)
         self.syncedAccount = [NSMutableArray new];
         self.cardInfoSynced = NO;
         
-        if (self.sessionStatus != ExSessionNone) {
+        if (self.sessionStatus != ExSessionFail) {
             [self logoutExSession];
         }
-    }];
-    
-    [[RACObserve(self, sessionStatus) filter:^BOOL(NSNumber *sessionStatus) {
-        return sessionStatus.intValue == ExSessionNone;
-    }] subscribeNext:^(NSNumber *sessionStatus) {
-        @strongify(self)
+        self.sessionStatus = ExSessionNone;
         self.loginSession = nil;
     }];
 }
@@ -113,24 +102,23 @@
         @strongify(self);
         NSLog(@"error(%ld): %@", error.code, error);
         self.sessionStatus = ExSessionFail;
-        
         [self logoutExSession];
     }];
 }
 
 -(void) logoutExSession
 {
+    if (self.card.mode.integerValue == CwCardModeNormal || self.card.mode.integerValue == CwCardModeAuth) {
+        [self.card exSessionLogout];
+    }
+    
     NSString *url = [NSString stringWithFormat:@"%@%@", ExBaseUrl, ExSessionLogout];
     
     AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-        if (self.sessionStatus != ExSessionFail) {
-            self.sessionStatus = ExSessionNone;
-        }
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-        if (self.sessionStatus != ExSessionFail) {
-            self.sessionStatus = ExSessionNone;
-        }
+        
     }];
 }
 

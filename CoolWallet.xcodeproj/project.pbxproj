@@ -178,6 +178,9 @@
 		F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */; };
 		F493F32F1BC6807600876710 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F493F32E1BC6807600876710 /* BaseViewController.m */; };
 		F49F76431BD8AFF800C335B9 /* downarrow-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */; };
+		F4A7CC451C58794100E40CD1 /* ExMatchOrderVM.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC441C58794100E40CD1 /* ExMatchOrderVM.m */; };
+		F4A7CC4B1C5884A100E40CD1 /* ExMatchedOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */; };
+		F4A7CC4F1C58959A00E40CD1 /* ExOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4E1C58959A00E40CD1 /* ExOrderCell.m */; };
 		F4E412901BFB1D91003CFACF /* NSString+HexToData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E4128F1BFB1D91003CFACF /* NSString+HexToData.m */; };
 		F4FD98711BE8B46500968A8E /* mpbn_util.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FD986F1BE8B46500968A8E /* mpbn_util.c */; };
 		F4FF8D0D1C45104F00863E54 /* TabExchangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FF8D0C1C45104F00863E54 /* TabExchangeViewController.m */; };
@@ -465,6 +468,13 @@
 		F493F32D1BC6807600876710 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		F493F32E1BC6807600876710 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downarrow-01@2x.png"; sourceTree = "<group>"; };
+		F4A7CC431C58794100E40CD1 /* ExMatchOrderVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExMatchOrderVM.h; sourceTree = "<group>"; };
+		F4A7CC441C58794100E40CD1 /* ExMatchOrderVM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExMatchOrderVM.m; sourceTree = "<group>"; };
+		F4A7CC491C5884A100E40CD1 /* ExMatchedOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExMatchedOrderViewController.h; sourceTree = "<group>"; };
+		F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExMatchedOrderViewController.m; sourceTree = "<group>"; };
+		F4A7CC4D1C58959A00E40CD1 /* ExOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExOrderCell.h; sourceTree = "<group>"; };
+		F4A7CC4E1C58959A00E40CD1 /* ExOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExOrderCell.m; sourceTree = "<group>"; };
+		F4A7CC501C58DFFE00E40CD1 /* CwExAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExAPI.h; path = Model/CwExAPI.h; sourceTree = "<group>"; };
 		F4E4128E1BFB1D91003CFACF /* NSString+HexToData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HexToData.h"; sourceTree = "<group>"; };
 		F4E4128F1BFB1D91003CFACF /* NSString+HexToData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HexToData.m"; sourceTree = "<group>"; };
 		F4FD986F1BE8B46500968A8E /* mpbn_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mpbn_util.c; path = C_API/mpbn_util.c; sourceTree = "<group>"; };
@@ -542,6 +552,9 @@
 		93CF969519EE1A0200466DAF /* CoolWallet */ = {
 			isa = PBXGroup;
 			children = (
+				F4A7CC4C1C58957800E40CD1 /* Views */,
+				F4A7CC481C58845000E40CD1 /* ExchangeViewControllers */,
+				F4A7CC421C5878FD00E40CD1 /* ViewModel */,
 				A2B6E7D51BD28813001B1592 /* Category */,
 				EFEE57DA1B7AFA5D00E5999B /* C_API */,
 				EFEF8DB81B4A5FB3004427B8 /* SRWebSocket */,
@@ -644,6 +657,7 @@
 		EF698CC11A78C1F200A943B9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F4A7CC501C58DFFE00E40CD1 /* CwExAPI.h */,
 				EFF6DD031B9403970089E093 /* CwBase58.h */,
 				EFF6DD041B9403970089E093 /* CwBase58.m */,
 				EFE204241B4A837A00F3D8F6 /* Base58.c */,
@@ -942,6 +956,33 @@
 			name = FrontViewController;
 			sourceTree = "<group>";
 		};
+		F4A7CC421C5878FD00E40CD1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F4A7CC431C58794100E40CD1 /* ExMatchOrderVM.h */,
+				F4A7CC441C58794100E40CD1 /* ExMatchOrderVM.m */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F4A7CC481C58845000E40CD1 /* ExchangeViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				F4A7CC491C5884A100E40CD1 /* ExMatchedOrderViewController.h */,
+				F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */,
+			);
+			path = ExchangeViewControllers;
+			sourceTree = "<group>";
+		};
+		F4A7CC4C1C58957800E40CD1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F4A7CC4D1C58959A00E40CD1 /* ExOrderCell.h */,
+				F4A7CC4E1C58959A00E40CD1 /* ExOrderCell.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1200,6 +1241,7 @@
 				F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */,
 				EFAC5FDE1AAD39620042FF8C /* TabScanTransactionViewController.m in Sources */,
 				EFAC5FD91AAD39620042FF8C /* TabCreateAccountViewController.m in Sources */,
+				F4A7CC451C58794100E40CD1 /* ExMatchOrderVM.m in Sources */,
 				F485C2261C18066D00C26E11 /* CwKeychain.m in Sources */,
 				EFAC5FDC1AAD39620042FF8C /* TabHostTableViewController.m in Sources */,
 				EFAB50B61AC02CFB003A2D3F /* TabbarAccountViewController.m in Sources */,
@@ -1257,6 +1299,7 @@
 				EFCF9A571B32C8810076091B /* CwHost.m in Sources */,
 				EFABE47D1AB2938200C2B634 /* TabCreateHdwVerifyViewController.m in Sources */,
 				EFCF9A5C1B32C8810076091B /* CwTxout.m in Sources */,
+				F4A7CC4B1C5884A100E40CD1 /* ExMatchedOrderViewController.m in Sources */,
 				EFAC5C501AC25A7000320EA6 /* qrspec.c in Sources */,
 				EFCF9A5F1B32C8810076091B /* KeychainItemWrapper.m in Sources */,
 				EFCF9A561B32C8810076091B /* CwCardSoft.m in Sources */,
@@ -1273,6 +1316,7 @@
 				EFEE57E21B7AFA7400E5999B /* sha256.m in Sources */,
 				F43E97C71C2808F100D03DA9 /* NSData+Bitcoin.m in Sources */,
 				F4FD98711BE8B46500968A8E /* mpbn_util.c in Sources */,
+				F4A7CC4F1C58959A00E40CD1 /* ExOrderCell.m in Sources */,
 				A267298B1C561155005F452A /* CwExBuyOrder.m in Sources */,
 				93CF969C19EE1A0200466DAF /* AppDelegate.m in Sources */,
 				EFAC5C4F1AC25A7000320EA6 /* qrinput.c in Sources */,

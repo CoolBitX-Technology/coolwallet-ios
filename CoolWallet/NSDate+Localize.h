@@ -12,5 +12,6 @@
 
 -(NSString *) localizeDateString:(NSString *)format;
 -(NSString *) cwDateString;
+-(NSString *) exDateString;
 
 @end

@@ -14,6 +14,8 @@
 @property (strong, nonatomic) NSString *address;
 @property (strong, nonatomic) NSNumber *amountBTC;
 @property (strong, nonatomic) NSNumber *accountId;
-@property (strong, nonatomic) NSDate *expiration;
+@property (strong, nonatomic) NSString *expirationUTC;
+
+@property (readonly, nonatomic) NSDate *expiration;
 
 @end

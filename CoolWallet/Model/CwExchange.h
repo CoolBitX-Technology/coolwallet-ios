@@ -7,21 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CwExAPI.h"
 
+#import <AFNetworking/AFNetworking.h>
 
-typedef NS_ENUM (int, ExSessionStatus) {
-    ExSessionNone,
-    ExSessionProcess,
-    ExSessionLogin,
-    ExSessionFail
-};
+@class CwCard;
 
 @interface CwExchange : NSObject
 
+@property (readonly, nonatomic) CwCard *card;
 @property (readonly, assign) ExSessionStatus sessionStatus;
 
 +(id)sharedInstance;
 -(void) loginExSession;
 -(void) syncCardInfo;
+
+-(AFHTTPRequestOperationManager *) defaultJsonManager;
 
 @end

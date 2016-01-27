@@ -15,11 +15,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.6</string>
+	<string>1.1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>ex_20160112.1</string>
+	<string>ex_20160127.1</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -36,6 +36,11 @@
 	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
