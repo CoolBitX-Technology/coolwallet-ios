@@ -12,9 +12,15 @@
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
+#define ExPlaceOrderURL @"http://xsm.coolbitx.com:8080/signup"
+
 @interface ExMatchedOrderViewController() <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) ExMatchOrderVM *vm;
+@property (assign, nonatomic) NSNumber *hasMatchedOrders;
+
+@property (weak, nonatomic) IBOutlet UIView *noOrderView;
+@property (weak, nonatomic) IBOutlet UIView *matchedOrderView;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewSell;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewBuy;
 
@@ -34,11 +40,38 @@
     self.vm = [ExMatchOrderVM new];
     [self.vm requestMatchedOrders];
     
+    RAC(self, hasMatchedOrders) = [RACSignal combineLatest:@[RACObserve(self.vm, matchedSellOrders), RACObserve(self.vm, matchedBuyOrders)] reduce:^NSNumber *(NSArray *sellOrders, NSArray *buyOrders) {
+        BOOL enabled = NO;
+        if (sellOrders != nil && buyOrders != nil) {
+            enabled = sellOrders.count > 0 || buyOrders.count > 0;
+        }
+        
+        return [NSNumber numberWithBool:enabled];
+    }];
+    
+    [self addObservers];
+}
+
+-(void) addObservers
+{
     @weakify(self)
+    [[RACObserve(self, hasMatchedOrders) filter:^BOOL(id value) {
+        @strongify(self)
+        return self.vm.matchedSellOrders != nil && self.vm.matchedBuyOrders != nil;
+    }] subscribeNext:^(NSNumber *has) {
+        @strongify(self)
+        if (has.boolValue) {
+            self.noOrderView.hidden = YES;
+            self.matchedOrderView.hidden = NO;
+        } else {
+            self.noOrderView.hidden = NO;
+            self.matchedOrderView.hidden = YES;
+        }
+    }];
+    
     [[RACObserve(self.vm, matchedSellOrders) filter:^BOOL(id value) {
         return value != nil;
     }] subscribeNext:^(id value) {
-        NSLog(@"matchedSellOrders: %@", value);
         @strongify(self)
         [self.tableViewSell reloadData];
     }];
@@ -46,10 +79,13 @@
     [[RACObserve(self.vm, matchedBuyOrders) filter:^BOOL(id value) {
         return value != nil;
     }] subscribeNext:^(id value) {
-        NSLog(@"matchedBuyOrders: %@", value);
         @strongify(self)
         [self.tableViewBuy reloadData];
     }];
+}
+
+- (IBAction)placeOrder:(UIButton *)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:ExPlaceOrderURL]];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

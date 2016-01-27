@@ -2799,7 +2799,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         <rect key="frame" x="10" y="65" width="300" height="1"/>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Enable One Time Password (OTP) on transactions " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Njd-cf-Wfa">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Enable One Time Password (OTP) on transactions " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Njd-cf-Wfa">
                                         <rect key="frame" x="8" y="2" width="241" height="68"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3527,7 +3527,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bhK-Ap-J4U">
-                                        <rect key="frame" x="32" y="262" width="256" height="48"/>
+                                        <rect key="frame" x="32" y="282" width="256" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="vgl-93-f0g"/>
                                         </constraints>
@@ -3538,19 +3538,18 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         </state>
                                         <state key="highlighted" backgroundImage="button_frame.png"/>
                                         <connections>
+                                            <action selector="placeOrder:" destination="hDj-Rv-ioi" eventType="touchUpInside" id="Kss-p2-VHy"/>
                                             <action selector="signupEx:" destination="OGz-dN-pAy" eventType="touchUpInside" id="16l-0c-Tf6"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="Lhe-gT-gzG" secondAttribute="trailing" constant="8" id="32i-PJ-YjB"/>
-                                    <constraint firstItem="Lhe-gT-gzG" firstAttribute="leading" secondItem="gLD-Jf-TAu" secondAttribute="leading" constant="8" id="NI2-rg-1fx"/>
+                                    <constraint firstItem="Lhe-gT-gzG" firstAttribute="centerX" secondItem="gLD-Jf-TAu" secondAttribute="centerX" id="ONx-am-3gI"/>
                                     <constraint firstItem="Lhe-gT-gzG" firstAttribute="top" secondItem="gLD-Jf-TAu" secondAttribute="top" constant="150" id="PWX-ff-g9j"/>
                                     <constraint firstItem="bhK-Ap-J4U" firstAttribute="leading" secondItem="gLD-Jf-TAu" secondAttribute="leading" constant="32" id="Uhl-tZ-Hjm"/>
                                     <constraint firstAttribute="trailing" secondItem="bhK-Ap-J4U" secondAttribute="trailing" constant="32" id="XXB-g3-p0L"/>
-                                    <constraint firstItem="bhK-Ap-J4U" firstAttribute="top" secondItem="Lhe-gT-gzG" secondAttribute="bottom" constant="92" id="cHi-TJ-hvu"/>
-                                    <constraint firstAttribute="bottom" secondItem="bhK-Ap-J4U" secondAttribute="bottom" constant="194" id="saD-oc-aLR"/>
+                                    <constraint firstAttribute="bottom" secondItem="bhK-Ap-J4U" secondAttribute="bottom" constant="174" id="saD-oc-aLR"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ybr-hI-9sv" userLabel="Matched Order View">
@@ -3824,6 +3823,8 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="matchedOrderView" destination="ybr-hI-9sv" id="wXE-2p-yQg"/>
+                        <outlet property="noOrderView" destination="gLD-Jf-TAu" id="dYR-VT-9SF"/>
                         <outlet property="tableViewBuy" destination="VQT-vY-3Ag" id="fIa-Lp-RSE"/>
                         <outlet property="tableViewSell" destination="f0p-kQ-Ixr" id="YzW-tc-SGH"/>
                     </connections>
