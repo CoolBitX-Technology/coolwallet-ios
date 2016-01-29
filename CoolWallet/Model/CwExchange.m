@@ -10,6 +10,7 @@
 #import "CwCard.h"
 #import "CwManager.h"
 #import "NSString+HexToData.h"
+#import "APPData.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -100,7 +101,7 @@
         [self syncCardInfo];
     } error:^(NSError *error) {
         @strongify(self);
-        NSLog(@"error(%ld): %@", error.code, error);
+        NSLog(@"error(%ld): %@", (long)error.code, error);
         self.sessionStatus = ExSessionFail;
         [self logoutExSession];
     }];
@@ -167,7 +168,7 @@
         return synced.boolValue && ![self.syncedAccount containsObject:account];
     }] subscribeNext:^(NSNumber *synced) {
         @strongify(self);
-        NSLog(@"account: %ld, synced: %d, self.syncAccountCount = %lu", account.accId, synced.boolValue, (unsigned long)self.syncedAccount.count);
+        NSLog(@"account: %ld, synced: %d, self.syncAccountCount = %lu", (long)account.accId, synced.boolValue, (unsigned long)self.syncedAccount.count);
         
         [self.syncedAccount addObject:account];
         
@@ -201,7 +202,7 @@
         @strongify(self)
         return [self signalSyncAccountInfo:account];
     }] subscribeNext:^(id response) {
-        NSLog(@"sync account %ld completed: %@", account.accId, response);
+        NSLog(@"sync account %ld completed: %@", (long)account.accId, response);
     } error:^(NSError *error) {
         NSLog(@"sync account error: %@", error);
     }];
@@ -310,7 +311,7 @@
     NSString *url = [NSString stringWithFormat:@"%@%@", ExBaseUrl, self.card.cardId];
     
     NSMutableDictionary *dict = [NSMutableDictionary new];
-    [dict setObject:@"notify token" forKey:@"token"];
+    [dict setObject:[APPData sharedInstance].deviceToken forKey:@"token"];
     
     NSMutableArray *accountDatas = [NSMutableArray new];
     for (CwAccount *account in [self.card.cwAccounts allValues]) {
@@ -337,7 +338,7 @@
 }
 
 -(RACSignal*)signalSyncAccountInfo:(CwAccount *)account {
-    NSString *url = [NSString stringWithFormat:@"%@%@/%ld", ExBaseUrl, self.card.cardId, account.accId];
+    NSString *url = [NSString stringWithFormat:@"%@%@/%ld", ExBaseUrl, self.card.cardId, (long)account.accId];
     
     NSDictionary *dict = [self getAccountInfo:account];
     

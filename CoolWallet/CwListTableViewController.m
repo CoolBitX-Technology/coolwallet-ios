@@ -10,6 +10,7 @@
 #import "CwInfoViewController.h"
 #import "CwCard.h"
 #import "KeychainItemWrapper.h"
+#import "APPData.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -41,8 +42,7 @@ NSString *segueIdentifier;
     
     self.tablev_cwlist.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
-    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [self.versionLabel setText:[NSString stringWithFormat:@"V%@", version]];
+    [self.versionLabel setText:[APPData sharedInstance].version];
     
     @weakify(self)
     [[[[RACObserve(self, cwCards) filter:^BOOL(NSMutableArray *cards) {

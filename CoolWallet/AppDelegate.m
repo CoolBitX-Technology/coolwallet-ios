@@ -11,6 +11,8 @@
 #import "RearViewController.h"
 #import "ViewController.h"
 #import "OCAppCommon.h"
+#import "NSString+HexToData.h"
+#import "APPData.h"
 
 @interface AppDelegate ()
 
@@ -30,6 +32,11 @@
     }
     
     [Fabric with:@[[Crashlytics class]]];
+    
+    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeNone);
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes categories:nil];
+    [application registerUserNotificationSettings:settings];
+    [application registerForRemoteNotifications];
 
     /*
     // Change the background color of navigation bar
@@ -114,6 +121,21 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [APPData sharedInstance].deviceToken = [NSString dataToHexstring:deviceToken];
+}
+
+-(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    NSLog(@"register APNS fail: %@", error);
+}
+
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@"receive notify: %@", userInfo);
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification

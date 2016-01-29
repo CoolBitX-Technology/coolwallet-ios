@@ -7,6 +7,7 @@
 //
 
 #import "SidebarViewController.h"
+#import "APPData.h"
 
 @interface SidebarViewController ()
 
@@ -14,22 +15,15 @@
 @property (nonatomic, strong) NSArray *menuItems;
 @end
 
-@implementation SidebarViewController{
-    NSArray *menuItems;
-}
+@implementation SidebarViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [self.versionLabel setText:[NSString stringWithFormat:@"V%@", version]];
+    [self.versionLabel setText:[APPData sharedInstance].version];
     
-#if DEBUG
-    [self.versionLabel setText:[NSString stringWithFormat:@"%@(%@)", self.versionLabel.text, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
-#endif
-    
-    menuItems = @[@"title", @"HostDevices", @"CoolWalletCard", @"Security", @"Settings", @"Exchange", @"Logout"];
+    self.menuItems = @[@"title", @"HostDevices", @"CoolWalletCard", @"Security", @"Settings", @"Exchange", @"Logout"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,13 +43,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return menuItems.count;
+    return self.menuItems.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //static NSString *CellIdentifier = @"Cell";
-    NSString *CellIdentifier = [menuItems objectAtIndex:indexPath.row];
+    NSString *CellIdentifier = [self.menuItems objectAtIndex:indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     return cell;
