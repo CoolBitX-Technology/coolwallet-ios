@@ -24,6 +24,7 @@
              @"orderId" : @"orderId",
              @"address" : @"addr",
              @"amountBTC" : @"amount",
+             @"price" : @"price",
              @"accountId" : @"account",
              @"expirationUTC" : @"expiration",
              };

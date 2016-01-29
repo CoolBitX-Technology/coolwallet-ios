@@ -13,6 +13,7 @@
 @property (strong, nonatomic) NSString *orderId;
 @property (strong, nonatomic) NSString *address;
 @property (strong, nonatomic) NSNumber *amountBTC;
+@property (strong, nonatomic) NSNumber *price;
 @property (strong, nonatomic) NSNumber *accountId;
 @property (strong, nonatomic) NSString *expirationUTC;
 

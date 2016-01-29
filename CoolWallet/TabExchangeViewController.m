@@ -28,7 +28,7 @@
     UIImage* myImage = [UIImage imageNamed:@"ex_icon.png"];
     UIImageView* myImageView = [[UIImageView alloc] initWithImage:myImage];
     
-    float x = self.navigationController.navigationBar.frame.size.width/2 - 80;
+    float x = self.navigationController.navigationBar.frame.size.width/2 - 90;
     myImageView.frame = CGRectMake(x, 8, 30, 30);
     [self.navigationController.navigationBar addSubview:myImageView];
     

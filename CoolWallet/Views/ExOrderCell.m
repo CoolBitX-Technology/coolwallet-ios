@@ -22,9 +22,24 @@
 
 -(void) setOrder:(CwExOrderBase *)order
 {
-    self.amountBTCLabel.text = [NSString stringWithFormat:@"%@", order.amountBTC];
-    self.priceLabel.text = [NSString stringWithFormat:@"$%@", @"450.45"];
-    self.timeLabel.text = [order.expiration exDateString];
+    if (order.amountBTC) {
+        self.amountBTCLabel.text = [NSString stringWithFormat:@"%@", order.amountBTC];
+    } else {
+        self.amountBTCLabel.text = @"--";
+    }
+    
+    if (order.price) {
+        self.priceLabel.text = [NSString stringWithFormat:@"$%@", order.price];
+    } else {
+        self.priceLabel.text = @"--";
+    }
+    
+    if (order.expiration) {
+        self.timeLabel.text = [order.expiration exDateString];
+    } else {
+        self.timeLabel.text = @"--";
+    }
+    
 }
 
 @end

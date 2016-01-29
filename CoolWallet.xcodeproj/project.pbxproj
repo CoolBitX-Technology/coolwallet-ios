@@ -177,6 +177,7 @@
 		F485C2261C18066D00C26E11 /* CwKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = F485C2251C18066D00C26E11 /* CwKeychain.m */; };
 		F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */; };
 		F493F32F1BC6807600876710 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F493F32E1BC6807600876710 /* BaseViewController.m */; };
+		F49C2C2E1C5A0C32000B2042 /* ExOrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F49C2C2D1C5A0C32000B2042 /* ExOrderDetailViewController.m */; };
 		F49F76431BD8AFF800C335B9 /* downarrow-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */; };
 		F4A7CC451C58794100E40CD1 /* ExMatchOrderVM.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC441C58794100E40CD1 /* ExMatchOrderVM.m */; };
 		F4A7CC4B1C5884A100E40CD1 /* ExMatchedOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */; };
@@ -467,6 +468,8 @@
 		F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwCardInfo.m; sourceTree = "<group>"; };
 		F493F32D1BC6807600876710 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		F493F32E1BC6807600876710 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		F49C2C2C1C5A0C32000B2042 /* ExOrderDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExOrderDetailViewController.h; sourceTree = "<group>"; };
+		F49C2C2D1C5A0C32000B2042 /* ExOrderDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExOrderDetailViewController.m; sourceTree = "<group>"; };
 		F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downarrow-01@2x.png"; sourceTree = "<group>"; };
 		F4A7CC431C58794100E40CD1 /* ExMatchOrderVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExMatchOrderVM.h; sourceTree = "<group>"; };
 		F4A7CC441C58794100E40CD1 /* ExMatchOrderVM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExMatchOrderVM.m; sourceTree = "<group>"; };
@@ -970,6 +973,8 @@
 			children = (
 				F4A7CC491C5884A100E40CD1 /* ExMatchedOrderViewController.h */,
 				F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */,
+				F49C2C2C1C5A0C32000B2042 /* ExOrderDetailViewController.h */,
+				F49C2C2D1C5A0C32000B2042 /* ExOrderDetailViewController.m */,
 			);
 			path = ExchangeViewControllers;
 			sourceTree = "<group>";
@@ -1266,6 +1271,7 @@
 				EFAC5C4E1AC25A7000320EA6 /* qrencode.c in Sources */,
 				F4E412901BFB1D91003CFACF /* NSString+HexToData.m in Sources */,
 				EFCF9A4F1B32C8810076091B /* BRPaymentRequest.m in Sources */,
+				F49C2C2E1C5A0C32000B2042 /* ExOrderDetailViewController.m in Sources */,
 				A2F29F1A1C55FE7100C75E91 /* CwExOrderBase.m in Sources */,
 				F493F32F1BC6807600876710 /* BaseViewController.m in Sources */,
 				F43E97C31C2808DC00D03DA9 /* NSData+Hash.m in Sources */,

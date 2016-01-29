@@ -9,6 +9,7 @@
 #import "ExMatchedOrderViewController.h"
 #import "ExMatchOrderVM.h"
 #import "ExOrderCell.h"
+#import "ExOrderDetailViewController.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -17,7 +18,8 @@
 @interface ExMatchedOrderViewController() <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) ExMatchOrderVM *vm;
-@property (assign, nonatomic) NSNumber *hasMatchedOrders;
+@property (assign, nonatomic) BOOL hasMatchedOrders;
+@property (strong, nonatomic) CwExOrderBase *selectOrder;
 
 @property (weak, nonatomic) IBOutlet UIView *noOrderView;
 @property (weak, nonatomic) IBOutlet UIView *matchedOrderView;
@@ -29,14 +31,7 @@
 @implementation ExMatchedOrderViewController
 
 -(void) viewDidLoad
-{
-    UIImage* myImage = [UIImage imageNamed:@"ex_icon.png"];
-    UIImageView* myImageView = [[UIImageView alloc] initWithImage:myImage];
-    
-    float x = self.navigationController.navigationBar.frame.size.width/2 - 80;
-    myImageView.frame = CGRectMake(x, 8, 30, 30);
-    [self.navigationController.navigationBar addSubview:myImageView];
-    
+{    
     self.vm = [ExMatchOrderVM new];
     [self.vm requestMatchedOrders];
     
@@ -46,10 +41,15 @@
             enabled = sellOrders.count > 0 || buyOrders.count > 0;
         }
         
-        return [NSNumber numberWithBool:enabled];
+        return @(enabled);
     }];
     
     [self addObservers];
+}
+
+-(void) viewWillDisappear:(BOOL)animated
+{
+    self.selectOrder = nil;
 }
 
 -(void) addObservers
@@ -58,9 +58,9 @@
     [[RACObserve(self, hasMatchedOrders) filter:^BOOL(id value) {
         @strongify(self)
         return self.vm.matchedSellOrders != nil && self.vm.matchedBuyOrders != nil;
-    }] subscribeNext:^(NSNumber *has) {
+    }] subscribeNext:^(id has) {
         @strongify(self)
-        if (has.boolValue) {
+        if (has) {
             self.noOrderView.hidden = YES;
             self.matchedOrderView.hidden = NO;
         } else {
@@ -127,6 +127,37 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 22;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.selectOrder = nil;
+    if ([tableView isEqual:self.tableViewSell]) {
+        self.selectOrder = [self.vm.matchedSellOrders objectAtIndex:indexPath.row];
+    } else if ([tableView isEqual:self.tableViewBuy]) {
+        self.selectOrder = [self.vm.matchedBuyOrders objectAtIndex:indexPath.row];
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    [self performSegueWithIdentifier:@"ExOrderDetailSegue" sender:self];
+}
+
+-(BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
+    if ([identifier isEqualToString:@"ExOrderDetailSegue"]) {
+        return self.selectOrder != nil;
+    }
+    
+    return YES;
+}
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"ExOrderDetailSegue"]) {
+        ExOrderDetailViewController *targetController = (ExOrderDetailViewController *)[segue destinationViewController];
+        targetController.order = self.selectOrder;
+    }
 }
 
 @end
