@@ -115,8 +115,6 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) getModeState;
 -(void) getCwInfo; //get CW infos include firmware version/uid/hostId, callback:didGetCwInfo
 
--(void) reInitCard: (NSString *) cardId Pin:(NSString *)pin;
-
 -(void) registerHost: (NSString *)credential Description: (NSString*)description; //callback: didRegisterHost
 -(void) confirmHost: (NSString *)otp; //callback: didConfirmHost
 -(void) eraseCw: (BOOL) preserveHost Pin: (NSString *)pin NewPin: (NSString *) newPin; //callback: didEraseCw
@@ -183,6 +181,8 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) verifyResetOtp: (NSString *)otp;
 -(void) displayCurrency: (BOOL) option;
 
+-(CwTx *) getUnsignedTransaction:(int64_t)amount Address:(NSString *)recvAddress Change:(NSString *)changeAddress AccountId:(NSInteger)accountId;
+
 //Exchange Site Functions
 -(void) exGetRegStatus;
 -(void) exGetOtp;
@@ -193,7 +193,9 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) exBlockBtc: (NSInteger)trxId AccId: (NSInteger)accId Amount: (int64_t)amount Mac1: (NSData *)mac1 Nonce: (NSData*)nonce;
 -(void) exBlockCancel: (NSInteger)trxId OkTkn: (NSData *)okTkn EncUblkTkn: (NSData *)encUblkTkn Mac1: (NSData *)mac1 Nonce: (NSData*)nonce;
 -(void) exTrxSignLogin: (NSInteger)trxId OkTkn:(NSData *)okTkn EncUblkTkn:(NSData *)encUblkTkn AccId: (NSInteger)accId DealAmount: (int64_t)dealAmount Mac: (NSData *)mac;
+-(void) exTrxSignLogin:(NSString *)input withComplete:(void(^)(NSData *loginHandle))complete error:(void(^)(NSInteger errorCode))error;
 -(void) exTrxSignPrepare: (NSInteger)inId TrxHandle:(NSData *)trxHandle AccId: (NSInteger)accId KcId: (NSInteger)kcId KId: (NSInteger)kId Out1Addr: (NSData*) out1Addr Out2Addr:(NSData*) out2Addr SigMtrl: (NSData *)sigMtrl Mac: (NSData *)mac;
+-(void) exTrxSignPrepareWithInputId:(NSInteger)inId withInputData:(NSData *)inputData;
 -(void) exTrxSignLogout: (NSInteger)inId TrxHandle:(NSData *)trxHandle Nonce: (NSData *)nonce;
 
 -(void) cmdClear;

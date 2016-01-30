@@ -12,8 +12,6 @@
 #import "CwCard.h"
 #import "CwCardDelegate.h"
 
-//#define CW_SOFT_SIMU
-
 @interface CwManager () <CBCentralManagerDelegate, CwCardDelegate>
 @property (strong, nonatomic) CBCentralManager *bleMgr;
 @property (strong, nonatomic) CBPeripheral *myPeri;
@@ -114,33 +112,19 @@ NSTimer *scanTimer;
 
 -(void) connectCwCard: (CwCard *)cwCard
 {
-#ifdef CW_SOFT_SIMU
-    self.connectedCwCard = cwCard;
-    if ([self.delegate respondsToSelector:@selector(didConnectCwCard:)]) {
-        [self.delegate didConnectCwCard:self.connectedCwCard];
-    }
-#else
     if (cwCard.peripheral.state == CBPeripheralStateDisconnected) {
         //connect peripheral, with disconnect notify
         [self.bleMgr connectPeripheral:cwCard.peripheral options: @{CBConnectPeripheralOptionNotifyOnDisconnectionKey: @YES}];
         self.connectedCwCard = cwCard;
     }
-#endif
 }
 
 -(void) disconnectCwCard
 {
-#ifdef CW_SOFT_SIMU
-    if ([self.delegate respondsToSelector:@selector(didDisconnectCwCard:)]) {
-        [self.delegate didDisconnectCwCard:self.connectedCwCard.cardName];
-    }
-    self.connectedCwCard = nil;    
-#else
     if (self.connectedCwCard.peripheral.state == CBPeripheralStateConnected) {
         //disconnect peripheral
         [self.bleMgr cancelPeripheralConnection:self.connectedCwCard.peripheral];
     }
-#endif
 }
 
 #pragma mark - CentralManager Delegates
@@ -167,55 +151,8 @@ NSTimer *scanTimer;
     
     [self.bleMgr scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"A000"]]
                                         options: @{CBCentralManagerScanOptionAllowDuplicatesKey: @YES}];
-
-
-#ifdef CW_SOFT_SIMU
-    //add cw to card
-    CwCard *cwItem = [[CwCard alloc] init];
-    cwItem.bleName = @"CW Simulator";
-    cwItem.rssi = [NSNumber numberWithInt:-38];
-    [self.cwCards addObject:cwItem];
-    //call discover peripheral delegate
-    if ([self.delegate respondsToSelector:@selector(didScanCwCards:)]) {
-        [self.delegate didScanCwCards:self.cwCards];
-    }
-    
-    //call delegate
-    if ([self.delegate respondsToSelector:@selector(didCwManagerReady)]) {
-        [self.delegate didCwManagerReady];
-    }
-#endif
     
 }
-
-/*
-
--(void) centralManagerDidUpdateState:(CBCentralManager *)central
-{
-
- 
-    if (central.state < CBCentralManagerStatePoweredOn)
-    {
-        NSLog(@"BLE not enabled");
-    } else {
-        if ([self.delegate respondsToSelector:@selector(didCwManagerReady)]) {
-            [self.delegate didCwManagerReady];
-        }
-    }
-    
-#ifdef CW_SOFT_SIMU
-    if ([self.delegate respondsToSelector:@selector(didCwManagerReady)]) {
-        [self.delegate didCwManagerReady];
-    }
-#endif
-    
-    //if (self.bleMgr.state==CBCentralManagerStatePoweredOn) {
-        //scan CW
-    //    [self.bleMgr scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:@"A000"]]
-                                            options: @{CBCentralManagerScanOptionAllowDuplicatesKey: @YES}];
-    //}
-}
-*/
 
 -(void) centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI
 {

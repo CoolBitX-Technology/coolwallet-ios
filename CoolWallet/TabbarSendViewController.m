@@ -477,7 +477,7 @@ long TxFee = 10000;
     [alert show];
 }
 
--(void) didGenAddress: (CwAddress *) addr;
+-(void) didGenAddress: (CwAddress *) addr
 {
     NSLog(@"didGenAddress");
     [self.btcNet registerNotifyByAccount:cwCard.currentAccountId];

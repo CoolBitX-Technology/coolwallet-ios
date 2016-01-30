@@ -19,6 +19,7 @@
 #import "CwAddress.h"
 #import "CwCardInfo.h"
 #import "CwKeychain.h"
+#import "CwExchange.h"
 
 #import "CwBtcNetwork.h"
 
@@ -32,8 +33,6 @@
 #import "CwUnspentTxIndex.h"
 #import "CwBase58.h"
 
-#import "CwCardSoft.h"
-
 #import "OCAppCommon.h"
 
 #import "NSUserDefaults+RMSaveCustomObject.h"
@@ -41,83 +40,6 @@
 
 #import "mpbn_util.h"
 #import "tx.h"
-
-//#define CW_SOFT_SIMU
-
-//******************************************************
-//Default Init data (set by init tool)
-//******************************************************
-Byte TEST_PUK[32]= {0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
-    0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f};
-Byte TEST_XCHSSEMK[32]= {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-    0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f};
-Byte TEST_XCHSOTPK[32]=  {0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
-    0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f};
-Byte TEST_XCHSSMK[32]=   {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
-    0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x5b, 0x5c, 0x5d, 0x5e, 0x5f};
-
-//******************************************************
-//Default VMK
-//******************************************************
-Byte TEST_VMK[32]= {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
-    0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x5b, 0x5c, 0x5d, 0x5e, 0x5f};
-/* Host description (64 bytes) */
-Byte PreHostDesc0[64] = {
-    0x50, 0x72, 0x65, 0x2d, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x65, 0x64, 0x20, 0x68,
-    0x6f, 0x73, 0x74, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-Byte PreHostOtpKey0[32] = {
-    0xD0, 0xBD, 0xBC, 0x88, 0x84, 0x47, 0x54, 0xC5, 0xDF, 0x9C, 0x40, 0xDA, 0x30, 0x99, 0x95, 0x95,
-    0xF4, 0x12, 0x00, 0x75, 0x15, 0x0B, 0x1B, 0xB2, 0xD3, 0x14, 0x5F, 0x6A, 0x3D, 0xC1, 0xB6, 0xE8};
-Byte PreHostDesc1[64] = {
-    0x50, 0x72, 0x65, 0x2d, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x65, 0x64, 0x20, 0x68,
-    0x6f, 0x73, 0x74, 0x20, 0x31, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-Byte PreHostOtpKey1[32] = {
-    0xF1, 0x49, 0x54, 0x11, 0xF8, 0xC0, 0x6A, 0xFC, 0xD2, 0xFF, 0x61, 0x97, 0x99, 0x84, 0x69, 0x63,
-    0xB2, 0x63, 0x67, 0x30, 0x14, 0x85, 0x51, 0x29, 0x25, 0xFA, 0x19, 0xFD, 0x41, 0x78, 0x43, 0x2A};
-Byte PreHostDesc2[64] = {
-    0x50, 0x72, 0x65, 0x2d, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x65, 0x64, 0x20, 0x68,
-    0x6f, 0x73, 0x74, 0x20, 0x32, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-Byte PreHostOtpKey2[32] = {
-    0x56, 0x87, 0x55, 0xDD, 0x22, 0x96, 0xEB, 0x70, 0x8E, 0x88, 0x90, 0xAB, 0x7C, 0x7E, 0x8C, 0xC1,
-    0x3D, 0xCF, 0x00, 0xD5, 0xD1, 0x42, 0x3A, 0x05, 0xC8, 0x6D, 0xA8, 0x90, 0xC8, 0x28, 0x67, 0x26};
-Byte PreHostDesc3[64] = {
-    0x50, 0x72, 0x65, 0x2d, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x65, 0x64, 0x20, 0x68,
-    0x6f, 0x73, 0x74, 0x20, 0x33, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-Byte PreHostOtpKey3[32] = {
-    0x1F, 0x16, 0xE0, 0x8C, 0x23, 0x68, 0xF8, 0xC0, 0x32, 0xD8, 0xED, 0xB5, 0xFA, 0x29, 0x1F, 0x51,
-    0xB5, 0xF4, 0xEA, 0x06, 0x6C, 0xE4, 0xF7, 0xE6, 0xDC, 0x0F, 0x2D, 0xC2, 0xF2, 0x6F, 0x43, 0x7B};
-Byte PreHostDesc4[64] = {
-    0x50, 0x72, 0x65, 0x2d, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x65, 0x64, 0x20, 0x68,
-    0x6f, 0x73, 0x74, 0x20, 0x34, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-Byte PreHostOtpKey4[32] = {
-    0x6D, 0x98, 0x15, 0xBF, 0x1A, 0xD6, 0xB1, 0x8E, 0xDF, 0x8D, 0x97, 0x57, 0x33, 0x23, 0x42, 0xB1,
-    0x39, 0x73, 0x46, 0x62, 0x07, 0x0A, 0xA8, 0x6C, 0x80, 0x7F, 0xC8, 0x32, 0xDE, 0xEF, 0xF6, 0xC9};
-Byte PreHostDesc5[64] = {
-    0x50, 0x72, 0x65, 0x2d, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x65, 0x64, 0x20, 0x68,
-    0x6f, 0x73, 0x74, 0x20, 0x35, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-Byte PreHostOtpKey5[32] = {
-    0x60, 0xAC, 0x13, 0x14, 0x29, 0x80, 0x36, 0x79, 0xB5, 0x49, 0xAF, 0x30, 0x46, 0x0E, 0x14, 0x83,
-    0xEA, 0xED, 0x34, 0x8A, 0xBF, 0x54, 0x6D, 0x37, 0xD5, 0x5D, 0x98, 0x82, 0xAD, 0x47, 0xA2, 0xB0};
-Byte PreHostDesc6[64] = {
-    0x50, 0x72, 0x65, 0x2d, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x65, 0x64, 0x20, 0x68,
-    0x6f, 0x73, 0x74, 0x20, 0x36, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-Byte PreHostOtpKey6[32] = {
-    0x18, 0xF3, 0xFB, 0x2D, 0x6D, 0x06, 0xA6, 0x21, 0xD3, 0xAA, 0x54, 0xE1, 0x54, 0x89, 0xB6, 0x66,
-    0xE8, 0x01, 0xD4, 0x1C, 0xB7, 0x62, 0x65, 0xE7, 0xFA, 0x49, 0xBE, 0x51, 0x7E, 0x17, 0x64, 0xD0};
 
 @interface RMMapper(CwCard)
 
@@ -128,7 +50,8 @@ Byte PreHostOtpKey6[32] = {
 + (NSArray *)systemExcludedProperties {
     return @[@"observationInfo",@"hash",@"description",@"debugDescription",@"superclass",
              @"exSessionInitCompleteBlock", @"exSessionInitErrorBlock",
-             @"exSessionEstablishCompleteBlock", @"exSessionEstablishErrorBlock"];
+             @"exSessionEstablishCompleteBlock", @"exSessionEstablishErrorBlock",
+             @"exTrxSignLoginCompleteBlock", @"exTrxSignLoginErrorBlock"];
 }
 
 @end
@@ -139,6 +62,8 @@ Byte PreHostOtpKey6[32] = {
 @property (copy) void (^exSessionInitErrorBlock)(NSInteger errorCode);
 @property (copy) void (^exSessionEstablishCompleteBlock)(void);
 @property (copy) void (^exSessionEstablishErrorBlock)(NSInteger errorCode);
+@property (copy) void (^exTrxSignLoginCompleteBlock)(NSData *loginHandle);
+@property (copy) void (^exTrxSignLoginErrorBlock)(NSInteger errorCode);
 
 @end
 
@@ -219,10 +144,6 @@ NSArray *fwHex;
 NSTimer *bleTimer;
 NSInteger bleTimerCounter;
 
-#ifdef CW_SOFT_SIMU
-CwCardSoft *cwSoft;
-#endif
-
 NSArray *addresses;
 
 #pragma mark - CwCard Methods
@@ -258,32 +179,7 @@ NSArray *addresses;
             syncAccInfoFlag[i] = NO;
         }
         
-#ifdef CW_SOFT_SIMU
-        cwSoft = [[CwCardSoft alloc] init];
-        addresses = @[@"1MPMPdKkCnPkupgKCZKvj5Tt5zUky2uif9",
-                      @"15UPoUcyLLuiRcoLkVxNS3ZdVTem3r3o3E",
-                      @"1qs6k9tpdWoRgEYAzhRVxZrkCvBBW9Ufi",
-                      @"16YqRges1zMMf2Ey5DQkLA6oSZchY9BTMR",
-                      @"1JYbYSBhv5z3A2Tys1PdZGg83bzAFXY81K",
-                      @"1GRE9Mqunm4tQrVi3vkZJVHPoTfeBLpLh",
-                      @"13jHaUswio2j5DCyPfEA46S1DpKUKDDGAT",
-                      @"1H8YgoiKwMjP3B5t9pHgpKLPUCptmzyecs",
-                      @"1588iYaAN4CD9jDJbn1TUmwnsHL7ZDYahQ",
-                      @"12ZT68cNakKMeBM7xJXRSRdWpRp6MXsnFf",
-                      @"1J9e7LzV976KQ5nMbGGKqa22ym71o1TMp8",
-                      @"1N3BuQ4ovZfhhzEe794wVrXX5Sv3pJ9ug2",
-                      @"1CdV19C2PPKySGG9bueoGNtEe55rqT5A2u",
-                      @"1KctgNgsw3X5Gkb7xvLXC8bfbsnm5tsfUU",
-                      @"17YPMsf25qcL2GEGpyaggYHPHDwmgwvoVs",
-                      @"1BXJQvisv3frNHWHRqEAy88UqSENZvR3XZ",
-                      @"1PbXgkj75Gp4agCpeTe5LenVDiK8f5kpMU",
-                      @"1QN5cHfb1eQMGtbcqrT6yXqmccqX6JbmS",
-                      @"17X9Hy2gYarsco8CtdF3414vRpuQZcu6Ww",
-                      @"12ENefsAYUKuD37BRGdAUTqKxPAxHqxR6d"];
-#else
         addresses = [[NSArray alloc] init];
-#endif
-        
     }
     return self;
 }
@@ -303,14 +199,8 @@ NSArray *addresses;
     //Prepare network service
     NSLog(@"Connected to peripheral, discovering service A000");
     
-#ifdef CW_SOFT_SIMU
-    if ([self.delegate respondsToSelector:@selector(didPrepareService)]) {
-        [self.delegate didPrepareService];
-    }
-#else
     self.peripheral.delegate = self;
     [self.peripheral discoverServices:@[[CBUUID UUIDWithString:@"A000"]]];
-#endif
 }
 
 
@@ -323,11 +213,6 @@ NSArray *addresses;
         case CwCmdIdGetFwVersion:       str=@"[GetFwVersion]"; break;
         case CwCmdIdGetUid:             str=@"[GetUid]"; break;
         case CwCmdIdGetError:           str=@"[GetError]"; break;
-            
-        case CwCmdIdInitSetData:        str=@"[InitSetData]"; break;
-        case CwCmdIdInitConfirm:        str=@"[InitConfirm]"; break;
-        case CwCmdIdInitVmkChlng:       str=@"[InitVmkChlng]"; break;
-        case CwCmdIdInitBackInit:       str=@"[InitBackInit]"; break;
             
         case CwCmdIdPinChlng:           str=@"[PinChlng]"; break;
         case CwCmdIdPinAuth:            str=@"[PinAuth]"; break;
@@ -589,31 +474,6 @@ NSArray *addresses;
             [self.delegate didCwCardCommand];
         }
     }
-}
-
-//Re-Init Commands
--(void) reInitCard: (NSString *) cardId Pin:(NSString *)pin
-{
-    //Back to init mode
-    
-    //get vmkChallenge
-    [self CwCmdInitVmkChlng];
-    
-    //back to init
-    //[self CwCmdInitBackInit];
-    
-    /*
-     0: Default User PIN hash (32 bytes)
-     1: PUK (32 bytes)
-     2: SEMK (32 bytes)
-     3: Card ID (8 bytes)
-     4: OTPK (32 bytes)
-     5: SMK (32 bytes)
-     */
-    
-    defaultPin = pin;
-    initCardId = cardId;
-    
 }
 
 //Authentication Commands
@@ -1255,7 +1115,7 @@ NSArray *addresses;
 }
 
 //didPrepareTransaction
--(void) prepareTransaction:(int64_t)amount Address: (NSString *)recvAddress Change: (NSString *)changeAddress
+-(CwTx *) getUnsignedTransaction:(int64_t)amount Address:(NSString *)recvAddress Change:(NSString *)changeAddress AccountId:(NSInteger)accountId
 {
     //end transaction if exists
     [self cwCmdTrxFinish];
@@ -1263,14 +1123,14 @@ NSArray *addresses;
     trxStatus = TrxStatusPrepare;
     
     //check unspends in the account
-    CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", self.currentAccountId]];
+    CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", accountId]];
     
     //check amount vs (balance - fee)
     if (amount > account.balance - FEERATE) {
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
             [self.delegate didPrepareTransactionError:[NSString stringWithFormat:@"Amount is lower than balance\nTransaction fee: %@ BTC", [[OCAppCommon getInstance] convertBTCStringformUnit: FEERATE]]];
         }
-        return;
+        return nil;
     }
     
     //check unspent tx
@@ -1278,7 +1138,7 @@ NSArray *addresses;
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
             [self.delegate didPrepareTransactionError:@"No avaliable unspent transaction"];
         }
-        return;
+        return nil;
     }
     
     for (CwUnspentTxIndex *utx in [account unspentTxs])
@@ -1306,7 +1166,7 @@ NSArray *addresses;
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
             [self.delegate didPrepareTransactionError:@"At least 1 confirmation needed before sending out."];
         }
-        return;
+        return nil;
     }
     
     //print IN and OUT of the tx
@@ -1334,9 +1194,16 @@ NSArray *addresses;
     currUnsignedTx = unsignedTx;
     currFee = fee;
     
+    return unsignedTx;
+}
+
+-(void) prepareTransaction:(int64_t)amount Address: (NSString *)recvAddress Change: (NSString *)changeAddress
+{
+    [self getUnsignedTransaction:amount Address:recvAddress Change:changeAddress AccountId:self.currentAccountId];
+    
     //Sign hashes of the TX (max ins: 256)
-    for (int i=0; i<unsignedTx.inputs.count; i++) {
-        CwTxin *txin = unsignedTx.inputs[i];
+    for (int i=0; i<currUnsignedTx.inputs.count; i++) {
+        CwTxin *txin = currUnsignedTx.inputs[i];
         [self cwCmdHdwPrepTrxSign: i
                        KeyChainId: txin.kcId
                         AccountId: txin.accId
@@ -1525,9 +1392,21 @@ NSArray *addresses;
     [self cwCmdExTrxSignLogin:trxId OkTkn:okTkn EncUblkTkn:encUblkTkn AccId:accId DealAmount:dealAmount Mac:mac];
 }
 
+-(void) exTrxSignLogin:(NSString *)input withComplete:(void(^)(NSData *loginHandle))complete error:(void(^)(NSInteger errorCode))error
+{
+    self.exTrxSignLoginCompleteBlock = complete;
+    self.exTrxSignLoginErrorBlock = error;
+    [self cwCmdExTrxSignLogin:input];
+}
+
 -(void) exTrxSignPrepare: (NSInteger)inId TrxHandle:(NSData *)trxHandle AccId: (NSInteger)accId KcId: (NSInteger)kcId KId: (NSInteger)kId Out1Addr: (NSData*) out1Addr Out2Addr:(NSData*) out2Addr SigMtrl: (NSData *)sigMtrl Mac: (NSData *)mac
 {
     [self cwCmdExTrxSignPrepare:inId TrxHandle:trxHandle AccId:accId KcId:kcId KId:kId Out1Addr:out1Addr Out2Addr:out2Addr SigMtrl:sigMtrl Mac:mac];
+}
+
+-(void) exTrxSignPrepareWithInputId:(NSInteger)inId withInputData:(NSData *)inputData
+{
+    [self cwCmdExTrxSignPrepare:inId inputData:inputData];
 }
 
 -(void) exTrxSignLogout: (NSInteger)inId TrxHandle:(NSData *)trxHandle Nonce: (NSData *)nonce
@@ -1598,7 +1477,6 @@ NSArray *addresses;
     return CwCardRetSuccess;
 }
 
-
 - (NSInteger) cwCmdGetError
 {
     CwCardCommand *cmd = [[CwCardCommand alloc] init];
@@ -1610,152 +1488,6 @@ NSArray *addresses;
     cmd.cmdP1 = 0;
     cmd.cmdP2 = 0;
     cmd.cmdInput = nil;
-    
-    //add command to array
-    [self cmdAdd: cmd];
-    
-    [self cmdProcessor];
-    
-    return CwCardRetSuccess;
-}
-
-#pragma mark BCDC functions - ReInit
-/*
- //Init Commands
- CwCmdIdInitSetData      = 0xA0,
- CwCmdIdInitConfirm      = 0xA2,
- CwCmdIdInitVmkChlng     = 0xA3,
- CwCmdIdInitBackInit     = 0xA4,
- */
-
-- (NSInteger) CwCmdInitSetData: (NSInteger)initId Data:(NSData *) data PreHostId:(NSInteger)preHostId
-{
-    CwCardCommand *cmd = [[CwCardCommand alloc] init];
-    
-    //se_init_set_data
-    //80 A0 [IDID] [PRID]  [LC] [INITDATA] [IDHASH]
-    
-    //[IDID]
-    //Init data ID
-    //0: Default User PIN hash (32 bytes)
-    //1: PUK (32 bytes)
-    //2: SEMK (32 bytes)
-    //3: Card ID (8 bytes)
-    //4: OTPK (32 bytes)
-    //5: SMK (32 bytes)
-    //6: Pre-reg host description (64 bytes)  (1.4.5.9 only)
-    //7: Pre-reg host OTP key (32 bytes)  (1.4.5.9 only)
-    //INITDATA Init data (variable length)
-    //IDHASH SHA256 value of INITDATA (32 bytes)
-    
-    //output:
-    //none
-    
-    Byte out[96]; //max length is 64
-    memcpy(out, [data bytes], data.length);
-    
-    CC_SHA256([data bytes], (int)data.length, out+data.length);
-    
-    //prepare commands
-    cmd.cmdPriority = CwCardCommandPriorityNone;
-    cmd.cmdCla = CwCmdIdInitSetDataCLA;
-    cmd.cmdId = CwCmdIdInitSetData;
-    cmd.cmdP1 = initId;
-    cmd.cmdP2 = preHostId;
-    cmd.cmdInput =[NSData dataWithBytes:out length:data.length+32];
-    
-    //add command to array
-    [self cmdAdd: cmd];
-    
-    [self cmdProcessor];
-    
-    return CwCardRetSuccess;
-}
-
-- (NSInteger) CwCmdInitConfirm
-{
-    CwCardCommand *cmd = [[CwCardCommand alloc] init];
-    
-    //input:
-    //none
-    
-    //output:
-    //none
-    
-    //prepare commands
-    cmd.cmdPriority = CwCardCommandPriorityNone;
-    cmd.cmdCla = CwCmdIdInitConfirmCLA;
-    cmd.cmdId = CwCmdIdInitConfirm;
-    cmd.cmdP1 = 0;
-    cmd.cmdP2 = 0;
-    cmd.cmdInput = nil;
-    
-    //add command to array
-    [self cmdAdd: cmd];
-    
-    [self cmdProcessor];
-    
-    return CwCardRetSuccess;
-}
-
-- (NSInteger) CwCmdInitVmkChlng
-{
-    CwCardCommand *cmd = [[CwCardCommand alloc] init];
-    
-    //input:
-    //none
-    
-    //output:
-    //vmkChlng 16B
-    
-    //prepare commands
-    cmd.cmdPriority = CwCardCommandPriorityNone;
-    cmd.cmdCla = CwCmdIdInitVmkChlngCLA;
-    cmd.cmdId = CwCmdIdInitVmkChlng;
-    cmd.cmdP1 = 0;
-    cmd.cmdP2 = 0;
-    cmd.cmdInput = nil;
-    
-    //add command to array
-    [self cmdAdd: cmd];
-    
-    [self cmdProcessor];
-    
-    return CwCardRetSuccess;
-}
-
-- (NSInteger) CwCmdInitBackInit
-{
-    CwCardCommand *cmd = [[CwCardCommand alloc] init];
-    
-    //input
-    //vmkResponse: 32B
-    
-    //output:
-    //none
-    
-    Byte vmkResponse[16];
-    unsigned long numBytesEncrypted;
-    
-    CCCryptorStatus cryptStatus = CCCrypt(kCCEncrypt, kCCAlgorithmAES, kCCOptionECBMode,
-                                          TEST_VMK, kCCKeySizeAES256,
-                                          nil /* initialization vector (optional) */,
-                                          [vmkChallenge bytes], vmkChallenge.length, /* input */
-                                          vmkResponse, sizeof(vmkResponse), /* output */
-                                          &numBytesEncrypted);
-    if (cryptStatus != kCCSuccess)
-    {
-        NSLog(@"CwCmdIdInitBackInit Calculate Response Error (%d)", cryptStatus);
-    }
-    
-    
-    //prepare commands
-    cmd.cmdPriority = CwCardCommandPriorityNone;
-    cmd.cmdCla = CwCmdIdInitBackInitCLA;
-    cmd.cmdId = CwCmdIdInitBackInit;
-    cmd.cmdP1 = [self.hostId integerValue];
-    cmd.cmdP2 = 0;
-    cmd.cmdInput = [NSData dataWithBytes:vmkResponse length:16];;
     
     //add command to array
     [self cmdAdd: cmd];
@@ -4120,12 +3852,42 @@ NSArray *addresses;
     return CwCardRetSuccess;
 }
 
+- (NSInteger) cwCmdExTrxSignLogin:(NSString *)input
+{
+    CwCardCommand *cmd = [[CwCardCommand alloc] init];
+    
+    //input:
+    //trxId 4B
+    //okTkn 4B
+    //encUblkTkn 16B
+    //accId 4B little-endian
+    //dealAmount: 8B big-endian
+    //mac: 32B mac of (trxId||okTkn||ublkTkn||accId||dealAmount), key is XCHS_SK
+    
+    //output:
+    //trHandle 4B
+    
+    //prepare commands
+    cmd.cmdPriority = CwCardCommandPriorityNone;
+    cmd.cmdCla = CwCmdIdExTrxSignLoginCLA;
+    cmd.cmdId = CwCmdIdExTrxSignLogin;
+    cmd.cmdP1 = 0;
+    cmd.cmdP2 = 0;
+    
+    cmd.cmdInput = [NSString hexstringToData:input];
+    
+    //add command to array
+    [self cmdAdd: cmd];
+    
+    [self cmdProcessor];
+    
+    return CwCardRetSuccess;
+}
+
 
 - (NSInteger) cwCmdExTrxSignPrepare: (NSInteger)inId TrxHandle:(NSData *)trxHandle AccId: (NSInteger)accId KcId: (NSInteger)kcId KId: (NSInteger)kId Out1Addr: (NSData*) out1Addr Out2Addr:(NSData*) out2Addr SigMtrl: (NSData *)sigMtrl Mac: (NSData *)mac
 {
-    CwCardCommand *cmd = [[CwCardCommand alloc] init];
     NSMutableData *cmdInput = [[NSMutableData alloc] init];
-    int64_t amount_bn; //big endian of amount
     
     //input:
     //P1: inId
@@ -4141,13 +3903,6 @@ NSArray *addresses;
     //output:
     //none
     
-    //prepare commands
-    cmd.cmdPriority = CwCardCommandPriorityNone;
-    cmd.cmdCla = CwCmdIdExTrxSignPrepareCLA;
-    cmd.cmdId = CwCmdIdExTrxSignPrepare;
-    cmd.cmdP1 = inId;
-    cmd.cmdP2 = 0;
-    
     cmdInput = [NSMutableData  dataWithBytes:[trxHandle bytes] length:4];
     [cmdInput appendBytes: &accId length: 4];
     [cmdInput appendBytes: &kcId length: 4];
@@ -4157,6 +3912,18 @@ NSArray *addresses;
     [cmdInput appendData: sigMtrl];
     [cmdInput appendData: mac];
     
+    return [self cwCmdExTrxSignPrepare:inId inputData:cmdInput];
+}
+
+- (NSInteger) cwCmdExTrxSignPrepare:(NSInteger)inId inputData:(NSData *)cmdInput
+{
+    CwCardCommand *cmd = [[CwCardCommand alloc] init];
+    cmd.cmdPriority = CwCardCommandPriorityNone;
+    
+    cmd.cmdCla = CwCmdIdExTrxSignPrepareCLA;
+    cmd.cmdId = CwCmdIdExTrxSignPrepare;
+    cmd.cmdP1 = inId;
+    cmd.cmdP2 = 0;
     cmd.cmdInput = cmdInput;
     
     //add command to array
@@ -4269,24 +4036,7 @@ NSArray *addresses;
             [cwCmds removeObjectAtIndex:0];
         }
         
-#ifdef CW_SOFT_SIMU
-        double delayInSeconds = 0.2;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-            
-            // code to be executed on main thread.If you want to run in another thread, create other queue
-            [cwSoft processCwCardCommand:currentCmd];
-            
-            currentCmd.busy = NO;
-            //Update CwCards
-            [self updateCwCardByCommand:currentCmd];
-            [self cmdProcessor];
-            
-        });
-        
-#else
         [self BLE_SendCmd:currentCmd];
-#endif
         
     } else {
         //no more command in the arrray. call delegate
@@ -4389,81 +4139,6 @@ NSArray *addresses;
                 NSLog(@"CwCmdIdGetUid Error %04lX", (long)cmd.cmdResult);
             }
             break;
-            
-            //Init Commands
-        case CwCmdIdInitSetData:
-            if (cmd.cmdResult==0x9000) {
-            } else {
-                NSLog(@"CwCmdIdInitSetData Error %04lX", (long)cmd.cmdResult);
-            }
-            break;
-        case CwCmdIdInitConfirm:
-            if (cmd.cmdResult==0x9000) {
-                if ([self.delegate respondsToSelector:@selector(didReInitCw)]) {
-                    [self.delegate didReInitCw];
-                }
-            } else {
-                NSLog(@"CwCmdIdInitConfirm Error %04lX", (long)cmd.cmdResult);
-            }
-            break;
-        case CwCmdIdInitVmkChlng:
-            if (cmd.cmdResult==0x9000) {
-                vmkChallenge = [NSData dataWithBytes:data length:16];
-                [self CwCmdInitBackInit];
-            } else {
-                NSLog(@"CwCmdIdInitVmkChlng Error %04lX", (long)cmd.cmdResult);
-            }
-            break;
-        case CwCmdIdInitBackInit:
-            if (cmd.cmdResult==0x9000 || cmd.cmdResult==0x6601) {
-                //set default pin
-                Byte pinHash[CC_SHA256_DIGEST_LENGTH];
-                CC_SHA256([[defaultPin dataUsingEncoding:NSUTF8StringEncoding] bytes], (CC_LONG)defaultPin.length, pinHash);
-                
-                [self CwCmdInitSetData:0 Data:[NSData dataWithBytes:pinHash length:sizeof(pinHash)] PreHostId:0];
-                
-                //set puk
-                [self CwCmdInitSetData:1 Data:[NSData dataWithBytes:TEST_PUK length:sizeof(TEST_PUK)] PreHostId:0];
-                
-                //set semk keys
-                [self CwCmdInitSetData:2 Data:[NSData dataWithBytes:TEST_XCHSSEMK length:sizeof(TEST_XCHSSEMK)] PreHostId:0];
-                
-                //set cardId
-                [self CwCmdInitSetData:3 Data: [initCardId dataUsingEncoding:NSUTF8StringEncoding] PreHostId:0];
-                
-                //set otpk keys
-                [self CwCmdInitSetData:4 Data:[NSData dataWithBytes:TEST_XCHSOTPK length:sizeof(TEST_XCHSOTPK)] PreHostId:0];
-                
-                //set smk keys
-                [self CwCmdInitSetData:5 Data:[NSData dataWithBytes:TEST_XCHSSMK length:sizeof(TEST_XCHSSMK)] PreHostId:0];
-                
-                //set pre-reg host description
-                [self CwCmdInitSetData:6 Data:[NSData dataWithBytes:PreHostDesc0 length:sizeof(PreHostDesc0)] PreHostId:0];
-                [self CwCmdInitSetData:6 Data:[NSData dataWithBytes:PreHostDesc1 length:sizeof(PreHostDesc1)] PreHostId:1];
-                [self CwCmdInitSetData:6 Data:[NSData dataWithBytes:PreHostDesc2 length:sizeof(PreHostDesc2)] PreHostId:2];
-                [self CwCmdInitSetData:6 Data:[NSData dataWithBytes:PreHostDesc3 length:sizeof(PreHostDesc3)] PreHostId:3];
-                [self CwCmdInitSetData:6 Data:[NSData dataWithBytes:PreHostDesc4 length:sizeof(PreHostDesc4)] PreHostId:4];
-                [self CwCmdInitSetData:6 Data:[NSData dataWithBytes:PreHostDesc5 length:sizeof(PreHostDesc5)] PreHostId:5];
-                [self CwCmdInitSetData:6 Data:[NSData dataWithBytes:PreHostDesc6 length:sizeof(PreHostDesc6)] PreHostId:6];
-                
-                //set pre-reg host otp key
-                [self CwCmdInitSetData:7 Data:[NSData dataWithBytes:PreHostOtpKey0 length:sizeof(PreHostOtpKey0)] PreHostId:0];
-                [self CwCmdInitSetData:7 Data:[NSData dataWithBytes:PreHostOtpKey1 length:sizeof(PreHostOtpKey1)] PreHostId:1];
-                [self CwCmdInitSetData:7 Data:[NSData dataWithBytes:PreHostOtpKey2 length:sizeof(PreHostOtpKey2)] PreHostId:2];
-                [self CwCmdInitSetData:7 Data:[NSData dataWithBytes:PreHostOtpKey3 length:sizeof(PreHostOtpKey3)] PreHostId:3];
-                [self CwCmdInitSetData:7 Data:[NSData dataWithBytes:PreHostOtpKey4 length:sizeof(PreHostOtpKey4)] PreHostId:4];
-                [self CwCmdInitSetData:7 Data:[NSData dataWithBytes:PreHostOtpKey5 length:sizeof(PreHostOtpKey5)] PreHostId:5];
-                [self CwCmdInitSetData:7 Data:[NSData dataWithBytes:PreHostOtpKey6 length:sizeof(PreHostOtpKey6)] PreHostId:6];
-                
-                //confirm init after sets
-                [self CwCmdInitConfirm];
-            } else {
-                NSLog(@"CwCmdIdInitBackInit Error %04lX", (long)cmd.cmdResult);
-            }
-            break;
-            
-            //Auth Commands
-            //Authentication Commands
         case CwCmdIdPinChlng:
             //output:
             //pinChlng 16B
@@ -5296,9 +4971,6 @@ NSArray *addresses;
                 //adress 25B Binary to Base58 NSString
                 //base58Encode(data+4, 25, addrBytes, 34);
                 addr.address=[CwBase58 base58WithData:[[NSData alloc] initWithBytes:data+4 length:25]];
-#ifdef CW_SOFT_SIMU
-                addr.address = addresses[addr.keyId];
-#endif
                 
                 /*
                  int64_t balance;
@@ -5343,6 +5015,8 @@ NSArray *addresses;
             }
             
             break;
+        
+        case CwCmdIdExTrxSignPrepare:
         case CwCmdIdHdwPrepTrxSign:
             //output:
             //none
@@ -5425,10 +5099,6 @@ NSArray *addresses;
                         //adress 25B Binary to Base58 NSString
                         //base58Encode(data, 25, addrBytes, 34);
                         addr.address=[CwBase58 base58WithData:[[NSData alloc] initWithBytes:data length:25]];
-                        
-#ifdef CW_SOFT_SIMU
-                        addr.address = addresses[keyId];
-#endif
 
                         break;
                         
@@ -5784,7 +5454,7 @@ NSArray *addresses;
             }
             
             self.exSessionEstablishCompleteBlock = nil;
-            self.exSessionInitErrorBlock = nil;
+            self.exSessionEstablishErrorBlock = nil;
             
             break;
             
@@ -5846,23 +5516,34 @@ NSArray *addresses;
             //output:
             //trHandle 4B
             if (cmd.cmdResult==0x9000) {
+                NSData *loginHandle = [NSData dataWithBytes:data length:4];
                 NSLog(@"trxStatus = %ld", (long)trxStatus);
+                NSLog(@"loginHandle = %@", loginHandle);
+                if (self.exTrxSignLoginCompleteBlock) {
+                    self.exTrxSignLoginCompleteBlock(loginHandle);
+                }
             } else {
                 NSLog(@"CwCmdIdExTrxSignLogin Error %04lX", (long)cmd.cmdResult);
+                if (self.exTrxSignLoginErrorBlock) {
+                    self.exTrxSignLoginErrorBlock(cmd.cmdResult);
+                }
             }
+            
+            self.exTrxSignLoginCompleteBlock = nil;
+            self.exTrxSignLoginErrorBlock = nil;
             
             break;
             
-        case CwCmdIdExTrxSignPrepare:
-            //output:
-            //none
-            if (cmd.cmdResult==0x9000) {
-                NSLog(@"trxStatus = %ld", (long)trxStatus);
-            } else {
-                NSLog(@"CwCmdIdExTrxSignPrepare Error %04lX", (long)cmd.cmdResult);
-            }
-            
-            break;
+//        case CwCmdIdExTrxSignPrepare:
+//            //output:
+//            //none
+//            if (cmd.cmdResult==0x9000) {
+//                NSLog(@"trxStatus = %ld", (long)trxStatus);
+//            } else {
+//                NSLog(@"CwCmdIdExTrxSignPrepare Error %04lX", (long)cmd.cmdResult);
+//            }
+//            
+//            break;
             
         case CwCmdIdExTrxSignLogout:
             //output:

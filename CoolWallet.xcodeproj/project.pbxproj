@@ -130,7 +130,6 @@
 		EFCF9A531B32C8810076091B /* CwBtcNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCF9A311B32C8810076091B /* CwBtcNetwork.m */; };
 		EFCF9A541B32C8810076091B /* CwCard.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCF9A341B32C8810076091B /* CwCard.m */; };
 		EFCF9A551B32C8810076091B /* CwCardCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCF9A371B32C8810076091B /* CwCardCommand.m */; };
-		EFCF9A561B32C8810076091B /* CwCardSoft.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCF9A3A1B32C8810076091B /* CwCardSoft.m */; };
 		EFCF9A571B32C8810076091B /* CwHost.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCF9A3C1B32C8810076091B /* CwHost.m */; };
 		EFCF9A581B32C8810076091B /* CwManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCF9A3E1B32C8810076091B /* CwManager.m */; };
 		EFCF9A591B32C8810076091B /* CwTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCF9A411B32C8810076091B /* CwTransaction.m */; };
@@ -172,6 +171,7 @@
 		F45962901BDE3FF80046E4CE /* BlockChain.m in Sources */ = {isa = PBXBuildFile; fileRef = F459628F1BDE3FF80046E4CE /* BlockChain.m */; };
 		F45962931BDE411C0046E4CE /* SRWebSocket+CW.m in Sources */ = {isa = PBXBuildFile; fileRef = F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */; };
 		F4798AF71C5B2452002DC3A0 /* APPData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4798AF61C5B2452002DC3A0 /* APPData.m */; };
+		F479E4051C5C918500482E59 /* CwExTx.m in Sources */ = {isa = PBXBuildFile; fileRef = F479E4041C5C918500482E59 /* CwExTx.m */; };
 		F47EAA921C4E178700FEDE26 /* button_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = F47EAA8F1C4E178700FEDE26 /* button_frame.png */; };
 		F47EAA931C4E178700FEDE26 /* ex_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F47EAA901C4E178700FEDE26 /* ex_icon.png */; };
 		F47EAA941C4E178700FEDE26 /* ex_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F47EAA911C4E178700FEDE26 /* ex_logo.png */; };
@@ -381,8 +381,6 @@
 		EFCF9A361B32C8810076091B /* CwCardCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwCardCommand.h; path = Model/CwCardCommand.h; sourceTree = "<group>"; };
 		EFCF9A371B32C8810076091B /* CwCardCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwCardCommand.m; path = Model/CwCardCommand.m; sourceTree = "<group>"; };
 		EFCF9A381B32C8810076091B /* CwCardDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwCardDelegate.h; path = Model/CwCardDelegate.h; sourceTree = "<group>"; };
-		EFCF9A391B32C8810076091B /* CwCardSoft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwCardSoft.h; path = Model/CwCardSoft.h; sourceTree = "<group>"; };
-		EFCF9A3A1B32C8810076091B /* CwCardSoft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwCardSoft.m; path = Model/CwCardSoft.m; sourceTree = "<group>"; };
 		EFCF9A3B1B32C8810076091B /* CwHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwHost.h; path = Model/CwHost.h; sourceTree = "<group>"; };
 		EFCF9A3C1B32C8810076091B /* CwHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwHost.m; path = Model/CwHost.m; sourceTree = "<group>"; };
 		EFCF9A3D1B32C8810076091B /* CwManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwManager.h; path = Model/CwManager.h; sourceTree = "<group>"; };
@@ -462,6 +460,8 @@
 		F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRWebSocket+CW.m"; sourceTree = "<group>"; };
 		F4798AF51C5B2452002DC3A0 /* APPData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPData.h; sourceTree = "<group>"; };
 		F4798AF61C5B2452002DC3A0 /* APPData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPData.m; sourceTree = "<group>"; };
+		F479E4031C5C918500482E59 /* CwExTx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExTx.h; path = Model/CwExTx.h; sourceTree = "<group>"; };
+		F479E4041C5C918500482E59 /* CwExTx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExTx.m; path = Model/CwExTx.m; sourceTree = "<group>"; };
 		F47EAA8F1C4E178700FEDE26 /* button_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_frame.png; sourceTree = "<group>"; };
 		F47EAA901C4E178700FEDE26 /* ex_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ex_icon.png; sourceTree = "<group>"; };
 		F47EAA911C4E178700FEDE26 /* ex_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ex_logo.png; sourceTree = "<group>"; };
@@ -686,8 +686,6 @@
 				EFCF9A361B32C8810076091B /* CwCardCommand.h */,
 				EFCF9A371B32C8810076091B /* CwCardCommand.m */,
 				EFCF9A381B32C8810076091B /* CwCardDelegate.h */,
-				EFCF9A391B32C8810076091B /* CwCardSoft.h */,
-				EFCF9A3A1B32C8810076091B /* CwCardSoft.m */,
 				EFCF9A3B1B32C8810076091B /* CwHost.h */,
 				EFCF9A3C1B32C8810076091B /* CwHost.m */,
 				EFCF9A3D1B32C8810076091B /* CwManager.h */,
@@ -727,6 +725,8 @@
 				A267298A1C561155005F452A /* CwExBuyOrder.m */,
 				F4798AF51C5B2452002DC3A0 /* APPData.h */,
 				F4798AF61C5B2452002DC3A0 /* APPData.m */,
+				F479E4031C5C918500482E59 /* CwExTx.h */,
+				F479E4041C5C918500482E59 /* CwExTx.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1295,6 +1295,7 @@
 				EFBED9DA1B56B460008EF9DD /* TabImportSeedViewController.m in Sources */,
 				EFA9D5891ABA67F2005C27F2 /* TabbarSendViewController.m in Sources */,
 				EFF6DD0E1B9434480089E093 /* TabCreateWalletSelectViewController.m in Sources */,
+				F479E4051C5C918500482E59 /* CwExTx.m in Sources */,
 				EFAC5FDB1AAD39620042FF8C /* TabExitViewController.m in Sources */,
 				EFCF9A531B32C8810076091B /* CwBtcNetwork.m in Sources */,
 				EFF6DD111B9542880089E093 /* TabExhchangeRateViewController.m in Sources */,
@@ -1314,7 +1315,6 @@
 				F4A7CC4B1C5884A100E40CD1 /* ExMatchedOrderViewController.m in Sources */,
 				EFAC5C501AC25A7000320EA6 /* qrspec.c in Sources */,
 				EFCF9A5F1B32C8810076091B /* KeychainItemWrapper.m in Sources */,
-				EFCF9A561B32C8810076091B /* CwCardSoft.m in Sources */,
 				EFAC5FDA1AAD39620042FF8C /* TabCreateHdwViewController.m in Sources */,
 				EFCF9A591B32C8810076091B /* CwTransaction.m in Sources */,
 				EFF1ACBB19EFF14800DD0BCB /* SWRevealViewController.m in Sources */,

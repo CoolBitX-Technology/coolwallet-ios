@@ -10,8 +10,9 @@
 #import "CwExAPI.h"
 
 #import <AFNetworking/AFNetworking.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
-@class CwCard;
+@class CwCard, CwAccount;
 
 @interface CwExchange : NSObject
 
@@ -21,6 +22,7 @@
 +(id)sharedInstance;
 -(void) loginExSession;
 -(void) syncCardInfo;
+-(void) prepareTransactionWithAmount:(NSNumber *)amountBTC withChangeAddress:(NSString *)changeAddress fromAccountId:(NSInteger)accountId;
 
 -(AFHTTPRequestOperationManager *) defaultJsonManager;
 

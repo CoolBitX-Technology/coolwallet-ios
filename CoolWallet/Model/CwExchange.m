@@ -11,8 +11,9 @@
 #import "CwManager.h"
 #import "NSString+HexToData.h"
 #import "APPData.h"
-
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import "CwExTx.h"
+#import "CwBtc.h"
+#import "CwTxin.h"
 
 @interface CwExchange()
 
@@ -23,6 +24,9 @@
 
 @property (strong, nonatomic) NSMutableArray *syncedAccount;
 @property (assign, nonatomic) BOOL cardInfoSynced;
+
+@property (strong, nonatomic) NSString *txReceiveAddress;
+@property (strong, nonatomic) NSData *txLoginHandle;
 
 @end
 
@@ -112,11 +116,9 @@
     if (self.card.mode.integerValue == CwCardModeNormal || self.card.mode.integerValue == CwCardModeAuth) {
         [self.card exSessionLogout];
     }
-    
-    NSString *url = [NSString stringWithFormat:@"%@%@", ExBaseUrl, ExSessionLogout];
-    
+        
     AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
-    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+    [manager GET:ExSessionLogout parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         
@@ -133,6 +135,35 @@
             [self.card getAccountInfo:account.accId];
         }
     }
+}
+
+-(void) prepareTransactionWithAmount:(NSNumber *)amountBTC withChangeAddress:(NSString *)changeAddress fromAccountId:(NSInteger)accountId
+{
+    CwExTx *exTx = [CwExTx new];
+    exTx.accountId = accountId;
+    exTx.amount = [CwBtc BTCWithBTC:amountBTC];
+    exTx.changeAddress = changeAddress;
+    
+    @weakify(self)
+    [[[[self signalGetTrxInfo] flattenMap:^RACStream *(NSDictionary *response) {
+        @strongify(self)
+        NSString *loginData = [response objectForKey:@"loginblk"];
+        exTx.receiveAddress = [response objectForKey:@"out1addr"];
+        
+        return [self signalTrxLogin:loginData];
+    }] flattenMap:^RACStream *(NSData *trxHandle) {
+        exTx.loginHandle = trxHandle;
+        CwTx *unsignedTx = [self.card getUnsignedTransaction:exTx.amount.satoshi.longLongValue Address:exTx.receiveAddress Change:exTx.changeAddress AccountId:exTx.accountId];
+        if (unsignedTx == nil) {
+            return [RACSignal error:nil];
+        } else {
+            return [self signalTrxPrepareDataFrom:unsignedTx andExTx:exTx];
+        }
+    }] subscribeNext:^(id value) {
+        NSLog(@"Ex Trx prepairing...");
+    } error:^(NSError *error) {
+        NSLog(@"Ex Trx prepaire fail: %@", error);
+    }];
 }
 
 -(void) observeHdwAccountPointer
@@ -214,7 +245,7 @@
 }
 
 -(RACSignal*)signalCreateExSession {
-    NSString *url = [NSString stringWithFormat:@"%@%@/%@", ExBaseUrl, ExSession, self.card.cardId];
+    NSString *url = [NSString stringWithFormat:ExSession, self.card.cardId];
     
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -254,8 +285,7 @@
             [subscriber sendNext:@{@"seResp": seResp, @"seChlng": seChlng}];
             [subscriber sendCompleted];
         } withError:^(NSInteger errorCode) {
-            NSError *error = [NSError errorWithDomain:@"Card Cmd Error" code:errorCode userInfo:nil];
-            [subscriber sendError:error];
+            [subscriber sendError:[self cardCmdError:errorCode]];
         }];
         
         return nil;
@@ -265,7 +295,7 @@
 }
 
 -(RACSignal*)signalEstablishExSessionWithChallenge:(NSData *)challenge andResponse:(NSData *)response {
-    NSString *url = [NSString stringWithFormat:@"%@%@/%@", ExBaseUrl, ExSession, self.card.cardId];
+    NSString *url = [NSString stringWithFormat:ExSession, self.card.cardId];
     NSDictionary *dict = @{@"challenge": [NSString dataToHexstring:challenge], @"response": [NSString dataToHexstring:response]};
     
     @weakify(self);
@@ -306,9 +336,8 @@
     return signal;
 }
 
-
 -(RACSignal*)signalSyncCardInfo {
-    NSString *url = [NSString stringWithFormat:@"%@%@", ExBaseUrl, self.card.cardId];
+    NSString *url = [NSString stringWithFormat:@"%@/%@", ExBaseUrl, self.card.cardId];
     
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:[APPData sharedInstance].deviceToken forKey:@"token"];
@@ -338,7 +367,7 @@
 }
 
 -(RACSignal*)signalSyncAccountInfo:(CwAccount *)account {
-    NSString *url = [NSString stringWithFormat:@"%@%@/%ld", ExBaseUrl, self.card.cardId, (long)account.accId];
+    NSString *url = [NSString stringWithFormat:@"%@/%@/%ld", ExBaseUrl, self.card.cardId, (long)account.accId];
     
     NSDictionary *dict = [self getAccountInfo:account];
     
@@ -358,6 +387,109 @@
     }];
     
     return signal;
+}
+
+-(RACSignal *)signalTrxLogin:(NSString *)logingData
+{
+    @weakify(self)
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        [self.card exTrxSignLogin:logingData withComplete:^(NSData *loginHandle) {
+            [subscriber sendNext:loginHandle];
+            [subscriber sendCompleted];
+        } error:^(NSInteger errorCode) {
+            [subscriber sendError:[self cardCmdError:errorCode]];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(RACSignal*)signalGetTrxInfo
+{
+    NSString *url = [NSString stringWithFormat:ExGetTrxInfo, self.card.cardId];
+    
+    @weakify(self);
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            [subscriber sendNext:responseObject];
+            [subscriber sendCompleted];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            [subscriber sendError:error];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(RACSignal *)signalTrxPrepareDataFrom:(CwTx *)unsignedTx andExTx:(CwExTx *)exTx
+{
+    NSString *url = ExGetTrxPrepareBlocks;
+    
+    NSMutableArray *inputBlocks = [NSMutableArray new];
+    for (int index=0; index < unsignedTx.inputs.count; index++) {
+        CwTxin *txin = unsignedTx.inputs[index];
+        NSData *inputData = [self composePrepareInputData:index KeyChainId:txin.kcId AccountId:txin.accId KeyId:txin.kId receiveAddress:exTx.receiveAddress changeAddress:exTx.changeAddress SignatureMateiral:txin.hashForSign];
+        [inputBlocks addObject:@{@"ids": @(index), @"blk": [NSString dataToHexstring:inputData]}];
+    }
+    NSDictionary *dict = @{@"blks": inputBlocks};
+    
+    @weakify(self);
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+        [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            NSArray *blocks = [responseObject objectForKey:@"blks"];
+            for (NSDictionary *blockData in blocks) {
+                NSInteger index = (NSInteger)[blockData objectForKey:@"idx"];
+                NSString *block = [blockData objectForKey:@"blk"];
+                NSMutableData *inputData = [NSMutableData dataWithData:exTx.loginHandle];
+                [inputData appendData:[NSString hexstringToData:block]];
+                
+                [self.card exTrxSignPrepareWithInputId:index withInputData:inputData];
+            }
+            
+            [subscriber sendNext:responseObject];
+            [subscriber sendCompleted];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            [subscriber sendError:error];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(NSData *) composePrepareInputData:(NSInteger)inputId KeyChainId:(NSInteger)keyChainId AccountId:(NSInteger)accountId KeyId:(NSInteger)keyId receiveAddress:(NSString *)receiveAddress changeAddress:(NSString *)changeAddress SignatureMateiral:(NSData *)signatureMaterial
+{
+    NSData *out1Address = [NSString hexstringToData:receiveAddress];
+    NSData *out2Address = [NSString hexstringToData:changeAddress];
+    
+    NSMutableData *inputData = [[NSMutableData alloc] init];
+    [inputData appendBytes:&accountId length:4];
+    [inputData appendBytes:&keyChainId length:1];
+    [inputData appendBytes: &keyId length: 4];
+    [inputData appendData:out1Address];
+    [inputData appendData:out2Address];
+    [inputData appendData:signatureMaterial];
+    
+    return inputData;
+}
+
+-(NSError *) cardCmdError:(NSInteger)errorCode
+{
+    NSError *error = [NSError errorWithDomain:@"Card Cmd Error" code:errorCode userInfo:nil];
+    return error;
 }
 
 -(NSDictionary *) getAccountInfo:(CwAccount *)account
