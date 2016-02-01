@@ -16,6 +16,7 @@
 #define ExGetMatchedOrders ExBaseUrl@"/pending/%@"
 #define ExGetTrxInfo ExBaseUrl@"/trxinfo/%@"
 #define ExGetTrxPrepareBlocks ExBaseUrl@"/trxblks"
+#define ExTrx ExBaseUrl@"/trx/%@"
 
 typedef NS_ENUM (int, ExSessionStatus) {
     ExSessionNone,

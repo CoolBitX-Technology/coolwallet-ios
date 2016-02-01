@@ -1094,7 +1094,7 @@ NSArray *addresses;
     //get account from dictionary
     CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", (long)accountId]];
     
-    if (keyChainId==CwAddressKeyChainExternal ) {
+    if (keyChainId==CwAddressKeyChainExternal && keyId < account.extKeys.count ) {
         //get publickey
         if (((CwAddress *)account.extKeys[keyId]).publicKey==nil) {
             [self cwCmdHdwQueryAccountKeyInfo:CwHdwAccountKeyInfoPubKey
@@ -1103,7 +1103,7 @@ NSArray *addresses;
                                         KeyId:keyId];
         }
         
-    } else if (keyChainId==CwAddressKeyChainInternal) {
+    } else if (keyChainId==CwAddressKeyChainInternal && keyId < account.intKeys.count) {
         //get publickey
         if (((CwAddress *)account.intKeys[keyId]).publicKey==nil) {
             [self cwCmdHdwQueryAccountKeyInfo:CwHdwAccountKeyInfoPubKey
@@ -5335,8 +5335,9 @@ NSArray *addresses;
                     else
                     {
                         //call success delegate
-                        if ([self.delegate respondsToSelector:@selector(didSignTransaction)]) {
-                            [self.delegate didSignTransaction];
+                        if ([self.delegate respondsToSelector:@selector(didSignTransaction:)]) {
+                            NSString *txId = [JSON objectForKey:@"data"];
+                            [self.delegate didSignTransaction:txId];
                         }
                     }
                     

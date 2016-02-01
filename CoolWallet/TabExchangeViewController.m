@@ -15,8 +15,6 @@
 
 @interface TabExchangeViewController ()
 
-@property (strong, nonatomic) CwExchange *exchange;
-
 @end
 
 @implementation TabExchangeViewController
@@ -32,7 +30,21 @@
     myImageView.frame = CGRectMake(x, 8, 30, 30);
     [self.navigationController.navigationBar addSubview:myImageView];
     
-    self.exchange = [CwExchange sharedInstance];
+    CwExchange *exchange = [CwExchange sharedInstance];
+    @weakify(self)
+    [[[[RACObserve(exchange, sessionStatus) filter:^BOOL(NSNumber *status) {
+        return status.intValue == ExSessionLogin;
+    }] take:1]
+      subscribeOn:[RACScheduler mainThreadScheduler]]
+     subscribeNext:^(id value) {
+         @strongify(self)
+         [self performDismiss];
+         [self performSegueWithIdentifier:@"ExLoginSegue" sender:self];
+    }];
+    
+    if (exchange.sessionStatus == ExSessionProcess) {
+        [self showIndicatorView:@"login exchange site"];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

@@ -23,7 +23,7 @@
 @property (strong, nonatomic) NSString *loginSession;
 
 @property (strong, nonatomic) NSMutableArray *syncedAccount;
-@property (assign, nonatomic) BOOL cardInfoSynced;
+@property (readwrite, nonatomic) BOOL cardInfoSynced;
 
 @property (strong, nonatomic) NSString *txReceiveAddress;
 @property (strong, nonatomic) NSData *txLoginHandle;
@@ -106,8 +106,12 @@
     } error:^(NSError *error) {
         @strongify(self);
         NSLog(@"error(%ld): %@", (long)error.code, error);
-        self.sessionStatus = ExSessionFail;
-        [self logoutExSession];
+//        self.sessionStatus = ExSessionFail;
+//        [self logoutExSession];
+        
+        self.sessionStatus = ExSessionLogin;
+        
+        [self syncCardInfo];
     }];
 }
 
@@ -146,16 +150,21 @@
     
     @weakify(self)
     [[[[self signalGetTrxInfo] flattenMap:^RACStream *(NSDictionary *response) {
+        NSLog(@"response: %@", response);
         @strongify(self)
         NSString *loginData = [response objectForKey:@"loginblk"];
         exTx.receiveAddress = [response objectForKey:@"out1addr"];
+        
+        if (!loginData) {
+            return [RACSignal error:[NSError errorWithDomain:@"Exchange site error." code:1001 userInfo:@{@"error": @"Fail to get transaction data from exchange site."}]];
+        }
         
         return [self signalTrxLogin:loginData];
     }] flattenMap:^RACStream *(NSData *trxHandle) {
         exTx.loginHandle = trxHandle;
         CwTx *unsignedTx = [self.card getUnsignedTransaction:exTx.amount.satoshi.longLongValue Address:exTx.receiveAddress Change:exTx.changeAddress AccountId:exTx.accountId];
         if (unsignedTx == nil) {
-            return [RACSignal error:nil];
+            return [RACSignal error:[NSError errorWithDomain:@"Check unsigned data error." code:1002 userInfo:@{@"error": @"No unsigned transaction."}]];
         } else {
             return [self signalTrxPrepareDataFrom:unsignedTx andExTx:exTx];
         }
@@ -163,6 +172,27 @@
         NSLog(@"Ex Trx prepairing...");
     } error:^(NSError *error) {
         NSLog(@"Ex Trx prepaire fail: %@", error);
+        if ([self.card.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
+            if (error.userInfo) {
+                [self.card.delegate didPrepareTransactionError:[error.userInfo objectForKey:@"error"]];
+            } else {
+                [self.card.delegate didPrepareTransactionError:@"Fail to get transaction data from exchange site."];
+            }
+        }
+    }];
+}
+
+-(void) completeTransactionWithOrderId:(NSString *)orderId TxId:(NSString *)txId
+{
+    NSString *url = [NSString stringWithFormat:ExTrx, self.card.cardId];
+    NSDictionary *dict = @{@"bcTrxId": txId, @"orderId": orderId};
+    
+    AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+    [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        NSLog(@"Success send txId to ex site.");
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        NSLog(@"Fail send txId to ex site.");
+        // TODO: should resend to exchange site?
     }];
 }
 
@@ -285,7 +315,7 @@
             [subscriber sendNext:@{@"seResp": seResp, @"seChlng": seChlng}];
             [subscriber sendCompleted];
         } withError:^(NSInteger errorCode) {
-            [subscriber sendError:[self cardCmdError:errorCode]];
+            [subscriber sendError:[self cardCmdError:errorCode errorMsg:@"Card init session fail."]];
         }];
         
         return nil;
@@ -399,7 +429,7 @@
             [subscriber sendNext:loginHandle];
             [subscriber sendCompleted];
         } error:^(NSInteger errorCode) {
-            [subscriber sendError:[self cardCmdError:errorCode]];
+            [subscriber sendError:[self cardCmdError:errorCode errorMsg:@"Transaction login fail."]];
         }];
         
         return nil;
@@ -486,9 +516,10 @@
     return inputData;
 }
 
--(NSError *) cardCmdError:(NSInteger)errorCode
+-(NSError *) cardCmdError:(NSInteger)errorCode errorMsg:(NSString *)errorMsg
 {
-    NSError *error = [NSError errorWithDomain:@"Card Cmd Error" code:errorCode userInfo:nil];
+    NSError *error = [NSError errorWithDomain:@"Card Cmd Error" code:errorCode userInfo:@{@"error": errorMsg}];
+    
     return error;
 }
 

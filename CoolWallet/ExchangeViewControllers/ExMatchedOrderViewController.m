@@ -10,6 +10,7 @@
 #import "ExMatchOrderVM.h"
 #import "ExOrderCell.h"
 #import "ExOrderDetailViewController.h"
+#import "CwExchange.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -55,6 +56,16 @@
 -(void) addObservers
 {
     @weakify(self)
+    CwExchange *exchange = [CwExchange sharedInstance];
+    if (!exchange.cardInfoSynced) {
+        [self showIndicatorView:@"Sync card info"];
+        [[[RACObserve(exchange, cardInfoSynced) filter:^BOOL(NSNumber *synced) {
+            return synced.boolValue;
+        }] subscribeOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(NSNumber *synced) {
+            [self performDismiss];
+        }];
+    }
+    
     [[RACObserve(self, hasMatchedOrders) filter:^BOOL(id value) {
         @strongify(self)
         return self.vm.matchedSellOrders != nil && self.vm.matchedBuyOrders != nil;

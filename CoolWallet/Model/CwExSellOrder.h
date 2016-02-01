@@ -11,6 +11,6 @@
 @interface CwExSellOrder : CwExOrderBase
 
 //hex string: trxId(4B) + accId(4B) + amount(8B) + mac1(32B) + nonce(16B)
-@property (strong, nonatomic) NSString *orderBlock;
+@property (strong, nonatomic) NSString *blockData;
 
 @end

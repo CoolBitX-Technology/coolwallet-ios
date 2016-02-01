@@ -3467,7 +3467,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zop-xA-Ob9">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zop-xA-Ob9">
                                 <rect key="frame" x="137" y="307" width="46" height="30"/>
                                 <state key="normal" title="Login">
                                     <color key="titleColor" red="0.68235294120000001" green="0.56470588239999997" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -4155,8 +4155,8 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <image name="x.png" width="417" height="417"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="kCd-ih-hMI"/>
-        <segue reference="1rh-8W-cge"/>
+        <segue reference="brK-em-gbO"/>
         <segue reference="gzi-1q-gb8"/>
+        <segue reference="kCd-ih-hMI"/>
     </inferredMetricsTieBreakers>
 </document>

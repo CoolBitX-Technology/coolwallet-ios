@@ -75,7 +75,6 @@ long TxFee = 10000;
     self.txtReceiverAddress.delegate = self;
     self.txtAmount.delegate = self;
     self.txtNote.delegate = self;
-    self.txtOtp.delegate = self;
     self.txtAmountFiatmoney.delegate =self;
     
     //NSLog(@"payment address = %@", cwCard.paymentAddress);
@@ -626,9 +625,7 @@ long TxFee = 10000;
 -(void) didVerifyOtpError:(NSInteger)errId
 {
     [self performDismiss];
-    
-    self.txtOtp.text = @"";
-    
+        
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"OTP Error" message:@"Generate OTP Again" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
@@ -645,9 +642,9 @@ long TxFee = 10000;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
--(void) didSignTransaction
+-(void) didSignTransaction:(NSString *)txId
 {
-    NSLog(@"didSignTransaction");
+    NSLog(@"didSignTransaction: %@", txId);
     //[self performDismiss];
     
     if(PressAlert != nil) [PressAlert dismissViewControllerAnimated:YES completion:nil] ;

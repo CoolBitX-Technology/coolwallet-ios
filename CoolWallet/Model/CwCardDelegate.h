@@ -103,7 +103,7 @@ typedef NS_ENUM (NSInteger, CwCardRSSI) {
 -(void) didGetButton;
 -(void) didVerifyOtp;
 -(void) didVerifyOtpError:(NSInteger)errId;
--(void) didSignTransaction;
+-(void) didSignTransaction:(NSString *)txId;
 -(void) didSignTransactionError: (NSString *)errMsg;
 -(void) didCancelTransaction;
 -(void) didFinishTransaction;

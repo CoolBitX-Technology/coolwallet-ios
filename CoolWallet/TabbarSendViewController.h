@@ -30,7 +30,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtAmount;
 @property (weak, nonatomic) IBOutlet UITextField *txtNote;
 @property (weak, nonatomic) IBOutlet UITextField *txtReceiverAddress;
-@property (weak, nonatomic) IBOutlet UITextField *txtOtp;
 @property (weak, nonatomic) IBOutlet UITextField *txtAmountFiatmoney;
 @property (weak, nonatomic) IBOutlet UILabel *lblFiatCurrency;
 

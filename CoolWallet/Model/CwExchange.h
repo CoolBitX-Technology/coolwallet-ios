@@ -18,11 +18,13 @@
 
 @property (readonly, nonatomic) CwCard *card;
 @property (readonly, assign) ExSessionStatus sessionStatus;
+@property (readonly, nonatomic) BOOL cardInfoSynced;
 
 +(id)sharedInstance;
 -(void) loginExSession;
 -(void) syncCardInfo;
 -(void) prepareTransactionWithAmount:(NSNumber *)amountBTC withChangeAddress:(NSString *)changeAddress fromAccountId:(NSInteger)accountId;
+-(void) completeTransactionWithOrderId:(NSString *)orderId TxId:(NSString *)txId;
 
 -(AFHTTPRequestOperationManager *) defaultJsonManager;
 
