@@ -172,6 +172,7 @@
 		F45962931BDE411C0046E4CE /* SRWebSocket+CW.m in Sources */ = {isa = PBXBuildFile; fileRef = F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */; };
 		F4798AF71C5B2452002DC3A0 /* APPData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4798AF61C5B2452002DC3A0 /* APPData.m */; };
 		F479E4051C5C918500482E59 /* CwExTx.m in Sources */ = {isa = PBXBuildFile; fileRef = F479E4041C5C918500482E59 /* CwExTx.m */; };
+		F47E4DB21C606EAE0032885F /* AccountBalanceView.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E4DB11C606EAE0032885F /* AccountBalanceView.m */; };
 		F47EAA921C4E178700FEDE26 /* button_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = F47EAA8F1C4E178700FEDE26 /* button_frame.png */; };
 		F47EAA931C4E178700FEDE26 /* ex_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F47EAA901C4E178700FEDE26 /* ex_icon.png */; };
 		F47EAA941C4E178700FEDE26 /* ex_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F47EAA911C4E178700FEDE26 /* ex_logo.png */; };
@@ -462,6 +463,8 @@
 		F4798AF61C5B2452002DC3A0 /* APPData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPData.m; sourceTree = "<group>"; };
 		F479E4031C5C918500482E59 /* CwExTx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExTx.h; path = Model/CwExTx.h; sourceTree = "<group>"; };
 		F479E4041C5C918500482E59 /* CwExTx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExTx.m; path = Model/CwExTx.m; sourceTree = "<group>"; };
+		F47E4DB01C606EAE0032885F /* AccountBalanceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountBalanceView.h; sourceTree = "<group>"; };
+		F47E4DB11C606EAE0032885F /* AccountBalanceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountBalanceView.m; sourceTree = "<group>"; };
 		F47EAA8F1C4E178700FEDE26 /* button_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_frame.png; sourceTree = "<group>"; };
 		F47EAA901C4E178700FEDE26 /* ex_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ex_icon.png; sourceTree = "<group>"; };
 		F47EAA911C4E178700FEDE26 /* ex_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ex_logo.png; sourceTree = "<group>"; };
@@ -989,6 +992,8 @@
 			children = (
 				F4A7CC4D1C58959A00E40CD1 /* ExOrderCell.h */,
 				F4A7CC4E1C58959A00E40CD1 /* ExOrderCell.m */,
+				F47E4DB01C606EAE0032885F /* AccountBalanceView.h */,
+				F47E4DB11C606EAE0032885F /* AccountBalanceView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1298,6 +1303,7 @@
 				F479E4051C5C918500482E59 /* CwExTx.m in Sources */,
 				EFAC5FDB1AAD39620042FF8C /* TabExitViewController.m in Sources */,
 				EFCF9A531B32C8810076091B /* CwBtcNetwork.m in Sources */,
+				F47E4DB21C606EAE0032885F /* AccountBalanceView.m in Sources */,
 				EFF6DD111B9542880089E093 /* TabExhchangeRateViewController.m in Sources */,
 				EFAC5FD71AAD39620042FF8C /* TabAddressTableViewController.m in Sources */,
 				EFA341421AA702E80035AC6D /* CwInfoViewCell.m in Sources */,

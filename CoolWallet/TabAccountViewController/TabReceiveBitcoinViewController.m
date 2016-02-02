@@ -183,7 +183,7 @@ NSString *Label;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
     
-    if ([account.extKeys count] > 0) {
+    if ([account.extKeys count] > 0 && [account isAllAddressSynced]) {
         rowSelected = 0;
         
         [self didGetAccountAddresses:cwCard.currentAccountId];

@@ -24,17 +24,13 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnAddAccount;
 
 //- (IBAction)btnAddAccount:(id)sender;
-@property (weak, nonatomic) IBOutlet UILabel *lblBalance;
-@property (weak, nonatomic) IBOutlet UILabel *lblFaitMoney;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtAmount;
-@property (weak, nonatomic) IBOutlet UITextField *txtNote;
 @property (weak, nonatomic) IBOutlet UITextField *txtReceiverAddress;
 @property (weak, nonatomic) IBOutlet UITextField *txtAmountFiatmoney;
 @property (weak, nonatomic) IBOutlet UILabel *lblFiatCurrency;
 
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBusyIndicator;
 @property (weak, nonatomic) IBOutlet UIButton *btnSendBitcoin;
 
 - (IBAction)btnSendBitcoin:(id)sender;

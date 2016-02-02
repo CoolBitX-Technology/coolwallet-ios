@@ -25,8 +25,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnAddAccount;
 @property (weak, nonatomic) IBOutlet UIImageView *imgAddAccount;
 
-@property (weak, nonatomic) IBOutlet UILabel *lblBalance;
-@property (weak, nonatomic) IBOutlet UILabel *lblFaitMoney;
 @property (weak, nonatomic) IBOutlet UITableView *tableTransaction;
 
 - (IBAction)btnAddAccount:(id)sender;

@@ -12,6 +12,7 @@
 #import "CwBtcNetworkDelegate.h"
 #import "BlockChain.h"
 #import "tx.h"
+#import "AccountBalanceView.h"
 
 CwCard *cwCard;
 CwAccount *account;
@@ -25,6 +26,8 @@ NSDictionary *rates;
 long TxFee = 10000;
 
 @interface TabbarSendViewController () <CwBtcNetworkDelegate>
+
+@property (weak, nonatomic) IBOutlet AccountBalanceView *balanceView;
 
 @property (strong, nonatomic) CwAddress *genAddr;
 @property (assign, nonatomic) BOOL transactionBegin;
@@ -62,7 +65,6 @@ long TxFee = 10000;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.actBusyIndicator.hidden=YES;
     self.navigationController.navigationBar.hidden = NO;
     //self.txtAddress.delegate = self;
     cwCard.delegate = self;
@@ -74,7 +76,6 @@ long TxFee = 10000;
     
     self.txtReceiverAddress.delegate = self;
     self.txtAmount.delegate = self;
-    self.txtNote.delegate = self;
     self.txtAmountFiatmoney.delegate =self;
     
     //NSLog(@"payment address = %@", cwCard.paymentAddress);
@@ -86,7 +87,6 @@ long TxFee = 10000;
         self.txtAmount.text = @"";
         self.txtAmountFiatmoney.text = @"";
     }
-    self.txtNote.text = cwCard.label;
     _lblFiatCurrency.text = cwCard.currId;
 }
 
@@ -288,10 +288,7 @@ long TxFee = 10000;
 - (void)SetBalanceText
 {
     CwAccount *account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)cwCard.currentAccountId]];
-    //_lblBalance.text = [NSString stringWithFormat: @"%lld BTC", (int64_t)account.balance];
-    _lblBalance.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertBTCStringformUnit: (int64_t)account.balance], [[OCAppCommon getInstance] BitcoinUnit]];
-    
-    _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:self.cwManager.connectedCwCard.currRate], cwCard.currId];
+    self.balanceView.account = account;
 }
 
 -(void) updateAccountInfo:(CwAccount *)cwAccount
@@ -694,7 +691,6 @@ long TxFee = 10000;
     //NSString *numberAsString = [numberFormatter stringFromNumber: cwManager.connectedCwCard.currRate];
     //_lblFaitMoney.text = numberAsString;
     NSLog(@"string = %@",[[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:cwCard.currRate]);
-    self.lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:cwCard.currRate], cwCard.currId];
     //self.txtExchangeRage.text = numberAsString;
 }
 
@@ -770,7 +766,7 @@ long TxFee = 10000;
 -(void)textFieldDidBeginEditing:(UITextField *)sender
 {
     NSLog(@"textFieldDidBeginEditing");
-    if (sender == _txtNote || sender == _txtAmount || sender == _txtAmountFiatmoney)
+    if (sender == _txtAmount || sender == _txtAmountFiatmoney)
     {
         //move the main view, so that the keyboard does not hide it.
         if  (self.view.frame.origin.y >= 0)
@@ -783,7 +779,7 @@ long TxFee = 10000;
 - (void)textFieldDidEndEditing:(UITextField *)sender
 {
     NSLog(@"textFieldDidEndEditing");
-    if (sender == _txtNote || sender == _txtAmount || sender == _txtAmountFiatmoney)
+    if (sender == _txtAmount || sender == _txtAmountFiatmoney)
     {
         if  (self.view.frame.origin.y < 0)
         {

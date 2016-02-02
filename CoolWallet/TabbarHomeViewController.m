@@ -15,6 +15,7 @@
 #import "CwTxout.h"
 #import "CwUnspentTxIndex.h"
 #import "NSDate+Localize.h"
+#import "AccountBalanceView.h"
 
 #import "BlockChain.h"
 
@@ -36,6 +37,8 @@ CwAccount *account;
 @property (strong, nonatomic) NSArray *accountButtons;
 @property (assign, nonatomic) BOOL waitAccountCreated;
 @property (strong, nonatomic) NSMutableArray *txSyncing;
+
+@property (weak, nonatomic) IBOutlet AccountBalanceView *balanceView;
 
 @end
 
@@ -204,9 +207,7 @@ Boolean setBtnActionFlag;
 {
     NSLog(@"TabbarHomeViewController, SetBalanceText, balance: %lld", account.balance);
     
-    _lblBalance.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertBTCStringformUnit: (int64_t)account.balance], [[OCAppCommon getInstance] BitcoinUnit]];
-    
-    _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:self.cwManager.connectedCwCard.currRate], self.cwManager.connectedCwCard.currId];
+    self.balanceView.account = account;
 }
 
 - (void)SetTxkeys
@@ -510,9 +511,6 @@ Boolean setBtnActionFlag;
     //_lblFaitMoney.text = numberAsString;
     NSDecimalNumber *decNum = [NSDecimalNumber decimalNumberWithDecimal:[[numberFormatter numberFromString:numberAsString] decimalValue]];
     [self.cwManager.connectedCwCard setCwCurrRate:decNum];
-    
-    _lblFaitMoney.text = [NSString stringWithFormat: @"%@ %@", [[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:self.cwManager.connectedCwCard.currRate], self.cwManager.connectedCwCard.currId];
-    //self.txtExchangeRage.text = numberAsString;
 }
 
 -(void) didGenAddress:(CwAddress *)addr
