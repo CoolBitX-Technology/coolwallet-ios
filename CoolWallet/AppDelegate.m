@@ -29,15 +29,11 @@
     
     if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
         [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+        [application registerForRemoteNotifications];
     }
     
     [Fabric with:@[[Crashlytics class]]];
     
-    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeNone);
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes categories:nil];
-    [application registerUserNotificationSettings:settings];
-    [application registerForRemoteNotifications];
-
     /*
     // Change the background color of navigation bar
     [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
@@ -125,6 +121,7 @@
 
 -(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
+    NSLog(@"get APNS token: %@", [NSString dataToHexstring:deviceToken]);
     [APPData sharedInstance].deviceToken = [NSString dataToHexstring:deviceToken];
 }
 

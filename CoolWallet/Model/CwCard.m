@@ -80,9 +80,6 @@ NSData *pinChallenge;
 NSData *loginChallenge;
 NSData *vmkChallenge;
 
-NSString *defaultPin;
-NSString *initCardId;
-
 NSData *encKey;
 NSData *macKey;
 
@@ -180,6 +177,12 @@ NSArray *addresses;
         }
         
         addresses = [[NSArray alloc] init];
+        
+        regHandle = nil;
+        regChallenge = nil;
+        pinChallenge = nil;
+        loginChallenge = nil;
+        vmkChallenge = nil;
     }
     return self;
 }
@@ -4308,6 +4311,7 @@ NSArray *addresses;
                 [self cwCmdBindLogin];
             } else {
                 NSLog(@"CwCmdIdBindLoginChlng Error %04lX", (long)cmd.cmdResult);
+                loginChallenge = nil;
             }
             break;
         case CwCmdIdBindLogin:
