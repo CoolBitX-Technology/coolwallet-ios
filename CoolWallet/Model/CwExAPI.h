@@ -10,13 +10,15 @@
 #ifndef CwExAPI_h
 #define CwExAPI_h
 
-#define ExBaseUrl @"http://xsm.coolbitx.com:8080/api/res/cw"
-#define ExSession ExBaseUrl@"/session/%@"
-#define ExSessionLogout ExBaseUrl@"/session/logout"
-#define ExGetMatchedOrders ExBaseUrl@"/pending/%@"
-#define ExGetTrxInfo ExBaseUrl@"/trxinfo/%@"
-#define ExGetTrxPrepareBlocks ExBaseUrl@"/trxblks"
-#define ExTrx ExBaseUrl@"/trx/%@"
+#define ExBaseUrl               @"http://xsm.coolbitx.com:8080/api/res/cw"
+#define ExSession               ExBaseUrl@"/session/%@"
+#define ExSessionLogout         ExBaseUrl@"/session/logout"
+#define ExGetMatchedOrders      ExBaseUrl@"/pending/%@"
+#define ExGetTrxInfo            ExBaseUrl@"/trxinfo/%@"
+#define ExGetTrxPrepareBlocks   ExBaseUrl@"/trxblks"
+#define ExTrx                   ExBaseUrl@"/trx/%@"
+#define ExRequestOrderBlock     ExBaseUrl@"/order/%@/%@"
+#define ExWriteOKToken          ExBaseUrl@"/oktoken/%@"
 
 typedef NS_ENUM (int, ExSessionStatus) {
     ExSessionNone,

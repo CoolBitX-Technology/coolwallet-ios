@@ -106,12 +106,8 @@
     } error:^(NSError *error) {
         @strongify(self);
         NSLog(@"error(%ld): %@", (long)error.code, error);
-//        self.sessionStatus = ExSessionFail;
-//        [self logoutExSession];
-        
-        self.sessionStatus = ExSessionLogin;
-        
-        [self syncCardInfo];
+        self.sessionStatus = ExSessionFail;
+        [self logoutExSession];
     }];
 }
 
@@ -139,6 +135,28 @@
             [self.card getAccountInfo:account.accId];
         }
     }
+}
+
+-(void) blockWithOrderID:(NSString *)hexOrderID withOTP:(NSString *)otp withComplete:(void(^)(void))completeCallback error:(void(^)(NSError *error))errorCallback
+{
+    RACSignal *blockSignal = [self signalRequestOrderBlockWithOrderID:hexOrderID withOTP:otp];
+    
+    [[[blockSignal flattenMap:^RACStream *(NSString *blockData) {
+        return [self signalBlockBTCFromCard:blockData];
+    }] flattenMap:^RACStream *(NSDictionary *data) {
+        NSData *okToken = [data objectForKey:@"okToken"];
+        NSData *unblockToken = [data objectForKey:@"unblockToken"];
+        
+        return [self signalWriteOKTokenToServer:okToken unblockToken:unblockToken withOrder:hexOrderID];
+    }] subscribeNext:^(id value) {
+        if (completeCallback) {
+            completeCallback();
+        }
+    } error:^(NSError *error) {
+        if (errorCallback) {
+            errorCallback(error);
+        }
+    }];
 }
 
 -(void) prepareTransactionWithAmount:(NSNumber *)amountBTC withChangeAddress:(NSString *)changeAddress fromAccountId:(NSInteger)accountId
@@ -274,6 +292,8 @@
     }];
 }
 
+// signals
+
 -(RACSignal*)signalCreateExSession {
     NSString *url = [NSString stringWithFormat:ExSession, self.card.cardId];
     
@@ -408,6 +428,73 @@
         AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
         [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
             [subscriber sendNext:responseObject];
+            [subscriber sendCompleted];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            [subscriber sendError:error];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(RACSignal *)signalRequestOrderBlockWithOrderID:(NSString *)hexOrder withOTP:(NSString *)otp
+{
+    NSString *url = [NSString stringWithFormat:ExRequestOrderBlock, hexOrder, otp];
+    
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            
+            NSString *blockData = [responseObject objectForKey:@"block_btc"];
+            [subscriber sendNext:blockData];
+            [subscriber sendCompleted];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            [subscriber sendError:error];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(RACSignal *)signalBlockBTCFromCard:(NSString *)blockData
+{
+    @weakify(self);
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        [self.card exBlockBtc:blockData withComplete:^(NSData *okToken, NSData *unblockToken) {
+            NSDictionary *data = @{
+                                   @"okToken": [NSString dataToHexstring:okToken],
+                                   @"unblockToken": [NSString dataToHexstring:unblockToken],
+                                   };
+            [subscriber sendNext:data];
+            [subscriber sendCompleted];
+        } error:^(NSInteger errorCode) {
+            [subscriber sendError:[self cardCmdError:errorCode errorMsg:@"Block fail."]];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(RACSignal *)signalWriteOKTokenToServer:(NSData *)okToken unblockToken:(NSData *)unblockToken withOrder:(NSString *)orderId
+{
+    NSString *url = [NSString stringWithFormat:ExWriteOKToken, orderId];
+    NSDictionary *dict = @{
+                           @"okToken": [NSString dataToHexstring:okToken],
+                           @"unblockToken": [NSString dataToHexstring:unblockToken],
+                           };
+    
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+        [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            [subscriber sendNext:nil];
             [subscriber sendCompleted];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             [subscriber sendError:error];

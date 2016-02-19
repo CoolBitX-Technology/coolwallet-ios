@@ -191,6 +191,7 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) exSessionLogout;
 -(void) exBlockInfo: (NSData *)okTkn;
 -(void) exBlockBtc: (NSInteger)trxId AccId: (NSInteger)accId Amount: (int64_t)amount Mac1: (NSData *)mac1 Nonce: (NSData*)nonce;
+-(void) exBlockBtc:(NSString *)input withComplete:(void(^)(NSData *okToken, NSData *unBlockToken))complete error:(void(^)(NSInteger errorCode))error;
 -(void) exBlockCancel: (NSInteger)trxId OkTkn: (NSData *)okTkn EncUblkTkn: (NSData *)encUblkTkn Mac1: (NSData *)mac1 Nonce: (NSData*)nonce;
 -(void) exTrxSignLogin: (NSInteger)trxId OkTkn:(NSData *)okTkn EncUblkTkn:(NSData *)encUblkTkn AccId: (NSInteger)accId DealAmount: (int64_t)dealAmount Mac: (NSData *)mac;
 -(void) exTrxSignLogin:(NSString *)input withComplete:(void(^)(NSData *loginHandle))complete error:(void(^)(NSInteger errorCode))error;

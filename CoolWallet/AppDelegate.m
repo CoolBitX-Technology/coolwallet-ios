@@ -14,6 +14,8 @@
 #import "NSString+HexToData.h"
 #import "APPData.h"
 
+#import "UIViewController+Utils.h"
+
 @interface AppDelegate ()
 
 @end
@@ -30,6 +32,8 @@
     if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
         [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
         [application registerForRemoteNotifications];
+        
+        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     }
     
     [Fabric with:@[[Crashlytics class]]];
@@ -130,13 +134,47 @@
     NSLog(@"register APNS fail: %@", error);
 }
 
--(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    NSLog(@"receive notify: %@", userInfo);
+    NSLog(@"fetchCompletionHandler receive notify: %@", userInfo);
+    
+    //TODO
+    NSDictionary *aps = [userInfo objectForKey:@"aps"];
+    NSString *msg = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+    NSNumber *content_available = [aps objectForKey:@"content-available"];
+    NSLog(@"%@, %@", content_available, msg);
+    UIViewController *currentViewController = [UIViewController currentViewController];
+    NSLog(@"currentViewController: %@", currentViewController);
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"receive notify" message:aps.description preferredStyle:UIAlertControllerStyleAlert];
+    
+    if (currentViewController && [currentViewController isKindOfClass:[SWRevealViewController class]]) {
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:cancelAction];
+        
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            UIStoryboard *secondStoryBoard = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
+            UIViewController *nextViewController = (UIViewController *)[secondStoryBoard instantiateViewControllerWithIdentifier:@"ExBlockOrderViewController"];
+            
+            SWRevealViewController *revealController = (SWRevealViewController *)currentViewController;
+            NSLog(@"frontViewController: %@", revealController.frontViewController);
+            NSLog(@"navigationController: %@", revealController.frontViewController.navigationController);
+            [(UINavigationController *)revealController.frontViewController pushViewController:nextViewController animated:YES];
+        }];
+        [alertController addAction:okAction];
+    } else {
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:okAction];
+    }
+    
+    [currentViewController presentViewController:alertController animated:YES completion:nil];
+    
+    completionHandler(UIBackgroundFetchResultNoData);
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
+    notification.applicationIconBadgeNumber = 0;
+    
     NSString *alertTitle = [notification.userInfo objectForKey:@"title"];
     if (alertTitle == nil) {
         alertTitle = @"Notification";
