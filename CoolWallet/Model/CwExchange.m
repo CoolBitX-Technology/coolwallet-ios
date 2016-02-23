@@ -77,28 +77,10 @@
 
 -(void) loginExSession
 {
-    self.sessionStatus = ExSessionNone;
+    self.sessionStatus = ExSessionProcess;
     
     @weakify(self);
-    RACSignal *createSignal = [self signalCreateExSession];
-    
-    [[[[createSignal flattenMap:^RACStream *(NSDictionary *response) {
-        @strongify(self);
-        NSString *hexString = [response objectForKey:@"challenge"];
-        
-        return [self signalInitSessionFromCard:[NSString hexstringToData:hexString]];
-    }] flattenMap:^RACStream *(NSDictionary *cardResponse) {
-        @strongify(self);
-        NSData *seResp = [cardResponse objectForKey:@"seResp"];
-        NSData *seChlng = [cardResponse objectForKey:@"seChlng"];
-        
-        return [self signalEstablishExSessionWithChallenge:seChlng andResponse:seResp];
-    }] flattenMap:^RACStream *(NSDictionary *response) {
-        @strongify(self);
-        NSString *hexString = [response objectForKey:@"response"];
-        
-        return [self signalEstablishSessionFromCard:[NSString hexstringToData:hexString]];
-    }] subscribeNext:^(id cardResponse) {
+    [[self loginSignal] subscribeNext:^(id cardResponse) {
         @strongify(self);
         self.sessionStatus = ExSessionLogin;
         
@@ -294,21 +276,43 @@
 
 // signals
 
+-(RACSignal *)loginSignal
+{
+    @weakify(self);
+    RACSignal *signal = [[[[self signalCreateExSession] flattenMap:^RACStream *(NSDictionary *response) {
+        @strongify(self);
+        NSString *hexString = [response objectForKey:@"challenge"];
+        
+        return [self signalInitSessionFromCard:[NSString hexstringToData:hexString]];
+    }] flattenMap:^RACStream *(NSDictionary *cardResponse) {
+        @strongify(self);
+        NSData *seResp = [cardResponse objectForKey:@"seResp"];
+        NSData *seChlng = [cardResponse objectForKey:@"seChlng"];
+        
+        return [self signalEstablishExSessionWithChallenge:seChlng andResponse:seResp];
+    }] flattenMap:^RACStream *(NSDictionary *response) {
+        @strongify(self);
+        NSString *hexString = [response objectForKey:@"response"];
+        
+        return [self signalEstablishSessionFromCard:[NSString hexstringToData:hexString]];
+    }];
+    
+    return signal;
+}
+
 -(RACSignal*)signalCreateExSession {
     NSString *url = [NSString stringWithFormat:ExSession, self.card.cardId];
     
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
-        self.sessionStatus = ExSessionProcess;
-        
         AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
         [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
             self.loginSession = [operation.response.allHeaderFields objectForKey:@"Set-Cookie"];
             
             NSString *hexString = [responseObject objectForKey:@"challenge"];
             if (hexString.length == 0) {
-                [subscriber sendError:[NSError errorWithDomain:@"Not exchange site member." code:900 userInfo:nil]];
+                [subscriber sendError:[NSError errorWithDomain:@"Not exchange site member." code:NotRegistered userInfo:nil]];
             } else {
                 [subscriber sendNext:responseObject];
                 [subscriber sendCompleted];
@@ -576,6 +580,51 @@
             }
             
             [subscriber sendNext:responseObject];
+            [subscriber sendCompleted];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            [subscriber sendError:error];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(RACSignal *)signalGetOpenOrderCount
+{
+    @weakify(self);
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+        [manager GET:ExOpenOrderCount parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            NSNumber *count = [responseObject objectForKey:@"open"];
+            
+            [subscriber sendNext:count];
+            [subscriber sendCompleted];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            [subscriber sendError:error];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(RACSignal *)signalCancelOrders:(NSString *)orderId
+{
+    NSString *url = [NSString stringWithFormat:ExCancelOrder, orderId];
+    NSLog(@"cancel order: %@", url);
+    
+    @weakify(self);
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            [subscriber sendNext:nil];
             [subscriber sendCompleted];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             [subscriber sendError:error];

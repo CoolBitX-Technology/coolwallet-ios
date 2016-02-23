@@ -12,6 +12,9 @@
 #import "CwListTableViewController.h"
 #import "CwCommandDefine.h"
 #import "CwCardApduError.h"
+#import "CwExchange.h"
+
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface CwEraseCwViewController () <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate>
 {
@@ -19,6 +22,7 @@
 }
 
 @property CwManager *cwManager;
+@property NSNumber *openOrderCount;
 
 @property (weak, nonatomic) IBOutlet UILabel *resetHintLabel;
 @property (weak, nonatomic) IBOutlet UIView *otpConfirmView;
@@ -45,6 +49,8 @@ CwCard *cwCard;
     
     self.resetHintLabel.hidden = NO;
     self.otpConfirmView.hidden = YES;
+    
+    self.openOrderCount = [NSNumber numberWithInt:-1];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -164,7 +170,6 @@ CwCard *cwCard;
     if (self.otpConfirmView.isHidden) {
         [cwCard getModeState];
     } else {
-        // TODO: check OTP
         [self.cwManager.connectedCwCard verifyResetOtp:self.otpField.text];
     }
 }
@@ -175,11 +180,6 @@ CwCard *cwCard;
 {
     NSLog(@"didPrepareService");
     //[cwCard getModeState];
-}
-
--(void) didCwCardCommand
-{
-    [self stopLoading];
 }
 
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
@@ -206,7 +206,40 @@ CwCard *cwCard;
 
 -(void) didGetCwCardId
 {
-    [self.cwManager.connectedCwCard genResetOtp];
+    if (self.openOrderCount.intValue < 0) {
+        CwExchange *exchange = [CwExchange sharedInstance];
+        
+        @weakify(self)
+        RACDisposable *disposable = [[[[exchange loginSignal] then:^RACSignal * {
+            return [exchange signalGetOpenOrderCount];
+        }] deliverOnMainThread] subscribeNext:^(NSNumber *count) {
+            @strongify(self)
+            self.openOrderCount = count;
+            
+            if (count.intValue > 0) {
+                //TODO: alert user to remove open order first.
+                [self alertRemoveOpenOrder];
+            } else {
+                [self.cwManager.connectedCwCard genResetOtp];
+            }
+        } error:^(NSError *error) {
+            if (error.code == NotRegistered) {
+                [self.cwManager.connectedCwCard genResetOtp];
+            } else {
+                //TODO: disable reset
+                [self alertDiableReset];
+            }
+            
+            [disposable dispose];
+        }];
+    } else if (self.openOrderCount.intValue == 0) {
+        [self.cwManager.connectedCwCard genResetOtp];
+    } else {
+        //TODO: alert user to remove open order first.
+        [self alertRemoveOpenOrder];
+    }
+    
+//    [self.cwManager.connectedCwCard genResetOtp];
 //    [self.cwManager.connectedCwCard pinChlng];
 }
 
@@ -298,6 +331,42 @@ CwCard *cwCard;
 - (IBAction)BtnCancelAction:(id)sender {
     [self.cwManager disconnectCwCard];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void) alertDiableReset
+{
+    self.resetBtn.enabled = NO;
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"Can't veriy your open order at exchange site, try later." preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self BtnCancelAction:nil];
+    }];
+    [alertController addAction:okAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+-(void) alertRemoveOpenOrder
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"You have open orders" message:@"Remove open order from exchange site?" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Remove" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        CwExchange *exchange = [CwExchange sharedInstance];
+        [[exchange signalCancelOrders:nil] subscribeNext:^(id value) {
+            [self.cwManager.connectedCwCard genResetOtp];
+        } error:^(NSError *error) {
+            
+        }];
+    }];
+    [alertController addAction:okAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self stopLoading];
+    }];
+    [alertController addAction:cancelAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

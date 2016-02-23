@@ -28,6 +28,10 @@
 -(void) prepareTransactionWithAmount:(NSNumber *)amountBTC withChangeAddress:(NSString *)changeAddress fromAccountId:(NSInteger)accountId;
 -(void) completeTransactionWithOrderId:(NSString *)orderId TxId:(NSString *)txId;
 
+-(RACSignal *)loginSignal;
+-(RACSignal *)signalGetOpenOrderCount;
+-(RACSignal *)signalCancelOrders:(NSString *)orderId;
+
 -(AFHTTPRequestOperationManager *) defaultJsonManager;
 
 @end

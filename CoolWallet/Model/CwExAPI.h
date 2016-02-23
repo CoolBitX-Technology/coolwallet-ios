@@ -18,13 +18,19 @@
 #define ExGetTrxPrepareBlocks   ExBaseUrl@"/trxblks"
 #define ExTrx                   ExBaseUrl@"/trx/%@"
 #define ExRequestOrderBlock     ExBaseUrl@"/order/%@/%@"
+#define ExCancelOrder           ExBaseUrl@"/order/%@"
 #define ExWriteOKToken          ExBaseUrl@"/oktoken/%@"
+#define ExOpenOrderCount        ExBaseUrl@"/open/count"
 
 typedef NS_ENUM (int, ExSessionStatus) {
     ExSessionNone,
     ExSessionProcess,
     ExSessionLogin,
     ExSessionFail
+};
+
+typedef NS_ENUM (int, ExSiteErrorCode) {
+    NotRegistered = 9000,
 };
 
 #endif /* CwExAPI_h */
