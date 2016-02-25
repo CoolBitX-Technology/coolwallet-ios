@@ -118,7 +118,7 @@
         self.amountLabel.text = amount;
     }];
     
-    [[RACObserve(self.reservedView, hidden) distinctUntilChanged] subscribeNext:^(NSNumber *hidden) {
+    [[[RACObserve(self.reservedView, hidden) distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *hidden) {
         @strongify(self)
         if (hidden.boolValue) {
             self.heightConstraint.constant = self.heightConstraint.constant - self.reservedView.frame.size.height;
@@ -142,7 +142,7 @@
         self.reservedAmountLabel.text = [appCommon convertBTCStringformUnit:block.longLongValue];
     }];
     
-    [[hasBlockAmountSignal distinctUntilChanged] subscribeNext:^(NSNumber *hasBlockAmount) {
+    [[[hasBlockAmountSignal distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *hasBlockAmount) {
         @strongify(self)
         self.reservedView.hidden = !hasBlockAmount.boolValue;
         float noneBlockHeight = self.reservedView.frame.origin.y;

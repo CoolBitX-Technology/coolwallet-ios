@@ -21,6 +21,7 @@
 #define ExCancelOrder           ExBaseUrl@"/order/%@"
 #define ExWriteOKToken          ExBaseUrl@"/oktoken/%@"
 #define ExOpenOrderCount        ExBaseUrl@"/open/count"
+#define ExUnclarifyOrders       ExBaseUrl@"/unclarify/%@"
 
 typedef NS_ENUM (int, ExSessionStatus) {
     ExSessionNone,

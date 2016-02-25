@@ -14,6 +14,7 @@
 #import "CwBtcNetwork.h"
 #import "NYMnemonic.h"
 #import "SWRevealViewController.h"
+#import "Reachability.h"
 
 @implementation UITextView (DisablePaste)
 
@@ -32,6 +33,8 @@
 }
 
 @property (strong, nonatomic) NSArray *wordSeeds;
+@property (nonatomic) Reachability *internetReachability;
+@property (assign, nonatomic) NetworkStatus netStatus;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnSeedType;
 @property (weak, nonatomic) IBOutlet UITextView *txtSeed;
@@ -60,6 +63,12 @@ CwBtcNetWork *btcNet;
     
     self.wordSeeds = [NYMnemonic getSeedsWithLanguage:@"english"];
     self.swNumberSeed.on = NO;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
+    self.netStatus = self.internetReachability.currentReachabilityStatus;
+    [self.internetReachability startNotifier];
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -88,6 +97,26 @@ CwBtcNetWork *btcNet;
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+}
+
+/*!
+ * Called by Reachability whenever status changes.
+ */
+- (void) reachabilityChanged:(NSNotification *)note
+{
+    Reachability* curReach = [note object];
+    NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
+    
+    self.netStatus = [curReach currentReachabilityStatus];
+    if (self.netStatus == NotReachable) {
+        [self showHintAlert:@"Warn!" withMessage:@"Can't connect to network." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    }
+    
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -158,6 +187,11 @@ CwBtcNetWork *btcNet;
     }
 }
 
+-(void) noNetworkHint
+{
+    [self showHintAlert:@"Warn!" withMessage:@"Can't connect to network." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+}
+
 #pragma mark - UITextFieldDelegate Delegates
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -225,6 +259,15 @@ CwBtcNetWork *btcNet;
 }
 
 - (IBAction)btnCreateHdw:(id)sender {
+    if ([self.txtSeed.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0) {
+        return;
+    }
+    
+    if (self.netStatus == NotReachable) {
+        [self noNetworkHint];
+        return;
+    }
+    
     NSString *seeds = [self.txtSeed.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *seed = [NYMnemonic deterministicSeedStringFromMnemonicString: seeds
                                                                 passphrase: nil

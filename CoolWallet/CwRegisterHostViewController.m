@@ -304,6 +304,8 @@ CwCard *cwCard;
 {
     [self performDismiss];
     
+    [cwCard displayCurrency:cwCard.cardFiatDisplay.boolValue];
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
     ViewController *myVC = (ViewController *)[storyboard instantiateViewControllerWithIdentifier:@"RevealViewController"];
     [self.navigationController presentViewController:myVC animated:YES completion:nil];

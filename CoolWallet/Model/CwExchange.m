@@ -394,13 +394,14 @@
     NSString *url = [NSString stringWithFormat:@"%@/%@", ExBaseUrl, self.card.cardId];
     
     NSMutableDictionary *dict = [NSMutableDictionary new];
+    [dict setObject:@"ios" forKey:@"dev_type"];
     [dict setObject:[APPData sharedInstance].deviceToken forKey:@"token"];
     
     NSMutableArray *accountDatas = [NSMutableArray new];
     for (CwAccount *account in [self.card.cwAccounts allValues]) {
         [accountDatas addObject:[self getAccountInfo:account]];
     }
-    [dict setObject:accountDatas forKey:@"card"];
+    [dict setObject:accountDatas forKey:@"account"];
     
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {

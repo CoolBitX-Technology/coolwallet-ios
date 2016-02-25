@@ -170,6 +170,7 @@
 		F43E97C71C2808F100D03DA9 /* NSData+Bitcoin.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E97C61C2808F100D03DA9 /* NSData+Bitcoin.m */; };
 		F45962901BDE3FF80046E4CE /* BlockChain.m in Sources */ = {isa = PBXBuildFile; fileRef = F459628F1BDE3FF80046E4CE /* BlockChain.m */; };
 		F45962931BDE411C0046E4CE /* SRWebSocket+CW.m in Sources */ = {isa = PBXBuildFile; fileRef = F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */; };
+		F478F4891C7EE25400660D82 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F478F4871C7EE25400660D82 /* Reachability.m */; };
 		F4798AF71C5B2452002DC3A0 /* APPData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4798AF61C5B2452002DC3A0 /* APPData.m */; };
 		F479E4051C5C918500482E59 /* CwExTx.m in Sources */ = {isa = PBXBuildFile; fileRef = F479E4041C5C918500482E59 /* CwExTx.m */; };
 		F47AB4E11C7700E500766F3D /* UIViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F47AB4E01C7700E500766F3D /* UIViewController+Utils.m */; };
@@ -461,6 +462,8 @@
 		F459628F1BDE3FF80046E4CE /* BlockChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockChain.m; sourceTree = "<group>"; };
 		F45962911BDE411C0046E4CE /* SRWebSocket+CW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRWebSocket+CW.h"; sourceTree = "<group>"; };
 		F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRWebSocket+CW.m"; sourceTree = "<group>"; };
+		F478F4861C7EE25400660D82 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		F478F4871C7EE25400660D82 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		F4798AF51C5B2452002DC3A0 /* APPData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPData.h; sourceTree = "<group>"; };
 		F4798AF61C5B2452002DC3A0 /* APPData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPData.m; sourceTree = "<group>"; };
 		F479E4031C5C918500482E59 /* CwExTx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExTx.h; path = Model/CwExTx.h; sourceTree = "<group>"; };
@@ -863,6 +866,7 @@
 		EFF1ACB819EFF12800DD0BCB /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				F478F4831C7EE25400660D82 /* Reachability */,
 				EFEF1BCB1B4124B300373B0E /* MBProgressHUD */,
 				EFAC5C391AC25A4E00320EA6 /* QRcodeEncode */,
 				EFF1ACB919EFF14800DD0BCB /* SWRevealViewController.h */,
@@ -973,6 +977,15 @@
 				EFFA18301B450EA600FF8FC6 /* FrontViewController.xib */,
 			);
 			name = FrontViewController;
+			sourceTree = "<group>";
+		};
+		F478F4831C7EE25400660D82 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				F478F4861C7EE25400660D82 /* Reachability.h */,
+				F478F4871C7EE25400660D82 /* Reachability.m */,
+			);
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 		F4A7CC421C5878FD00E40CD1 /* ViewModel */ = {
@@ -1292,6 +1305,7 @@
 				EFF1ACC019EFF1CA00DD0BCB /* OCAppCommon.mm in Sources */,
 				EFAC5FDD1AAD39620042FF8C /* TabReceiveBitcoinViewController.m in Sources */,
 				F4FF8D0D1C45104F00863E54 /* TabExchangeViewController.m in Sources */,
+				F478F4891C7EE25400660D82 /* Reachability.m in Sources */,
 				EFAC5C4E1AC25A7000320EA6 /* qrencode.c in Sources */,
 				F4E412901BFB1D91003CFACF /* NSString+HexToData.m in Sources */,
 				EFCF9A4F1B32C8810076091B /* BRPaymentRequest.m in Sources */,

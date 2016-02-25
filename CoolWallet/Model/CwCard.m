@@ -186,6 +186,8 @@ NSArray *addresses;
         pinChallenge = nil;
         loginChallenge = nil;
         vmkChallenge = nil;
+        
+        self.cardFiatDisplay = [NSNumber numberWithBool:YES];
     }
     return self;
 }
