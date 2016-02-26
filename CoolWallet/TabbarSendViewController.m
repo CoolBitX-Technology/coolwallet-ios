@@ -439,18 +439,11 @@ long TxFee = 10000;
 
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
 {
+    [super didCwCardCommandError:cmdId ErrString:errString];
+    
     [self performDismiss];
     
     self.transactionBegin = NO;
-    
-    NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
-                                                   message: msg
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    
-    [alert show];
 }
 
 -(void) didSetAccountBalance

@@ -113,10 +113,9 @@ UInt32 big5 = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingBig5_HK
     
     NSNumberFormatter *fmt = [[NSNumberFormatter alloc] init];
     [fmt setPositiveFormat:@"0.##"];
-    
     if([btc compare:@""] != 0)
     {
-        int64_t amount = [btc doubleValue]* 100000000 ;
+        int64_t amount = (int64_t)([btc doubleValue] * 1e8 + ([btc doubleValue] < 0.0 ? -.5:.5));
         satoshi = [fmt stringFromNumber:[NSNumber numberWithLongLong: amount ]];
         
     }else{
