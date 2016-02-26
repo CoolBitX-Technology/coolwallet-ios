@@ -72,6 +72,7 @@ static id<CWSocketDelegate> const * const CWDelegate;
 {
     NSLog(@"WebSocket closed");
     sharedInstance = nil;
+    [SRWebSocket performSelector:@selector(sharedSocket) withObject:nil afterDelay:2];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(NSData *)pongPayload;

@@ -235,6 +235,25 @@ Boolean setBtnActionFlag;
     [_tableTransaction reloadData];
 }
 
+-(void) updateBalance:(NSInteger)accId
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BlockChain *blockChain = [[BlockChain alloc] init];
+        [blockChain getBalanceByAccountID:accId];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"update %ld, current is %ld", (long)accId, (long)self.cwManager.connectedCwCard.currentAccountId);
+            if (accId == self.cwManager.connectedCwCard.currentAccountId) {
+                [self SetBalanceText];
+                [self.cwManager.connectedCwCard setAccount: accId Balance: account.balance];
+            } else {
+                CwAccount *updateAccount = [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)accId]];
+                [self.cwManager.connectedCwCard setAccount: accId Balance: updateAccount.balance];
+            }
+        });
+    });
+}
+
 -(void) updateBalanceAndTxs:(NSInteger)accId
 {
     NSString *accountId = [NSString stringWithFormat:@"%ld", (long)accId];
@@ -243,24 +262,10 @@ Boolean setBtnActionFlag;
     } else {
         [self.txSyncing addObject:accountId];
         
+        [self updateBalance:accId];
+        
         //update balance
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            //Do background work
-            BlockChain *blockChain = [[BlockChain alloc] init];
-            [blockChain getBalanceByAccountID:accId];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                //Update UI
-                NSLog(@"update %ld, current is %ld", (long)accId, (long)self.cwManager.connectedCwCard.currentAccountId);
-                if (accId == self.cwManager.connectedCwCard.currentAccountId) {
-                    [self SetBalanceText];
-                    [self.cwManager.connectedCwCard setAccount: accId Balance: account.balance];
-                } else {
-                    CwAccount *updateAccount = [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)accId]];
-                    [self.cwManager.connectedCwCard setAccount: accId Balance: updateAccount.balance];
-                }
-            });
-            
             [btcNet getTransactionByAccount: accId];
         });
     }
@@ -441,6 +446,7 @@ Boolean setBtnActionFlag;
             [self updateBalanceAndTxs:accId];
         });
     } else {
+        [self updateBalance:accId];
         [self performDismiss];
     }
 }
