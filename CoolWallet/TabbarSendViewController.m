@@ -170,7 +170,7 @@ long TxFee = 10000;
 {
     [self showIndicatorView:@"Send..."];
     
-    [cwCard genAddress:cwCard.currentAccountId KeyChainId:CwAddressKeyChainInternal];
+    [cwCard findEmptyAddressFromAccount:cwCard.currentAccountId keyChainId:CwAddressKeyChainInternal];
 }
 
 - (void)addDecimalKeyboardDoneButton
@@ -446,9 +446,9 @@ long TxFee = 10000;
     self.transactionBegin = NO;
 }
 
--(void) didSetAccountBalance
+-(void) didSetAccountBalance:(NSInteger)accId
 {
-    [self SetBalanceText];
+    NSLog(@"TabbarSendViewController, didSetAccountBalance:%ld, currentAccountId:%ld", accId, cwCard.currentAccountId);
 }
 
 -(void) didPrepareTransactionError: (NSString *) errMsg
@@ -468,7 +468,7 @@ long TxFee = 10000;
 
 -(void) didGenAddress: (CwAddress *) addr
 {
-    NSLog(@"didGenAddress");
+    NSLog(@"didGenAddress, %@, kid = %ld", addr.address, addr.keyId);
     [self.btcNet registerNotifyByAccount:cwCard.currentAccountId];
     
     for (NSString *accIndex in cwCard.cwAccounts) {

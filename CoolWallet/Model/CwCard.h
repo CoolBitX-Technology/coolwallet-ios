@@ -162,6 +162,7 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) setAccount: (NSInteger) accountId IntKeyPtr:(NSInteger)intKeyPtr;       //didSetAccountIntKeyPtr
 
 -(void) getAccountAddresses: (NSInteger) accountId;
+-(void) findEmptyAddressFromAccount:(NSInteger)accountID keyChainId:(NSInteger)keyChainId;
 -(void) genAddress:  (NSInteger)accountId KeyChainId: (NSInteger) keyChainId; //didGenNextAddress, didGetAccountInfo
 -(void) getAddressInfo: (NSInteger)accountId KeyChainId: (NSInteger) keyChainId KeyId: (NSInteger) keyId;
 -(void) getAddressPublickey: (NSInteger)accountId KeyChainId: (NSInteger) keyChainId KeyId: (NSInteger) keyId;

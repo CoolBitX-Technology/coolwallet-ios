@@ -839,6 +839,38 @@ NSArray *addresses;
     [self cwCmdHdwSetAccountInfo:CwHdwAccountInfoIntKeyPtr AccountId:accountId AccountInfo:[NSData dataWithBytes:&intKeyPtr length:4]];
 }
 
+-(void) findEmptyAddressFromAccount:(NSInteger)accountID keyChainId:(NSInteger)keyChainId
+{
+    CwAddress *emptyAddress;
+    NSMutableArray *addresses;
+    
+    CwAccount *account = [self.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accountID]];
+    if (keyChainId == CwAddressKeyChainExternal) {
+        addresses = account.extKeys;
+    } else {
+        addresses = account.intKeys;
+    }
+    
+    for (CwAddress *address in addresses) {
+        if (address.historyTrx.count == 0) {
+            emptyAddress = address;
+            break;
+        }
+    }
+    
+    if (emptyAddress == nil) {
+        [self doGenAddressWithAccountId:account.accId KeyChainId:keyChainId];
+    } else {
+        if (emptyAddress.publicKey == nil) {
+            [self getAddressPublickey:emptyAddress.accountId KeyChainId:emptyAddress.keyChainId KeyId:emptyAddress.keyId];
+        }
+        
+        if ([self.delegate respondsToSelector:@selector(didGenAddress:)]) {
+            [self.delegate didGenAddress:emptyAddress];
+        }
+    }
+}
+
 -(BOOL) enableGenAddressWithAccountId:(NSInteger)accId
 {
     CwAccount *acc= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", (long)accId]];
@@ -4129,6 +4161,7 @@ NSArray *addresses;
             if (cmd.cmdResult==0x9000) {
                 self.mode = [NSNumber numberWithInteger:data[0]];
                 self.state = [NSNumber numberWithInteger:data[1]];
+                NSLog(@"mode: %@, state: %@", self.mode, self.state);
                 if ([self.delegate respondsToSelector:@selector(didGetModeState)]) {
                     [self.delegate didGetModeState];
                 }
@@ -4936,8 +4969,8 @@ NSArray *addresses;
                         account.balance = CFSwapInt64(*(int64_t *)[accInfo bytes]);
                         [self.cwAccounts setObject: account forKey: [NSString stringWithFormat: @"%ld", (long)accId]];
                         
-                        if ([self.delegate respondsToSelector:@selector(didSetAccountBalance)]) {
-                            [self.delegate didSetAccountBalance];
+                        if ([self.delegate respondsToSelector:@selector(didSetAccountBalance:)]) {
+                            [self.delegate didSetAccountBalance:accId];
                             
                         }
                         break;
@@ -5184,9 +5217,9 @@ NSArray *addresses;
                     NSInteger accId = *(int32_t *)[cmd.cmdInput bytes];;
                     CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", (long)accId]];
                     if (account != nil) {
-                        if (account.externalKeychain == nil) {
+                        if (cmd.cmdP2 == CwAddressKeyChainExternal) {
                             account.externalKeychain = [CwKeychain new];
-                        } else if (account.internalKeychain == nil) {
+                        } else if (cmd.cmdP2 == CwAddressKeyChainInternal) {
                             account.internalKeychain = [CwKeychain new];
                         }
                         

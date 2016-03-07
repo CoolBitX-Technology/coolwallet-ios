@@ -240,7 +240,7 @@ Boolean setBtnActionFlag;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BlockChain *blockChain = [[BlockChain alloc] init];
         [blockChain getBalanceByAccountID:accId];
-        
+        NSLog(@"updateBalance: %ld, balance: %lld", accId, account.balance);
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"update %ld, current is %ld", (long)accId, (long)self.cwManager.connectedCwCard.currentAccountId);
             if (accId == self.cwManager.connectedCwCard.currentAccountId) {
@@ -437,14 +437,9 @@ Boolean setBtnActionFlag;
             [self performDismiss];
         }
         
-        //get balance and transaction when there is no transaction yet.
-        dispatch_queue_t queue = dispatch_queue_create("com.dtco.CoolWallet", NULL);
+        [btcNet registerNotifyByAccount: accId];
         
-        dispatch_async(queue, ^{
-            [btcNet registerNotifyByAccount: accId];
-            
-            [self updateBalanceAndTxs:accId];
-        });
+        [self updateBalanceAndTxs:accId];
     } else {
         [self updateBalance:accId];
         [self performDismiss];
@@ -500,10 +495,14 @@ Boolean setBtnActionFlag;
     self.waitAccountCreated = YES;
 }
 
--(void) didSetAccountBalance
+-(void) didSetAccountBalance:(NSInteger)accId
 {
     if (setBtnActionFlag) {
         setBtnActionFlag = NO;
+    }
+    
+    if (accId == self.cwManager.connectedCwCard.currentAccountId) {
+        [self SetBalanceText];
     }
 }
 

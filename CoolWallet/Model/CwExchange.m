@@ -67,7 +67,7 @@
         self.syncedAccount = [NSMutableArray new];
         self.cardInfoSynced = NO;
         
-        if (self.sessionStatus != ExSessionFail) {
+        if (self.sessionStatus != ExSessionNone && self.sessionStatus != ExSessionFail) {
             [self logoutExSession];
         }
         self.sessionStatus = ExSessionNone;

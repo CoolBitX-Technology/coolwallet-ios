@@ -173,9 +173,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 }
                 
                 if (!tidExist && acc.lastUpdate != nil) {
-                    acc.balance = acc.balance + [balanceChange.satoshi integerValue];
-                    [cwCard.cwAccounts setObject:acc forKey:[NSString stringWithFormat: @"%ld", acc.accId]];
-                    [cwCard setAccount:acc.accId Balance:acc.balance];
+                    [self getBalance:[NSNumber numberWithInteger:acc.accId]];
                 }
                 
                 [self performSelectorInBackground:@selector(updateHistoryTxs:) withObject:tid];
@@ -349,6 +347,23 @@ BOOL didGetTransactionByAccountFlag[5];
     return err;
 }
 
+- (int64_t) getBalance:(NSNumber *)accountId
+{
+    CwAccount *account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", accountId.integerValue]];
+    int64_t ori_balance = account.balance;
+    
+    NSLog(@"111111, %lld", account.balance);
+    BlockChain *blockChain = [[BlockChain alloc] init];
+    [blockChain getBalanceByAccountID:accountId.integerValue];
+    NSLog(@"222222, %lld, ori_balance = %lld", account.balance, ori_balance);
+    
+    if (account.balance != ori_balance) {
+        [cwCard setAccount:accountId.integerValue Balance:account.balance];
+    }
+    
+    return account.balance;
+}
+
 - (GetTransactionByAccountErr) getBalanceAndTransactionByAccount:(NSInteger)accId
 {
     BlockChain *blockChain = [[BlockChain alloc] init];
@@ -519,7 +534,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 unspentTxIndex.kId = [addr keyId];
                 unspentTxIndex.kcId = [addr keyChainId];
                 
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@", unspentTxIndex.tid];
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@ && SELF.kId = %ld && SELF.kcId = %ld", unspentTxIndex.tid, unspentTxIndex.kId, unspentTxIndex.kcId];
                 NSArray *searchResult = [account.unspentTxs filteredArrayUsingPredicate:predicate];
                 if (searchResult.count == 0) {
                     [account.unspentTxs addObject:unspentTxIndex];

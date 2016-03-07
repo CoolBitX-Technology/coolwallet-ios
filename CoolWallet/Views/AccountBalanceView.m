@@ -97,28 +97,34 @@
     }];
     
     @weakify(self)
-    [[[[RACSignal combineLatest:@[balanceSignal, rateSignal, currencySignal] reduce:^NSString *(NSNumber *balance, NSDecimalNumber *rate, NSString *currency) {
+    [[[[[RACSignal combineLatest:@[balanceSignal, rateSignal, currencySignal] reduce:^NSString *(NSNumber *balance, NSDecimalNumber *rate, NSString *currency) {
         OCAppCommon *appCommon = [OCAppCommon getInstance];
         return [NSString stringWithFormat: @"%@ %@", [appCommon convertFiatMoneyString:balance.longLongValue currRate:rate], currency];
     }] filter:^BOOL(NSString *rateCurrency) {
         return self.fiatMoneyLabel != nil;
-    }] distinctUntilChanged] subscribeNext:^(NSString *rateCurrency) {
+    }] distinctUntilChanged]
+     deliverOn:[RACScheduler mainThreadScheduler]]
+     subscribeNext:^(NSString *rateCurrency) {
         @strongify(self)
         self.fiatMoneyLabel.text = rateCurrency;
     }];
     
-    [[[[balanceSignal filter:^BOOL(NSNumber *balance) {
+    [[[[[balanceSignal filter:^BOOL(NSNumber *balance) {
         @strongify(self)
         return self.amountLabel != nil;
     }] map:^NSString *(NSNumber *balance) {
         OCAppCommon *appCommon = [OCAppCommon getInstance];
         return [NSString stringWithFormat: @"%@ %@", [appCommon convertBTCStringformUnit: balance.longLongValue], appCommon.BitcoinUnit];
-    }] distinctUntilChanged] subscribeNext:^(NSString *amount) {
+    }] distinctUntilChanged]
+     deliverOn:[RACScheduler mainThreadScheduler]]
+     subscribeNext:^(NSString *amount) {
         @strongify(self)
         self.amountLabel.text = amount;
     }];
     
-    [[[RACObserve(self.reservedView, hidden) distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *hidden) {
+    [[[RACObserve(self.reservedView, hidden) distinctUntilChanged]
+      deliverOn:[RACScheduler mainThreadScheduler]]
+     subscribeNext:^(NSNumber *hidden) {
         @strongify(self)
         if (hidden.boolValue) {
             self.heightConstraint.constant = self.heightConstraint.constant - self.reservedView.frame.size.height;
@@ -129,9 +135,10 @@
         [self updateConstraints];
     }];
     
-    [[[[RACSignal combineLatest:@[balanceSignal, blockAmountSignal]] distinctUntilChanged] filter:^BOOL(RACTuple *tuple) {
+    [[[[[RACSignal combineLatest:@[balanceSignal, blockAmountSignal]] distinctUntilChanged] filter:^BOOL(RACTuple *tuple) {
         return self.avalibleAmountLabel != nil && self.reservedAmountLabel != nil;
-    }] subscribeNext:^(RACTuple *tuple) {
+    }] deliverOn:[RACScheduler mainThreadScheduler]]
+     subscribeNext:^(RACTuple *tuple) {
         @strongify(self)
         NSNumber *balance = tuple.first;
         NSNumber *block = tuple.last;
@@ -142,7 +149,9 @@
         self.reservedAmountLabel.text = [appCommon convertBTCStringformUnit:block.longLongValue];
     }];
     
-    [[[hasBlockAmountSignal distinctUntilChanged] deliverOnMainThread] subscribeNext:^(NSNumber *hasBlockAmount) {
+    [[[hasBlockAmountSignal distinctUntilChanged]
+      deliverOn:[RACScheduler mainThreadScheduler]]
+     subscribeNext:^(NSNumber *hasBlockAmount) {
         @strongify(self)
         self.reservedView.hidden = !hasBlockAmount.boolValue;
         float noneBlockHeight = self.reservedView.frame.origin.y;
