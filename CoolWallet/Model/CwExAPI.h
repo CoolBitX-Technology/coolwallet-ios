@@ -13,6 +13,8 @@
 #define ExBaseUrl               @"http://xsm.coolbitx.com:8080/api/res/cw"
 #define ExSession               ExBaseUrl@"/session/%@"
 #define ExSessionLogout         ExBaseUrl@"/session/logout"
+#define ExSyncCardInfo          ExBaseUrl@"/%@"
+#define ExSyncAccountInfo       ExSyncCardInfo@"/%ld"
 #define ExGetMatchedOrders      ExBaseUrl@"/pending/%@"
 #define ExGetTrxInfo            ExBaseUrl@"/trxinfo/%@"
 #define ExGetTrxPrepareBlocks   ExBaseUrl@"/trxblks"
@@ -20,6 +22,7 @@
 #define ExRequestOrderBlock     ExBaseUrl@"/order/%@/%@"
 #define ExCancelOrder           ExBaseUrl@"/order/%@"
 #define ExWriteOKToken          ExBaseUrl@"/oktoken/%@"
+#define ExUnblockOrders         ExBaseUrl@"/unblock/%@"
 #define ExOpenOrderCount        ExBaseUrl@"/open/count"
 #define ExUnclarifyOrders       ExBaseUrl@"/unclarify/%@"
 

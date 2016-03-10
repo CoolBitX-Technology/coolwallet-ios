@@ -12,7 +12,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
-@class CwCard, CwAccount;
+@class CwCard, CwAccount, CwExUnblock;
 
 @interface CwExchange : NSObject
 
@@ -31,6 +31,8 @@
 -(RACSignal *)loginSignal;
 -(RACSignal *)signalGetOpenOrderCount;
 -(RACSignal *)signalCancelOrders:(NSString *)orderId;
+-(RACSignal *)signalRequestUnblockInfo;
+-(RACSignal *)signalUnblockWithCard:(CwExUnblock *)unblock;
 
 -(AFHTTPRequestOperationManager *) defaultJsonManager;
 

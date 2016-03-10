@@ -14,6 +14,7 @@
 #import "CwExTx.h"
 #import "CwBtc.h"
 #import "CwTxin.h"
+#import "CwExUnblock.h"
 
 @interface CwExchange()
 
@@ -391,10 +392,10 @@
 }
 
 -(RACSignal*)signalSyncCardInfo {
-    NSString *url = [NSString stringWithFormat:@"%@/%@", ExBaseUrl, self.card.cardId];
+    NSString *url = [NSString stringWithFormat:ExSyncCardInfo, self.card.cardId];
     
     NSMutableDictionary *dict = [NSMutableDictionary new];
-    [dict setObject:@"ios" forKey:@"dev_type"];
+    [dict setObject:@"ios" forKey:@"devType"];
     [dict setObject:[APPData sharedInstance].deviceToken forKey:@"token"];
     
     NSMutableArray *accountDatas = [NSMutableArray new];
@@ -422,7 +423,7 @@
 }
 
 -(RACSignal*)signalSyncAccountInfo:(CwAccount *)account {
-    NSString *url = [NSString stringWithFormat:@"%@/%@/%ld", ExBaseUrl, self.card.cardId, (long)account.accId];
+    NSString *url = [NSString stringWithFormat:ExSyncAccountInfo, self.card.cardId, (long)account.accId];
     
     NSDictionary *dict = [self getAccountInfo:account];
     
@@ -583,6 +584,51 @@
             [subscriber sendNext:responseObject];
             [subscriber sendCompleted];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            [subscriber sendError:error];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(RACSignal *)signalRequestUnblockInfo
+{
+    NSString *url = [NSString stringWithFormat:ExUnblockOrders, self.card.cardId];
+    
+    @weakify(self);
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            NSArray *unblocks = [responseObject objectForKey:@"unblock"];
+            NSArray *unblockOrders = [RMMapper arrayOfClass:[CwExUnblock class] fromArrayOfDictionary:unblocks];
+            
+            [subscriber sendNext:unblockOrders];
+            [subscriber sendCompleted];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            [subscriber sendError:error];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(RACSignal *)signalUnblockWithCard:(CwExUnblock *)unblock
+{
+    @weakify(self);
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        [self.card exBlockCancel:unblock.orderID OkTkn:unblock.okToken EncUblkTkn:unblock.unblockToken Mac1:unblock.mac Nonce:unblock.nonce withComplete:^() {
+            [subscriber sendNext:nil];
+            [subscriber sendCompleted];
+        } withError:^(NSInteger errorCode) {
+            NSError *error = [self cardCmdError:errorCode errorMsg:@"unblock fail"];
             [subscriber sendError:error];
         }];
         

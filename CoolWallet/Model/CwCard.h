@@ -193,7 +193,8 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) exBlockInfo: (NSData *)okTkn;
 -(void) exBlockBtc: (NSInteger)trxId AccId: (NSInteger)accId Amount: (int64_t)amount Mac1: (NSData *)mac1 Nonce: (NSData*)nonce;
 -(void) exBlockBtc:(NSString *)input withComplete:(void(^)(NSData *okToken, NSData *unBlockToken))complete error:(void(^)(NSInteger errorCode))error;
--(void) exBlockCancel: (NSInteger)trxId OkTkn: (NSData *)okTkn EncUblkTkn: (NSData *)encUblkTkn Mac1: (NSData *)mac1 Nonce: (NSData*)nonce;
+-(void) exBlockCancel: (NSData *)trxId OkTkn: (NSData *)okTkn EncUblkTkn: (NSData *)encUblkTkn Mac1: (NSData *)mac1 Nonce: (NSData*)nonce;
+-(void) exBlockCancel: (NSData *)trxId OkTkn: (NSData *)okTkn EncUblkTkn: (NSData *)encUblkTkn Mac1: (NSData *)mac1 Nonce: (NSData*)nonce withComplete:(void (^)(void))complete withError:(void (^)(NSInteger errorCode))error;
 -(void) exTrxSignLogin: (NSInteger)trxId OkTkn:(NSData *)okTkn EncUblkTkn:(NSData *)encUblkTkn AccId: (NSInteger)accId DealAmount: (int64_t)dealAmount Mac: (NSData *)mac;
 -(void) exTrxSignLogin:(NSString *)input withComplete:(void(^)(NSData *loginHandle))complete error:(void(^)(NSInteger errorCode))error;
 -(void) exTrxSignPrepare: (NSInteger)inId TrxHandle:(NSData *)trxHandle AccId: (NSInteger)accId KcId: (NSInteger)kcId KId: (NSInteger)kId Out1Addr: (NSData*) out1Addr Out2Addr:(NSData*) out2Addr SigMtrl: (NSData *)sigMtrl Mac: (NSData *)mac;

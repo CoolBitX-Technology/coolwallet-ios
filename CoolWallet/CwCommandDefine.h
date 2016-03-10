@@ -128,6 +128,8 @@ typedef NS_ENUM (NSInteger, CwSeCla) {
     CwCmdClaKeepMemory          = 0x81,
     CwCmdClaKeepFlash           = 0x82,
     CwCmdClaKeepNone            = 0x83,
+    CwCmdClaKeepMemoryGetFlash  = 0x84,
+    CwCmdClaKeepMemorySetFlash  = 0x85,
 };
 
 typedef NS_ENUM (NSInteger, CwCmdCLA) {
@@ -198,17 +200,17 @@ typedef NS_ENUM (NSInteger, CwCmdCLA) {
     CwCmdIdTrxGetAddrCLA       = CwCmdClaKeepMemory, //?
     
     //Exchange Site Commands
-    CwCmdIdExRegStatusCLA      = CwCmdClaKeepMemory,
-    CwCmdIdExGetOtpCLA         = CwCmdClaKeepMemory,
-    CwCmdIdExSessionInitCLA    = CwCmdClaKeepMemory, //?
-    CwCmdIdExSessionEstabCLA   = CwCmdClaKeepMemory, //?
-    CwCmdIdExSessionLogoutCLA  = CwCmdClaKeepMemory, //?
-    CwCmdIdExBlockInfoCLA      = CwCmdClaKeepFlash, //?
-    CwCmdIdExBlockBtcCLA       = CwCmdClaKeepFlash, //?
-    CwCmdIdExBlockCancelCLA    = CwCmdClaKeepFlash, //?
-    CwCmdIdExTrxSignLoginCLA   = CwCmdClaKeepFlash, //?
-    CwCmdIdExTrxSignPrepareCLA = CwCmdClaKeepFlash, //?
-    CwCmdIdExTrxSignLogoutCLA  = CwCmdClaKeepFlash, //?
+    CwCmdIdExRegStatusCLA      = CwCmdClaKeepMemorySetFlash,
+    CwCmdIdExGetOtpCLA         = CwCmdClaKeepMemorySetFlash,
+    CwCmdIdExSessionInitCLA    = CwCmdClaKeepMemoryGetFlash, //?
+    CwCmdIdExSessionEstabCLA   = CwCmdClaKeepMemorySetFlash, //?
+    CwCmdIdExSessionLogoutCLA  = CwCmdClaKeepMemorySetFlash, //?
+    CwCmdIdExBlockInfoCLA      = CwCmdClaKeepMemorySetFlash, //?
+    CwCmdIdExBlockBtcCLA       = CwCmdClaKeepMemorySetFlash, //?
+    CwCmdIdExBlockCancelCLA    = CwCmdClaKeepMemorySetFlash, //?
+    CwCmdIdExTrxSignLoginCLA   = CwCmdClaKeepMemorySetFlash, //?
+    CwCmdIdExTrxSignPrepareCLA = CwCmdClaKeepMemorySetFlash, //?
+    CwCmdIdExTrxSignLogoutCLA  = CwCmdClaKeepMemorySetFlash, //?
     
     //FirmwareUpload Commmands
     CwCmdIdBackToLoaderCLA     = CwCmdClaKeepNone, //?

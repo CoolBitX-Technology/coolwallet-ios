@@ -13,6 +13,7 @@
 #import "OCAppCommon.h"
 #import "NSString+HexToData.h"
 #import "APPData.h"
+#import "NotifyManager.h"
 
 #import "UIViewController+Utils.h"
 
@@ -136,37 +137,12 @@
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    NSLog(@"fetchCompletionHandler receive notify: %@", userInfo);
+    NSLog(@"app state: %ld, fetchCompletionHandler receive notify: %@", [[UIApplication sharedApplication] applicationState], userInfo);
     
-    //TODO
-    NSDictionary *aps = [userInfo objectForKey:@"aps"];
-    NSString *msg = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
-    NSNumber *content_available = [aps objectForKey:@"content-available"];
-    NSLog(@"%@, %@", content_available, msg);
-    UIViewController *currentViewController = [UIViewController currentViewController];
-    NSLog(@"currentViewController: %@", currentViewController);
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"receive notify" message:aps.description preferredStyle:UIAlertControllerStyleAlert];
-    
-    if (currentViewController && [currentViewController isKindOfClass:[SWRevealViewController class]]) {
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
-        [alertController addAction:cancelAction];
-        
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            UIStoryboard *secondStoryBoard = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
-            UIViewController *nextViewController = (UIViewController *)[secondStoryBoard instantiateViewControllerWithIdentifier:@"ExBlockOrderViewController"];
-            
-            SWRevealViewController *revealController = (SWRevealViewController *)currentViewController;
-            NSLog(@"frontViewController: %@", revealController.frontViewController);
-            NSLog(@"navigationController: %@", revealController.frontViewController.navigationController);
-            [(UINavigationController *)revealController.frontViewController pushViewController:nextViewController animated:YES];
-        }];
-        [alertController addAction:okAction];
-    } else {
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        [alertController addAction:okAction];
+    if ([[UIApplication sharedApplication] applicationState]!=UIApplicationStateBackground) {
+        NotifyManager *notifyManager = [NotifyManager new];
+        [notifyManager process:userInfo];
     }
-    
-    [currentViewController presentViewController:alertController animated:YES completion:nil];
     
     completionHandler(UIBackgroundFetchResultNoData);
 }
