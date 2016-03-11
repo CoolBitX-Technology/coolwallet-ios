@@ -15,6 +15,7 @@
 #import "CwBtc.h"
 #import "CwTxin.h"
 #import "CwExUnblock.h"
+#import "CwExUnclarifyOrder.h"
 
 @interface CwExchange()
 
@@ -402,7 +403,7 @@
     for (CwAccount *account in [self.card.cwAccounts allValues]) {
         [accountDatas addObject:[self getAccountInfo:account]];
     }
-    [dict setObject:accountDatas forKey:@"account"];
+    [dict setObject:accountDatas forKey:@"accounts"];
     
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -672,6 +673,30 @@
         AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
         [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
             [subscriber sendNext:nil];
+            [subscriber sendCompleted];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            [subscriber sendError:error];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(RACSignal *)signalRequestUnclarifyOrders
+{
+    NSString *url = [NSString stringWithFormat:ExUnclarifyOrders, self.card.cardId];
+    
+    @weakify(self);
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
+            NSArray *unclarifyOrders = [RMMapper arrayOfClass:[CwExUnclarifyOrder class] fromArrayOfDictionary:responseObject];
+            
+            [subscriber sendNext:unclarifyOrders];
             [subscriber sendCompleted];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             [subscriber sendError:error];

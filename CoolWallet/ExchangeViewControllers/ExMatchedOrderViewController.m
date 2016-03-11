@@ -45,6 +45,9 @@
         return @(enabled);
     }];
     
+    self.tableViewSell.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableViewBuy.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
     [self addObservers];
 }
 

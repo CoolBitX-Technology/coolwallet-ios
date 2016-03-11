@@ -8,6 +8,6 @@
 
 #import "BaseViewController.h"
 
-@interface ExVerifyOrderViewController : BaseViewController
+@interface ExUnclarifyOrderViewController : BaseViewController
 
 @end

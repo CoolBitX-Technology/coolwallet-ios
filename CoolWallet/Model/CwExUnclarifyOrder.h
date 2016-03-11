@@ -13,5 +13,6 @@
 @property (strong, nonatomic) NSString *orderID;
 @property (strong, nonatomic) NSNumber *amount; // satoshi
 @property (strong, nonatomic) NSNumber *price;
+@property (strong, nonatomic) NSNumber *account;
 
 @end

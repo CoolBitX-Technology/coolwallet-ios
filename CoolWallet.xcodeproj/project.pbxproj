@@ -189,7 +189,7 @@
 		F4A7CC451C58794100E40CD1 /* ExMatchOrderVM.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC441C58794100E40CD1 /* ExMatchOrderVM.m */; };
 		F4A7CC4B1C5884A100E40CD1 /* ExMatchedOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */; };
 		F4A7CC4F1C58959A00E40CD1 /* ExOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4E1C58959A00E40CD1 /* ExOrderCell.m */; };
-		F4A88C351C75A33F007AC3C1 /* ExVerifyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A88C341C75A33F007AC3C1 /* ExVerifyOrderViewController.m */; };
+		F4A88C351C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A88C341C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m */; };
 		F4E412901BFB1D91003CFACF /* NSString+HexToData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E4128F1BFB1D91003CFACF /* NSString+HexToData.m */; };
 		F4FD98711BE8B46500968A8E /* mpbn_util.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FD986F1BE8B46500968A8E /* mpbn_util.c */; };
 		F4FF8D0D1C45104F00863E54 /* TabExchangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FF8D0C1C45104F00863E54 /* TabExchangeViewController.m */; };
@@ -500,8 +500,8 @@
 		F4A7CC4D1C58959A00E40CD1 /* ExOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExOrderCell.h; sourceTree = "<group>"; };
 		F4A7CC4E1C58959A00E40CD1 /* ExOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExOrderCell.m; sourceTree = "<group>"; };
 		F4A7CC501C58DFFE00E40CD1 /* CwExAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExAPI.h; path = Model/CwExAPI.h; sourceTree = "<group>"; };
-		F4A88C331C75A33F007AC3C1 /* ExVerifyOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExVerifyOrderViewController.h; sourceTree = "<group>"; };
-		F4A88C341C75A33F007AC3C1 /* ExVerifyOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExVerifyOrderViewController.m; sourceTree = "<group>"; };
+		F4A88C331C75A33F007AC3C1 /* ExUnclarifyOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExUnclarifyOrderViewController.h; sourceTree = "<group>"; };
+		F4A88C341C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExUnclarifyOrderViewController.m; sourceTree = "<group>"; };
 		F4E4128E1BFB1D91003CFACF /* NSString+HexToData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HexToData.h"; sourceTree = "<group>"; };
 		F4E4128F1BFB1D91003CFACF /* NSString+HexToData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HexToData.m"; sourceTree = "<group>"; };
 		F4FD986F1BE8B46500968A8E /* mpbn_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mpbn_util.c; path = C_API/mpbn_util.c; sourceTree = "<group>"; };
@@ -1019,8 +1019,8 @@
 				F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */,
 				F49C2C2C1C5A0C32000B2042 /* ExOrderDetailViewController.h */,
 				F49C2C2D1C5A0C32000B2042 /* ExOrderDetailViewController.m */,
-				F4A88C331C75A33F007AC3C1 /* ExVerifyOrderViewController.h */,
-				F4A88C341C75A33F007AC3C1 /* ExVerifyOrderViewController.m */,
+				F4A88C331C75A33F007AC3C1 /* ExUnclarifyOrderViewController.h */,
+				F4A88C341C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m */,
 			);
 			path = ExchangeViewControllers;
 			sourceTree = "<group>";
@@ -1353,7 +1353,7 @@
 				EFF6DD111B9542880089E093 /* TabExhchangeRateViewController.m in Sources */,
 				EFAC5FD71AAD39620042FF8C /* TabAddressTableViewController.m in Sources */,
 				EFA341421AA702E80035AC6D /* CwInfoViewCell.m in Sources */,
-				F4A88C351C75A33F007AC3C1 /* ExVerifyOrderViewController.m in Sources */,
+				F4A88C351C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m in Sources */,
 				93CF96BE19EE1DA200466DAF /* CALayer+ColorConfig.m in Sources */,
 				EF09E9261BA6C00200C8DCD0 /* TabRecoveryViewController.m in Sources */,
 				EFAC5C511AC25A7000320EA6 /* rscode.c in Sources */,

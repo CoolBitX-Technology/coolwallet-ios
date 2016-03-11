@@ -2849,7 +2849,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         <rect key="frame" x="10" y="65" width="300" height="1"/>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Enable One Time Password (OTP) on transactions " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Njd-cf-Wfa">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Enable One Time Password (OTP) on transactions " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Njd-cf-Wfa">
                                         <rect key="frame" x="8" y="2" width="241" height="68"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3606,7 +3606,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Matched sell orders" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aUr-6J-4VA">
-                                        <rect key="frame" x="8" y="16" width="304" height="21"/>
+                                        <rect key="frame" x="8" y="68" width="304" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="gBc-z6-wkf"/>
                                         </constraints>
@@ -3614,17 +3614,18 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="22" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f0p-kQ-Ixr">
-                                        <rect key="frame" x="0.0" y="45" width="320" height="199"/>
-                                        <color key="backgroundColor" red="0.29411764709999999" green="0.28627450980000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="separatorColor" red="0.40000000000000002" green="0.396078431372549" blue="0.39215686274509803" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="sectionIndexBackgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="22" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f0p-kQ-Ixr">
+                                        <rect key="frame" x="0.0" y="97" width="312" height="170"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="separatorColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HeaderCell" rowHeight="22" id="Ewc-it-aIM">
-                                                <rect key="frame" x="0.0" y="28" width="320" height="22"/>
+                                                <rect key="frame" x="0.0" y="28" width="312" height="22"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ewc-it-aIM" id="ie3-WJ-r5J">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="21.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="312" height="21.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Amount(BTC)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECZ-2e-sGU">
@@ -3667,10 +3668,10 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="OrderCell" rowHeight="44" id="FB2-ww-IcK" customClass="ExOrderCell">
-                                                <rect key="frame" x="0.0" y="50" width="320" height="44"/>
+                                                <rect key="frame" x="0.0" y="50" width="312" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FB2-ww-IcK" id="Qbg-hv-Sfn">
-                                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="279" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.00000001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JU-qp-woo">
@@ -3720,7 +3721,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         </connections>
                                     </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Matched buy orders" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12y-wM-zWV">
-                                        <rect key="frame" x="8" y="257" width="304" height="21"/>
+                                        <rect key="frame" x="8" y="275" width="304" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="YEK-oK-yns"/>
                                         </constraints>
@@ -3728,17 +3729,17 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VQT-vY-3Ag">
-                                        <rect key="frame" x="0.0" y="286.5" width="320" height="201.5"/>
-                                        <color key="backgroundColor" red="0.29411764709999999" green="0.28627450980000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="separatorColor" red="0.40000000000000002" green="0.39607843139999999" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="sectionIndexBackgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VQT-vY-3Ag">
+                                        <rect key="frame" x="0.0" y="304" width="312" height="170"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="separatorColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HeaderCell" rowHeight="22" id="Ztb-65-rKF">
-                                                <rect key="frame" x="0.0" y="28" width="320" height="22"/>
+                                                <rect key="frame" x="0.0" y="28" width="312" height="22"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ztb-65-rKF" id="3yJ-Zw-nGq">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="21.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="312" height="21.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Amount(BTC)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDg-Sq-bxa">
@@ -3781,10 +3782,10 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="OrderCell" rowHeight="44" id="2b9-C4-Fdb" customClass="ExOrderCell">
-                                                <rect key="frame" x="0.0" y="50" width="320" height="44"/>
+                                                <rect key="frame" x="0.0" y="50" width="312" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2b9-C4-Fdb" id="vgj-1N-NJ4">
-                                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="279" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.00000001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I1s-Zd-6fT">
@@ -3833,27 +3834,73 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <outlet property="delegate" destination="hDj-Rv-ioi" id="nAW-4b-n9y"/>
                                         </connections>
                                     </tableView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Sr-pg-JnA">
+                                        <rect key="frame" x="15" y="8" width="297" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="iR4-X2-GTf"/>
+                                        </constraints>
+                                        <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Sell order verification">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <segue destination="8Zh-7v-6i3" kind="push" id="Edt-lm-bf5"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Dn-Uu-Bg4">
+                                        <rect key="frame" x="278" y="12" width="22" height="22"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="22" id="844-hW-3Py"/>
+                                            <constraint firstAttribute="height" constant="22" id="KbZ-0I-Mhh"/>
+                                        </constraints>
+                                        <state key="normal" title="&gt;"/>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZUH-m6-6H8">
+                                        <rect key="frame" x="15" y="93" width="297" height="0.5"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="0.5" id="64F-Sn-4VL"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2fi-cH-r3K">
+                                        <rect key="frame" x="15" y="300" width="297" height="0.5"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="0.5" id="uEm-ZE-42R"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="12y-wM-zWV" firstAttribute="centerY" secondItem="ybr-hI-9sv" secondAttribute="centerY" constant="16" id="1QN-vQ-dgC"/>
-                                    <constraint firstItem="f0p-kQ-Ixr" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" id="2TN-K2-K8G"/>
+                                    <constraint firstItem="12y-wM-zWV" firstAttribute="centerY" secondItem="ybr-hI-9sv" secondAttribute="centerY" constant="33.5" id="1QN-vQ-dgC"/>
+                                    <constraint firstItem="f0p-kQ-Ixr" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="8" id="2TN-K2-K8G"/>
                                     <constraint firstAttribute="trailing" secondItem="aUr-6J-4VA" secondAttribute="trailing" constant="8" id="CKT-dr-XSj"/>
+                                    <constraint firstItem="9Dn-Uu-Bg4" firstAttribute="top" secondItem="ybr-hI-9sv" secondAttribute="top" constant="12" id="DbX-C0-n1s"/>
                                     <constraint firstItem="12y-wM-zWV" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="8" id="Eww-WN-Bzd"/>
+                                    <constraint firstAttribute="trailing" secondItem="5Sr-pg-JnA" secondAttribute="trailing" constant="8" id="FLJ-wY-T2t"/>
+                                    <constraint firstAttribute="trailing" secondItem="9Dn-Uu-Bg4" secondAttribute="trailing" constant="20" id="Hvz-Y0-wvA"/>
                                     <constraint firstItem="VQT-vY-3Ag" firstAttribute="leading" secondItem="f0p-kQ-Ixr" secondAttribute="leading" id="LO4-gS-1YX"/>
                                     <constraint firstItem="f0p-kQ-Ixr" firstAttribute="top" secondItem="aUr-6J-4VA" secondAttribute="bottom" constant="8" id="MyF-mP-PXu"/>
-                                    <constraint firstItem="VQT-vY-3Ag" firstAttribute="height" secondItem="f0p-kQ-Ixr" secondAttribute="height" constant="2.5" id="ZLu-3R-Fp0"/>
-                                    <constraint firstItem="aUr-6J-4VA" firstAttribute="top" secondItem="ybr-hI-9sv" secondAttribute="top" constant="16" id="aJL-em-Lfi"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZUH-m6-6H8" secondAttribute="trailing" constant="8" id="Nuv-cm-dy8"/>
+                                    <constraint firstItem="2fi-cH-r3K" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="15" id="Tvp-Sb-wfI"/>
+                                    <constraint firstItem="2fi-cH-r3K" firstAttribute="top" secondItem="12y-wM-zWV" secondAttribute="bottom" constant="4" id="V3C-76-osf"/>
+                                    <constraint firstItem="5Sr-pg-JnA" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="15" id="VSs-cA-WRf"/>
+                                    <constraint firstItem="VQT-vY-3Ag" firstAttribute="height" secondItem="f0p-kQ-Ixr" secondAttribute="height" id="ZLu-3R-Fp0"/>
+                                    <constraint firstItem="aUr-6J-4VA" firstAttribute="top" secondItem="ybr-hI-9sv" secondAttribute="top" constant="68" id="aJL-em-Lfi"/>
                                     <constraint firstItem="aUr-6J-4VA" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="8" id="bpu-t7-PQJ"/>
-                                    <constraint firstAttribute="bottom" secondItem="VQT-vY-3Ag" secondAttribute="bottom" constant="16" id="e3G-xa-TfO"/>
-                                    <constraint firstAttribute="trailing" secondItem="f0p-kQ-Ixr" secondAttribute="trailing" id="fsJ-nU-KF6"/>
+                                    <constraint firstItem="ZUH-m6-6H8" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="15" id="cpS-yX-hrC"/>
+                                    <constraint firstItem="ZUH-m6-6H8" firstAttribute="top" secondItem="aUr-6J-4VA" secondAttribute="bottom" constant="4" id="deh-8F-V7h"/>
+                                    <constraint firstAttribute="bottom" secondItem="VQT-vY-3Ag" secondAttribute="bottom" constant="30" id="e3G-xa-TfO"/>
+                                    <constraint firstAttribute="trailing" secondItem="f0p-kQ-Ixr" secondAttribute="trailing" constant="8" id="fsJ-nU-KF6"/>
                                     <constraint firstItem="VQT-vY-3Ag" firstAttribute="trailing" secondItem="f0p-kQ-Ixr" secondAttribute="trailing" id="iGG-9R-qZw"/>
                                     <constraint firstItem="VQT-vY-3Ag" firstAttribute="top" secondItem="12y-wM-zWV" secondAttribute="bottom" constant="8" id="jz1-Jc-GJK"/>
                                     <constraint firstAttribute="trailing" secondItem="12y-wM-zWV" secondAttribute="trailing" constant="8" id="wfz-CJ-5p2"/>
+                                    <constraint firstAttribute="trailing" secondItem="2fi-cH-r3K" secondAttribute="trailing" constant="8" id="yCn-wl-64B"/>
+                                    <constraint firstItem="5Sr-pg-JnA" firstAttribute="top" secondItem="ybr-hI-9sv" secondAttribute="top" constant="8" id="zlF-Bc-QFE"/>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.1019607843" green="0.1019607843" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.094117647060000004" green="0.094117647060000004" blue="0.094117647060000004" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="gLD-Jf-TAu" firstAttribute="top" secondItem="Z48-kQ-UXU" secondAttribute="bottom" id="5uH-0v-cnq"/>
                             <constraint firstAttribute="trailing" secondItem="ybr-hI-9sv" secondAttribute="trailing" id="I1F-wF-xWP"/>
@@ -3872,20 +3919,6 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                 <segue destination="OaN-he-2so" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="1rh-8W-cge"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="heR-TP-ZCx">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bmF-sk-mkn">
-                                <rect key="frame" x="233" y="7" width="71" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="Block"/>
-                                <connections>
-                                    <segue destination="8Zh-7v-6i3" kind="push" id="h7I-NF-IAx"/>
-                                </connections>
-                            </button>
-                            <connections>
-                                <segue destination="8Zh-7v-6i3" kind="push" id="PkF-Uu-eQA"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="matchedOrderView" destination="ybr-hI-9sv" id="wXE-2p-yQg"/>
@@ -3898,10 +3931,10 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
             </objects>
             <point key="canvasLocation" x="-9148" y="-239"/>
         </scene>
-        <!--Verify Orders-->
+        <!--Verification-->
         <scene sceneID="f7f-f2-nXZ">
             <objects>
-                <viewController storyboardIdentifier="ExBlockOrderViewController" id="8Zh-7v-6i3" customClass="ExVerifyOrderViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ExBlockOrderViewController" id="8Zh-7v-6i3" customClass="ExUnclarifyOrderViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="q3M-tr-LiZ"/>
                         <viewControllerLayoutGuide type="bottom" id="p2N-KG-7gH"/>
@@ -3910,61 +3943,98 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="77" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BvQ-03-Ni2">
-                                <rect key="frame" x="20" y="8" width="280" height="476"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="77" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BvQ-03-Ni2">
+                                <rect key="frame" x="10" y="37" width="300" height="447"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="separatorColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VerifyOrderCell" rowHeight="77" id="gRL-gA-1mg">
-                                        <rect key="frame" x="0.0" y="28" width="280" height="77"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gRL-gA-1mg" id="Tlt-sh-qsz">
-                                            <rect key="frame" x="0.0" y="0.0" width="280" height="76.5"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="HeaderCell" rowHeight="22" id="pbv-pJ-6Ra">
+                                        <rect key="frame" x="0.0" y="28" width="300" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pbv-pJ-6Ra" id="uNe-uc-foA">
+                                            <rect key="frame" x="0.0" y="0.0" width="300" height="21.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="OrderID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="APd-uB-lP7">
-                                                    <rect key="frame" x="8" y="0.0" width="67" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order ID" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zaF-jc-3sU">
+                                                    <rect key="frame" x="8" y="0.0" width="86" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Account ID: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1uU-QA-Ykz">
-                                                    <rect key="frame" x="8" y="22" width="87" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount(BTC)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xxe-Sj-7k0">
+                                                    <rect key="frame" x="94.5" y="0.0" width="86" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="yyyy/MM/dd hh:mm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ujO-UB-rzq">
-                                                    <rect key="frame" x="131" y="2" width="141" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="141" id="k0g-JF-LrM"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2wG-nI-Dne">
+                                                    <rect key="frame" x="180.5" y="0.0" width="86.5" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Amount/Price:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8E4-vI-XCa">
-                                                    <rect key="frame" x="8" y="47" width="104" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="skf-NK-WPy">
-                                                    <rect key="frame" x="226" y="24" width="46" height="30"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="46" id="g1D-qs-ePK"/>
-                                                        <constraint firstAttribute="height" constant="30" id="tdL-JS-04g"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Verify"/>
-                                                </button>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstItem="ujO-UB-rzq" firstAttribute="top" secondItem="Tlt-sh-qsz" secondAttribute="top" constant="2" id="2ZH-Z2-kTW"/>
-                                                <constraint firstAttribute="trailing" secondItem="ujO-UB-rzq" secondAttribute="trailing" constant="8" id="D3Z-5B-jhM"/>
-                                                <constraint firstAttribute="trailing" secondItem="skf-NK-WPy" secondAttribute="trailing" constant="8" id="JIw-iS-ij5"/>
-                                                <constraint firstItem="skf-NK-WPy" firstAttribute="top" secondItem="ujO-UB-rzq" secondAttribute="bottom" constant="1" id="jJv-lb-Pa5"/>
-                                                <constraint firstItem="skf-NK-WPy" firstAttribute="centerY" secondItem="Tlt-sh-qsz" secondAttribute="centerY" id="z4a-dQ-m0d"/>
+                                                <constraint firstAttribute="bottom" secondItem="zaF-jc-3sU" secondAttribute="bottom" constant="1" id="5jj-I8-32q"/>
+                                                <constraint firstAttribute="bottom" secondItem="2wG-nI-Dne" secondAttribute="bottom" constant="1" id="GVi-II-KUY"/>
+                                                <constraint firstItem="Xxe-Sj-7k0" firstAttribute="leading" secondItem="zaF-jc-3sU" secondAttribute="trailing" id="Gbf-xt-eAG"/>
+                                                <constraint firstItem="Xxe-Sj-7k0" firstAttribute="bottom" secondItem="zaF-jc-3sU" secondAttribute="bottom" id="GpH-6V-j9s"/>
+                                                <constraint firstItem="2wG-nI-Dne" firstAttribute="top" secondItem="uNe-uc-foA" secondAttribute="top" id="KxT-ek-7VR"/>
+                                                <constraint firstItem="zaF-jc-3sU" firstAttribute="top" secondItem="uNe-uc-foA" secondAttribute="top" id="OaK-Wo-gb6"/>
+                                                <constraint firstItem="zaF-jc-3sU" firstAttribute="leading" secondItem="uNe-uc-foA" secondAttribute="leading" constant="8" id="RQZ-yx-fZX"/>
+                                                <constraint firstItem="Xxe-Sj-7k0" firstAttribute="width" secondItem="2wG-nI-Dne" secondAttribute="width" id="RxC-1c-ksg"/>
+                                                <constraint firstItem="zaF-jc-3sU" firstAttribute="width" secondItem="Xxe-Sj-7k0" secondAttribute="width" id="bpM-A9-x87"/>
+                                                <constraint firstItem="Xxe-Sj-7k0" firstAttribute="top" secondItem="2wG-nI-Dne" secondAttribute="top" id="kUL-wI-HBB"/>
+                                                <constraint firstItem="zaF-jc-3sU" firstAttribute="top" secondItem="Xxe-Sj-7k0" secondAttribute="top" id="kek-tO-fMP"/>
+                                                <constraint firstAttribute="trailing" secondItem="2wG-nI-Dne" secondAttribute="trailing" constant="33" id="qMp-T0-X0Z"/>
+                                                <constraint firstItem="2wG-nI-Dne" firstAttribute="leading" secondItem="Xxe-Sj-7k0" secondAttribute="trailing" id="r9E-Qd-nQy"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="VerifyOrderCell" rowHeight="44" id="gRL-gA-1mg">
+                                        <rect key="frame" x="0.0" y="50" width="300" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gRL-gA-1mg" id="Tlt-sh-qsz">
+                                            <rect key="frame" x="0.0" y="0.0" width="267" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OrI-pc-MfV">
+                                                    <rect key="frame" x="8" y="11.5" width="86" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LsJ-7U-nQE">
+                                                    <rect key="frame" x="180" y="11.5" width="86" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXK-pH-R5H">
+                                                    <rect key="frame" x="94" y="11.5" width="86" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="uXK-pH-R5H" firstAttribute="leading" secondItem="OrI-pc-MfV" secondAttribute="trailing" id="0Ua-MF-Tru"/>
+                                                <constraint firstItem="uXK-pH-R5H" firstAttribute="centerY" secondItem="OrI-pc-MfV" secondAttribute="centerY" id="1Lp-Nm-ka1"/>
+                                                <constraint firstItem="OrI-pc-MfV" firstAttribute="centerY" secondItem="Tlt-sh-qsz" secondAttribute="centerY" id="ASw-gC-zzX"/>
+                                                <constraint firstItem="uXK-pH-R5H" firstAttribute="width" secondItem="LsJ-7U-nQE" secondAttribute="width" id="KSH-TG-8FT"/>
+                                                <constraint firstItem="OrI-pc-MfV" firstAttribute="leading" secondItem="Tlt-sh-qsz" secondAttribute="leading" constant="8" id="P5g-Vb-BND"/>
+                                                <constraint firstItem="LsJ-7U-nQE" firstAttribute="leading" secondItem="uXK-pH-R5H" secondAttribute="trailing" id="UoN-Oo-ZAb"/>
+                                                <constraint firstItem="OrI-pc-MfV" firstAttribute="width" secondItem="uXK-pH-R5H" secondAttribute="width" id="cJP-8n-XSL"/>
+                                                <constraint firstAttribute="trailing" secondItem="LsJ-7U-nQE" secondAttribute="trailing" constant="1" id="iuJ-Kv-V9l"/>
+                                                <constraint firstItem="LsJ-7U-nQE" firstAttribute="centerY" secondItem="uXK-pH-R5H" secondAttribute="centerY" id="yBq-Wa-bDX"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -3972,16 +4042,28 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                     <outlet property="delegate" destination="8Zh-7v-6i3" id="QeH-e1-dng"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verify OTP to place your sell orders" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xGr-HD-LCU">
+                                <rect key="frame" x="10" y="8" width="300" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="har-BL-dtJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.1019607843" green="0.1019607843" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.094117647058823528" green="0.094117647058823528" blue="0.094117647058823528" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="BvQ-03-Ni2" secondAttribute="trailing" constant="20" id="3Ey-WF-Bqd"/>
-                            <constraint firstItem="BvQ-03-Ni2" firstAttribute="leading" secondItem="dX8-zo-at1" secondAttribute="leading" constant="20" id="RXI-v7-O44"/>
-                            <constraint firstItem="BvQ-03-Ni2" firstAttribute="top" secondItem="q3M-tr-LiZ" secondAttribute="bottom" constant="8" id="Vrm-zT-1lL"/>
-                            <constraint firstItem="p2N-KG-7gH" firstAttribute="top" secondItem="BvQ-03-Ni2" secondAttribute="bottom" constant="20" id="mbl-6e-nuL"/>
+                            <constraint firstItem="BvQ-03-Ni2" firstAttribute="trailing" secondItem="xGr-HD-LCU" secondAttribute="trailing" id="4Qy-5b-cfM"/>
+                            <constraint firstItem="p2N-KG-7gH" firstAttribute="top" secondItem="BvQ-03-Ni2" secondAttribute="bottom" constant="20" id="A2a-mc-ogi"/>
+                            <constraint firstItem="xGr-HD-LCU" firstAttribute="leading" secondItem="dX8-zo-at1" secondAttribute="leading" constant="10" id="ITg-UG-TKP"/>
+                            <constraint firstItem="BvQ-03-Ni2" firstAttribute="top" secondItem="xGr-HD-LCU" secondAttribute="bottom" constant="8" id="NL5-rY-6xd"/>
+                            <constraint firstItem="xGr-HD-LCU" firstAttribute="top" secondItem="q3M-tr-LiZ" secondAttribute="bottom" constant="8" id="RDk-hc-U9z"/>
+                            <constraint firstItem="BvQ-03-Ni2" firstAttribute="leading" secondItem="xGr-HD-LCU" secondAttribute="leading" id="VA6-wH-64D"/>
+                            <constraint firstAttribute="trailing" secondItem="xGr-HD-LCU" secondAttribute="trailing" constant="10" id="iuI-Fi-Yp6"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Verify Orders" id="ThL-Mm-JcY"/>
+                    <navigationItem key="navigationItem" title="Verification" id="ThL-Mm-JcY"/>
                     <connections>
                         <outlet property="tableView" destination="BvQ-03-Ni2" id="Waf-7i-9JM"/>
                     </connections>
@@ -4311,7 +4393,6 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="1rh-8W-cge"/>
-        <segue reference="PkF-Uu-eQA"/>
         <segue reference="t76-YH-dUj"/>
         <segue reference="gzi-1q-gb8"/>
     </inferredMetricsTieBreakers>

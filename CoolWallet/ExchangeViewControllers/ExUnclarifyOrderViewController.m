@@ -6,12 +6,13 @@
 //  Copyright © 2016年 MAC-BRYAN. All rights reserved.
 //
 
-#import "ExVerifyOrderViewController.h"
+#import "ExUnclarifyOrderViewController.h"
 #import "CwExchange.h"
+#import  "QuartzCore/QuartzCore.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
-@interface ExVerifyOrderViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ExUnclarifyOrderViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSString *selectOrderID;
 
@@ -19,7 +20,7 @@
 
 @end
 
-@implementation ExVerifyOrderViewController
+@implementation ExUnclarifyOrderViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -77,24 +78,38 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 10;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"VerifyOrderCell" forIndexPath:indexPath];
+    UITableViewCell *cell;
+    if (indexPath.row == 0) {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"HeaderCell" forIndexPath:indexPath];
+    } else {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"VerifyOrderCell" forIndexPath:indexPath];
+    }
     
     return cell;
 }
 
 #pragma mark - UITableViewDelegate delegate
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 0) {
+        return 26;
+    } else {
+        return 40;
+    }
+}
+
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectOrderID = @"3b5c2eef";
-    [self.cwManager.connectedCwCard genResetOtp];
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+//    self.selectOrderID = @"3b5c2eef";
+//    [self.cwManager.connectedCwCard genResetOtp];
+//    
+//    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 #pragma mark - CwCard delegate
