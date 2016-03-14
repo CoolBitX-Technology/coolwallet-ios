@@ -7,7 +7,7 @@
 //
 
 #import "TabExchangeViewController.h"
-#import "CwExchange.h"
+#import "CwExchangeManager.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -30,7 +30,7 @@
     myImageView.frame = CGRectMake(x, 8, 30, 30);
     [self.navigationController.navigationBar addSubview:myImageView];
     
-    CwExchange *exchange = [CwExchange sharedInstance];
+    CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
     @weakify(self)
     [[[[RACObserve(exchange, sessionStatus) filter:^BOOL(NSNumber *status) {
         return status.intValue == ExSessionLogin;

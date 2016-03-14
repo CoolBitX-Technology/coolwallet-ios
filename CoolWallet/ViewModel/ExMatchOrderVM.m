@@ -7,7 +7,7 @@
 //
 
 #import "ExMatchOrderVM.h"
-#import "CwExchange.h"
+#import "CwExchangeManager.h"
 #import "CwCard.h"
 #import "CwExSellOrder.h"
 #import "CwExBuyOrder.h"
@@ -46,7 +46,7 @@
 
 -(void) requestMatchedOrders
 {
-    CwExchange *exchange = [CwExchange sharedInstance];
+    CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
     NSString *url = [NSString stringWithFormat:ExGetMatchedOrders, exchange.card.cardId];
     AFHTTPRequestOperationManager *manager = [exchange defaultJsonManager];
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {

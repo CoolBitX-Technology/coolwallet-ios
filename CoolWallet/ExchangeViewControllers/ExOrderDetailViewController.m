@@ -9,7 +9,7 @@
 #import "ExOrderDetailViewController.h"
 #import "CwExSellOrder.h"
 #import "CwExBuyOrder.h"
-#import "CwExchange.h"
+#import "CwExchangeManager.h"
 #import "NSDate+Localize.h"
 
 #import <AFNetworking/AFNetworking.h>
@@ -74,7 +74,7 @@
 {
     self.transactionBegin = YES;
     
-    CwExchange *exchange = [CwExchange sharedInstance];
+    CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
     [exchange prepareTransactionWithAmount:self.order.amountBTC withChangeAddress:self.changeAddress.address fromAccountId:self.order.accountId.integerValue];
 }
 
@@ -226,7 +226,7 @@
     if (self.transactionBegin) {
         [self performDismiss];
         
-        CwExchange *exchange = [CwExchange sharedInstance];
+        CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
         [exchange completeTransactionWithOrderId:self.order.orderId TxId:txId];
         
         [self showHintAlert:@"Sent" withMessage:[NSString stringWithFormat:@"Sent %@ BTC to %@", self.order.amountBTC, self.order.address] withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];

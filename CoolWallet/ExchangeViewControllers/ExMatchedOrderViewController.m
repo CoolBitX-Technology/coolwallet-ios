@@ -10,7 +10,7 @@
 #import "ExMatchOrderVM.h"
 #import "ExOrderCell.h"
 #import "ExOrderDetailViewController.h"
-#import "CwExchange.h"
+#import "CwExchangeManager.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -59,7 +59,7 @@
 -(void) addObservers
 {
     @weakify(self)
-    CwExchange *exchange = [CwExchange sharedInstance];
+    CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
     if (!exchange.cardInfoSynced) {
         [self showIndicatorView:@"Sync card info"];
         [[[RACObserve(exchange, cardInfoSynced) filter:^BOOL(NSNumber *synced) {

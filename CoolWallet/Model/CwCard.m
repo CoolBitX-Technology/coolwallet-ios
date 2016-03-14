@@ -19,7 +19,6 @@
 #import "CwAddress.h"
 #import "CwCardInfo.h"
 #import "CwKeychain.h"
-#import "CwExchange.h"
 
 #import "CwBtcNetwork.h"
 

@@ -14,7 +14,7 @@
 
 @class CwCard, CwAccount, CwExUnblock;
 
-@interface CwExchange : NSObject
+@interface CwExchangeManager : NSObject
 
 @property (readonly, nonatomic) CwCard *card;
 @property (readonly, assign) ExSessionStatus sessionStatus;

@@ -11,7 +11,7 @@
 #import "CwCard.h"
 #import "SWRevealViewController.h"
 #import "CwBtcNetWork.h"
-#import "CwExchange.h"
+#import "CwExchangeManager.h"
 
 @interface TabExitViewController ()
 - (IBAction)btnDisconnectCw:(id)sender;
@@ -80,7 +80,7 @@
     CwBtcNetWork *network = [CwBtcNetWork sharedManager];
     network.delegate = nil;
     
-    CwExchange *exchange = [CwExchange sharedInstance];
+    CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
     if (exchange.sessionStatus == ExSessionLogin) {
         [self.cwManager.connectedCwCard exSessionLogout];
     } else {

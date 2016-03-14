@@ -19,7 +19,7 @@
 
 #import "BlockChain.h"
 
-#import "CwExchange.h"
+#import "CwExchangeManager.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 NSDictionary *rates;
@@ -95,7 +95,7 @@ CwAccount *account;
 
 -(void) checkAndLoginExSite
 {
-    CwExchange *exchange = [CwExchange sharedInstance];
+    CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
     if (exchange.sessionStatus == ExSessionNone) {
         RACSignal *cardSignal = [[[RACObserve(self.cwManager, connectedCwCard) filter:^BOOL(CwCard *card) {
             return card != nil && card.cardId.length != 0;

@@ -6,7 +6,7 @@
 //  Copyright © 2016年 MAC-BRYAN. All rights reserved.
 //
 
-#import "CwExchange.h"
+#import "CwExchangeManager.h"
 #import "CwCard.h"
 #import "CwManager.h"
 #import "NSString+HexToData.h"
@@ -17,7 +17,7 @@
 #import "CwExUnblock.h"
 #import "CwExUnclarifyOrder.h"
 
-@interface CwExchange()
+@interface CwExchangeManager()
 
 @property (readwrite, assign) ExSessionStatus sessionStatus;
 
@@ -32,14 +32,14 @@
 
 @end
 
-@implementation CwExchange
+@implementation CwExchangeManager
 
 +(id)sharedInstance
 {
     static dispatch_once_t pred;
-    static CwExchange *sharedInstance = nil;
+    static CwExchangeManager *sharedInstance = nil;
     dispatch_once(&pred, ^{
-        sharedInstance = [[CwExchange alloc] init];
+        sharedInstance = [[CwExchangeManager alloc] init];
         
     });
     return sharedInstance;

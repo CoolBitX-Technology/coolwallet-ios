@@ -193,7 +193,7 @@
 		F4E412901BFB1D91003CFACF /* NSString+HexToData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E4128F1BFB1D91003CFACF /* NSString+HexToData.m */; };
 		F4FD98711BE8B46500968A8E /* mpbn_util.c in Sources */ = {isa = PBXBuildFile; fileRef = F4FD986F1BE8B46500968A8E /* mpbn_util.c */; };
 		F4FF8D0D1C45104F00863E54 /* TabExchangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FF8D0C1C45104F00863E54 /* TabExchangeViewController.m */; };
-		F4FF8D101C4513B700863E54 /* CwExchange.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FF8D0F1C4513B700863E54 /* CwExchange.m */; };
+		F4FF8D101C4513B700863E54 /* CwExchangeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FF8D0F1C4513B700863E54 /* CwExchangeManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -508,8 +508,8 @@
 		F4FD98701BE8B46500968A8E /* mpbn_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mpbn_util.h; path = C_API/mpbn_util.h; sourceTree = "<group>"; };
 		F4FF8D0B1C45104F00863E54 /* TabExchangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabExchangeViewController.h; sourceTree = "<group>"; };
 		F4FF8D0C1C45104F00863E54 /* TabExchangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabExchangeViewController.m; sourceTree = "<group>"; };
-		F4FF8D0E1C4513B700863E54 /* CwExchange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExchange.h; path = Model/CwExchange.h; sourceTree = "<group>"; };
-		F4FF8D0F1C4513B700863E54 /* CwExchange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExchange.m; path = Model/CwExchange.m; sourceTree = "<group>"; };
+		F4FF8D0E1C4513B700863E54 /* CwExchangeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExchangeManager.h; path = Model/CwExchangeManager.h; sourceTree = "<group>"; };
+		F4FF8D0F1C4513B700863E54 /* CwExchangeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExchangeManager.m; path = Model/CwExchangeManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -740,8 +740,8 @@
 				F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */,
 				F485C2241C18066D00C26E11 /* CwKeychain.h */,
 				F485C2251C18066D00C26E11 /* CwKeychain.m */,
-				F4FF8D0E1C4513B700863E54 /* CwExchange.h */,
-				F4FF8D0F1C4513B700863E54 /* CwExchange.m */,
+				F4FF8D0E1C4513B700863E54 /* CwExchangeManager.h */,
+				F4FF8D0F1C4513B700863E54 /* CwExchangeManager.m */,
 				A2F29F181C55FE7100C75E91 /* CwExOrderBase.h */,
 				A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */,
 				A2F29F1B1C56042600C75E91 /* CwExSellOrder.h */,
@@ -1332,7 +1332,7 @@
 				F43E97BE1C27F20D00D03DA9 /* NSString+Base58.m in Sources */,
 				EFE204261B4A837A00F3D8F6 /* Base58.c in Sources */,
 				EFEF1BCE1B4124DA00373B0E /* MBProgressHUD.m in Sources */,
-				F4FF8D101C4513B700863E54 /* CwExchange.m in Sources */,
+				F4FF8D101C4513B700863E54 /* CwExchangeManager.m in Sources */,
 				EFCF9A541B32C8810076091B /* CwCard.m in Sources */,
 				F45962931BDE411C0046E4CE /* SRWebSocket+CW.m in Sources */,
 				F49E7A6B1C8FEB7B000CD4B7 /* CwExUnblock.m in Sources */,

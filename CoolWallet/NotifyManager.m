@@ -10,7 +10,7 @@
 
 #import "NotifyManager.h"
 #import "SWRevealViewController.h"
-#import "CwExchange.h"
+#import "CwExchangeManager.h"
 #import "CwCard.h"
 #import "CwExUnclarifyOrder.h"
 #import "CwExUnblock.h"
@@ -54,7 +54,7 @@
     
     NSString *targetIdentifier;
     
-    CwExchange *exchange = [CwExchange sharedInstance];
+    CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
     if (exchange.sessionStatus == ExSessionLogin && [exchange.card.cardId isEqualToString:cwid]) {
         if ([action isEqualToString:@"blockOTP"]) {
             targetIdentifier = @"ExBlockOrderViewController";
@@ -120,7 +120,7 @@
     NSString *key = [NSString stringWithFormat:@"unblock_%@", cwid];
     NSMutableArray *unblock_orders = [[NSUserDefaults standardUserDefaults] rm_customObjectForKey:key];
     
-    CwExchange *exchange = [CwExchange sharedInstance];
+    CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
     if (exchange.sessionStatus == ExSessionLogin && exchange.card.cardId == cwid) {
         [[[exchange signalRequestUnblockInfo] flattenMap:^RACStream *(NSArray *unblocks) {
             for (CwExUnblock *unblock in unblocks) {

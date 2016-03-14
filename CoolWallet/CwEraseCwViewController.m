@@ -12,7 +12,6 @@
 #import "CwListTableViewController.h"
 #import "CwCommandDefine.h"
 #import "CwCardApduError.h"
-#import "CwExchange.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 

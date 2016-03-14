@@ -7,14 +7,17 @@
 //
 
 #import "ExUnclarifyOrderViewController.h"
-#import "CwExchange.h"
-#import  "QuartzCore/QuartzCore.h"
+#import "CwExchangeManager.h"
+#import "QuartzCore/QuartzCore.h"
+
+#import "NSUserDefaults+RMSaveCustomObject.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface ExUnclarifyOrderViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSString *selectOrderID;
+@property (strong, nonatomic) NSMutableArray *orders;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -29,6 +32,14 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
+-(void) viewWillAppear:(BOOL)animated
+{
+    if (self.orders == nil) {
+        NSArray *cachedOrders = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"unclarify_%@", self.cwManager.connectedCwCard.cardId]];
+        self.orders = [NSMutableArray arrayWithArray:cachedOrders];
+    }
+}
+
 - (void) showOTPEnterView
 {
     UIAlertController *OTPAlert = [UIAlertController alertControllerWithTitle:@"Please enter OTP" message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -40,7 +51,7 @@
         UITextField *textField = OTPAlert.textFields.firstObject;
         [self showIndicatorView:@"block with otp..."];
         
-        CwExchange *exchange = [CwExchange sharedInstance];
+        CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
         [exchange blockWithOrderID:self.selectOrderID withOTP:textField.text withComplete:^() {
             [self performDismiss];
             
