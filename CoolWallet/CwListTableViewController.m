@@ -261,6 +261,14 @@ NSString *segueIdentifier;
 -(void) didScanCwCards: (NSMutableArray *) cwCards
 {
     self.cwCards = [NSMutableArray arrayWithArray:cwCards];
+    
+    if (self.cwCards.count == 0) {
+        [self performDismiss];
+        
+        self.view_connecting.hidden = NO;
+        self.tablev_cwlist.hidden = YES;
+        [self.tablev_cwlist reloadData];
+    }
 }
 
 -(void) didConnectCwCard:(CwCard *)cwCard

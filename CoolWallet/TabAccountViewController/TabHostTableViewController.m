@@ -23,39 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    /*
-    if ( revealViewController )
-    {
-        [self.sidebarButton setTarget: self.revealViewController];
-        [self.sidebarButton setAction: @selector( revealToggle: )];
-        [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
-    }*/
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    //Navigate Bar UI effect
-    //add CW Logo
-    UIImage* myImage = [UIImage imageNamed:@"host.png"];
-    UIImageView* myImageView = [[UIImageView alloc] initWithImage:myImage];
-    
-    myImageView.frame = CGRectMake(70, 5, 30, 30);
-    [self.navigationController.navigationBar addSubview:myImageView];
-    /*
-    //change navigation bar font
-    NSShadow *shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
-    shadow.shadowOffset = CGSizeMake(0, 1);
-    [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
-                                                                      [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
-                                                                      shadow, NSShadowAttributeName,
-                                                                      [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
-    */
-    //find CW via BLE
     self.cwManager = [CwManager sharedManager];
-    
 }
 
 - (void)goback{

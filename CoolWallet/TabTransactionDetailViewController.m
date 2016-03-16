@@ -35,6 +35,8 @@ CwAccount *account;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self.navigationItem setTitle:@"Transaction details"];
+    
     cwCard.delegate = self;
     
     [self SetTxDetailData:TxKey];

@@ -34,25 +34,6 @@ CwCard *cwCard;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    //Navigate Bar UI effect
-    //add CW Logo
-    UIImage* myImage = [UIImage imageNamed:@"security.png"];
-    UIImageView* myImageView = [[UIImageView alloc] initWithImage:myImage];
-    
-    myImageView.frame = CGRectMake(75, 5, 30, 30);
-    [self.navigationController.navigationBar addSubview:myImageView];
-    /*
-     //change navigation bar font
-     NSShadow *shadow = [[NSShadow alloc] init];
-     shadow.shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
-     shadow.shadowOffset = CGSizeMake(0, 1);
-     [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
-     [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
-     shadow, NSShadowAttributeName,
-     [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:21.0], NSFontAttributeName, nil]];
-     */
     
     //find CW via BLE
     self.cwManager = [CwManager sharedManager];

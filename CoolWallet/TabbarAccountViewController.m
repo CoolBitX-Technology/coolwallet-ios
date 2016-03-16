@@ -29,14 +29,6 @@
         [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     }
     
-    //add CW Logo
-    UIImage* myImage = [UIImage imageNamed:@"logo2.png"];
-    UIImageView* myImageView = [[UIImageView alloc] initWithImage:myImage];
-    
-    myImageView.frame = CGRectMake(100, 0, 160, 40);
-    //myImageView.contentMode = UIViewContentModeCenter;
-    [self.navigationController.navigationBar addSubview:myImageView];
-    
     //hide back item text
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, 1000.f) forBarMetrics:UIBarMetricsDefault];
     

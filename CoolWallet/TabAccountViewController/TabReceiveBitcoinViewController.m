@@ -56,6 +56,9 @@ NSString *Label;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    UIViewController *parantViewController = self.parentViewController;
+    [parantViewController.navigationItem setTitle:@"Receive"];
+    
     self.txtAddress.delegate = self;
     cwCard.delegate = self;
     

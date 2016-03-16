@@ -289,10 +289,10 @@
             </objects>
             <point key="canvasLocation" x="-11266" y="-239"/>
         </scene>
-        <!--Tabbar Home View Controller-->
+        <!--Accounts-->
         <scene sceneID="rUm-Wr-3iw">
             <objects>
-                <viewController storyboardIdentifier="TabbarHomeView" id="YUI-dC-1G3" customClass="TabbarHomeViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TabbarHomeView" title="Accounts" id="YUI-dC-1G3" customClass="TabbarHomeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TM0-BH-WEo"/>
                         <viewControllerLayoutGuide type="bottom" id="nJe-Do-IgI"/>
@@ -590,12 +590,12 @@
                             <constraint firstItem="PXa-or-gui" firstAttribute="top" secondItem="ae8-Q5-aDE" secondAttribute="bottom" constant="8" id="wjw-3d-IgK"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="1" title="" image="home-grey.png" selectedImage="home.png" id="Lr7-Z9-LxP">
+                    <tabBarItem key="tabBarItem" tag="1" title="Overview" image="home.png" selectedImage="home_active.png" id="Lr7-Z9-LxP">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="home.png"/>
                         </userDefinedRuntimeAttributes>
                     </tabBarItem>
-                    <navigationItem key="navigationItem" id="Wfl-qY-6FS"/>
+                    <navigationItem key="navigationItem" title="Accounts" id="Wfl-qY-6FS"/>
                     <connections>
                         <outlet property="balanceView" destination="PXa-or-gui" id="CzA-Aa-ZZZ"/>
                         <outlet property="btnAccount1" destination="Td3-4I-HYD" id="w6N-ft-6R8"/>
@@ -615,7 +615,7 @@
             </objects>
             <point key="canvasLocation" x="-12061" y="557"/>
         </scene>
-        <!--Tansaction Details-->
+        <!--Transaction details-->
         <scene sceneID="R5m-ev-CcW">
             <objects>
                 <viewController id="BSG-41-lD0" customClass="TabTransactionDetailViewController" sceneMemberID="viewController">
@@ -850,7 +850,7 @@
                             <constraint firstItem="uYu-mP-na7" firstAttribute="leading" secondItem="jbO-Kp-ge0" secondAttribute="leading" id="g5A-OJ-KHs"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Tansaction Details" id="uX1-oV-zJy"/>
+                    <navigationItem key="navigationItem" title="Transaction details" id="uX1-oV-zJy"/>
                     <connections>
                         <outlet property="lblTxAddr" destination="RBm-Ax-aYx" id="pK8-Cb-fA0"/>
                         <outlet property="lblTxAmount" destination="5Kb-Hd-AOw" id="jbX-zg-JKE"/>
@@ -865,10 +865,10 @@
             </objects>
             <point key="canvasLocation" x="-12061" y="1339"/>
         </scene>
-        <!--Tab Receive Bitcoin View Controller-->
+        <!--Receive-->
         <scene sceneID="hCZ-ko-rrf">
             <objects>
-                <viewController storyboardIdentifier="TabbarReceiveView" id="ctG-KN-t3U" customClass="TabReceiveBitcoinViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TabbarReceiveView" title="Receive" id="ctG-KN-t3U" customClass="TabReceiveBitcoinViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BTH-ID-Bp0"/>
                         <viewControllerLayoutGuide type="bottom" id="4eL-tr-5z2"/>
@@ -1152,12 +1152,12 @@
                             <constraint firstItem="4eL-tr-5z2" firstAttribute="top" secondItem="5Nd-6g-vFi" secondAttribute="bottom" constant="8" id="w0q-0B-G5d"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="2" title="" image="receive-grey.png" selectedImage="receive.png" id="spD-J5-bgS">
+                    <tabBarItem key="tabBarItem" tag="2" title="Receive" image="receive.png" selectedImage="receive_active.png" id="spD-J5-bgS">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="receive.png"/>
                         </userDefinedRuntimeAttributes>
                     </tabBarItem>
-                    <navigationItem key="navigationItem" id="8wX-AQ-Dhh"/>
+                    <navigationItem key="navigationItem" title="Receive" id="8wX-AQ-Dhh"/>
                     <connections>
                         <outlet property="btnAccount1" destination="xcj-fs-2c3" id="4XD-Af-Zkm"/>
                         <outlet property="btnAccount2" destination="OnH-rp-o6H" id="4w0-mN-bFf"/>
@@ -1177,10 +1177,10 @@
             </objects>
             <point key="canvasLocation" x="-11626" y="557"/>
         </scene>
-        <!--Tabbar Send View Controller-->
+        <!--Send-->
         <scene sceneID="z1i-g9-dlb">
             <objects>
-                <viewController storyboardIdentifier="TabbarSendView" id="wAB-p2-fGw" customClass="TabbarSendViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TabbarSendView" title="Send" id="wAB-p2-fGw" customClass="TabbarSendViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="c4B-G7-DPO"/>
                         <viewControllerLayoutGuide type="bottom" id="RsC-2T-ykA"/>
@@ -1494,12 +1494,12 @@
                             <constraint firstItem="xCL-CA-evD" firstAttribute="top" secondItem="J0u-Y9-WMO" secondAttribute="bottom" constant="8" id="nRV-xc-FVr"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="send-grey.png" selectedImage="send.png" id="8wz-XW-VyG">
+                    <tabBarItem key="tabBarItem" title="Send" image="send.png" selectedImage="send_active.png" id="8wz-XW-VyG">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="send.png"/>
                         </userDefinedRuntimeAttributes>
                     </tabBarItem>
-                    <navigationItem key="navigationItem" id="UDy-tR-hgM"/>
+                    <navigationItem key="navigationItem" title="Send" id="UDy-tR-hgM"/>
                     <connections>
                         <outlet property="balanceView" destination="J0u-Y9-WMO" id="zQb-xc-goO"/>
                         <outlet property="btnAccount1" destination="UmG-Sw-rMN" id="hdg-9R-NgX"/>
@@ -3053,7 +3053,8 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="miZ-1g-IJU">
                                 <rect key="frame" x="0.0" y="28" width="320" height="519"/>
-                                <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="title" rowHeight="44" id="KEc-2N-fPy">
                                         <rect key="frame" x="0.0" y="28" width="320" height="44"/>
@@ -3061,11 +3062,6 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" tableViewCell="KEc-2N-fPy" id="BJG-wy-Vvg">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo2.png" translatesAutoresizingMaskIntoConstraints="NO" id="YeC-yD-vRk">
-                                                    <rect key="frame" x="88" y="2" width="145" height="39"/>
-                                                </imageView>
-                                            </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
@@ -3076,21 +3072,21 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="host.png" translatesAutoresizingMaskIntoConstraints="NO" id="Bol-d4-6Bc">
-                                                    <rect key="frame" x="30" y="9" width="30" height="30"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hosts.png" translatesAutoresizingMaskIntoConstraints="NO" id="Bol-d4-6Bc">
+                                                    <rect key="frame" x="28" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="BRY-4d-Bsm"/>
                                                         <constraint firstAttribute="width" constant="30" id="UnR-sp-w5F"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Host devices" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ce0-hp-7LT">
-                                                    <rect key="frame" x="85" y="7" width="210" height="29"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Host devices" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ce0-hp-7LT">
+                                                    <rect key="frame" x="83" y="10.5" width="139" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="centerY" secondItem="Bol-d4-6Bc" secondAttribute="centerY" id="144-rl-dW2"/>
                                                 <constraint firstAttribute="centerY" secondItem="ce0-hp-7LT" secondAttribute="centerY" id="F0x-V5-fzS"/>
@@ -3098,6 +3094,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                 <constraint firstItem="ce0-hp-7LT" firstAttribute="leading" secondItem="Bol-d4-6Bc" secondAttribute="trailing" constant="25" id="lyz-Zk-icH"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <segue destination="UcL-it-sdz" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="h5d-c8-7UB"/>
                                         </connections>
@@ -3109,21 +3106,21 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="CoolWallet card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w1O-rD-oaY">
-                                                    <rect key="frame" x="85" y="8" width="210" height="29"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CoolWallet card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w1O-rD-oaY">
+                                                    <rect key="frame" x="83" y="10.5" width="168" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="cwcard.png" translatesAutoresizingMaskIntoConstraints="NO" id="x6l-zb-LWh">
-                                                    <rect key="frame" x="30" y="8" width="30" height="30"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cw_card.png" translatesAutoresizingMaskIntoConstraints="NO" id="x6l-zb-LWh">
+                                                    <rect key="frame" x="28" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="007-Br-FF9"/>
                                                         <constraint firstAttribute="width" constant="30" id="oMt-LT-hoJ"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="centerY" secondItem="x6l-zb-LWh" secondAttribute="centerY" id="Pkr-qy-Gbi"/>
                                                 <constraint firstAttribute="centerY" secondItem="w1O-rD-oaY" secondAttribute="centerY" id="bhf-9x-Xpg"/>
@@ -3131,6 +3128,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                 <constraint firstItem="x6l-zb-LWh" firstAttribute="leading" secondItem="HtG-p0-EbW" secondAttribute="leadingMargin" constant="20" id="yOW-AV-GGr"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <segue destination="9AD-kW-Scz" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="Hv5-DP-aqZ"/>
                                         </connections>
@@ -3142,21 +3140,21 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Security" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VzY-lr-EEn">
-                                                    <rect key="frame" x="85" y="8" width="210" height="29"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VzY-lr-EEn">
+                                                    <rect key="frame" x="83" y="10.5" width="87.5" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="security.png" translatesAutoresizingMaskIntoConstraints="NO" id="s9k-Ak-fEb">
-                                                    <rect key="frame" x="30" y="8" width="30" height="30"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="security.png" translatesAutoresizingMaskIntoConstraints="NO" id="s9k-Ak-fEb">
+                                                    <rect key="frame" x="28" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="7d3-sa-HIt"/>
                                                         <constraint firstAttribute="width" constant="30" id="yfc-pV-whu"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="VzY-lr-EEn" firstAttribute="leading" secondItem="s9k-Ak-fEb" secondAttribute="trailing" constant="25" id="4PJ-Ub-iB2"/>
                                                 <constraint firstAttribute="centerY" secondItem="s9k-Ak-fEb" secondAttribute="centerY" id="G4Q-Gr-wfK"/>
@@ -3164,6 +3162,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                 <constraint firstAttribute="centerY" secondItem="VzY-lr-EEn" secondAttribute="centerY" id="mVd-1l-1pq"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <segue destination="R3j-Gv-STJ" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="uP1-PA-axM"/>
                                         </connections>
@@ -3175,21 +3174,21 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xeh-pu-sXE">
-                                                    <rect key="frame" x="85" y="8" width="210" height="29"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xeh-pu-sXE">
+                                                    <rect key="frame" x="83" y="10.5" width="88" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="settings.png" translatesAutoresizingMaskIntoConstraints="NO" id="Alt-Cb-3UQ">
-                                                    <rect key="frame" x="30" y="8" width="30" height="30"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings.png" translatesAutoresizingMaskIntoConstraints="NO" id="Alt-Cb-3UQ">
+                                                    <rect key="frame" x="28" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="41l-yC-kn7"/>
                                                         <constraint firstAttribute="height" constant="30" id="iY5-M1-cWa"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="centerY" secondItem="Xeh-pu-sXE" secondAttribute="centerY" id="7Ez-JP-68Q"/>
                                                 <constraint firstItem="Alt-Cb-3UQ" firstAttribute="leading" secondItem="WE1-xc-Qev" secondAttribute="leadingMargin" constant="20" id="HUu-4U-0gf"/>
@@ -3197,6 +3196,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                 <constraint firstAttribute="centerY" secondItem="Alt-Cb-3UQ" secondAttribute="centerY" id="nKD-Sf-MTt"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <segue destination="h4S-em-NaY" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="z7N-y2-oGl"/>
                                         </connections>
@@ -3208,21 +3208,21 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Exchange" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9dz-cB-ORR">
-                                                    <rect key="frame" x="85" y="8" width="210" height="29"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exchange" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9dz-cB-ORR">
+                                                    <rect key="frame" x="83" y="10.5" width="105.5" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ex_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="uvK-6F-Bvj">
-                                                    <rect key="frame" x="30" y="8" width="30" height="30"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="exchange.png" translatesAutoresizingMaskIntoConstraints="NO" id="uvK-6F-Bvj">
+                                                    <rect key="frame" x="28" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="mqU-0t-AXd"/>
                                                         <constraint firstAttribute="height" constant="30" id="xkD-eY-LS5"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="uvK-6F-Bvj" firstAttribute="leading" secondItem="KJv-wj-rva" secondAttribute="leadingMargin" constant="20" id="EWL-ae-5h6"/>
                                                 <constraint firstAttribute="centerY" secondItem="9dz-cB-ORR" secondAttribute="centerY" id="gfj-qm-KAd"/>
@@ -3230,6 +3230,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                 <constraint firstAttribute="centerY" secondItem="uvK-6F-Bvj" secondAttribute="centerY" id="q7h-yn-CEi"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <segue destination="ahN-MJ-ddW" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="ItS-1X-v4t"/>
                                         </connections>
@@ -3241,21 +3242,21 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Logout" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQ2-Pi-Shj">
-                                                    <rect key="frame" x="85" y="8" width="210" height="29"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logout" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQ2-Pi-Shj">
+                                                    <rect key="frame" x="83" y="10.5" width="75" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="logout.png" translatesAutoresizingMaskIntoConstraints="NO" id="FHJ-fE-mE8">
-                                                    <rect key="frame" x="30" y="8" width="30" height="30"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logout.png" translatesAutoresizingMaskIntoConstraints="NO" id="FHJ-fE-mE8">
+                                                    <rect key="frame" x="28" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="6Mi-R4-11d"/>
                                                         <constraint firstAttribute="height" constant="30" id="qlu-xm-NYl"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="centerY" secondItem="bQ2-Pi-Shj" secondAttribute="centerY" id="FRE-J1-x4L"/>
                                                 <constraint firstItem="bQ2-Pi-Shj" firstAttribute="leading" secondItem="FHJ-fE-mE8" secondAttribute="trailing" constant="25" id="Jum-Hu-xgm"/>
@@ -3263,6 +3264,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                 <constraint firstAttribute="centerY" secondItem="FHJ-fE-mE8" secondAttribute="centerY" id="pko-rO-fxt"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <segue destination="k1k-Rz-p6W" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="C89-iK-6UK"/>
                                         </connections>
@@ -3276,13 +3278,13 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="version" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aIR-U1-wKf">
                                 <rect key="frame" x="0.0" y="547" width="320" height="21"/>
-                                <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.47058823529999999" green="0.47058823529999999" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="aIR-U1-wKf" firstAttribute="leading" secondItem="ynZ-yw-R3u" secondAttribute="leading" id="Ih3-2e-oNC"/>
                             <constraint firstAttribute="trailing" secondItem="aIR-U1-wKf" secondAttribute="trailing" id="RAl-5l-EjF"/>
@@ -3567,17 +3569,49 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gLD-Jf-TAu" userLabel="No Order View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XOL-A7-pjk" userLabel="Unclarify Order Exist View">
+                                <rect key="frame" x="10" y="8" width="300" height="40"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No matched orders yet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lhe-gT-gzG">
-                                        <rect key="frame" x="8" y="150" width="304" height="21"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Sr-pg-JnA">
+                                        <rect key="frame" x="5" y="5" width="290" height="30"/>
+                                        <state key="normal" title="Sell order verification">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <segue destination="8Zh-7v-6i3" kind="push" id="Edt-lm-bf5"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Dn-Uu-Bg4">
+                                        <rect key="frame" x="265" y="5" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="GVl-5k-Xdu"/>
+                                            <constraint firstAttribute="height" constant="30" id="RMy-Z0-jRu"/>
+                                        </constraints>
+                                        <state key="normal" title="&gt;"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="5Sr-pg-JnA" secondAttribute="bottom" constant="5" id="2Ec-47-JO9"/>
+                                    <constraint firstAttribute="trailing" secondItem="9Dn-Uu-Bg4" secondAttribute="trailing" constant="5" id="ATX-8h-ylW"/>
+                                    <constraint firstItem="5Sr-pg-JnA" firstAttribute="leading" secondItem="XOL-A7-pjk" secondAttribute="leading" constant="5" id="Czu-zz-EQu"/>
+                                    <constraint firstItem="5Sr-pg-JnA" firstAttribute="top" secondItem="XOL-A7-pjk" secondAttribute="top" constant="5" id="Owj-hI-0Hc"/>
+                                    <constraint firstAttribute="height" constant="40" id="mdI-FJ-veu"/>
+                                    <constraint firstItem="9Dn-Uu-Bg4" firstAttribute="centerY" secondItem="XOL-A7-pjk" secondAttribute="centerY" id="tuH-xq-lFD"/>
+                                    <constraint firstAttribute="trailing" secondItem="5Sr-pg-JnA" secondAttribute="trailing" constant="5" id="zMF-0Q-bB7"/>
+                                </constraints>
+                            </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gLD-Jf-TAu" userLabel="No Order View">
+                                <rect key="frame" x="0.0" y="48" width="320" height="456"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No matched orders yet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lhe-gT-gzG">
+                                        <rect key="frame" x="72.5" y="138" width="175.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bhK-Ap-J4U">
-                                        <rect key="frame" x="32" y="282" width="256" height="48"/>
+                                        <rect key="frame" x="32" y="204" width="256" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="vgl-93-f0g"/>
                                         </constraints>
@@ -3595,18 +3629,18 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="Lhe-gT-gzG" firstAttribute="centerY" secondItem="gLD-Jf-TAu" secondAttribute="centerY" constant="-80" id="6Dc-F2-ZZs"/>
+                                    <constraint firstItem="bhK-Ap-J4U" firstAttribute="centerY" secondItem="gLD-Jf-TAu" secondAttribute="centerY" id="Epw-8p-KHF"/>
                                     <constraint firstItem="Lhe-gT-gzG" firstAttribute="centerX" secondItem="gLD-Jf-TAu" secondAttribute="centerX" id="ONx-am-3gI"/>
-                                    <constraint firstItem="Lhe-gT-gzG" firstAttribute="top" secondItem="gLD-Jf-TAu" secondAttribute="top" constant="150" id="PWX-ff-g9j"/>
                                     <constraint firstItem="bhK-Ap-J4U" firstAttribute="leading" secondItem="gLD-Jf-TAu" secondAttribute="leading" constant="32" id="Uhl-tZ-Hjm"/>
                                     <constraint firstAttribute="trailing" secondItem="bhK-Ap-J4U" secondAttribute="trailing" constant="32" id="XXB-g3-p0L"/>
-                                    <constraint firstAttribute="bottom" secondItem="bhK-Ap-J4U" secondAttribute="bottom" constant="174" id="saD-oc-aLR"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ybr-hI-9sv" userLabel="Matched Order View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                <rect key="frame" x="0.0" y="48" width="320" height="456"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Matched sell orders" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aUr-6J-4VA">
-                                        <rect key="frame" x="8" y="68" width="304" height="21"/>
+                                        <rect key="frame" x="8" y="14" width="304" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="gBc-z6-wkf"/>
                                         </constraints>
@@ -3614,8 +3648,8 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="22" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f0p-kQ-Ixr">
-                                        <rect key="frame" x="0.0" y="97" width="312" height="170"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="22" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f0p-kQ-Ixr">
+                                        <rect key="frame" x="0.0" y="43" width="312" height="168"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="separatorColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -3721,7 +3755,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         </connections>
                                     </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Matched buy orders" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12y-wM-zWV">
-                                        <rect key="frame" x="8" y="275" width="304" height="21"/>
+                                        <rect key="frame" x="8" y="229" width="304" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="YEK-oK-yns"/>
                                         </constraints>
@@ -3729,8 +3763,8 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VQT-vY-3Ag">
-                                        <rect key="frame" x="0.0" y="304" width="312" height="170"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VQT-vY-3Ag">
+                                        <rect key="frame" x="0.0" y="258" width="312" height="168"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="separatorColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -3834,36 +3868,15 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <outlet property="delegate" destination="hDj-Rv-ioi" id="nAW-4b-n9y"/>
                                         </connections>
                                     </tableView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Sr-pg-JnA">
-                                        <rect key="frame" x="15" y="8" width="297" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="iR4-X2-GTf"/>
-                                        </constraints>
-                                        <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Sell order verification">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="8Zh-7v-6i3" kind="push" id="Edt-lm-bf5"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Dn-Uu-Bg4">
-                                        <rect key="frame" x="278" y="12" width="22" height="22"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="22" id="844-hW-3Py"/>
-                                            <constraint firstAttribute="height" constant="22" id="KbZ-0I-Mhh"/>
-                                        </constraints>
-                                        <state key="normal" title="&gt;"/>
-                                    </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZUH-m6-6H8">
-                                        <rect key="frame" x="15" y="93" width="297" height="0.5"/>
+                                        <rect key="frame" x="15" y="39" width="297" height="0.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="0.5" id="64F-Sn-4VL"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2fi-cH-r3K">
-                                        <rect key="frame" x="15" y="300" width="297" height="0.5"/>
+                                        <rect key="frame" x="15" y="254" width="297" height="0.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="0.5" id="uEm-ZE-42R"/>
@@ -3872,21 +3885,16 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="12y-wM-zWV" firstAttribute="centerY" secondItem="ybr-hI-9sv" secondAttribute="centerY" constant="33.5" id="1QN-vQ-dgC"/>
-                                    <constraint firstItem="f0p-kQ-Ixr" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="8" id="2TN-K2-K8G"/>
+                                    <constraint firstItem="f0p-kQ-Ixr" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" id="2TN-K2-K8G"/>
                                     <constraint firstAttribute="trailing" secondItem="aUr-6J-4VA" secondAttribute="trailing" constant="8" id="CKT-dr-XSj"/>
-                                    <constraint firstItem="9Dn-Uu-Bg4" firstAttribute="top" secondItem="ybr-hI-9sv" secondAttribute="top" constant="12" id="DbX-C0-n1s"/>
                                     <constraint firstItem="12y-wM-zWV" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="8" id="Eww-WN-Bzd"/>
-                                    <constraint firstAttribute="trailing" secondItem="5Sr-pg-JnA" secondAttribute="trailing" constant="8" id="FLJ-wY-T2t"/>
-                                    <constraint firstAttribute="trailing" secondItem="9Dn-Uu-Bg4" secondAttribute="trailing" constant="20" id="Hvz-Y0-wvA"/>
                                     <constraint firstItem="VQT-vY-3Ag" firstAttribute="leading" secondItem="f0p-kQ-Ixr" secondAttribute="leading" id="LO4-gS-1YX"/>
                                     <constraint firstItem="f0p-kQ-Ixr" firstAttribute="top" secondItem="aUr-6J-4VA" secondAttribute="bottom" constant="8" id="MyF-mP-PXu"/>
                                     <constraint firstAttribute="trailing" secondItem="ZUH-m6-6H8" secondAttribute="trailing" constant="8" id="Nuv-cm-dy8"/>
                                     <constraint firstItem="2fi-cH-r3K" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="15" id="Tvp-Sb-wfI"/>
                                     <constraint firstItem="2fi-cH-r3K" firstAttribute="top" secondItem="12y-wM-zWV" secondAttribute="bottom" constant="4" id="V3C-76-osf"/>
-                                    <constraint firstItem="5Sr-pg-JnA" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="15" id="VSs-cA-WRf"/>
                                     <constraint firstItem="VQT-vY-3Ag" firstAttribute="height" secondItem="f0p-kQ-Ixr" secondAttribute="height" id="ZLu-3R-Fp0"/>
-                                    <constraint firstItem="aUr-6J-4VA" firstAttribute="top" secondItem="ybr-hI-9sv" secondAttribute="top" constant="68" id="aJL-em-Lfi"/>
+                                    <constraint firstItem="aUr-6J-4VA" firstAttribute="top" secondItem="ybr-hI-9sv" secondAttribute="top" constant="14" id="aJL-em-Lfi"/>
                                     <constraint firstItem="aUr-6J-4VA" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="8" id="bpu-t7-PQJ"/>
                                     <constraint firstItem="ZUH-m6-6H8" firstAttribute="leading" secondItem="ybr-hI-9sv" secondAttribute="leading" constant="15" id="cpS-yX-hrC"/>
                                     <constraint firstItem="ZUH-m6-6H8" firstAttribute="top" secondItem="aUr-6J-4VA" secondAttribute="bottom" constant="4" id="deh-8F-V7h"/>
@@ -3896,20 +3904,23 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                     <constraint firstItem="VQT-vY-3Ag" firstAttribute="top" secondItem="12y-wM-zWV" secondAttribute="bottom" constant="8" id="jz1-Jc-GJK"/>
                                     <constraint firstAttribute="trailing" secondItem="12y-wM-zWV" secondAttribute="trailing" constant="8" id="wfz-CJ-5p2"/>
                                     <constraint firstAttribute="trailing" secondItem="2fi-cH-r3K" secondAttribute="trailing" constant="8" id="yCn-wl-64B"/>
-                                    <constraint firstItem="5Sr-pg-JnA" firstAttribute="top" secondItem="ybr-hI-9sv" secondAttribute="top" constant="8" id="zlF-Bc-QFE"/>
+                                    <constraint firstItem="12y-wM-zWV" firstAttribute="top" secondItem="f0p-kQ-Ixr" secondAttribute="bottom" constant="18" id="zsa-gv-t34"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.094117647060000004" green="0.094117647060000004" blue="0.094117647060000004" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="gLD-Jf-TAu" firstAttribute="top" secondItem="Z48-kQ-UXU" secondAttribute="bottom" id="5uH-0v-cnq"/>
+                            <constraint firstItem="XOL-A7-pjk" firstAttribute="leading" secondItem="XhG-e4-XbJ" secondAttribute="leading" constant="10" id="3jo-gg-jjg"/>
                             <constraint firstAttribute="trailing" secondItem="ybr-hI-9sv" secondAttribute="trailing" id="I1F-wF-xWP"/>
                             <constraint firstItem="gLD-Jf-TAu" firstAttribute="leading" secondItem="XhG-e4-XbJ" secondAttribute="leading" id="Rkh-lm-MDV"/>
+                            <constraint firstItem="ybr-hI-9sv" firstAttribute="top" secondItem="XOL-A7-pjk" secondAttribute="bottom" id="Shd-j1-B6E"/>
                             <constraint firstAttribute="trailing" secondItem="gLD-Jf-TAu" secondAttribute="trailing" id="Yqh-xo-hAr"/>
                             <constraint firstItem="mHh-m2-xfa" firstAttribute="top" secondItem="gLD-Jf-TAu" secondAttribute="bottom" id="Zmp-Ww-fgg"/>
-                            <constraint firstItem="ybr-hI-9sv" firstAttribute="top" secondItem="Z48-kQ-UXU" secondAttribute="bottom" id="aK5-IS-ib8"/>
+                            <constraint firstAttribute="trailing" secondItem="XOL-A7-pjk" secondAttribute="trailing" constant="10" id="bxY-l2-PSy"/>
                             <constraint firstItem="mHh-m2-xfa" firstAttribute="top" secondItem="ybr-hI-9sv" secondAttribute="bottom" id="c0V-cF-X8a"/>
+                            <constraint firstItem="XOL-A7-pjk" firstAttribute="top" secondItem="Z48-kQ-UXU" secondAttribute="bottom" constant="8" id="obg-4t-SMX"/>
                             <constraint firstItem="ybr-hI-9sv" firstAttribute="leading" secondItem="XhG-e4-XbJ" secondAttribute="leading" id="pEG-eF-00N"/>
+                            <constraint firstItem="gLD-Jf-TAu" firstAttribute="top" secondItem="XOL-A7-pjk" secondAttribute="bottom" id="thX-Uk-ZmN"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Exchange" id="jWo-do-qSg">
@@ -3925,6 +3936,8 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <outlet property="noOrderView" destination="gLD-Jf-TAu" id="dYR-VT-9SF"/>
                         <outlet property="tableViewBuy" destination="VQT-vY-3Ag" id="fIa-Lp-RSE"/>
                         <outlet property="tableViewSell" destination="f0p-kQ-Ixr" id="YzW-tc-SGH"/>
+                        <outlet property="unclarifyOrderView" destination="XOL-A7-pjk" id="BBN-rM-SIe"/>
+                        <outlet property="unclarifyViewHeightConstraint" destination="mdI-FJ-veu" id="NEJ-Ud-KYj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8L5-CM-AmC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4367,26 +4380,25 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <image name="cancel.png" width="22" height="22"/>
         <image name="card" width="25" height="15"/>
         <image name="checkbox_empty.png" width="32" height="32"/>
-        <image name="cwcard.png" width="66" height="66"/>
+        <image name="cw_card.png" width="183" height="183"/>
         <image name="downarrow-01.png" width="33" height="33"/>
-        <image name="ex_icon.png" width="275" height="275"/>
         <image name="ex_logo.png" width="1042" height="333"/>
+        <image name="exchange.png" width="183" height="183"/>
         <image name="exit" width="25" height="25"/>
         <image name="flash" width="253" height="77"/>
-        <image name="home-grey.png" width="35" height="32"/>
-        <image name="home.png" width="35" height="32"/>
-        <image name="host.png" width="66" height="66"/>
+        <image name="home.png" width="25" height="25"/>
+        <image name="home_active.png" width="25" height="25"/>
+        <image name="hosts.png" width="183" height="183"/>
         <image name="logo1.png" width="1675" height="1530"/>
-        <image name="logo2.png" width="1634" height="437"/>
-        <image name="logout.png" width="66" height="66"/>
+        <image name="logout.png" width="183" height="183"/>
         <image name="menu.png" width="22" height="22"/>
-        <image name="receive-grey.png" width="33" height="32"/>
-        <image name="receive.png" width="33" height="32"/>
-        <image name="security.png" width="66" height="66"/>
-        <image name="send-grey.png" width="33" height="32"/>
-        <image name="send.png" width="33" height="32"/>
+        <image name="receive.png" width="25" height="25"/>
+        <image name="receive_active.png" width="25" height="25"/>
+        <image name="security.png" width="183" height="183"/>
+        <image name="send.png" width="25" height="25"/>
+        <image name="send_active.png" width="25" height="25"/>
         <image name="setting" width="25" height="25"/>
-        <image name="settings.png" width="342" height="333"/>
+        <image name="settings.png" width="183" height="183"/>
         <image name="x.png" width="417" height="417"/>
     </resources>
     <inferredMetricsTieBreakers>

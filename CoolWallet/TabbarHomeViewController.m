@@ -64,6 +64,7 @@ CwAccount *account;
     [super viewWillAppear:animated];
     
     TabbarAccountViewController *parantViewController = (TabbarAccountViewController *)self.parentViewController;
+    [parantViewController.navigationItem setTitle:@"Accounts"];
     parantViewController.delegate = self;
     
     btcNet.delegate = self;

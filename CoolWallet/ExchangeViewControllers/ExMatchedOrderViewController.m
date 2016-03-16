@@ -12,6 +12,7 @@
 #import "CwExchangeManager.h"
 #import "CwExchange.h"
 #import "CwExSellOrder.h"
+//#import "QuartzCore/QuartzCore.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -19,14 +20,18 @@
 
 @interface ExMatchedOrderViewController() <UITableViewDataSource, UITableViewDelegate>
 
+@property (assign, nonatomic) BOOL hasVerifyOrders;
 @property (assign, nonatomic) BOOL hasMatchedOrders;
 @property (strong, nonatomic) CwExOrderBase *selectOrder;
 @property (strong, nonatomic) CwExchange *exchange;
+@property (assign, nonatomic) CGFloat defaultUnclarifyViewHeight;
 
+@property (weak, nonatomic) IBOutlet UIView *unclarifyOrderView;
 @property (weak, nonatomic) IBOutlet UIView *noOrderView;
 @property (weak, nonatomic) IBOutlet UIView *matchedOrderView;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewSell;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewBuy;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *unclarifyViewHeightConstraint;
 
 @end
 
@@ -34,10 +39,25 @@
 
 -(void) viewDidLoad
 {
+    self.defaultUnclarifyViewHeight = self.unclarifyViewHeightConstraint.constant;
+    
+    self.unclarifyOrderView.layer.borderWidth = 0.5;
+    self.unclarifyOrderView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.unclarifyOrderView.layer.cornerRadius = 3;
+    
     CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
     [exManager requestMatchedOrders];
+    [exManager requestUnclarifyOrders];
     
     self.exchange = exManager.exchange;
+    
+    @weakify(self)
+    RAC(self, hasVerifyOrders) = [RACObserve(self.exchange, unclarifyOrders) map:^NSNumber *(id value) {
+        @strongify(self)
+        BOOL enabled = self.exchange.unclarifyOrders != nil && self.exchange.unclarifyOrders.count > 0;
+        
+        return @(enabled);
+    }];
     
     RAC(self, hasMatchedOrders) = [RACSignal combineLatest:@[RACObserve(self.exchange, matchedSellOrders), RACObserve(self.exchange, matchedBuyOrders)] reduce:^NSNumber *(NSArray *sellOrders, NSArray *buyOrders) {
         BOOL enabled = NO;
@@ -78,33 +98,44 @@
         }];
     }
     
-    [[RACObserve(self, hasMatchedOrders) filter:^BOOL(id value) {
-        @strongify(self)
-        return self.exchange.matchedSellOrders != nil && exManager.exchange.matchedBuyOrders != nil;
-    }] subscribeNext:^(id has) {
-        @strongify(self)
-        if (has) {
-            self.noOrderView.hidden = YES;
-            self.matchedOrderView.hidden = NO;
-        } else {
-            self.noOrderView.hidden = NO;
-            self.matchedOrderView.hidden = YES;
-        }
+    [[RACObserve(self, hasVerifyOrders) subscribeOn:[RACScheduler mainThreadScheduler]]
+     subscribeNext:^(NSNumber *has) {
+         @strongify(self)
+         self.unclarifyOrderView.hidden = !has.boolValue;
+         
+         if (has.boolValue) {
+             self.unclarifyViewHeightConstraint.constant = self.defaultUnclarifyViewHeight;
+         } else {
+             self.unclarifyViewHeightConstraint.constant = 0;
+         }
+         
+         [self.unclarifyOrderView updateConstraints];
     }];
     
-    [[[RACObserve(self.exchange, matchedSellOrders) distinctUntilChanged] filter:^BOOL(id value) {
+    [RACObserve(self, hasMatchedOrders) subscribeNext:^(id has) {
+         @strongify(self)
+         if (has) {
+             self.noOrderView.hidden = YES;
+             self.matchedOrderView.hidden = NO;
+         } else {
+             self.noOrderView.hidden = NO;
+             self.matchedOrderView.hidden = YES;
+         }
+    }];
+    
+    [[[RACObserve(self.exchange, matchedSellOrders) distinctUntilChanged]
+      filter:^BOOL(id value) {
         return value != nil;
     }] subscribeNext:^(id value) {
         @strongify(self)
-        NSLog(@"matchedSellOrders, %@", value);
         [self.tableViewSell reloadData];
     }];
     
-    [[[RACObserve(self.exchange, matchedBuyOrders) distinctUntilChanged] filter:^BOOL(id value) {
+    [[[RACObserve(self.exchange, matchedBuyOrders) distinctUntilChanged]
+      filter:^BOOL(id value) {
         return value != nil;
     }] subscribeNext:^(id value) {
         @strongify(self)
-        NSLog(@"matchedBuyOrders, %@", value);
         [self.tableViewBuy reloadData];
     }];
     

@@ -65,7 +65,9 @@ long TxFee = 10000;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.navigationController.navigationBar.hidden = NO;
+    UIViewController *parantViewController = self.parentViewController;
+    [parantViewController.navigationItem setTitle:@"Send"];
+//    self.navigationController.navigationBar.hidden = NO;
     //self.txtAddress.delegate = self;
     cwCard.delegate = self;
     self.btcNet.delegate = self;

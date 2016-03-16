@@ -38,17 +38,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    //add CW Logo
-    UIImage* myImage = [UIImage imageNamed:@"settings.png"];
-    UIImageView* myImageView = [[UIImageView alloc] initWithImage:myImage];
-    
-    myImageView.frame = CGRectMake(75, 5, 30, 30);
-    myImageView.tag = 9;
-    [self.navigationController.navigationBar addSubview:myImageView];
-    
     self.cwManager.delegate=self;
     self.cwManager.connectedCwCard.delegate = self;
-
 }
 
 - (void)didReceiveMemoryWarning {
