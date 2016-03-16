@@ -67,7 +67,7 @@
 //    [self showOTPEnterView];
     [self showIndicatorView:@"Send..."];
     
-    [self.cwManager.connectedCwCard genAddress:self.order.accountId.integerValue KeyChainId:CwAddressKeyChainInternal];
+    [self.cwManager.connectedCwCard findEmptyAddressFromAccount:self.order.accountId.integerValue keyChainId:CwAddressKeyChainInternal];
 }
 
 -(void) sendPrepareTransaction

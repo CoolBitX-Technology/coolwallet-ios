@@ -23,13 +23,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    UIImage* myImage = [UIImage imageNamed:@"ex_icon.png"];
-    UIImageView* myImageView = [[UIImageView alloc] initWithImage:myImage];
-    
-    float x = self.navigationController.navigationBar.frame.size.width/2 - 90;
-    myImageView.frame = CGRectMake(x, 8, 30, 30);
-    [self.navigationController.navigationBar addSubview:myImageView];
-    
     CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
     @weakify(self)
     [[[[RACObserve(exchange, sessionStatus) filter:^BOOL(NSNumber *status) {

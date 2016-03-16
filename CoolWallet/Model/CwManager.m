@@ -156,7 +156,7 @@ NSTimer *scanTimer;
 
 -(void) centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI
 {
-    NSLog(@"Discovered [%@]", peripheral.name);
+    NSLog(@"Discovered [%@], Advertise [%@]", peripheral.name, [advertisementData objectForKey:@"kCBAdvDataLocalName"]);
     
     //update cwCards if CW found
     
@@ -193,10 +193,6 @@ NSTimer *scanTimer;
             cwItem.peripheral = peripheral;
             cwItem.lastUpdate = [NSDate date];
             [self.cwCards addObject:cwItem];
-            
-            for (NSString* key in [advertisementData allKeys]) {
-                NSLog(@"Advertise: %@", key);
-            }
         }
     }
     

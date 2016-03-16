@@ -15,10 +15,10 @@
 - (NSDictionary *)rm_dataKeysForClassProperties
 {
     return @{
-             @"orderID" : @"orderId",
-             @"amount" : @"amount",
+             @"orderId" : @"orderId",
+             @"amountBTC" : @"amount",
              @"price" : @"price",
-             @"account": @"account",
+             @"accountId" : @"account",
              };
 }
 

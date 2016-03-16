@@ -7,12 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CwExOrderBase.h"
 
-@interface CwExUnclarifyOrder : NSObject
-
-@property (strong, nonatomic) NSString *orderID;
-@property (strong, nonatomic) NSNumber *amount; // satoshi
-@property (strong, nonatomic) NSNumber *price;
-@property (strong, nonatomic) NSNumber *account;
+@interface CwExUnclarifyOrder : CwExOrderBase
 
 @end

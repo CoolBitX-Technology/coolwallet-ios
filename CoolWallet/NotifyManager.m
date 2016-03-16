@@ -14,6 +14,8 @@
 #import "CwCard.h"
 #import "CwExUnclarifyOrder.h"
 #import "CwExUnblock.h"
+#import "CwExSellOrder.h"
+#import "CwExchange.h"
 
 #import "UIViewController+Utils.h"
 #import "NSUserDefaults+RMSaveCustomObject.h"
@@ -41,8 +43,8 @@
         NSNumber *price = [data objectForKey:@"price"];
         
         CwExUnclarifyOrder *unclarifyOrder = [CwExUnclarifyOrder new];
-        unclarifyOrder.orderID = orderID;
-        unclarifyOrder.amount = amount;
+        unclarifyOrder.orderId = orderID;
+        unclarifyOrder.amountBTC = amount;
         unclarifyOrder.price = price;
         
         [self blockOTPFromCwID:cwid withUnclarifyOrder:unclarifyOrder];
@@ -91,7 +93,9 @@
             UIViewController *nextViewController = (UIViewController *)[secondStoryBoard instantiateViewControllerWithIdentifier:identifier];
             
             SWRevealViewController *revealController = (SWRevealViewController *)currentViewController;
-            [(UINavigationController *)revealController.frontViewController pushViewController:nextViewController animated:YES];
+            if (![[revealController.frontViewController.childViewControllers lastObject] isKindOfClass:[nextViewController class]]) {
+                [(UINavigationController *)revealController.frontViewController pushViewController:nextViewController animated:YES];
+            }
         }];
         [alertController addAction:okAction];
     } else {
@@ -104,7 +108,7 @@
 
 -(void) blockOTPFromCwID:(NSString *)cwid withUnclarifyOrder:(CwExUnclarifyOrder *)unclarifyOrder
 {
-    NSString *key = [NSString stringWithFormat:@"unclarify_%@", cwid];
+    NSString *key = [NSString stringWithFormat:@"exchange_%@", cwid];
     
     NSMutableArray *unclarify_orders = [[NSUserDefaults standardUserDefaults] rm_customObjectForKey:key];
     if (unclarify_orders == nil) {
@@ -117,15 +121,15 @@
 
 -(void) cancelOrder:(NSString *)orderID fromCwID:(NSString *)cwid
 {
-    NSString *key = [NSString stringWithFormat:@"unblock_%@", cwid];
+    NSString *key = [NSString stringWithFormat:@"exchange_%@", cwid];
     NSMutableArray *unblock_orders = [[NSUserDefaults standardUserDefaults] rm_customObjectForKey:key];
     
-    CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
-    if (exchange.sessionStatus == ExSessionLogin && exchange.card.cardId == cwid) {
-        [[[exchange signalRequestUnblockInfo] flattenMap:^RACStream *(NSArray *unblocks) {
+    CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
+    if (exManager.sessionStatus == ExSessionLogin && exManager.card.cardId == cwid) {
+        [[[exManager signalRequestUnblockInfo] flattenMap:^RACStream *(NSArray *unblocks) {
             for (CwExUnblock *unblock in unblocks) {
                 if ([[NSString dataToHexstring:unblock.orderID] isEqualToString:orderID]) {
-                    return [exchange signalUnblockWithCard:unblock];
+                    return [exManager signalUnblockWithCard:unblock];
                 }
             }
             
@@ -152,7 +156,19 @@
 
 -(void) matchOrder:(NSString *)orderID
 {
+    CwExSellOrder *sell = [CwExSellOrder new];
+    sell.orderId = orderID;
+    sell.amountBTC = [NSNumber numberWithInteger:1.2];
+    sell.price = [NSNumber numberWithInteger:5.5];
+    sell.address = @"18FwWjzHGZAwVNF45KBPLfJz55w9fVQuPH";
+    sell.accountId = [NSNumber numberWithInteger:0];
+    sell.expirationUTC = @"2016-03-14T08:23:33Z";
     
+    CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
+    [exManager.exchange.matchedSellOrders addObject:sell];
+    
+    NSString *key = [NSString stringWithFormat:@"exchange_%@", exManager.card.cardId];
+    [[NSUserDefaults standardUserDefaults] rm_setCustomObject:exManager.exchange forKey:key];
 }
 
 @end

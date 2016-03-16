@@ -183,10 +183,10 @@
 		F485C2261C18066D00C26E11 /* CwKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = F485C2251C18066D00C26E11 /* CwKeychain.m */; };
 		F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */; };
 		F493F32F1BC6807600876710 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F493F32E1BC6807600876710 /* BaseViewController.m */; };
+		F49522A81C966B6B000D8E08 /* CwExchange.m in Sources */ = {isa = PBXBuildFile; fileRef = F49522A71C966B6B000D8E08 /* CwExchange.m */; };
 		F49C2C2E1C5A0C32000B2042 /* ExOrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F49C2C2D1C5A0C32000B2042 /* ExOrderDetailViewController.m */; };
 		F49E7A6B1C8FEB7B000CD4B7 /* CwExUnblock.m in Sources */ = {isa = PBXBuildFile; fileRef = F49E7A6A1C8FEB7B000CD4B7 /* CwExUnblock.m */; };
 		F49F76431BD8AFF800C335B9 /* downarrow-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */; };
-		F4A7CC451C58794100E40CD1 /* ExMatchOrderVM.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC441C58794100E40CD1 /* ExMatchOrderVM.m */; };
 		F4A7CC4B1C5884A100E40CD1 /* ExMatchedOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */; };
 		F4A7CC4F1C58959A00E40CD1 /* ExOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4E1C58959A00E40CD1 /* ExOrderCell.m */; };
 		F4A88C351C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A88C341C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m */; };
@@ -488,13 +488,13 @@
 		F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwCardInfo.m; sourceTree = "<group>"; };
 		F493F32D1BC6807600876710 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		F493F32E1BC6807600876710 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		F49522A61C966B6B000D8E08 /* CwExchange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExchange.h; path = Model/CwExchange.h; sourceTree = "<group>"; };
+		F49522A71C966B6B000D8E08 /* CwExchange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExchange.m; path = Model/CwExchange.m; sourceTree = "<group>"; };
 		F49C2C2C1C5A0C32000B2042 /* ExOrderDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExOrderDetailViewController.h; sourceTree = "<group>"; };
 		F49C2C2D1C5A0C32000B2042 /* ExOrderDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExOrderDetailViewController.m; sourceTree = "<group>"; };
 		F49E7A691C8FEB7B000CD4B7 /* CwExUnblock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExUnblock.h; path = Model/CwExUnblock.h; sourceTree = "<group>"; };
 		F49E7A6A1C8FEB7B000CD4B7 /* CwExUnblock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExUnblock.m; path = Model/CwExUnblock.m; sourceTree = "<group>"; };
 		F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downarrow-01@2x.png"; sourceTree = "<group>"; };
-		F4A7CC431C58794100E40CD1 /* ExMatchOrderVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExMatchOrderVM.h; sourceTree = "<group>"; };
-		F4A7CC441C58794100E40CD1 /* ExMatchOrderVM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExMatchOrderVM.m; sourceTree = "<group>"; };
 		F4A7CC491C5884A100E40CD1 /* ExMatchedOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExMatchedOrderViewController.h; sourceTree = "<group>"; };
 		F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExMatchedOrderViewController.m; sourceTree = "<group>"; };
 		F4A7CC4D1C58959A00E40CD1 /* ExOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExOrderCell.h; sourceTree = "<group>"; };
@@ -506,8 +506,8 @@
 		F4E4128F1BFB1D91003CFACF /* NSString+HexToData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HexToData.m"; sourceTree = "<group>"; };
 		F4FD986F1BE8B46500968A8E /* mpbn_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mpbn_util.c; path = C_API/mpbn_util.c; sourceTree = "<group>"; };
 		F4FD98701BE8B46500968A8E /* mpbn_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mpbn_util.h; path = C_API/mpbn_util.h; sourceTree = "<group>"; };
-		F4FF8D0B1C45104F00863E54 /* TabExchangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabExchangeViewController.h; sourceTree = "<group>"; };
-		F4FF8D0C1C45104F00863E54 /* TabExchangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabExchangeViewController.m; sourceTree = "<group>"; };
+		F4FF8D0B1C45104F00863E54 /* TabExchangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabExchangeViewController.h; path = ../TabExchangeViewController.h; sourceTree = "<group>"; };
+		F4FF8D0C1C45104F00863E54 /* TabExchangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TabExchangeViewController.m; path = ../TabExchangeViewController.m; sourceTree = "<group>"; };
 		F4FF8D0E1C4513B700863E54 /* CwExchangeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExchangeManager.h; path = Model/CwExchangeManager.h; sourceTree = "<group>"; };
 		F4FF8D0F1C4513B700863E54 /* CwExchangeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExchangeManager.m; path = Model/CwExchangeManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -581,7 +581,6 @@
 			children = (
 				F4A7CC4C1C58957800E40CD1 /* Views */,
 				F4A7CC481C58845000E40CD1 /* ExchangeViewControllers */,
-				F4A7CC421C5878FD00E40CD1 /* ViewModel */,
 				A2B6E7D51BD28813001B1592 /* Category */,
 				EFEE57DA1B7AFA5D00E5999B /* C_API */,
 				EFEF8DB81B4A5FB3004427B8 /* SRWebSocket */,
@@ -756,6 +755,8 @@
 				F47752C81C8EDA1A007F2558 /* CwExUnclarifyOrder.m */,
 				F49E7A691C8FEB7B000CD4B7 /* CwExUnblock.h */,
 				F49E7A6A1C8FEB7B000CD4B7 /* CwExUnblock.m */,
+				F49522A61C966B6B000D8E08 /* CwExchange.h */,
+				F49522A71C966B6B000D8E08 /* CwExchange.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -837,8 +838,6 @@
 				EFF6DD0D1B9434480089E093 /* TabCreateWalletSelectViewController.m */,
 				EFF6DD0F1B9542880089E093 /* TabExhchangeRateViewController.h */,
 				EFF6DD101B9542880089E093 /* TabExhchangeRateViewController.m */,
-				F4FF8D0B1C45104F00863E54 /* TabExchangeViewController.h */,
-				F4FF8D0C1C45104F00863E54 /* TabExchangeViewController.m */,
 			);
 			name = TabAccountViewController;
 			sourceTree = "<group>";
@@ -1003,18 +1002,11 @@
 			path = Reachability;
 			sourceTree = "<group>";
 		};
-		F4A7CC421C5878FD00E40CD1 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				F4A7CC431C58794100E40CD1 /* ExMatchOrderVM.h */,
-				F4A7CC441C58794100E40CD1 /* ExMatchOrderVM.m */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		F4A7CC481C58845000E40CD1 /* ExchangeViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				F4FF8D0B1C45104F00863E54 /* TabExchangeViewController.h */,
+				F4FF8D0C1C45104F00863E54 /* TabExchangeViewController.m */,
 				F4A7CC491C5884A100E40CD1 /* ExMatchedOrderViewController.h */,
 				F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */,
 				F49C2C2C1C5A0C32000B2042 /* ExOrderDetailViewController.h */,
@@ -1293,11 +1285,11 @@
 			files = (
 				93CF969F19EE1A0200466DAF /* ViewController.m in Sources */,
 				A2F29F1D1C56042600C75E91 /* CwExSellOrder.m in Sources */,
+				F49522A81C966B6B000D8E08 /* CwExchange.m in Sources */,
 				EFAC5FEF1AAD9D4C0042FF8C /* SidebarViewController.m in Sources */,
 				F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */,
 				EFAC5FDE1AAD39620042FF8C /* TabScanTransactionViewController.m in Sources */,
 				EFAC5FD91AAD39620042FF8C /* TabCreateAccountViewController.m in Sources */,
-				F4A7CC451C58794100E40CD1 /* ExMatchOrderVM.m in Sources */,
 				F485C2261C18066D00C26E11 /* CwKeychain.m in Sources */,
 				EFAC5FDC1AAD39620042FF8C /* TabHostTableViewController.m in Sources */,
 				EFAB50B61AC02CFB003A2D3F /* TabbarAccountViewController.m in Sources */,

@@ -8,7 +8,10 @@
 
 #import "ExUnclarifyOrderViewController.h"
 #import "CwExchangeManager.h"
+#import "CwExchange.h"
 #import "QuartzCore/QuartzCore.h"
+#import "CwExUnclarifyOrder.h"
+#import "ExOrderCell.h"
 
 #import "NSUserDefaults+RMSaveCustomObject.h"
 
@@ -16,8 +19,8 @@
 
 @interface ExUnclarifyOrderViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (strong, nonatomic) NSString *selectOrderID;
-@property (strong, nonatomic) NSMutableArray *orders;
+@property (strong, nonatomic) CwExUnclarifyOrder *selectOrder;
+@property (strong, nonatomic) CwExchange *exchange;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -30,14 +33,21 @@
     // Do any additional setup after loading the view.
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-}
-
--(void) viewWillAppear:(BOOL)animated
-{
-    if (self.orders == nil) {
-        NSArray *cachedOrders = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"unclarify_%@", self.cwManager.connectedCwCard.cardId]];
-        self.orders = [NSMutableArray arrayWithArray:cachedOrders];
-    }
+    
+    CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
+    self.exchange = exManager.exchange;
+    
+    @weakify(self)
+    [[[RACObserve(self.exchange, unclarifyOrders) distinctUntilChanged] filter:^BOOL(id value) {
+        return value != nil;
+    }] subscribeNext:^(id value) {
+        @strongify(self)
+        NSLog(@"unclarifyOrders, %@", value);
+        
+        [self.tableView reloadData];
+    }];
+    
+    [exManager requestUnclarifyOrders];
 }
 
 - (void) showOTPEnterView
@@ -51,8 +61,8 @@
         UITextField *textField = OTPAlert.textFields.firstObject;
         [self showIndicatorView:@"block with otp..."];
         
-        CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
-        [exchange blockWithOrderID:self.selectOrderID withOTP:textField.text withComplete:^() {
+        CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
+        [exManager blockWithOrderID:self.selectOrder.orderId withOTP:textField.text withComplete:^() {
             [self performDismiss];
             
             [self showHintAlert:nil withMessage:@"place order completed" withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
@@ -89,17 +99,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    if (self.exchange.unclarifyOrders == nil) {
+        return 0;
+    }
+    
+    return self.exchange.unclarifyOrders.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
-    if (indexPath.row == 0) {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"HeaderCell" forIndexPath:indexPath];
-    } else {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"VerifyOrderCell" forIndexPath:indexPath];
-    }
+    ExOrderCell *cell = (ExOrderCell *)[tableView dequeueReusableCellWithIdentifier:@"VerifyOrderCell" forIndexPath:indexPath];
+    [cell setOrder:[self.exchange.unclarifyOrders objectAtIndex:indexPath.row]];
     
     return cell;
 }
@@ -108,19 +118,16 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
-        return 26;
-    } else {
-        return 40;
-    }
+    return 40;
 }
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    self.selectOrderID = @"3b5c2eef";
-//    [self.cwManager.connectedCwCard genResetOtp];
-//    
-//    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    self.selectOrder = [self.exchange.unclarifyOrders objectAtIndex:indexPath.row];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    [self showOTPEnterView];
 }
 
 #pragma mark - CwCard delegate

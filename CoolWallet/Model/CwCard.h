@@ -105,7 +105,6 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 
 -(void) prepareService;
 
--(CwCard *) getCardInfoFromFile;
 -(void) loadCwCardFromFile;
 -(void) saveCwCardToFile;
 

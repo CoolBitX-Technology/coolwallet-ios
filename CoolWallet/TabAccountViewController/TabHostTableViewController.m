@@ -138,7 +138,7 @@
     CwHost *host = [self.cwManager.connectedCwCard.cwHosts objectForKey:[NSString stringWithFormat: @"%ld", (long)indexPath.row]];
     
     //filter current hostId and filter empty (0x00) host
-    if (self.cwManager.connectedCwCard.hostId != indexPath.row  && host.hostBindStatus != CwHostBindStatusEmpty) {
+    if (self.cwManager.connectedCwCard.hostId.integerValue != indexPath.row  && host.hostBindStatus != CwHostBindStatusEmpty) {
         return UITableViewCellEditingStyleDelete;
     } else {
         return UITableViewCellEditingStyleNone;
@@ -152,7 +152,7 @@
         CwHost *host = [self.cwManager.connectedCwCard.cwHosts objectForKey:[NSString stringWithFormat: @"%ld", (long)indexPath.row]];
         
         //filter current hostId and filter empty (0x00) host
-        if (self.cwManager.connectedCwCard.hostId != indexPath.row  && host.hostBindStatus != CwHostBindStatusEmpty) {
+        if (self.cwManager.connectedCwCard.hostId.integerValue != indexPath.row  && host.hostBindStatus != CwHostBindStatusEmpty) {
             self.actBusyIndicator.hidden = NO;
             [self.actBusyIndicator startAnimating];
             

@@ -16,6 +16,9 @@
 #import "CwTxin.h"
 #import "CwExUnblock.h"
 #import "CwExUnclarifyOrder.h"
+#import "CwExchange.h"
+
+#import "NSUserDefaults+RMSaveCustomObject.h"
 
 @interface CwExchangeManager()
 
@@ -23,6 +26,8 @@
 
 @property (readwrite, nonatomic) CwCard *card;
 @property (strong, nonatomic) NSString *loginSession;
+
+@property (readwrite, assign) CwExchange *exchange;
 
 @property (strong, nonatomic) NSMutableArray *syncedAccount;
 @property (readwrite, nonatomic) BOOL cardInfoSynced;
@@ -61,7 +66,14 @@
     CwManager *manager = [CwManager sharedManager];
     RAC(self, card) = [RACObserve(manager, connectedCwCard) filter:^BOOL(CwCard *card) {
         @strongify(self)
-        return ![card.cardId isEqualToString:self.card.cardId];
+        BOOL changed = ![card.cardId isEqualToString:self.card.cardId];
+        
+        if (changed && self.card.cardId != nil && self.exchange != nil) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults rm_setCustomObject:self.exchange forKey:[NSString stringWithFormat:@"exchange_%@", self.card.cardId]];
+        }
+        
+        return changed;
     }];
     
     [[RACObserve(self, card) distinctUntilChanged] subscribeNext:^(CwCard *card) {
@@ -74,6 +86,7 @@
         }
         self.sessionStatus = ExSessionNone;
         self.loginSession = nil;
+        self.exchange = nil;
     }];
 }
 
@@ -85,6 +98,11 @@
     [[self loginSignal] subscribeNext:^(id cardResponse) {
         @strongify(self);
         self.sessionStatus = ExSessionLogin;
+        
+        self.exchange = [[NSUserDefaults standardUserDefaults] rm_customObjectForKey:[NSString stringWithFormat:@"exchange_%@", self.card.cardId]];
+        if (self.exchange == nil) {
+            self.exchange = [CwExchange new];
+        }
         
         [self syncCardInfo];
     } error:^(NSError *error) {
@@ -121,6 +139,30 @@
     }
 }
 
+-(void) requestUnclarifyOrders
+{
+    NSString *url = [NSString stringWithFormat:ExUnclarifyOrders, self.card.cardId];
+    AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
+        NSArray *unclarifyOrders = [RMMapper arrayOfClass:[CwExUnclarifyOrder class] fromArrayOfDictionary:responseObject];
+        
+        self.exchange.unclarifyOrders = [NSMutableArray arrayWithArray:unclarifyOrders];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        
+    }];
+}
+
+-(void) requestMatchedOrders
+{
+    NSString *url = [NSString stringWithFormat:ExGetMatchedOrders, self.card.cardId];
+    AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        [RMMapper populateObject:self.exchange fromDictionary:responseObject];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        
+    }];
+}
+
 -(void) blockWithOrderID:(NSString *)hexOrderID withOTP:(NSString *)otp withComplete:(void(^)(void))completeCallback error:(void(^)(NSError *error))errorCallback
 {
     RACSignal *blockSignal = [self signalRequestOrderBlockWithOrderID:hexOrderID withOTP:otp];
@@ -133,6 +175,14 @@
         
         return [self signalWriteOKTokenToServer:okToken unblockToken:unblockToken withOrder:hexOrderID];
     }] subscribeNext:^(id value) {
+        if (self.exchange.unclarifyOrders != nil && self.exchange.unclarifyOrders.count > 0) {
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.orderId == %@", hexOrderID];
+            NSArray *result = [self.exchange.unclarifyOrders filteredArrayUsingPredicate:predicate];
+            if (result.count > 0) {
+                [self.exchange.unclarifyOrders removeObjectsInArray:result];
+            }
+        }
+        
         if (completeCallback) {
             completeCallback();
         }
@@ -186,12 +236,21 @@
 
 -(void) completeTransactionWithOrderId:(NSString *)orderId TxId:(NSString *)txId
 {
-    NSString *url = [NSString stringWithFormat:ExTrx, self.card.cardId];
-    NSDictionary *dict = @{@"bcTrxId": txId, @"orderId": orderId};
+    NSString *url = [NSString stringWithFormat:ExTrx, orderId];
+    NSDictionary *dict = @{@"bcTrxId": txId};
     
     AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
     [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         NSLog(@"Success send txId to ex site.");
+        
+        if (self.exchange.matchedSellOrders != nil && self.exchange.matchedSellOrders.count > 0) {
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.orderId == %@", orderId];
+            NSArray *result = [self.exchange.matchedSellOrders filteredArrayUsingPredicate:predicate];
+            if (result.count > 0) {
+                [self.exchange.matchedSellOrders removeObjectsInArray:result];
+            }
+        }
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         NSLog(@"Fail send txId to ex site.");
         // TODO: should resend to exchange site?

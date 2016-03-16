@@ -359,18 +359,6 @@ NSArray *addresses;
 }
 
 //Load Commands
--(CwCard *) getCardInfoFromFile
-{
-    if (self.cardId == nil) {
-        return nil;
-    }
-    
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    CwCard *card = [defaults rm_customObjectForKey:self.cardId];
-    
-    return card;
-}
-
 -(void) loadCwCardFromFile
 {
     //remove for test
@@ -396,6 +384,7 @@ NSArray *addresses;
         self.cwAccounts = [NSMutableDictionary dictionaryWithDictionary:self.cwAccounts];
     } else {
         [defaults removeObjectForKey:self.cardId];
+        [defaults removeObjectForKey:[NSString stringWithFormat:@"exchange_%@", self.cardId]];
     }
 }
 
@@ -536,6 +525,8 @@ NSArray *addresses;
     
     //remove stored file
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:self.cardId];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[NSString stringWithFormat:@"exchange_%@", self.cardId]];
+    
     self.cardId = nil;
     self.cwAccounts = nil;
     self.cardName = nil;
