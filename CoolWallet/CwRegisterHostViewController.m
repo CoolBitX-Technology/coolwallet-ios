@@ -21,8 +21,9 @@
     CGFloat _currentMovedUpHeight;
 }
 
-@property (weak, nonatomic) IBOutlet UITextField *txtIdentifier;
-@property (weak, nonatomic) IBOutlet UITextField *txtDescription;
+@property (strong, nonatomic) IBOutlet NSString *txtIdentifier;
+@property (strong, nonatomic) IBOutlet NSString *txtDescription;
+
 @property (weak, nonatomic) IBOutlet UITextField *txtOtp;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBusyIndicator;
 
@@ -44,14 +45,12 @@ CwCard *cwCard;
     cwCard = self.cwManager.connectedCwCard;
     
     // Do any additional setup after loading the view.
-    self.txtIdentifier.delegate = self;
-    self.txtDescription.delegate = self;
     self.txtOtp.delegate = self;
     
     //display iphone infos
     //self.txtIdentifier.text = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    self.txtIdentifier.text = self.cwManager.connectedCwCard.devCredential;
-    self.txtDescription.text = [[UIDevice currentDevice] name];
+    self.txtIdentifier = self.cwManager.connectedCwCard.devCredential;
+    self.txtDescription = [[UIDevice currentDevice] name];
     
     self.actBusyIndicator.hidden = NO;
     
@@ -175,8 +174,8 @@ CwCard *cwCard;
     
     _viewOTPConfirm.hidden = NO;
     _btnRegisterHost.hidden = NO;
-    NSLog(@"cwManager = %@",self.txtDescription.text);
-    [self.cwManager.connectedCwCard registerHost: self.txtIdentifier.text Description: self.txtDescription.text];
+    NSLog(@"cwManager = %@",self.txtDescription);
+    [self.cwManager.connectedCwCard registerHost: self.txtIdentifier Description: self.txtDescription];
 }
 
 - (IBAction)regHostConfirm:(id)sender {

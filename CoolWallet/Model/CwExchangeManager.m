@@ -170,8 +170,8 @@
     [[[blockSignal flattenMap:^RACStream *(NSString *blockData) {
         return [self signalBlockBTCFromCard:blockData];
     }] flattenMap:^RACStream *(NSDictionary *data) {
-        NSData *okToken = [data objectForKey:@"okToken"];
-        NSData *unblockToken = [data objectForKey:@"unblockToken"];
+        NSString *okToken = [data objectForKey:@"okToken"];
+        NSString *unblockToken = [data objectForKey:@"unblockToken"];
         
         return [self signalWriteOKTokenToServer:okToken unblockToken:unblockToken withOrder:hexOrderID];
     }] subscribeNext:^(id value) {
@@ -549,12 +549,12 @@
     return signal;
 }
 
--(RACSignal *)signalWriteOKTokenToServer:(NSData *)okToken unblockToken:(NSData *)unblockToken withOrder:(NSString *)orderId
+-(RACSignal *)signalWriteOKTokenToServer:(NSString *)okToken unblockToken:(NSString *)unblockToken withOrder:(NSString *)orderId
 {
     NSString *url = [NSString stringWithFormat:ExWriteOKToken, orderId];
     NSDictionary *dict = @{
-                           @"okToken": [NSString dataToHexstring:okToken],
-                           @"unblockToken": [NSString dataToHexstring:unblockToken],
+                           @"okToken": okToken,
+                           @"unblockToken": unblockToken,
                            };
     
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {

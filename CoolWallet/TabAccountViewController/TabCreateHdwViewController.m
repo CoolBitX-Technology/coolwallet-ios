@@ -38,7 +38,6 @@
 
 - (IBAction)swipSeed:(id)sender;
 - (IBAction)btnCreateHdw:(id)sender;
-- (IBAction)btnConfirmHdw:(id)sender;
 - (IBAction)btnWrittenDown:(id)sender;
 
 @end
@@ -267,13 +266,6 @@
 
         [self showIndicatorView:@""];
     }
-}
-
-- (IBAction)btnConfirmHdw:(id)sender {
-    //[self.cwManager.connectedCwCard initHdwConfirm];
-    //self.cwManager.connectedCwCard initHdwConfirm:<#(NSString *)#>]
-//    self.actBusyIndicator.hidden = NO;
-//    [self.actBusyIndicator startAnimating];
 }
 
 - (IBAction)btnWrittenDown:(id)sender {
