@@ -60,6 +60,8 @@ long TxFee = 10000;
     self.publicKeyUpdate = [NSMutableDictionary new];
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
+    
+    [self.view sendSubviewToBack:self.balanceView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -267,12 +269,9 @@ long TxFee = 10000;
     for (UIButton *btn in self.accountButtons) {
         if (btn == sender) {
             cwCard.currentAccountId = [self.accountButtons indexOfObject:btn];
-            
-            [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [btn setBackgroundColor:[UIColor colorAccountBackground]];
+            [btn setSelected:YES];
         } else {
-            [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-            [btn setBackgroundColor:[UIColor blackColor]];
+            [btn setSelected:NO];
         }
     }
     

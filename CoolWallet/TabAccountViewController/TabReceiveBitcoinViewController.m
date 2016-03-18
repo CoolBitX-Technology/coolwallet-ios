@@ -19,13 +19,11 @@
 
 @property (strong, nonatomic) CwBtcNetWork *btcNet;
 
-@property (weak, nonatomic) IBOutlet UILabel *lblKeyId;
-@property (weak, nonatomic) IBOutlet UITextField *txtAddress;
-@property (weak, nonatomic) IBOutlet UILabel *lblBip32Path;
 @property (weak, nonatomic) IBOutlet UITableView *tableAddressList;
 @property (weak, nonatomic) IBOutlet UILabel *lblAddress;
 @property (weak, nonatomic) IBOutlet UILabel *lblLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *imgQRcode;
+@property (weak, nonatomic) IBOutlet UIView *detailView;
 
 @property (strong, nonatomic) NSArray *accountButtons;
 
@@ -50,6 +48,10 @@ NSString *Label;
     //NSLog(@"currentAccountId = %ld",cwCard.currentAccountId);
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
+    
+    self.detailView.layer.borderWidth = 1.0;
+    self.detailView.layer.borderColor = [UIColor whiteColor].CGColor;
+    [self.view sendSubviewToBack:self.detailView];
 }
 
 
@@ -59,7 +61,6 @@ NSString *Label;
     UIViewController *parantViewController = self.parentViewController;
     [parantViewController.navigationItem setTitle:@"Receive"];
     
-    self.txtAddress.delegate = self;
     cwCard.delegate = self;
     
     if (!self.btcNet) {
@@ -170,10 +171,8 @@ NSString *Label;
     for (UIButton *btn in self.accountButtons) {
         if (sender == btn) {
             cwCard.currentAccountId = [self.accountButtons indexOfObject:btn];
-            [btn setBackgroundColor:[UIColor colorAccountBackground]];
             [btn setSelected:YES];
         } else {
-            [btn setBackgroundColor:[UIColor blackColor]];
             [btn setSelected:NO];
         }
     }

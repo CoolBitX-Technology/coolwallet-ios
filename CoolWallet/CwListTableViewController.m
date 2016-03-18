@@ -22,6 +22,8 @@
 @property (strong, nonatomic) NSMutableArray *cwCards;
 @property (strong, nonatomic) CwCard *myCw;
 @property NSIndexPath *cellIndex;
+@property (strong, nonatomic) NSMutableDictionary<NSUUID *, NSString *> *bleNames;
+
 @end
 
 @implementation CwListTableViewController
@@ -43,6 +45,8 @@ NSString *segueIdentifier;
     self.tablev_cwlist.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     [self.versionLabel setText:[APPData sharedInstance].version];
+    
+    self.bleNames = [NSMutableDictionary new];
     
     @weakify(self)
     [[[[RACObserve(self, cwCards) filter:^BOOL(NSMutableArray *cards) {
@@ -267,6 +271,23 @@ NSString *segueIdentifier;
         
         self.view_connecting.hidden = NO;
         self.tablev_cwlist.hidden = YES;
+        [self.tablev_cwlist reloadData];
+        
+        return;
+    }
+    
+    BOOL needReload = NO;
+    for (CwCard *card in cwCards) {
+        NSString *cachedBLEName = [self.bleNames objectForKey:card.peripheral.identifier];
+        if (cachedBLEName == nil || ![cachedBLEName isEqualToString:card.bleName]) {
+            [self.bleNames setObject:card.bleName forKey:card.peripheral.identifier];
+            needReload = YES;
+        }
+    }
+    
+    if (needReload) {
+        self.view_connecting.hidden = YES;
+        self.tablev_cwlist.hidden = NO;
         [self.tablev_cwlist reloadData];
     }
 }

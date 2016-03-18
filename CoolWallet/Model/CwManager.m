@@ -53,7 +53,7 @@ NSTimer *scanTimer;
     for (int i=0; i<self.cwCards.count; i++) {
         CwCard *cw = self.cwCards[i];
         NSLog(@"Check CW %@ lastUpdate %@", cw.bleName, cw.lastUpdate);
-        if ([[NSDate date] timeIntervalSinceDate:cw.lastUpdate]>10) {
+        if ([[NSDate date] timeIntervalSinceDate:cw.lastUpdate] > 7) {
             [self.cwCards removeObjectAtIndex:i];
             NSLog(@"Remove CW %@", cw.bleName);
             //call discover peripheral delegate

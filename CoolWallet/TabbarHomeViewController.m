@@ -52,12 +52,16 @@ CwAccount *account;
     [_refreshControl addTarget:self action:@selector(setAccountButton) forControlEvents:UIControlEventValueChanged];
     [self.tableTransaction addSubview:self.refreshControl]; //把RefreshControl加到TableView中
     
+    self.tableTransaction.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
     btcNet = [CwBtcNetWork sharedManager];
     
     isFirst = YES;
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
     self.txSyncing = [NSMutableArray new];
+    
+    [self.view sendSubviewToBack:self.balanceView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -182,10 +186,10 @@ CwAccount *account;
     for (UIButton *btn in self.accountButtons) {
         if (sender == btn) {
             self.cwManager.connectedCwCard.currentAccountId = [self.accountButtons indexOfObject:btn];
-            [btn setBackgroundColor:[UIColor colorAccountBackground]];
+//            [btn setBackgroundColor:[UIColor colorAccountBackground]];
             [btn setSelected:YES];
         } else {
-            [btn setBackgroundColor:[UIColor blackColor]];
+//            [btn setBackgroundColor:[UIColor blackColor]];
             [btn setSelected:NO];
         }
     }

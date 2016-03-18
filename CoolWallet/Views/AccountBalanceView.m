@@ -58,6 +58,9 @@
 
 -(void) setupViews
 {
+    self.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.layer.borderWidth = 1.0;
+    
     self.viewHeight = self.frame.size.height;
     self.reservedView.hidden = YES;
     
