@@ -25,9 +25,30 @@ NSDictionary *rates;
 
 long TxFee = 10000;
 
-@interface TabbarSendViewController () <CwBtcNetworkDelegate>
+typedef NS_ENUM (NSInteger, InputAmountUnit) {
+    BTC,
+    FiatMoney,
+};
 
+@interface TabbarSendViewController () <CwBtcNetworkDelegate>
+{
+    CGFloat _currentMovedUpHeight;
+}
+
+@property (weak, nonatomic) IBOutlet UIButton *btnAccount1;
+@property (weak, nonatomic) IBOutlet UIButton *btnAccount2;
+@property (weak, nonatomic) IBOutlet UIButton *btnAccount3;
+@property (weak, nonatomic) IBOutlet UIButton *btnAccount4;
+@property (weak, nonatomic) IBOutlet UIButton *btnAccount5;
 @property (weak, nonatomic) IBOutlet AccountBalanceView *balanceView;
+@property (weak, nonatomic) IBOutlet UIView *sendToView;
+@property (weak, nonatomic) IBOutlet UITextField *txtReceiverAddress;
+@property (weak, nonatomic) IBOutlet UIView *amountView;
+@property (weak, nonatomic) IBOutlet UILabel *lblConvertAmount;
+@property (weak, nonatomic) IBOutlet UITextField *txtAmount;
+@property (weak, nonatomic) IBOutlet UIButton *btnAmountConvertUnit;
+@property (weak, nonatomic) IBOutlet UIButton *btnAmountUnit;
+@property (weak, nonatomic) IBOutlet UIView *inputView;
 
 @property (strong, nonatomic) CwAddress *genAddr;
 @property (assign, nonatomic) BOOL transactionBegin;
@@ -37,6 +58,7 @@ long TxFee = 10000;
 @property (strong, nonatomic) NSMutableDictionary *publicKeyUpdate;
 
 @property (strong, nonatomic) NSArray *accountButtons;
+@property (assign, nonatomic) InputAmountUnit amountUnit;
 
 @end
 
@@ -61,6 +83,8 @@ long TxFee = 10000;
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
     
+    self.amountUnit = BTC;
+    
     [self.view sendSubviewToBack:self.balanceView];
 }
 
@@ -69,33 +93,45 @@ long TxFee = 10000;
     
     UIViewController *parantViewController = self.parentViewController;
     [parantViewController.navigationItem setTitle:@"Send"];
-//    self.navigationController.navigationBar.hidden = NO;
-    //self.txtAddress.delegate = self;
+    
+    if (self.amountUnit == BTC) {
+        [self.btnAmountUnit setTitle:@"BTC" forState:UIControlStateNormal];
+        [self.btnAmountConvertUnit setTitle:cwCard.currId forState:UIControlStateNormal];
+    } else {
+        [self.btnAmountUnit setTitle:cwCard.currId forState:UIControlStateNormal];
+        [self.btnAmountConvertUnit setTitle:@"BTC" forState:UIControlStateNormal];
+    }
+    
     cwCard.delegate = self;
     self.btcNet.delegate = self;
     
-    //[cwCard getCwHdwInfo];
-    
     [self setAccountButton];
     
-    self.txtReceiverAddress.delegate = self;
-    self.txtAmount.delegate = self;
-    self.txtAmountFiatmoney.delegate =self;
-    
-    //NSLog(@"payment address = %@", cwCard.paymentAddress);
     self.txtReceiverAddress.text = cwCard.paymentAddress;
     if (cwCard.amount > 0) {
         self.txtAmount.text = [[OCAppCommon getInstance] convertBTCStringformUnit: cwCard.amount];
-        [self doneAmountItem:self.txtAmount];
+        [self doneAmountItem];
     } else {
         self.txtAmount.text = @"";
-        self.txtAmountFiatmoney.text = @"";
+        self.lblConvertAmount.text = @"";
     }
-    _lblFiatCurrency.text = cwCard.currId;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 -(void) viewWillDisappear:(BOOL)animated
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    
     if (self.btcNet && self.btcNet.delegate == self) {
         self.btcNet.delegate = nil;
     }
@@ -170,6 +206,28 @@ long TxFee = 10000;
     [self performSegueWithIdentifier:@"ScanQRSegue" sender:self];
 }
 
+- (IBAction)btnChangeUnit:(UIButton *)sender {
+    NSString *txtAmountText = @"";
+    
+    if (self.amountUnit == BTC) {
+        self.amountUnit = FiatMoney;
+        [self.btnAmountUnit setTitle:cwCard.currId forState:UIControlStateNormal];
+        [self.btnAmountConvertUnit setTitle:@"BTC" forState:UIControlStateNormal];
+        
+        txtAmountText = self.lblConvertAmount.text;
+    } else {
+        self.amountUnit = BTC;
+        [self.btnAmountUnit setTitle:@"BTC" forState:UIControlStateNormal];
+        [self.btnAmountConvertUnit setTitle:cwCard.currId forState:UIControlStateNormal];
+        
+        txtAmountText = self.lblConvertAmount.text;
+    }
+    
+    self.lblConvertAmount.text = self.txtAmount.text;
+    self.txtAmount.text = txtAmountText;
+    
+}
+
 -(void) sendBitcoin
 {
     [self showIndicatorView:@"Send..."];
@@ -187,53 +245,30 @@ long TxFee = 10000;
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     // Create a cancel button to dismiss the keyboard
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAmountItem:)];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAmountItem)];
     
     // Add buttons to the toolbar
     [toolbar setItems:[NSArray arrayWithObjects:flexibleSpace, barButtonItem, nil]];
     
     // Set the toolbar as accessory view of an UITextField object
     _txtAmount.inputAccessoryView = toolbar;
-    
-    //add done button
-    UIToolbar *mtoolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 35.0f)];
-    toolbar.barStyle=UIBarStyleDefault;
-    
-    // Create a flexible space to align buttons to the right
-    UIBarButtonItem *mflexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    // Create a cancel button to dismiss the keyboard
-    UIBarButtonItem *mbarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAmountFiatmoney:)];
-    
-    // Add buttons to the toolbar
-    [mtoolbar setItems:[NSArray arrayWithObjects:mflexibleSpace, mbarButtonItem, nil]];
-    
-    // Set the toolbar as accessory view of an UITextField object
-    _txtAmountFiatmoney.inputAccessoryView = mtoolbar;
 }
 
-- (IBAction)doneAmountItem:(id)sender
+- (void)doneAmountItem
 {
-    if([_txtAmount.text compare:@""] != 0) {
-        NSString *satoshi = [[OCAppCommon getInstance] convertBTCtoSatoshi:_txtAmount.text];
-        NSString *fiatmoney =  [[OCAppCommon getInstance] convertFiatMoneyString:[satoshi longLongValue] currRate:self.cwManager.connectedCwCard.currRate];
-        
-        self.txtAmountFiatmoney.text = fiatmoney;
-    }else{
-        self.txtAmountFiatmoney.text = @"";
+    NSString *value = @"";
+    if ([self.txtAmount.text compare:@""] != 0) {
+        if (self.amountUnit == BTC) {
+            NSString *satoshi = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
+            value =  [[OCAppCommon getInstance] convertFiatMoneyString:[satoshi longLongValue] currRate:self.cwManager.connectedCwCard.currRate];
+        } else {
+            value = [[OCAppCommon getInstance] convertBTCFromFiatMoney:[self.txtAmount.text doubleValue] currRate:self.cwManager.connectedCwCard.currRate];
+        }
     }
+    
+    self.lblConvertAmount.text = value;
+    
     [self.txtAmount resignFirstResponder];
-}
-
-- (IBAction)doneAmountFiatmoney:(id)sender
-{
-    if([_txtAmountFiatmoney.text compare:@""] != 0) {
-        NSString *btc = [[OCAppCommon getInstance] convertBTCFromFiatMoney:[_txtAmountFiatmoney.text doubleValue] currRate:self.cwManager.connectedCwCard.currRate];
-        _txtAmount.text = btc;
-    }else{
-        _txtAmount.text = @"";
-    }
-    [_txtAmountFiatmoney resignFirstResponder];
 }
 
 -(BOOL) isValidBitcoinAddress:(NSString *)address
@@ -251,7 +286,6 @@ long TxFee = 10000;
         
         if (i == self.accountButtons.count-1) {
             accountBtn.enabled = YES;
-            self.btnAddAccount.hidden = YES;
         }
     }
     
@@ -317,7 +351,13 @@ long TxFee = 10000;
         return;
     }
     
-    NSString *sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
+    NSString *sato;
+    if (self.amountUnit == BTC) {
+        sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
+    } else {
+        sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.lblConvertAmount.text];
+    }
+    
     [cwCard prepareTransaction: [sato longLongValue] Address:self.txtReceiverAddress.text Change: self.genAddr.address];
 }
 
@@ -334,7 +374,7 @@ long TxFee = 10000;
 {
     [self.txtReceiverAddress setText:@""];
     [self.txtAmount setText:@""];
-    [self.txtAmountFiatmoney setText:@""];
+    [self.lblConvertAmount setText:@""];
 }
 
 -(void) performDismiss
@@ -449,7 +489,7 @@ long TxFee = 10000;
 
 -(void) didSetAccountBalance:(NSInteger)accId
 {
-    NSLog(@"TabbarSendViewController, didSetAccountBalance:%ld, currentAccountId:%ld", accId, cwCard.currentAccountId);
+    NSLog(@"TabbarSendViewController, didSetAccountBalance:%ld, currentAccountId:%ld", accId, (long)cwCard.currentAccountId);
 }
 
 -(void) didPrepareTransactionError: (NSString *) errMsg
@@ -469,7 +509,7 @@ long TxFee = 10000;
 
 -(void) didGenAddress: (CwAddress *) addr
 {
-    NSLog(@"didGenAddress, %@, kid = %ld", addr.address, addr.keyId);
+    NSLog(@"didGenAddress, %@, kid = %ld", addr.address, (long)addr.keyId);
     [self.btcNet registerNotifyByAccount:cwCard.currentAccountId];
     
     for (NSString *accIndex in cwCard.cwAccounts) {
@@ -652,9 +692,6 @@ long TxFee = 10000;
     self.transactionBegin = NO;
     
     [self cleanInput];
-    
-    //back to previous controller
-    //[self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void) didSignTransactionError:(NSString *)errMsg
@@ -708,7 +745,6 @@ long TxFee = 10000;
     [self.parentViewController presentViewController:listCV animated:YES completion:nil];
 }
 
-
 - (void) showOTPEnterView
 {
     if(cwCard.securityPolicy_OtpEnable.boolValue == NO) return;
@@ -731,56 +767,75 @@ long TxFee = 10000;
                 [(UIAlertView*)o dismissWithClickedButtonIndex:[(UIAlertView*)o cancelButtonIndex] animated:YES];
 }
 
-#define kOFFSET_FOR_KEYBOARD 80.0
-//method to move the view up/down whenever the keyboard is shown/dismissed
--(void)setViewMovedUp:(BOOL)movedUp
+-(void) keyboardWillShow:(NSNotification *)notification
 {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3]; // if you want to slide up the view
+    NSDictionary *info = [notification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    CGFloat deltaHeight = 0;
     
-    CGRect rect = self.view.frame;
-    if (movedUp)
-    {
-        // 1. move the view's origin up so that the text field that will be hidden come above the keyboard
-        // 2. increase the size of the view so that the area behind the keyboard is covered up.
-        rect.origin.y -= kOFFSET_FOR_KEYBOARD;
-        rect.size.height += kOFFSET_FOR_KEYBOARD;
+    if (self.txtReceiverAddress.isFirstResponder) {
+        CGRect senderRect = [self.inputView convertRect:self.sendToView.frame toView:self.view];
+        
+        deltaHeight = kbSize.height - (self.view.frame.size.height - senderRect.origin.y - senderRect.size.height);
+    } else if (self.txtAmount.isFirstResponder) {
+        CGRect senderRect = [self.inputView convertRect:self.amountView.frame toView:self.view];
+        
+        deltaHeight = kbSize.height - (self.view.frame.size.height - senderRect.origin.y - senderRect.size.height);
     }
-    else
-    {
-        // revert back to the normal state.
-        rect.origin.y += kOFFSET_FOR_KEYBOARD;
-        rect.size.height -= kOFFSET_FOR_KEYBOARD;
+    
+    if (_currentMovedUpHeight >= deltaHeight) {
+        return;
+    } else if (_currentMovedUpHeight > 0) {
+        self.view.frame = CGRectMake(self.view.frame.origin.x,
+                                     self.view.frame.origin.y + _currentMovedUpHeight,
+                                     self.view.frame.size.width,
+                                     self.view.frame.size.height);
     }
-    self.view.frame = rect;
+    
+    if (deltaHeight <= 0) {
+        _currentMovedUpHeight = 0.0f;
+        return;
+    }
+    
+    _currentMovedUpHeight = deltaHeight;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    self.view.frame = CGRectMake(self.view.frame.origin.x,
+                                 self.view.frame.origin.y - _currentMovedUpHeight,
+                                 self.view.frame.size.width,
+                                 self.view.frame.size.height);
     
     [UIView commitAnimations];
 }
 
--(void)textFieldDidBeginEditing:(UITextField *)sender
+
+-(void) keyboardWillHide:(NSNotification *)notification
 {
-    NSLog(@"textFieldDidBeginEditing");
-    if (sender == _txtAmount || sender == _txtAmountFiatmoney)
-    {
-        //move the main view, so that the keyboard does not hide it.
-        if  (self.view.frame.origin.y >= 0)
-        {
-            [self setViewMovedUp:YES];
-        }
+    if (_currentMovedUpHeight <= 0) {
+        return;
     }
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    self.view.frame = CGRectMake(self.view.frame.origin.x,
+                                 self.view.frame.origin.y + _currentMovedUpHeight,
+                                 self.view.frame.size.width,
+                                 self.view.frame.size.height);
+    
+    [UIView commitAnimations];
+    
+    _currentMovedUpHeight = 0.0f;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)sender
-{
-    NSLog(@"textFieldDidEndEditing");
-    if (sender == _txtAmount || sender == _txtAmountFiatmoney)
-    {
-        if  (self.view.frame.origin.y < 0)
-        {
-            [self setViewMovedUp:NO];
-        }
-    }
-}
 
 
 @end

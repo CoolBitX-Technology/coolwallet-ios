@@ -73,6 +73,9 @@ CwCard *cwCard;
 //Close the cwCard connection and goback to ListTable
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    
     long currentVCIndex = [self.navigationController.viewControllers indexOfObject:self.navigationController.topViewController];
     NSObject *listCV = [self.navigationController.viewControllers objectAtIndex:currentVCIndex];
     
@@ -176,18 +179,6 @@ CwCard *cwCard;
 {
     NSLog(@"didPrepareService");
     //[cwCard getModeState];
-}
-
--(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
-{
-//    NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
-//    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
-//                                                   message: msg
-//                                                  delegate: nil
-//                                         cancelButtonTitle: nil
-//                                         otherButtonTitles:@"OK",nil];
-//    
-//    [alert show];
 }
 
 -(void) didGetModeState

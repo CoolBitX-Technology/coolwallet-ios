@@ -16,21 +16,6 @@
 #import "BaseViewController.h"
 @interface TabbarSendViewController:BaseViewController <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UIButton *btnAccount1;
-@property (weak, nonatomic) IBOutlet UIButton *btnAccount2;
-@property (weak, nonatomic) IBOutlet UIButton *btnAccount3;
-@property (weak, nonatomic) IBOutlet UIButton *btnAccount4;
-@property (weak, nonatomic) IBOutlet UIButton *btnAccount5;
-@property (weak, nonatomic) IBOutlet UIButton *btnAddAccount;
-
-//- (IBAction)btnAddAccount:(id)sender;
-
-@property (weak, nonatomic) IBOutlet UITextField *txtAmount;
-@property (weak, nonatomic) IBOutlet UITextField *txtReceiverAddress;
-@property (weak, nonatomic) IBOutlet UITextField *txtAmountFiatmoney;
-@property (weak, nonatomic) IBOutlet UILabel *lblFiatCurrency;
-
-
 @property (weak, nonatomic) IBOutlet UIButton *btnSendBitcoin;
 
 - (IBAction)btnSendBitcoin:(id)sender;

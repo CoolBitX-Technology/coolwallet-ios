@@ -146,6 +146,9 @@
 		F47AB4E11C7700E500766F3D /* UIViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = F47AB4E01C7700E500766F3D /* UIViewController+Utils.m */; };
 		F47E4DB21C606EAE0032885F /* AccountBalanceView.m in Sources */ = {isa = PBXBuildFile; fileRef = F47E4DB11C606EAE0032885F /* AccountBalanceView.m */; };
 		F47EAA941C4E178700FEDE26 /* ex_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F47EAA911C4E178700FEDE26 /* ex_logo.png */; };
+		F4832FCE1C9F9D180092A322 /* white_frame_small.png in Resources */ = {isa = PBXBuildFile; fileRef = F4832FCC1C9F9D180092A322 /* white_frame_small.png */; };
+		F4832FCF1C9F9D180092A322 /* white_frame.png in Resources */ = {isa = PBXBuildFile; fileRef = F4832FCD1C9F9D180092A322 /* white_frame.png */; };
+		F4832FD11C9F9D280092A322 /* change.png in Resources */ = {isa = PBXBuildFile; fileRef = F4832FD01C9F9D280092A322 /* change.png */; };
 		F485C2261C18066D00C26E11 /* CwKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = F485C2251C18066D00C26E11 /* CwKeychain.m */; };
 		F48C0DF11BD78A33007CFBEE /* CwCardInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F48C0DF01BD78A33007CFBEE /* CwCardInfo.m */; };
 		F493F32F1BC6807600876710 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F493F32E1BC6807600876710 /* BaseViewController.m */; };
@@ -430,6 +433,9 @@
 		F47E4DB01C606EAE0032885F /* AccountBalanceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountBalanceView.h; sourceTree = "<group>"; };
 		F47E4DB11C606EAE0032885F /* AccountBalanceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountBalanceView.m; sourceTree = "<group>"; };
 		F47EAA911C4E178700FEDE26 /* ex_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ex_logo.png; sourceTree = "<group>"; };
+		F4832FCC1C9F9D180092A322 /* white_frame_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white_frame_small.png; sourceTree = "<group>"; };
+		F4832FCD1C9F9D180092A322 /* white_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white_frame.png; sourceTree = "<group>"; };
+		F4832FD01C9F9D280092A322 /* change.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = change.png; sourceTree = "<group>"; };
 		F485C2241C18066D00C26E11 /* CwKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwKeychain.h; sourceTree = "<group>"; };
 		F485C2251C18066D00C26E11 /* CwKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwKeychain.m; sourceTree = "<group>"; };
 		F48C0DEF1BD78A33007CFBEE /* CwCardInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwCardInfo.h; sourceTree = "<group>"; };
@@ -866,6 +872,9 @@
 		EFF1ACC219EFFCEA00DD0BCB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				F4832FD01C9F9D280092A322 /* change.png */,
+				F4832FCC1C9F9D180092A322 /* white_frame_small.png */,
+				F4832FCD1C9F9D180092A322 /* white_frame.png */,
 				F4C0A7F41C9AC2C5005B788D /* acc.png */,
 				F4C0A7ED1C9AAE3C005B788D /* receive */,
 				F4BE27B21C997316009B8104 /* tabbar */,
@@ -1092,6 +1101,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4BE279E1C995A3E009B8104 /* settings.png in Resources */,
+				F4832FD11C9F9D280092A322 /* change.png in Resources */,
 				EFA3410C1AA6B81C0035AC6D /* backgroundjpg.jpg in Resources */,
 				F4BE279B1C995A3E009B8104 /* hosts.png in Resources */,
 				EFA3410F1AA6B81C0035AC6D /* button.png in Resources */,
@@ -1107,6 +1117,7 @@
 				EFA3411B1AA6B81C0035AC6D /* home-icon@2x.png in Resources */,
 				EFA3412B1AA6B81C0035AC6D /* menu-icon.png in Resources */,
 				EFA341301AA6B81C0035AC6D /* reveal-icon@2x.png in Resources */,
+				F4832FCE1C9F9D180092A322 /* white_frame_small.png in Resources */,
 				EFA3412F1AA6B81C0035AC6D /* reveal-icon.png in Resources */,
 				EFEF1BC91B41039A00373B0E /* add@2x.png in Resources */,
 				EFA3410A1AA6B81C0035AC6D /* add.png in Resources */,
@@ -1147,6 +1158,7 @@
 				EFA341221AA6B81C0035AC6D /* link_page3_1.png in Resources */,
 				93CF96A419EE1A0200466DAF /* Images.xcassets in Resources */,
 				EFA36D321AC3F5C200D7262F /* cancel@3x.png in Resources */,
+				F4832FCF1C9F9D180092A322 /* white_frame.png in Resources */,
 				EFA3411D1AA6B81C0035AC6D /* host_registration.png in Resources */,
 				EFECE6391AF8C90800797DD3 /* camera@2x.png in Resources */,
 				F4C0A7F31C9AAE3D005B788D /* request.png in Resources */,
