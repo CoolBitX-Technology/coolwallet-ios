@@ -13,6 +13,7 @@
 #import "BlockChain.h"
 #import "tx.h"
 #import "AccountBalanceView.h"
+#import "TabbarAccountViewController.h"
 
 CwCard *cwCard;
 CwAccount *account;
@@ -60,6 +61,8 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 @property (strong, nonatomic) NSArray *accountButtons;
 @property (assign, nonatomic) InputAmountUnit amountUnit;
 
+@property (strong, nonatomic) UIBarButtonItem *addButton;
+
 @end
 
 @implementation TabbarSendViewController
@@ -93,6 +96,9 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     
     UIViewController *parantViewController = self.parentViewController;
     [parantViewController.navigationItem setTitle:@"Send"];
+    self.addButton = ((TabbarAccountViewController *)parantViewController).addButton;
+    [self.addButton setEnabled:NO];
+    [self.addButton setTintColor:[UIColor clearColor]];
     
     if (self.amountUnit == BTC) {
         [self.btnAmountUnit setTitle:@"BTC" forState:UIControlStateNormal];

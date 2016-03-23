@@ -374,7 +374,7 @@
                                             <action selector="btnAccount:" destination="YUI-dC-1G3" eventType="touchUpInside" id="RQM-l1-Egh"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DSA-f8-S1U">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DSA-f8-S1U">
                                         <rect key="frame" x="240" y="0.0" width="60" height="39"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -398,26 +398,6 @@
                                             <action selector="btnAccount:" destination="YUI-dC-1G3" eventType="touchUpInside" id="3dz-CZ-jzv"/>
                                         </connections>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add.png" translatesAutoresizingMaskIntoConstraints="NO" id="bxw-iR-OwQ">
-                                        <rect key="frame" x="280" y="9.5" width="20" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="cyB-Z8-C3U"/>
-                                            <constraint firstAttribute="width" constant="20" id="nyd-52-pFo"/>
-                                        </constraints>
-                                    </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WZR-3c-adW">
-                                        <rect key="frame" x="280" y="9.5" width="20" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="20" id="Jx2-2I-rVO"/>
-                                            <constraint firstAttribute="height" constant="20" id="h0x-ix-sqJ"/>
-                                        </constraints>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="btnAddAccount:" destination="YUI-dC-1G3" eventType="touchUpInside" id="Spb-tn-lTd"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -428,16 +408,12 @@
                                     <constraint firstItem="kbt-Io-41O" firstAttribute="width" secondItem="eW3-Mq-fHE" secondAttribute="width" id="6ew-kB-Q99"/>
                                     <constraint firstItem="eW3-Mq-fHE" firstAttribute="top" secondItem="kbt-Io-41O" secondAttribute="top" id="6xC-0b-hgy"/>
                                     <constraint firstItem="Ery-8e-wSm" firstAttribute="width" secondItem="kbt-Io-41O" secondAttribute="width" id="I87-2V-YRO"/>
-                                    <constraint firstAttribute="centerY" secondItem="WZR-3c-adW" secondAttribute="centerY" id="J2m-cY-rjI"/>
                                     <constraint firstItem="Td3-4I-HYD" firstAttribute="leading" secondItem="ae8-Q5-aDE" secondAttribute="leading" id="K1K-qg-Cxe"/>
                                     <constraint firstItem="Td3-4I-HYD" firstAttribute="top" secondItem="ae8-Q5-aDE" secondAttribute="top" id="Lpv-x2-x9o"/>
                                     <constraint firstAttribute="bottom" secondItem="DSA-f8-S1U" secondAttribute="bottom" id="Qr1-7g-pIN"/>
-                                    <constraint firstAttribute="centerY" secondItem="bxw-iR-OwQ" secondAttribute="centerY" id="TI0-kh-xWE"/>
                                     <constraint firstAttribute="height" constant="39" id="V7W-fL-XdL"/>
                                     <constraint firstItem="DSA-f8-S1U" firstAttribute="top" secondItem="eW3-Mq-fHE" secondAttribute="top" id="WUP-a7-Jhe"/>
                                     <constraint firstAttribute="bottom" secondItem="kbt-Io-41O" secondAttribute="bottom" id="WYa-ij-ToH"/>
-                                    <constraint firstAttribute="trailing" secondItem="WZR-3c-adW" secondAttribute="trailing" id="YsZ-2X-SaQ"/>
-                                    <constraint firstAttribute="trailing" secondItem="bxw-iR-OwQ" secondAttribute="trailing" id="ay1-l9-GZF"/>
                                     <constraint firstItem="kbt-Io-41O" firstAttribute="leading" secondItem="Ery-8e-wSm" secondAttribute="trailing" id="b9I-RH-egW"/>
                                     <constraint firstItem="Ery-8e-wSm" firstAttribute="leading" secondItem="Td3-4I-HYD" secondAttribute="trailing" id="d6K-Vf-Dud"/>
                                     <constraint firstItem="eW3-Mq-fHE" firstAttribute="leading" secondItem="kbt-Io-41O" secondAttribute="trailing" id="ftM-xN-nmu"/>
@@ -621,8 +597,6 @@
                         <outlet property="btnAccount3" destination="kbt-Io-41O" id="3aH-Eg-cno"/>
                         <outlet property="btnAccount4" destination="eW3-Mq-fHE" id="fNi-MJ-5mw"/>
                         <outlet property="btnAccount5" destination="DSA-f8-S1U" id="x1d-Ch-GuN"/>
-                        <outlet property="btnAddAccount" destination="WZR-3c-adW" id="kIR-oa-omq"/>
-                        <outlet property="imgAddAccount" destination="bxw-iR-OwQ" id="7gF-dq-zwH"/>
                         <outlet property="tableTransaction" destination="SP8-ua-d1n" id="FZU-8y-Dgj"/>
                         <segue destination="yO1-L1-NTv" kind="custom" identifier="CreateHdwSegue" customClass="SWRevealViewControllerSeguePushController" id="U9Y-na-zuA"/>
                         <segue destination="BSG-41-lD0" kind="push" identifier="TransactionDetailSegue" id="gGb-HA-qdL"/>
@@ -994,7 +968,7 @@
                                             <action selector="btnAccount:" destination="ctG-KN-t3U" eventType="touchUpInside" id="Hl2-lO-0yh"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3MW-he-CSG">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3MW-he-CSG">
                                         <rect key="frame" x="240" y="0.0" width="60" height="39"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -1128,15 +1102,6 @@
                                         </state>
                                         <connections>
                                             <action selector="btnRequestPayment:" destination="ctG-KN-t3U" eventType="touchUpInside" id="xrq-oO-Xb8"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Nd-6g-vFi">
-                                        <rect key="frame" x="8" y="142" width="20" height="20"/>
-                                        <state key="normal" title="Create New Address" image="add.png">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="btnNewAddress:" destination="ctG-KN-t3U" eventType="touchUpInside" id="6Wi-WL-nVE"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2364,6 +2329,10 @@ Press the button on the card to see the next set of numbers</string>
                         <barButtonItem key="leftBarButtonItem" image="menu.png" id="5SD-EQ-ox3">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="add.png" id="eaS-rp-iEw">
+                            <inset key="imageInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" barStyle="black" id="Lc2-if-uda">
@@ -2372,6 +2341,7 @@ Press the button on the card to see the next set of numbers</string>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
+                        <outlet property="addButton" destination="eaS-rp-iEw" id="twa-mN-W5C"/>
                         <outlet property="sidebarButton" destination="5SD-EQ-ox3" id="Tc7-bU-4DC"/>
                         <outlet property="tabbarControll" destination="Lc2-if-uda" id="Xcv-jD-YVo"/>
                         <segue destination="wAB-p2-fGw" kind="relationship" relationship="viewControllers" id="6Ej-3d-AZe"/>

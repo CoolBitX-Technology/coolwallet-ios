@@ -14,6 +14,7 @@
 #import "UIColor+CustomColors.h"
 #import "OCAppCommon.h"
 #import "CwBtcNetWork.h"
+#import "TabbarAccountViewController.h"
 
 @interface TabReceiveBitcoinViewController ()  <CwBtcNetworkDelegate, UITextFieldDelegate>
 
@@ -28,6 +29,8 @@
 @property (strong, nonatomic) NSArray *accountButtons;
 
 - (IBAction)btnNewAddress:(id)sender;
+
+@property (strong, nonatomic) UIBarButtonItem *addButton;
 
 @end
 
@@ -60,6 +63,9 @@ NSString *Label;
     
     UIViewController *parantViewController = self.parentViewController;
     [parantViewController.navigationItem setTitle:@"Receive"];
+    self.addButton = ((TabbarAccountViewController *)parantViewController).addButton;
+    [self.addButton setTarget:self];
+    [self.addButton setAction:@selector(btnNewAddress:)];
     
     cwCard.delegate = self;
     
@@ -122,48 +128,19 @@ NSString *Label;
 #pragma marks - Account Button Actions
 
 - (void)setAccountButton{
+    UIButton *selectedAccount;
+    
     for(int i =0; i< [cwCard.cwAccounts count]; i++) {
-        if(i == 0) {
-            _btnAccount1.hidden = NO;
-        }else if(i == 1) {
-            _btnAccount2.hidden = NO;
-        }else if(i == 2) {
-            _btnAccount3.hidden = NO;
-        }else if(i == 3) {
-            _btnAccount4.hidden = NO;
-        }else if(i == 4) {
-            _btnAccount5.hidden = NO;
-            _btnAccount5.enabled = YES;
-            _btnAddAccount.hidden = YES;
-        }
+        UIButton *accountBtn = [self.accountButtons objectAtIndex:i];
+        accountBtn.hidden = NO;
         
+        if (i == self.cwManager.connectedCwCard.currentAccountId) {
+            selectedAccount = accountBtn;
+        }
     }
     
     RequestBTC = nil;
-    if([cwCard.cwAccounts count] == 1) {
-        [_btnAccount1 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    }else{
-        switch (cwCard.currentAccountId) {
-            case 0:
-                [_btnAccount1 sendActionsForControlEvents:UIControlEventTouchUpInside];
-                break;
-            case 1:
-                [_btnAccount2 sendActionsForControlEvents:UIControlEventTouchUpInside];
-                break;
-            case 2:
-                [_btnAccount3 sendActionsForControlEvents:UIControlEventTouchUpInside];
-                break;
-            case 3:
-                [_btnAccount4 sendActionsForControlEvents:UIControlEventTouchUpInside];
-                break;
-            case 4:
-                [_btnAccount5 sendActionsForControlEvents:UIControlEventTouchUpInside];
-                break;
-            default:
-                break;
-        }
-    }
-    
+    [selectedAccount sendActionsForControlEvents:UIControlEventTouchUpInside];
 }
 
 - (IBAction)btnAccount:(id)sender {
@@ -178,6 +155,14 @@ NSString *Label;
     }
     
     account = (CwAccount *) [cwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)cwCard.currentAccountId]];
+    
+    if ([cwCard enableGenAddressWithAccountId:account.accId]) {
+        [self.addButton setEnabled:YES];
+        [self.addButton setTintColor:[UIColor whiteColor]];
+    } else {
+        [self.addButton setEnabled:NO];
+        [self.addButton setTintColor:[UIColor clearColor]];
+    }
     
     if (currentAccId != cwCard.currentAccountId) {
         [self showIndicatorView:@"loading address..."];
@@ -229,6 +214,11 @@ NSString *Label;
     [_btnEditLabel sendActionsForControlEvents:UIControlEventTouchUpInside];
     //[cwCard getAccountAddresses: account.accId];
     [self.tableAddressList reloadData];
+    
+    if (![cwCard enableGenAddressWithAccountId:account.accId]) {
+        [self.addButton setEnabled:NO];
+        [self.addButton setTintColor:[UIColor clearColor]];
+    }
 }
 
 -(void) didGetAccountInfo: (NSInteger) accId

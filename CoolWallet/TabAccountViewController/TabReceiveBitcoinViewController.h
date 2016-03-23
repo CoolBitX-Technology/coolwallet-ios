@@ -23,7 +23,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount3;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount4;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount5;
-@property (weak, nonatomic) IBOutlet UIButton *btnAddAccount;
 
 //- (IBAction)btnAddAccount:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btnEditLabel;

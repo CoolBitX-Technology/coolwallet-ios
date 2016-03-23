@@ -34,6 +34,7 @@ CwAccount *account;
     CwAccount *account;
 }
 
+@property (strong, nonatomic) UIBarButtonItem *addButton;
 @property (strong, nonatomic) NSArray *accountButtons;
 @property (assign, nonatomic) BOOL waitAccountCreated;
 @property (strong, nonatomic) NSMutableArray *txSyncing;
@@ -69,6 +70,9 @@ CwAccount *account;
     
     TabbarAccountViewController *parantViewController = (TabbarAccountViewController *)self.parentViewController;
     [parantViewController.navigationItem setTitle:@"Accounts"];
+    self.addButton = parantViewController.addButton;
+    [self.addButton setTarget:self];
+    [self.addButton setAction:@selector(CreateAccount)];
     parantViewController.delegate = self;
     
     btcNet.delegate = self;
@@ -160,12 +164,14 @@ CwAccount *account;
     for(int i =0; i< [self.cwManager.connectedCwCard.cwAccounts count]; i++) {
         UIButton *accountBtn = [self.accountButtons objectAtIndex:i];
         accountBtn.hidden = NO;
-        
-        if (i == self.accountButtons.count-1) {
-            accountBtn.enabled = YES;
-            self.btnAddAccount.hidden = YES;
-            self.imgAddAccount.hidden = YES;
-        }
+    }
+    
+    if (self.cwManager.connectedCwCard.cwAccounts.count == self.accountButtons.count) {
+        [self.addButton setEnabled:NO];
+        [self.addButton setTintColor:[UIColor clearColor]];
+    } else {
+        [self.addButton setEnabled:YES];
+        [self.addButton setTintColor:[UIColor whiteColor]];
     }
     
     if (self.refreshControl.isHidden) {
@@ -186,10 +192,8 @@ CwAccount *account;
     for (UIButton *btn in self.accountButtons) {
         if (sender == btn) {
             self.cwManager.connectedCwCard.currentAccountId = [self.accountButtons indexOfObject:btn];
-//            [btn setBackgroundColor:[UIColor colorAccountBackground]];
             [btn setSelected:YES];
         } else {
-//            [btn setBackgroundColor:[UIColor blackColor]];
             [btn setSelected:NO];
         }
     }
@@ -245,7 +249,7 @@ Boolean setBtnActionFlag;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BlockChain *blockChain = [[BlockChain alloc] init];
         [blockChain getBalanceByAccountID:accId];
-        NSLog(@"updateBalance: %ld, balance: %lld", accId, account.balance);
+        NSLog(@"updateBalance: %ld, balance: %lld", (long)accId, account.balance);
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"update %ld, current is %ld", (long)accId, (long)self.cwManager.connectedCwCard.currentAccountId);
             if (accId == self.cwManager.connectedCwCard.currentAccountId) {
@@ -283,11 +287,6 @@ Boolean setBtnActionFlag;
         id TxKey = sortedTxKeys[rowSelect];
         [page setValue:TxKey forKey:@"TxKey"];
     }
-}
-
-#pragma marks - Actions
-- (IBAction)btnAddAccount:(id)sender {
-    [self CreateAccount];
 }
 
 - (void)CreateAccount{
@@ -530,7 +529,6 @@ Boolean setBtnActionFlag;
         
         [self performDismiss];
         [self setAccountButton];
-        
     }
 }
 

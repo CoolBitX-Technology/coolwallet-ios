@@ -12,5 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UITabBar *tabbarControll;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sidebarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
 
 @end

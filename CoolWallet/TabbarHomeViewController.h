@@ -22,12 +22,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount3;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount4;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount5;
-@property (weak, nonatomic) IBOutlet UIButton *btnAddAccount;
-@property (weak, nonatomic) IBOutlet UIImageView *imgAddAccount;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableTransaction;
-
-- (IBAction)btnAddAccount:(id)sender;
 
 @property (nonatomic,strong) UIRefreshControl *refreshControl;
 @end
