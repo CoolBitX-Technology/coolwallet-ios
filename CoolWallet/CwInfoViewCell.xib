@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="2.5" width="320" height="112"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FV8-im-8zn">
-                                <rect key="frame" x="15" y="10" width="243" height="49"/>
+                                <rect key="frame" x="16" y="10" width="288" height="49"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="49" id="6ij-Uj-Ewv"/>
                                 </constraints>
@@ -34,13 +34,6 @@
                                     <color key="titleColor" red="0.68235294120000001" green="0.56470588239999997" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="receive-grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="g6l-fz-F3F">
-                                <rect key="frame" x="272" y="15" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="Ft1-6y-Pvq"/>
-                                    <constraint firstAttribute="height" constant="40" id="oo7-Po-qv0"/>
-                                </constraints>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MXf-Js-xmg">
                                 <rect key="frame" x="192" y="59" width="120" height="48"/>
                                 <constraints>
@@ -62,17 +55,15 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="MXf-Js-xmg" firstAttribute="top" secondItem="FV8-im-8zn" secondAttribute="bottom" id="3b6-u2-g3Z"/>
+                            <constraint firstAttribute="trailing" secondItem="FV8-im-8zn" secondAttribute="trailing" constant="16" id="8ep-xI-lhD"/>
                             <constraint firstAttribute="bottom" secondItem="MXf-Js-xmg" secondAttribute="bottom" constant="5" id="FDo-kh-po8"/>
                             <constraint firstItem="MXf-Js-xmg" firstAttribute="leading" secondItem="bNs-1m-UD0" secondAttribute="trailing" id="Fkz-Ap-h1I"/>
                             <constraint firstItem="bNs-1m-UD0" firstAttribute="top" secondItem="FV8-im-8zn" secondAttribute="bottom" id="QZN-UF-GC5"/>
-                            <constraint firstItem="g6l-fz-F3F" firstAttribute="leading" secondItem="FV8-im-8zn" secondAttribute="trailing" constant="14" id="XCK-Lb-fEB"/>
-                            <constraint firstItem="g6l-fz-F3F" firstAttribute="top" secondItem="RV8-I2-4AX" secondAttribute="top" constant="15" id="e4t-pZ-t6P"/>
                             <constraint firstAttribute="bottom" secondItem="bNs-1m-UD0" secondAttribute="bottom" constant="5" id="hRr-BW-3ND"/>
                             <constraint firstAttribute="trailing" secondItem="MXf-Js-xmg" secondAttribute="trailing" constant="8" id="iuz-wb-cOR"/>
                             <constraint firstItem="bNs-1m-UD0" firstAttribute="leading" secondItem="RV8-I2-4AX" secondAttribute="leading" constant="8" id="m4u-hK-TPa"/>
                             <constraint firstItem="FV8-im-8zn" firstAttribute="top" secondItem="RV8-I2-4AX" secondAttribute="top" constant="10" id="uG9-Du-hfR"/>
-                            <constraint firstAttribute="trailing" secondItem="g6l-fz-F3F" secondAttribute="trailing" constant="8" id="ulN-ON-blY"/>
-                            <constraint firstItem="FV8-im-8zn" firstAttribute="leading" secondItem="RV8-I2-4AX" secondAttribute="leading" constant="15" id="zYd-Vc-Bx8"/>
+                            <constraint firstItem="FV8-im-8zn" firstAttribute="leading" secondItem="RV8-I2-4AX" secondAttribute="leading" constant="16" id="zYd-Vc-Bx8"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -86,7 +77,6 @@
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="ContentView" destination="RV8-I2-4AX" id="vkY-wn-MXK"/>
-                <outlet property="Img_switch" destination="g6l-fz-F3F" id="N3H-nb-GSH"/>
                 <outlet property="bt_connect" destination="bNs-1m-UD0" id="hCh-rz-gFQ"/>
                 <outlet property="bt_reset" destination="MXf-Js-xmg" id="9lv-jh-jLV"/>
                 <outlet property="lb_CwName" destination="FV8-im-8zn" id="FyM-sU-3Zw"/>
@@ -96,6 +86,5 @@
     </objects>
     <resources>
         <image name="button.png" width="600" height="92"/>
-        <image name="receive-grey.png" width="33" height="32"/>
     </resources>
 </document>

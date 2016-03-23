@@ -240,6 +240,8 @@ NSTimer *scanTimer;
     //stop timer to check RSSI
     [rssiTimer invalidate];
     
+    [self.connectedCwCard saveCwCardToFile];
+    
     if ([self.delegate respondsToSelector:@selector(didDisconnectCwCard:)]) {
         [self.delegate didDisconnectCwCard: self.connectedCwCard.bleName];
     }

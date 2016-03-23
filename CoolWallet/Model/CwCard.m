@@ -393,7 +393,7 @@ NSArray *addresses;
 {
     NSLog(@"SaveCwToFile:%@ accountptr:%@ accoints:%lu", self.cardId, self.hdwAcccountPointer, (unsigned long)self.cwAccounts.count);
     
-    if (self.cardId == nil || self.hdwAcccountPointer == nil) {
+    if (self.cardId == nil || self.hdwAcccountPointer == nil || self.mode.integerValue != CwCardModeNormal) {
         return;
     }
     
@@ -554,12 +554,6 @@ NSArray *addresses;
     if (!(syncHostFlag[0]&&syncHostFlag[1]&&syncHostFlag[2])) {
         for (int i=0; i<3; i++)
             if (!syncHostFlag[i]) {
-                CwHost *host = [self.cwHosts objectForKey: [NSString stringWithFormat:@"%d", i]];
-                if (host)
-                    if (host.hostBindStatus== CwHostBindStatusConfirmed) {
-                        syncHostFlag[i]=YES;
-                        continue;
-                    }
                 [self cwCmdBindRegInfo:i];
             }
     } else {
@@ -4380,6 +4374,8 @@ NSArray *addresses;
         case CwCmdIdBindLogout:
             //output:
             //none
+            [self saveCwCardToFile];
+            
             if ([self.delegate respondsToSelector:@selector(didLogoutHost)]) {
                 [self.delegate didLogoutHost];
             }

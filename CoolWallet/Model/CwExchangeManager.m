@@ -27,7 +27,7 @@
 @property (readwrite, nonatomic) CwCard *card;
 @property (strong, nonatomic) NSString *loginSession;
 
-@property (readwrite, assign) CwExchange *exchange;
+@property (readwrite, nonatomic) CwExchange *exchange;
 
 @property (strong, nonatomic) NSMutableArray *syncedAccount;
 @property (readwrite, nonatomic) BOOL cardInfoSynced;
@@ -272,8 +272,10 @@
         NSLog(@"observeHdwAccountPointer: %@", counter);
         for (int index = (int)self.syncedAccount.count; index < counter.intValue; index++) {
             CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%d", index]];
-            [self observeAccount:account];
-            [self observeHdwAccountAddrCount:account];
+            if (account) {
+                [self observeAccount:account];
+                [self observeHdwAccountAddrCount:account];
+            }
         }
     }];
 }
