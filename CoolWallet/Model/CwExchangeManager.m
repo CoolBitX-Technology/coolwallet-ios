@@ -108,8 +108,17 @@
     } error:^(NSError *error) {
         @strongify(self);
         NSLog(@"error(%ld): %@", (long)error.code, error);
-        self.sessionStatus = ExSessionFail;
-        [self logoutExSession];
+//        self.sessionStatus = ExSessionFail;
+//        [self logoutExSession];
+        
+        self.sessionStatus = ExSessionLogin;
+        
+        self.exchange = [[NSUserDefaults standardUserDefaults] rm_customObjectForKey:[NSString stringWithFormat:@"exchange_%@", self.card.cardId]];
+        if (self.exchange == nil) {
+            self.exchange = [CwExchange new];
+        }
+        
+        [self syncCardInfo];
     }];
 }
 

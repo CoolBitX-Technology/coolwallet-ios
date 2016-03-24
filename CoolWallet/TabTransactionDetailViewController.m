@@ -79,14 +79,11 @@ CwAccount *account;
     
     if(cwCard.currRate != nil) {
         double fiat = [tx.historyAmount.BTC doubleValue] * ([cwCard.currRate doubleValue]/100 );
-        _lblTxFiatMoney.text = [NSString stringWithFormat:@"%.2f %@",fiat, cwCard.currId];
+        _lblTxFiatMoney.text = [NSString stringWithFormat:@"%.2f",fiat];
     }
     
     _lblTxDate.text = [tx.historyTime_utc cwDateString];
-    //_lblTxDate.text = [NSString stringWithFormat: @"%@", tx.historyTime_utc];
     _lblTxConfirm.text = [NSString stringWithFormat:@"%@",tx.confirmations];
-   // NSString* responseString = [[NSString alloc] initWithData:responseData encoding:NSNonLossyASCIIStringEncoding];
-    //_lblTxId.text = [[NSString alloc] initWithData:tx.tid encoding:NSUTF8StringEncoding];
     
     NSString *tid = [NSString stringWithFormat:@"%@", [self dataToHexstring: tx.tid]];
     _lblTxId.text = tid;

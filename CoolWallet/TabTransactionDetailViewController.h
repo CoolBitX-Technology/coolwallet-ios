@@ -14,7 +14,6 @@
 
 @property (weak, nonatomic) id TxKey;
 
-@property (weak, nonatomic) IBOutlet UILabel *lblNote;
 @property (weak, nonatomic) IBOutlet UILabel *lblTxAddr;
 @property (weak, nonatomic) IBOutlet UILabel *lblTxAmount;
 @property (weak, nonatomic) IBOutlet UILabel *lblTxFiatMoney;
