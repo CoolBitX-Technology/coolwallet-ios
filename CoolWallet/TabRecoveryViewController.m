@@ -63,7 +63,9 @@
     [super viewDidAppear:animated];
     NSLog(@"TabRecoveryViewController viewDidAppear");
     
-    [cwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:YES];
+    if (!cwCard.securityPolicy_WatchDogEnable.boolValue) {
+        [cwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

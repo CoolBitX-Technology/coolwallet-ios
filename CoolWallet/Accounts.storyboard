@@ -2084,7 +2084,7 @@ Press the button on the card to see the next set of numbers</string>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="bZq-Es-fms" firstAttribute="top" secondItem="dFp-jW-gzJ" secondAttribute="bottom" constant="3" id="1co-qX-N0d"/>
                             <constraint firstItem="3dr-qZ-z4d" firstAttribute="top" secondItem="bZq-Es-fms" secondAttribute="bottom" constant="3" id="4CQ-qu-gsr"/>
@@ -2325,6 +2325,7 @@ Press the button on the card to see the next set of numbers</string>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="LT7-3G-xyc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <connections>
                         <segue destination="DN2-Tg-rnC" kind="relationship" relationship="rootViewController" id="2yg-6h-XJr"/>
@@ -2606,7 +2607,7 @@ Press the button on the card to see the next set of numbers</string>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Iq6-d7-TkM" secondAttribute="trailing" constant="8" id="uRZ-do-d4P"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <segue destination="FlM-fv-6BH" kind="push" id="x4P-dw-2e4"/>
                                         </connections>
@@ -2639,7 +2640,7 @@ Press the button on the card to see the next set of numbers</string>
                                                 <constraint firstItem="GiR-4r-gKY" firstAttribute="top" secondItem="Wg0-h1-Dg1" secondAttribute="top" constant="5" id="jiK-Wp-g7o"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <segue destination="J6u-aa-Iod" kind="push" id="fyQ-60-hM7"/>
                                         </connections>
@@ -2652,7 +2653,7 @@ Press the button on the card to see the next set of numbers</string>
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="KJE-S1-UQd" firstAttribute="leading" secondItem="645-XL-NB9" secondAttribute="leading" id="Dhz-6b-eMg"/>
                             <constraint firstItem="KJE-S1-UQd" firstAttribute="top" secondItem="645-XL-NB9" secondAttribute="top" constant="9" id="GQM-op-DSh"/>
@@ -2772,7 +2773,7 @@ Press the button on the card to see the next set of numbers</string>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="oWR-Vk-qz2" firstAttribute="top" secondItem="mt7-tM-2HM" secondAttribute="bottom" constant="21" id="4sN-F4-U2P"/>
                             <constraint firstAttribute="trailing" secondItem="qdb-2T-K9H" secondAttribute="trailing" constant="16" id="5eg-eS-06D"/>
@@ -2914,7 +2915,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.098039215690000001" green="0.098039215690000001" blue="0.098039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="TL7-65-AJD" secondAttribute="centerX" id="1Xw-Kw-GFN"/>
                             <constraint firstAttribute="centerX" secondItem="DjK-xa-ckk" secondAttribute="centerX" id="1gI-Ju-s6x"/>

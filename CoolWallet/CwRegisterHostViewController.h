@@ -14,5 +14,4 @@
 - (IBAction)BtnCancelAction:(id)sender;
 @property (weak, nonatomic) IBOutlet UIView *viewOTPConfirm;
 @property (weak, nonatomic) IBOutlet UIButton *btnRegisterHost;
-@property (weak, nonatomic) IBOutlet UIButton *btnRefreshInfo;
 @end

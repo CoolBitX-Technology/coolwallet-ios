@@ -16,13 +16,15 @@
 #import "ViewController.h"
 #import "KeychainItemWrapper.h"
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
 @interface CwRegisterHostViewController () <UITextFieldDelegate>
 {
     CGFloat _currentMovedUpHeight;
 }
 
-@property (strong, nonatomic) IBOutlet NSString *txtIdentifier;
-@property (strong, nonatomic) IBOutlet NSString *txtDescription;
+@property (strong, nonatomic) NSString *txtIdentifier;
+@property (strong, nonatomic) NSString *txtDescription;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtOtp;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBusyIndicator;
@@ -57,6 +59,14 @@ CwCard *cwCard;
     self.viewOTPConfirm.hidden = YES;
     
     NSLog(@"mode = %@",self.cwManager.connectedCwCard.mode);
+    
+    @weakify(self)
+    [[self.txtOtp.rac_textSignal filter:^BOOL(NSString *newText) {
+        return self.txtOtp.text.length > 6;
+    }] subscribeNext:^(NSString *newText) {
+        @strongify(self)
+        self.txtOtp.text = [newText substringToIndex:6];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {    
@@ -276,8 +286,6 @@ CwCard *cwCard;
                 [self showHintAlert:nil withMessage:msg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                     [self didLogoutHost];
                 }]];
-                
-                _btnRefreshInfo.hidden = NO;
             }
             
         } else {
@@ -312,47 +320,12 @@ CwCard *cwCard;
 
 -(void) didLogoutHost
 {
-    /*
-     long currentVCIndex = [self.navigationController.viewControllers indexOfObject:self.navigationController.topViewController];
-     NSObject *listCV = [self.navigationController.viewControllers objectAtIndex:currentVCIndex];
-     
-     cwManager.delegate = (CwListTableViewController *)listCV;
-     */
-    
     [self.cwManager disconnectCwCard];
     
     //clear properties
     cwCard = nil;
     
     NSLog(@"CW Released");
-    
-    //[self.cwMgr scanCwCards];
-}
-
--(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
-{
-    [super didCwCardCommandError:cmdId ErrString:errString];
-    
-    switch (cmdId) {
-        case CwCmdIdGetModeState:
-            
-            break;
-        
-        case CwCmdIdBindRegFinish:
-            break;
-            
-        default:
-            if (![errString hasPrefix:@"Command Error"]) {
-                UIAlertController *errorAlertController = [UIAlertController alertControllerWithTitle:nil message:errString preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                [errorAlertController addAction:okAction];
-                
-                [self presentViewController:errorAlertController animated:YES completion:nil];
-            }
-            
-            break;
-    }
-    
 }
 
 -(void) didRegisterHost: (NSString *)OTP {
@@ -425,40 +398,10 @@ CwCard *cwCard;
     }
 }
 
-#pragma mark - CwManager Delegate
--(void) didDisconnectCwCard: (NSString *)cardName
-{
-    NSLog(@"didDisconnectCwCard");
-    [self performDismiss];
-
-    //Add a notification to the system
-//    UILocalNotification *notify = [[UILocalNotification alloc] init];
-//    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
-//    notify.soundName = UILocalNotificationDefaultSoundName;
-//    [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
-
-    // Get the storyboard named secondStoryBoard from the main bundle:
-    UIStoryboard *secondStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    // Load the view controller with the identifier string myTabBar
-    // Change UIViewController to the appropriate class
-    UIViewController *listCV = (UIViewController *)[secondStoryBoard instantiateViewControllerWithIdentifier:@"CwMain"];
-    // Then push the new view controller in the usual way:
-    [self.parentViewController presentViewController:listCV animated:YES completion:nil];
-     
-}
-
 - (IBAction)BtnCancelAction:(id)sender {
     //[self regHost:self];
     [cwCard logoutHost];
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (IBAction)btnRefreshInfo:(id)sender {
-    self.actBusyIndicator.hidden = NO;
-    [self.actBusyIndicator startAnimating];
-    
-    [cwCard getModeState];
-    //    [cwCard getCwCardId];
 }
 
 @end

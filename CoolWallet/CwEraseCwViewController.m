@@ -47,6 +47,14 @@ CwCard *cwCard;
     
     self.resetHintLabel.hidden = NO;
     self.otpConfirmView.hidden = YES;
+    
+    @weakify(self)
+    [[self.otpField.rac_textSignal filter:^BOOL(NSString *newText) {
+        return self.otpField.text.length > 6;
+    }] subscribeNext:^(NSString *newText) {
+        @strongify(self)
+        self.otpField.text = [newText substringToIndex:6];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
