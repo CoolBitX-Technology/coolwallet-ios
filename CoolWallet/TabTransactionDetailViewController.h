@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "CwManager.h"
 #import "CwCard.h"
+#import "BaseViewController.h"
 
-@interface TabTransactionDetailViewController :UIViewController <CwCardDelegate, CwManagerDelegate>
+@class CwTx;
 
-@property (weak, nonatomic) id TxKey;
+@interface TabTransactionDetailViewController :BaseViewController
+
+@property (strong, nonatomic) CwTx *tx;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblTxAddr;
 @property (weak, nonatomic) IBOutlet UILabel *lblTxAmount;

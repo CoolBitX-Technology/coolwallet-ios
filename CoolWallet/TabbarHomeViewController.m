@@ -16,20 +16,18 @@
 #import "CwUnspentTxIndex.h"
 #import "NSDate+Localize.h"
 #import "AccountBalanceView.h"
-
 #import "BlockChain.h"
-
 #import "CwExchangeManager.h"
+#import "TabTransactionDetailViewController.h"
+
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 NSDictionary *rates;
 CwBtcNetWork *btcNet;
-CwAccount *account;
 
 @interface TabbarHomeViewController () <UITabBarControllerDelegate>
 {
     NSArray *sortedTxKeys;
-    NSInteger rowSelect;
     bool isFirst;
     CwAccount *account;
 }
@@ -38,6 +36,8 @@ CwAccount *account;
 @property (strong, nonatomic) NSArray *accountButtons;
 @property (assign, nonatomic) BOOL waitAccountCreated;
 @property (strong, nonatomic) NSMutableArray *txSyncing;
+
+@property (strong, nonatomic) CwTx *selectTx;
 
 @property (weak, nonatomic) IBOutlet AccountBalanceView *balanceView;
 
@@ -95,11 +95,24 @@ CwAccount *account;
     if (btcNet.delegate && btcNet.delegate == self) {
         btcNet.delegate = nil;
     }
+    
+    self.selectTx = nil;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void) checkRecoveryState
+{
+    BOOL inRecovery = [[NSUserDefaults standardUserDefaults] boolForKey:[NSString stringWithFormat:@"recovery_%@", self.cwManager.connectedCwCard.cardId]];
+    
+    if (inRecovery) {
+        [self showHintAlert:@"Recovery incomplete" withMessage:@"Your wallet was not fully recovered, please reset and recover again." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self.cwManager disconnectCwCard];
+        }]];
+    }
 }
 
 -(void) checkAndLoginExSite
@@ -109,17 +122,14 @@ CwAccount *account;
         RACSignal *cardSignal = [[[RACObserve(self.cwManager, connectedCwCard) filter:^BOOL(CwCard *card) {
             return card != nil && card.cardId.length != 0;
         }] map:^RACStream *(CwCard *card) {
-            NSLog(@"connect card: %@<%@>", card, card.cardId);
             return RACObserve(card, hdwStatus);
         }] switchToLatest];
         
         [[[[cardSignal filter:^BOOL(NSNumber *hdwStatus) {
-            NSLog(@"hdwStatus: %@", hdwStatus);
             return hdwStatus.integerValue != CwHdwStatusInactive && hdwStatus.integerValue != CwHdwStatusWaitConfirm;
         }] take:1]
           subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityBackground name:@"ExSessionLogin"]]
          subscribeNext:^(id value) {
-             NSLog(@"subscribeNext");
              [exchange loginExSession];
          }];
     }
@@ -283,9 +293,8 @@ Boolean setBtnActionFlag;
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier compare:@"TransactionDetailSegue"] == 0) {
-        id page = segue.destinationViewController;
-        id TxKey = sortedTxKeys[rowSelect];
-        [page setValue:TxKey forKey:@"TxKey"];
+        TabTransactionDetailViewController *target = (TabTransactionDetailViewController *)segue.destinationViewController;
+        target.tx = self.selectTx;
     }
 }
 
@@ -361,7 +370,8 @@ Boolean setBtnActionFlag;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    rowSelect = indexPath.row;
+    self.selectTx = [account.transactions objectForKey:sortedTxKeys[indexPath.row]];
+    
     [self performSegueWithIdentifier:@"TransactionDetailSegue" sender:self];
 }
 
@@ -388,6 +398,8 @@ Boolean setBtnActionFlag;
         //goto New Wallet
         [self performSegueWithIdentifier:@"CreateHdwSegue" sender:self];
     } else {
+        [self checkRecoveryState];
+        
         [self getBitcoinRateforCurrency];
         [self checkAndLoginExSite];
     }

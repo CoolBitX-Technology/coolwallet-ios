@@ -13,6 +13,7 @@
 #import "CwAddress.h"
 #import "CwBtcNetwork.h"
 #import "SWRevealViewController.h"
+#import "Reachability.h"
 
 #define MAX_ACCOUNT 5
 
@@ -51,6 +52,11 @@
     _progressView.progress = 0;
     extKeySettingFinish = [NSMutableArray new];
     intKeySettingFinish = [NSMutableArray new];
+    
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"recovery_%@", cwCard.cardId]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    [[Reachability reachabilityForInternetConnection] startNotifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -68,9 +74,32 @@
     }
 }
 
+-(void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) reachabilityChanged:(NSNotification *)note
+{
+    Reachability* curReach = [note object];
+    NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
+    
+    NetworkStatus netStatus = [curReach currentReachabilityStatus];
+    if (netStatus == NotReachable) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Internet connection lost" message:@"Please reset the CoolWallet and try again with a more stable internet connection." preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            CwManager *manager = [CwManager sharedManager];
+            [manager disconnectCwCard];
+        }]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
 }
 
 - (void)StartRecovery
@@ -106,6 +135,8 @@
         [self StartRecovery];
     } else {
         if (acc_external == MAX_ACCOUNT && acc_internal == MAX_ACCOUNT) {
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[NSString stringWithFormat:@"recovery_%@", cwCard.cardId]];
+            
             UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
             UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
             [self.revealViewController pushFrontViewController:vc animated:YES];

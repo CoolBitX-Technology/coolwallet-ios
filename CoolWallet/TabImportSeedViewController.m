@@ -64,11 +64,9 @@ CwBtcNetWork *btcNet;
     self.wordSeeds = [NYMnemonic getSeedsWithLanguage:@"english"];
     self.swNumberSeed.on = NO;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-    
     self.internetReachability = [Reachability reachabilityForInternetConnection];
     self.netStatus = self.internetReachability.currentReachabilityStatus;
-    [self.internetReachability startNotifier];
+    
 }
 
 -(void) viewWillAppear:(BOOL)animated
@@ -84,6 +82,9 @@ CwBtcNetWork *btcNet;
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    [self.internetReachability startNotifier];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -92,16 +93,13 @@ CwBtcNetWork *btcNet;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 /*!
@@ -114,7 +112,7 @@ CwBtcNetWork *btcNet;
     
     self.netStatus = [curReach currentReachabilityStatus];
     if (self.netStatus == NotReachable) {
-        [self showHintAlert:@"Warn!" withMessage:@"Can't connect to network." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [self showHintAlert:nil withMessage:@"Internet connection lost." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
     }
     
 }
@@ -189,7 +187,7 @@ CwBtcNetWork *btcNet;
 
 -(void) noNetworkHint
 {
-    [self showHintAlert:@"Warn!" withMessage:@"Can't connect to network." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self showHintAlert:nil withMessage:@"Internet connection lost." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
 }
 
 #pragma mark - UITextFieldDelegate Delegates

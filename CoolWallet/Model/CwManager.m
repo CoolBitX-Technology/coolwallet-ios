@@ -136,6 +136,10 @@ NSTimer *scanTimer;
     if (central.state < CBCentralManagerStatePoweredOn)
     {
         NSLog(@"BLE not enabled");
+        if (self.connectedCwCard != nil) {
+            [self centralManager:central didDisconnectPeripheral:self.connectedCwCard.peripheral error:nil];
+        }
+        
     } else {
         if ([self.delegate respondsToSelector:@selector(didCwManagerReady)]) {
             [self.delegate didCwManagerReady];

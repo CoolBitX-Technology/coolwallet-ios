@@ -385,6 +385,7 @@ NSArray *addresses;
     } else {
         [defaults removeObjectForKey:self.cardId];
         [defaults removeObjectForKey:[NSString stringWithFormat:@"exchange_%@", self.cardId]];
+        [defaults removeObjectForKey:[NSString stringWithFormat:@"recovery_%@", self.cardId]];
     }
 }
 
