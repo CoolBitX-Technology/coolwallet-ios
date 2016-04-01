@@ -634,6 +634,16 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 -(void) didGetButton
 {
     NSLog(@"didGetButton");
+    [PressAlert dismissViewControllerAnimated:YES completion:nil];
+    
+    PressAlert = [UIAlertController alertControllerWithTitle:@"Sending..." message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [self cancelTransaction];
+    }];
+    [PressAlert addAction:cancelAction];
+    
+    [self presentViewController:PressAlert animated:YES completion:nil];
+    
     [cwCard signTransaction];
 }
 
@@ -641,8 +651,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 {
     NSLog(@"didVerifyOtp");
     if (cwCard.securityPolicy_BtnEnable.boolValue == YES) {
-        //[self showIndicatorView:@"Press Button On the Card"];
-        //self.lblPressButton.text = @"Press Button On the Card";
         [self performDismiss];
         
         PressAlert = [UIAlertController alertControllerWithTitle:@"Press Button On the Card" message:nil preferredStyle:UIAlertControllerStyleAlert];

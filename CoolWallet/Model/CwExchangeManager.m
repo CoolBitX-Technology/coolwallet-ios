@@ -201,7 +201,7 @@
     exTx.changeAddress = changeAddress;
     
     @weakify(self)
-    [[[[self signalGetTrxInfo] flattenMap:^RACStream *(NSDictionary *response) {
+    [[[[[self signalGetTrxInfo] flattenMap:^RACStream *(NSDictionary *response) {
         NSLog(@"response: %@", response);
         @strongify(self)
         NSString *loginData = [response objectForKey:@"loginblk"];
@@ -220,6 +220,9 @@
         } else {
             return [self signalTrxPrepareDataFrom:unsignedTx andExTx:exTx];
         }
+    }] finally:^() {
+        CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", exTx.accountId]];
+        account.tempUnblockAmount = 0;
     }] subscribeNext:^(id value) {
         NSLog(@"Ex Trx prepairing...");
     } error:^(NSError *error) {
@@ -577,17 +580,38 @@
 -(RACSignal *)signalTrxLogin:(NSString *)logingData
 {
     @weakify(self)
-    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    RACSignal *signal = [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
         
-        [self.card exTrxSignLogin:logingData withComplete:^(NSData *loginHandle) {
-            [subscriber sendNext:loginHandle];
+        NSData *okToken = [NSString hexstringToData:[logingData substringWithRange:NSMakeRange(8, 8)]];
+        NSData *accountData = [NSString hexstringToData:[logingData substringWithRange:NSMakeRange(48, 8)]];
+        NSInteger accId = *(int32_t *)[accountData bytes];
+        
+        [self.card exBlockInfo:okToken withComplete:^(NSNumber *blockAmount) {
+            CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
+            account.tempUnblockAmount = blockAmount.longLongValue;
+            
+            [subscriber sendNext:logingData];
             [subscriber sendCompleted];
-        } error:^(NSInteger errorCode) {
-            [subscriber sendError:[self cardCmdError:errorCode errorMsg:@"Transaction login fail."]];
+        } withError:^(NSInteger errorCode) {
+            [subscriber sendError:[self cardCmdError:errorCode errorMsg:@"Get block info fail."]];
         }];
         
         return nil;
+    }] flattenMap:^RACStream *(NSString *loginHexData) {
+        RACSignal *loginSignal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            @strongify(self);
+            [self.card exTrxSignLogin:loginHexData withComplete:^(NSData *loginHandle) {
+                [subscriber sendNext:loginHandle];
+                [subscriber sendCompleted];
+            } error:^(NSInteger errorCode) {
+                [subscriber sendError:[self cardCmdError:errorCode errorMsg:@"Transaction login fail."]];
+            }];
+            
+            return nil;
+        }];
+        
+        return loginSignal;
     }];
     
     return signal;

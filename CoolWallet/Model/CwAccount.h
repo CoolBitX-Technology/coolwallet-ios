@@ -26,6 +26,8 @@ typedef NS_ENUM (NSInteger, CwAccountStatus) {
 @property NSInteger extKeyPointer;
 @property NSInteger intKeyPointer;
 
+@property int64_t tempUnblockAmount; //Exchange Site order block amount, not really unblock
+
 @property NSMutableArray *extKeys;
 @property NSMutableArray *intKeys;
 

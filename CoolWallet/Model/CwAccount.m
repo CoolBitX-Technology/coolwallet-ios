@@ -157,6 +157,7 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
     if([[outputAmount add:_fee] greater:nTotal])
     {
         err = UNSPENTTXSSELECT_LESS;
+        *fee = _fee;
     }
     else
     {
@@ -177,6 +178,7 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
     if([self unspentTxsSelection:amount selectedUtxs:&_selectedUtxs change:&_change fee:&_fee] != UNSPENTTXSSELECT_BASE)
     {
         err = GENTX_LESS;
+        *fee = _fee;
     }
     else
     {
@@ -185,6 +187,7 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
         _unsignedTx.inputs = [[NSMutableArray alloc]init];
         
         CwBtc *totalInputAcmout = [CwBtc BTCWithBTC:[NSNumber numberWithInt:0]];
+        CwBtc *minimumOutputAmount = [amount add:_fee];
         for (CwUnspentTxIndex *utx in _selectedUtxs)
         {
             if (utx.confirmations.intValue == 0) {
@@ -218,7 +221,7 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
             [_unsignedTx.inputs addObject:txin];
             
             totalInputAcmout = [totalInputAcmout add:[utx amount]];
-            if ([totalInputAcmout greater:[amount add:_fee]]) {
+            if ([totalInputAcmout greater:minimumOutputAmount]) {
                 break;
             }
         }

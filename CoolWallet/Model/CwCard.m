@@ -52,7 +52,8 @@
              @"exSessionEstablishCompleteBlock", @"exSessionEstablishErrorBlock",
              @"exBlockBtcCompleteBlock", @"exBlockBtcErrorBlock",
              @"exTrxSignLoginCompleteBlock", @"exTrxSignLoginErrorBlock",
-             @"exBlockCancelCompleteBlock", @"exBlockCancelErrorBlock"];
+             @"exBlockCancelCompleteBlock", @"exBlockCancelErrorBlock",
+             @"exBlockInfoCompleteBlock", @"exBlockInfoErrorBlock"];
 }
 
 @end
@@ -69,6 +70,8 @@
 @property (copy) void (^exTrxSignLoginErrorBlock)(NSInteger errorCode);
 @property (copy) void (^exBlockCancelCompleteBlock)(void);
 @property (copy) void (^exBlockCancelErrorBlock)(NSInteger errorCode);
+@property (copy) void (^exBlockInfoCompleteBlock)(NSNumber *blockAmount);
+@property (copy) void (^exBlockInfoErrorBlock)(NSInteger errorCode);
 
 @end
 
@@ -157,8 +160,18 @@ NSArray *addresses;
         cwCmds = [[NSMutableArray alloc] init];
         cwOutputs = [[NSMutableArray alloc] init];
         
+        self.cardId = nil;
+        self.mode = nil;
+        self.fwVersion = nil;
+        self.uid = nil;
+        self.devCredential = nil;
+        self.hostId = nil;
+        self.hostConfirmStatus = nil;
+        self.hostOtp = nil;
+        self.hdwStatus = nil;
+        self.hdwName = nil;
+        self.hdwAcccountPointer = [NSNumber numberWithInteger:0];
         self.cwHosts = [[NSMutableDictionary alloc] init];
-        
         self.cwAccounts = [[NSMutableDictionary alloc] init];
         
         trxStatus = TrxStatusPrepare;
@@ -1153,8 +1166,8 @@ NSArray *addresses;
     //check unspends in the account
     CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", accountId]];
     
-    //check amount vs (balance - fee)
-    if (amount > account.balance - FEERATE) {
+    //check amount vs (balance - fee - blockAmount)
+    if (amount > account.balance - FEERATE - account.blockAmount + account.tempUnblockAmount) {
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
             [self.delegate didPrepareTransactionError:[NSString stringWithFormat:@"Amount is lower than balance\nTransaction fee: %@ BTC", [[OCAppCommon getInstance] convertBTCStringformUnit: FEERATE]]];
         }
@@ -1187,10 +1200,15 @@ NSArray *addresses;
     //Generate UnsignedTx
     CwTx *unsignedTx;
     CwBtc *fee;
-    [account genUnsignedTxToAddrByAutoCoinSelection:recvAddress change: changeAddress amount:[CwBtc BTCWithSatoshi:[NSNumber numberWithLongLong:amount]] unsignedTx:&unsignedTx fee:&fee];
+    GenTxErr err = [account genUnsignedTxToAddrByAutoCoinSelection:recvAddress change: changeAddress amount:[CwBtc BTCWithSatoshi:[NSNumber numberWithLongLong:amount]] unsignedTx:&unsignedTx fee:&fee];
     
     //check unsigned tx
-    if (unsignedTx==nil || unsignedTx.inputs.count == 0) {
+    if (err == GENTX_LESS) {
+        if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
+            [self.delegate didPrepareTransactionError:[NSString stringWithFormat:@"Amount is lower than balance\nTransaction fee: %@ BTC", fee.BTC]];
+        }
+        return nil;
+    } else if (unsignedTx==nil || unsignedTx.inputs.count == 0) {
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
             [self.delegate didPrepareTransactionError:@"At least 1 confirmation needed before sending out."];
         }
@@ -1400,8 +1418,10 @@ NSArray *addresses;
     [self cwCmdExSessionLogout];
 }
 
--(void) exBlockInfo: (NSData *)okTkn;
+-(void) exBlockInfo: (NSData *)okTkn withComplete:(void (^)(NSNumber *blockAmount))complete withError:(void (^)(NSInteger errorCode))error
 {
+    self.exBlockInfoCompleteBlock = complete;
+    self.exBlockInfoErrorBlock = error;
     [self cwCmdExBlockInfo:okTkn];
 }
 
@@ -4375,13 +4395,12 @@ NSArray *addresses;
         case CwCmdIdBindLogout:
             //output:
             //none
-            [self saveCwCardToFile];
-            
             if ([self.delegate respondsToSelector:@selector(didLogoutHost)]) {
                 [self.delegate didLogoutHost];
             }
             
             if (cmd.cmdResult==0x9000) {
+                [self saveCwCardToFile];
                 [self init];
             } else {
                 NSLog(@"CwCmdIdBindLogout Error %04lX", (long)cmd.cmdResult);
@@ -5413,6 +5432,9 @@ NSArray *addresses;
                 
             } else {
                 NSLog(@"CwCmdIdTrxSign Error %04lX", (long)cmd.cmdResult);
+                if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
+                    [self.delegate didSignTransactionError:[NSString stringWithFormat:@"Card sign error(%04lX)", (long)cmd.cmdResult]];
+                }
             }
             
             break;
@@ -5531,9 +5553,22 @@ NSArray *addresses;
             //amount 8B big-endian
             if (cmd.cmdResult==0x9000) {
                 NSLog(@"trxStatus = %ld", (long)trxStatus);
+                
+                int64_t blockAmount = CFSwapInt64(*(int64_t *)[[NSData dataWithBytes:data+5 length:8] bytes]);
+                NSNumber *amount = [NSNumber numberWithLongLong:blockAmount];
+                NSLog(@"block amount: %lld, %@", blockAmount, amount);
+                if (self.exBlockInfoCompleteBlock) {
+                    self.exBlockInfoCompleteBlock(amount);
+                }
             } else {
                 NSLog(@"CwCmdIdExBlockInfo Error %04lX", (long)cmd.cmdResult);
+                if (self.exBlockInfoErrorBlock) {
+                    self.exBlockInfoErrorBlock(cmd.cmdResult);
+                }
             }
+            
+            self.exBlockInfoCompleteBlock = nil;
+            self.exBlockInfoErrorBlock = nil;
             
             break;
             
@@ -5546,6 +5581,13 @@ NSArray *addresses;
             //nonceSe: 16B nonce generated by SE
             if (cmd.cmdResult==0x9000) {
                 NSLog(@"trxStatus = %ld", (long)trxStatus);
+                NSInteger accountID = *(int32_t *)[[cmd.cmdInput subdataWithRange:NSMakeRange(4, 4)] bytes];
+                int64_t blockAmount = CFSwapInt64(*(int64_t *)[[cmd.cmdInput subdataWithRange:NSMakeRange(8, 8)] bytes]);
+                NSLog(@"block account: %ld, block amount: %lld", accountID, blockAmount);
+                
+                CwAccount *account = [self.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accountID]];
+                account.blockAmount += blockAmount;
+                
                 NSData *okToken = [NSData dataWithBytes:data+32 length:4];
                 NSData *unBlockToken = [NSData dataWithBytes:data+36 length:16];
                 
@@ -5611,17 +5653,6 @@ NSArray *addresses;
             self.exTrxSignLoginErrorBlock = nil;
             
             break;
-            
-//        case CwCmdIdExTrxSignPrepare:
-//            //output:
-//            //none
-//            if (cmd.cmdResult==0x9000) {
-//                NSLog(@"trxStatus = %ld", (long)trxStatus);
-//            } else {
-//                NSLog(@"CwCmdIdExTrxSignPrepare Error %04lX", (long)cmd.cmdResult);
-//            }
-//            
-//            break;
             
         case CwCmdIdExTrxSignLogout:
             //output:

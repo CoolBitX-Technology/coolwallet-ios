@@ -12,5 +12,6 @@
 
 + (NSData*) hexstringToData:(NSString*)hexStr;
 + (NSString*) dataToHexstring:(NSData*)data;
++ (unsigned int)intFromHexString:(NSString *)hexStr;
 
 @end
