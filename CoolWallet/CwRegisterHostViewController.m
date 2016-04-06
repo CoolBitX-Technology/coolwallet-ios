@@ -203,15 +203,18 @@ CwCard *cwCard;
 }
 
 #pragma mark - CwCard Delegates
-/*
--(void) didPrepareService
+-(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
 {
-    NSLog(@"didPrepareService");
-    //self.lblMode.text = @"";
-    //self.lblState.text = @"";
-    [cwCard getModeState];
+    [super didCwCardCommandError:cmdId ErrString:errString];
+    
+    if (cmdId == CwCmdIdBindLogin || cmdId == CwCmdIdBindLoginChlng) {
+        [self performDismiss];
+        
+        [self showHintAlert:nil withMessage:@"Login fail, please try again later." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self.cwManager disconnectCwCard];
+        }]];
+    }
 }
-*/
 
 -(void) didGetModeState
 {
