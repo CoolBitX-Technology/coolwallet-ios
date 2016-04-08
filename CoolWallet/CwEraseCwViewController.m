@@ -211,6 +211,7 @@ CwCard *cwCard;
         
         self.resetHintLabel.hidden = YES;
         self.otpConfirmView.hidden = NO;
+        [self.otpField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0];
         [self.resetBtn setTitle:@"Confirm" forState:UIControlStateNormal];
     } else {
         if (errId == ERR_CMD_NOT_SUPPORT) {

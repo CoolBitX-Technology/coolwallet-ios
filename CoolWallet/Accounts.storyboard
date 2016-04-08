@@ -2553,7 +2553,7 @@ Press the button on the card to see the next set of numbers</string>
                             <constraint firstItem="61Y-z6-fj4" firstAttribute="top" secondItem="rhh-em-eqz" secondAttribute="bottom" constant="42" id="xqE-uw-gj2"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Exit" image="exit" id="Nvp-Uw-wvf"/>
+                    <tabBarItem key="tabBarItem" title="Exit" id="Nvp-Uw-wvf"/>
                     <navigationItem key="navigationItem" title="Exit" id="9zJ-9T-yeD">
                         <barButtonItem key="leftBarButtonItem" image="cancel.png" id="GtB-Cl-358">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3120,7 +3120,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <scene sceneID="3UY-sY-B3E">
             <objects>
                 <navigationController id="k1k-Rz-p6W" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Exit" image="exit" id="0J7-Sm-VOo"/>
+                    <tabBarItem key="tabBarItem" title="Exit" id="0J7-Sm-VOo"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="oul-kg-M2I">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -4010,20 +4010,20 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                     <rect key="frame" x="0.0" y="0.0" width="312" height="21.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Amount(BTC)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECZ-2e-sGU">
-                                                            <rect key="frame" x="8" y="0.0" width="87" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount(BTC)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECZ-2e-sGU">
+                                                            <rect key="frame" x="8" y="0.0" width="90" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GD0-BZ-4Z9">
-                                                            <rect key="frame" x="95" y="0.0" width="87" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GD0-BZ-4Z9">
+                                                            <rect key="frame" x="97" y="0.0" width="90" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Expiration time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eG-gA-iT7">
-                                                            <rect key="frame" x="182" y="0.0" width="87" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expiration time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eG-gA-iT7">
+                                                            <rect key="frame" x="185" y="0.0" width="90" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
@@ -4032,7 +4032,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="trailing" secondItem="2eG-gA-iT7" secondAttribute="trailing" constant="35" id="3Rt-kN-131"/>
+                                                        <constraint firstAttribute="trailing" secondItem="2eG-gA-iT7" secondAttribute="trailing" constant="37" id="3Rt-kN-131"/>
                                                         <constraint firstItem="2eG-gA-iT7" firstAttribute="top" secondItem="ie3-WJ-r5J" secondAttribute="top" id="5Vs-Md-WWE"/>
                                                         <constraint firstItem="GD0-BZ-4Z9" firstAttribute="bottom" secondItem="ECZ-2e-sGU" secondAttribute="bottom" id="AJY-4G-9uK"/>
                                                         <constraint firstItem="GD0-BZ-4Z9" firstAttribute="top" secondItem="2eG-gA-iT7" secondAttribute="top" id="KjP-Cd-fYj"/>
@@ -4043,7 +4043,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                         <constraint firstAttribute="bottom" secondItem="ECZ-2e-sGU" secondAttribute="bottom" constant="1" id="f8s-u2-l56"/>
                                                         <constraint firstItem="ECZ-2e-sGU" firstAttribute="top" secondItem="ie3-WJ-r5J" secondAttribute="top" id="gWw-be-dom"/>
                                                         <constraint firstAttribute="bottom" secondItem="2eG-gA-iT7" secondAttribute="bottom" constant="1" id="hTH-ZC-z5Q"/>
-                                                        <constraint firstItem="2eG-gA-iT7" firstAttribute="leading" secondItem="GD0-BZ-4Z9" secondAttribute="trailing" id="tmP-tg-kf2"/>
+                                                        <constraint firstItem="2eG-gA-iT7" firstAttribute="leading" secondItem="GD0-BZ-4Z9" secondAttribute="trailing" constant="-2" id="tmP-tg-kf2"/>
                                                         <constraint firstItem="GD0-BZ-4Z9" firstAttribute="width" secondItem="2eG-gA-iT7" secondAttribute="width" id="xyF-gl-2Sa"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
@@ -4056,20 +4056,20 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                     <rect key="frame" x="0.0" y="0.0" width="279" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.00000001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JU-qp-woo">
-                                                            <rect key="frame" x="8" y="11" width="87" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00000001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JU-qp-woo">
+                                                            <rect key="frame" x="8" y="12" width="90" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="$450.45" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eVW-nI-Yb6">
-                                                            <rect key="frame" x="95" y="11" width="87" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$450.45" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eVW-nI-Yb6">
+                                                            <rect key="frame" x="98" y="12" width="90" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="06:32pm 7 Jan" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H8W-wS-kaA">
-                                                            <rect key="frame" x="182" y="4" width="87" height="35"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="06:32pm 7 Jan" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H8W-wS-kaA">
+                                                            <rect key="frame" x="188" y="5" width="90" height="33.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
@@ -4124,20 +4124,20 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                     <rect key="frame" x="0.0" y="0.0" width="312" height="21.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Amount(BTC)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDg-Sq-bxa">
-                                                            <rect key="frame" x="8" y="0.0" width="87" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount(BTC)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDg-Sq-bxa">
+                                                            <rect key="frame" x="8" y="0.0" width="90" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3aF-b8-72j">
-                                                            <rect key="frame" x="95" y="0.0" width="87" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3aF-b8-72j">
+                                                            <rect key="frame" x="98" y="0.0" width="90" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Expiration time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kpR-QU-JtI">
-                                                            <rect key="frame" x="182" y="0.0" width="87" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expiration time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kpR-QU-JtI">
+                                                            <rect key="frame" x="185" y="0.0" width="90" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
@@ -4146,8 +4146,8 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="trailing" secondItem="kpR-QU-JtI" secondAttribute="trailing" constant="35" id="01v-WF-gVe"/>
-                                                        <constraint firstItem="kpR-QU-JtI" firstAttribute="leading" secondItem="3aF-b8-72j" secondAttribute="trailing" id="6JI-ar-xnE"/>
+                                                        <constraint firstAttribute="trailing" secondItem="kpR-QU-JtI" secondAttribute="trailing" constant="37" id="01v-WF-gVe"/>
+                                                        <constraint firstItem="kpR-QU-JtI" firstAttribute="leading" secondItem="3aF-b8-72j" secondAttribute="trailing" constant="-3" id="6JI-ar-xnE"/>
                                                         <constraint firstItem="3aF-b8-72j" firstAttribute="width" secondItem="kpR-QU-JtI" secondAttribute="width" id="DKO-h6-Ylo"/>
                                                         <constraint firstItem="3aF-b8-72j" firstAttribute="top" secondItem="kpR-QU-JtI" secondAttribute="top" id="F7E-kW-3UZ"/>
                                                         <constraint firstItem="hDg-Sq-bxa" firstAttribute="top" secondItem="3aF-b8-72j" secondAttribute="top" id="GPS-qP-2vx"/>
@@ -4170,20 +4170,20 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                     <rect key="frame" x="0.0" y="0.0" width="279" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.00000001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I1s-Zd-6fT">
-                                                            <rect key="frame" x="8" y="11" width="87" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00000001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I1s-Zd-6fT">
+                                                            <rect key="frame" x="8" y="12.5" width="90" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="$450.45" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IXm-Tm-oZc">
-                                                            <rect key="frame" x="95" y="11" width="87" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$450.45" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IXm-Tm-oZc">
+                                                            <rect key="frame" x="98" y="12.5" width="90" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="06:32pm 7 Jan" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fcx-uk-vbS">
-                                                            <rect key="frame" x="182" y="4" width="87" height="35"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="06:32pm 7 Jan" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fcx-uk-vbS">
+                                                            <rect key="frame" x="188" y="5" width="90" height="33.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
@@ -4830,7 +4830,6 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <image name="downarrow-01.png" width="33" height="33"/>
         <image name="ex_logo.png" width="1042" height="333"/>
         <image name="exchange.png" width="183" height="183"/>
-        <image name="exit" width="25" height="25"/>
         <image name="flash" width="253" height="77"/>
         <image name="home.png" width="25" height="25"/>
         <image name="home_active.png" width="25" height="25"/>
@@ -4852,7 +4851,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <image name="x.png" width="417" height="417"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="STV-Uv-a0a"/>
+        <segue reference="1rh-8W-cge"/>
         <segue reference="t76-YH-dUj"/>
         <segue reference="gzi-1q-gb8"/>
     </inferredMetricsTieBreakers>

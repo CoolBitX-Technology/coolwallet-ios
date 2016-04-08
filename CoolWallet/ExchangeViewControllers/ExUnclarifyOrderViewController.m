@@ -22,6 +22,8 @@
 @property (strong, nonatomic) CwExUnclarifyOrder *selectOrder;
 @property (strong, nonatomic) CwExchange *exchange;
 
+@property (strong, nonatomic) RACDisposable *disposable;
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
@@ -38,16 +40,23 @@
     self.exchange = exManager.exchange;
     
     @weakify(self)
-    [[[RACObserve(self.exchange, unclarifyOrders) distinctUntilChanged] filter:^BOOL(id value) {
+    self.disposable = [[[RACObserve(self.exchange, unclarifyOrders) distinctUntilChanged] filter:^BOOL(id value) {
         return value != nil;
     }] subscribeNext:^(id value) {
         @strongify(self)
         NSLog(@"unclarifyOrders, %@", value);
         
         [self.tableView reloadData];
-    }];
+    }];    
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
     
-    [exManager requestUnclarifyOrders];
+    if (self.disposable) {
+        [self.disposable dispose];
+    }
 }
 
 - (void) showOTPEnterView

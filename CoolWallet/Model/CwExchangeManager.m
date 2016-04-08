@@ -45,7 +45,6 @@
     static CwExchangeManager *sharedInstance = nil;
     dispatch_once(&pred, ^{
         sharedInstance = [[CwExchangeManager alloc] init];
-        
     });
     return sharedInstance;
 }
@@ -92,8 +91,6 @@
 
 -(void) loginExSession
 {
-    self.sessionStatus = ExSessionProcess;
-    
     @weakify(self);
     [[self loginSignal] subscribeNext:^(id cardResponse) {
         @strongify(self);
@@ -118,7 +115,7 @@
     if (self.card.mode.integerValue == CwCardModeNormal || self.card.mode.integerValue == CwCardModeAuth) {
         [self.card exSessionLogout];
     }
-        
+    
     AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
     [manager GET:ExSessionLogout parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         
@@ -345,7 +342,7 @@
 -(RACSignal *)loginSignal
 {
     @weakify(self);
-    RACSignal *signal = [[[[self signalCreateExSession] flattenMap:^RACStream *(NSDictionary *response) {
+    RACSignal *signal = [[[[[self signalCreateExSession] flattenMap:^RACStream *(NSDictionary *response) {
         @strongify(self);
         NSString *hexString = [response objectForKey:@"challenge"];
         
@@ -361,6 +358,8 @@
         NSString *hexString = [response objectForKey:@"response"];
         
         return [self signalEstablishSessionFromCard:[NSString hexstringToData:hexString]];
+    }] doNext:^(id value) {
+        self.sessionStatus = ExSessionProcess;
     }];
     
     return signal;
@@ -826,13 +825,13 @@
                            @"id": accId,
                            @"extn": @{
                                    @"num": extKeyPointer,
-                                   @"pub": account.externalKeychain.hexPublicKey,
-                                   @"chaincode": account.externalKeychain.hexChainCode
+                                   @"pub": account.externalKeychain.hexPublicKey == nil ? @"" : account.externalKeychain.hexPublicKey,
+                                   @"chaincode": account.externalKeychain.hexChainCode == nil ? @"" : account.externalKeychain.hexChainCode
                                    },
                            @"intn": @{
                                    @"num": intKeyPointer,
-                                   @"pub": account.internalKeychain.hexPublicKey,
-                                   @"chaincode": account.internalKeychain.hexChainCode
+                                   @"pub": account.internalKeychain.hexPublicKey == nil ? @"" : account.internalKeychain.hexPublicKey,
+                                   @"chaincode": account.internalKeychain.hexChainCode == nil ? @"" : account.internalKeychain.hexChainCode
                                    }
                            };
     return data;

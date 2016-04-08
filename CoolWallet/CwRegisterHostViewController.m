@@ -182,8 +182,11 @@ CwCard *cwCard;
     self.actBusyIndicator.hidden = NO;
     [self.actBusyIndicator startAnimating];
     
-    _viewOTPConfirm.hidden = NO;
-    _btnRegisterHost.hidden = NO;
+    self.viewOTPConfirm.hidden = NO;
+    self.btnRegisterHost.hidden = NO;
+    
+    [self.txtOtp performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0];
+
     NSLog(@"cwManager = %@",self.txtDescription);
     [self.cwManager.connectedCwCard registerHost: self.txtIdentifier Description: self.txtDescription];
 }
