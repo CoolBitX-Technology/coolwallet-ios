@@ -86,4 +86,16 @@
     return [NSNumber numberWithInt:self.keyIndex];
 }
 
+-(NSData *) getPublicKeyAtIndex:(int)index
+{
+    BTCKey *key = [self keyAtIndex:index];
+    if (key == nil) {
+        return nil;
+    }
+    
+    NSData *publicKey = [key.uncompressedPublicKey subdataWithRange:NSMakeRange(1, 64)];
+    
+    return publicKey;
+}
+
 @end

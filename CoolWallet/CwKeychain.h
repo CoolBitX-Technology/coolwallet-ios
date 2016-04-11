@@ -31,5 +31,6 @@ typedef NS_ENUM (NSInteger, CwKeychainType) {
 
 -(BTCKey *) getAddressAtIndex:(int)index;
 -(BTCKey *) genNextAddress;
+-(NSData *) getPublicKeyAtIndex:(int)index;
 
 @end

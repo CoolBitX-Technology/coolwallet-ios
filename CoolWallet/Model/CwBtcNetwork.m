@@ -352,10 +352,8 @@ BOOL didGetTransactionByAccountFlag[5];
     CwAccount *account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", accountId.integerValue]];
     int64_t ori_balance = account.balance;
     
-    NSLog(@"111111, %lld", account.balance);
     BlockChain *blockChain = [[BlockChain alloc] init];
     [blockChain getBalanceByAccountID:accountId.integerValue];
-    NSLog(@"222222, %lld, ori_balance = %lld", account.balance, ori_balance);
     
     if (account.balance != ori_balance) {
         [cwCard setAccount:accountId.integerValue Balance:account.balance];
