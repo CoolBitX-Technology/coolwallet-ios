@@ -1010,7 +1010,7 @@ NSArray *addresses;
     NSArray *addrs = [accountSetting objectForKey:@"addrs"];
     CwAddress *address = (CwAddress *)addrs[keyId];
     
-    BOOL keychainExists = ![keychain isEqual:[NSNull null]] && keychain.extendedPublicKey != nil;
+    BOOL keychainExists = ![keychain isKindOfClass:[NSNull class]] && keychain.extendedPublicKey != nil;
     //get address
     if (address.address==nil || [address.address isEqualToString:@""]) {
         
