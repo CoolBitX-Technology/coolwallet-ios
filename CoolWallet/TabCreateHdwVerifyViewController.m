@@ -134,6 +134,8 @@
 
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
 {
+    [super didCwCardCommandError:cmdId ErrString:errString];
+    
     if (cmdId == CwCmdIdHdwInitWalletGenConfirm) {
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Try again" style:UIAlertActionStyleDefault handler:nil];
         
@@ -184,25 +186,6 @@
     //[self performSegueWithIdentifier:@"unwindToHome" sender:self];
     //back to previous controller
     //[self.navigationController popViewControllerAnimated:YES];
-}
-
-#pragma mark - CwManager Delegate
--(void) didDisconnectCwCard: (NSString *)cardName
-{
-    //Add a notification to the system
-    UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
-    notify.soundName = UILocalNotificationDefaultSoundName;
-    notify.applicationIconBadgeNumber=1;
-    [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
-    
-    // Get the storyboard named secondStoryBoard from the main bundle:
-    UIStoryboard *secondStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    // Load the view controller with the identifier string myTabBar
-    // Change UIViewController to the appropriate class
-    UIViewController *listCV = (UIViewController *)[secondStoryBoard instantiateViewControllerWithIdentifier:@"CwMain"];
-    // Then push the new view controller in the usual way:
-    [self.parentViewController presentViewController:listCV animated:YES completion:nil];
 }
 
 @end

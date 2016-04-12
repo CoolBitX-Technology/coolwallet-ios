@@ -14,8 +14,6 @@
 
 @interface TabCreateHdwVerifyViewController:BaseViewController <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate, UITextViewDelegate>
 
-@property CwManager *cwManager;
-
 @property NSString *mnemonic;
 @property BOOL SeedOnCard;
 @property NSInteger Seedlen;

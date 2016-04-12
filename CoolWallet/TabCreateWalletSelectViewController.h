@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TabCreateWalletSelectViewController :UIViewController <UITableViewDataSource, UITableViewDelegate>
+#import "BaseViewController.h"
+
+@interface TabCreateWalletSelectViewController : BaseViewController <UITableViewDataSource, UITableViewDelegate>
 
 @end

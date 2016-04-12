@@ -89,6 +89,8 @@ CwBtcNetWork *btcNet;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
     TabbarAccountViewController *parantViewController = (TabbarAccountViewController *)self.parentViewController;
     parantViewController.delegate = nil;
     

@@ -37,9 +37,9 @@ CwManager *cwManager;
 {
     [super viewWillDisappear:animated];
     
-//    if (self.cwManager.connectedCwCard.mode != nil && self.cwManager.connectedCwCard.mode.integerValue == CwCardModeNormal) {
-//        [self.cwManager.connectedCwCard saveCwCardToFile];
-//    }
+    if (self.cwManager.delegate && self.cwManager.delegate == self) {
+        self.cwManager.delegate = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
