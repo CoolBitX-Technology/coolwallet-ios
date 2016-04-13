@@ -330,8 +330,11 @@ NSString *Label;
     
     if(addr) {
         UILabel *lblAddressLabel = (UILabel *)[cell viewWithTag:100];
-        if([addr.note compare:@""] == 0) lblAddressLabel.text = [NSString stringWithFormat: @"%ld", (long)indexPath.row];
-        else lblAddressLabel.text = addr.note;
+        if([addr.note compare:@""] == 0) {
+            lblAddressLabel.text = [NSString stringWithFormat: @"%ld", (long)indexPath.row];
+        } else {
+            lblAddressLabel.text = addr.note;
+        }
     
         UILabel *lblAddressText = (UILabel *)[cell viewWithTag:101];
         lblAddressText.text = addr.address;
