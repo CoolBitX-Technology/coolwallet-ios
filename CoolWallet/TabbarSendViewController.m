@@ -95,10 +95,18 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     [super viewWillAppear:animated];
     
     UIViewController *parantViewController = self.parentViewController;
-    [parantViewController.navigationItem setTitle:@"Send"];
-    self.addButton = ((TabbarAccountViewController *)parantViewController).addButton;
-    [self.addButton setEnabled:NO];
-    [self.addButton setTintColor:[UIColor clearColor]];
+    parantViewController.navigationController.navigationBar.hidden = NO;
+    if (![parantViewController.navigationItem.title isEqualToString:@"Send"]) {
+        [parantViewController.navigationItem setTitle:@"Send"];
+        self.addButton = ((TabbarAccountViewController *)parantViewController).addButton;
+        [self.addButton setEnabled:NO];
+        [self.addButton setTintColor:[UIColor clearColor]];
+    }
+    
+    cwCard.delegate = self;
+    self.btcNet.delegate = self;
+    
+    [self setAccountButton];
     
     if (self.amountUnit == BTC) {
         [self.btnAmountUnit setTitle:@"BTC" forState:UIControlStateNormal];
@@ -108,14 +116,15 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         [self.btnAmountConvertUnit setTitle:@"BTC" forState:UIControlStateNormal];
     }
     
-    cwCard.delegate = self;
-    self.btcNet.delegate = self;
-    
-    [self setAccountButton];
-    
     self.txtReceiverAddress.text = cwCard.paymentAddress;
-    if (cwCard.amount > 0) {
-        self.txtAmount.text = [[OCAppCommon getInstance] convertBTCStringformUnit: cwCard.amount];
+    NSString *receiveAmount = cwCard.amount > 0 ? [[OCAppCommon getInstance] convertBTCStringformUnit: cwCard.amount] : nil;
+    if (receiveAmount != nil) {
+        if (self.amountUnit == BTC) {
+            self.txtAmount.text = receiveAmount;
+        } else {
+            self.lblConvertAmount.text = receiveAmount;
+        }
+        
         [self doneAmountItem];
     } else {
         self.txtAmount.text = @"";
@@ -135,6 +144,8 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 
 -(void) viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     
@@ -270,9 +281,18 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         } else {
             value = [[OCAppCommon getInstance] convertBTCFromFiatMoney:[self.txtAmount.text doubleValue] currRate:self.cwManager.connectedCwCard.currRate];
         }
+        
+        self.lblConvertAmount.text = value;
+    } else if ([self.lblConvertAmount.text compare:@""] != 0) {
+        if (self.amountUnit == BTC) {
+            value = [[OCAppCommon getInstance] convertBTCFromFiatMoney:[self.lblConvertAmount.text doubleValue] currRate:self.cwManager.connectedCwCard.currRate];
+        } else {
+            NSString *satoshi = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.lblConvertAmount.text];
+            value =  [[OCAppCommon getInstance] convertFiatMoneyString:[satoshi longLongValue] currRate:self.cwManager.connectedCwCard.currRate];
+        }
+        
+        self.txtAmount.text = value;
     }
-    
-    self.lblConvertAmount.text = value;
     
     [self.txtAmount resignFirstResponder];
 }

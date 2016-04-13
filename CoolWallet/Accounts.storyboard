@@ -1301,7 +1301,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="sjg-2y-FgV">
-                                <rect key="frame" x="0.0" y="258" width="320" height="189"/>
+                                <rect key="frame" x="0.0" y="262" width="320" height="185"/>
                                 <color key="backgroundColor" red="0.098039215686274508" green="0.098039215686274508" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AddressPrototypeCell" rowHeight="44" id="ec4-Bq-Wbu">
@@ -1352,7 +1352,7 @@
                             <constraint firstAttribute="trailing" secondItem="sjg-2y-FgV" secondAttribute="trailing" id="Aok-8X-J6b"/>
                             <constraint firstItem="NfR-Hi-h5x" firstAttribute="leading" secondItem="EbX-vV-Rbv" secondAttribute="leading" constant="10" id="ET0-9V-K7m"/>
                             <constraint firstItem="4eL-tr-5z2" firstAttribute="top" secondItem="sjg-2y-FgV" secondAttribute="bottom" constant="8" id="KPo-qH-I8y"/>
-                            <constraint firstItem="sjg-2y-FgV" firstAttribute="top" secondItem="NfR-Hi-h5x" secondAttribute="bottom" id="Kyd-UE-cO7"/>
+                            <constraint firstItem="sjg-2y-FgV" firstAttribute="top" secondItem="NfR-Hi-h5x" secondAttribute="bottom" constant="4" id="Kyd-UE-cO7"/>
                             <constraint firstItem="meh-2k-drU" firstAttribute="top" secondItem="BTH-ID-Bp0" secondAttribute="bottom" id="MY6-QS-ciK"/>
                             <constraint firstAttribute="trailing" secondItem="meh-2k-drU" secondAttribute="trailing" constant="10" id="VAe-qO-kai"/>
                             <constraint firstItem="NfR-Hi-h5x" firstAttribute="top" secondItem="meh-2k-drU" secondAttribute="bottom" constant="-1" id="WHY-PB-5jJ"/>
@@ -1621,10 +1621,10 @@
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xCL-CA-evD">
-                                <rect key="frame" x="10" y="128" width="300" height="323"/>
+                                <rect key="frame" x="10" y="124" width="300" height="327"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uPl-B4-yPs">
-                                        <rect key="frame" x="0.0" y="275" width="300" height="48"/>
+                                        <rect key="frame" x="0.0" y="279" width="300" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="Ems-tU-sC2"/>
                                         </constraints>
@@ -1658,9 +1658,9 @@
                                                     <constraint firstAttribute="width" constant="25" id="3TM-86-mPp"/>
                                                     <constraint firstAttribute="height" constant="25" id="gk3-6D-ZVR"/>
                                                 </constraints>
-                                                <state key="normal" title="Button" backgroundImage="camera.png"/>
+                                                <state key="normal" backgroundImage="camera.png"/>
                                                 <connections>
-                                                    <action selector="btnScanQRcode:" destination="wAB-p2-fGw" eventType="touchUpInside" id="BrS-v8-9HD"/>
+                                                    <segue destination="dBD-e1-Rf0" kind="push" id="2lY-qi-RRt"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iF0-oe-mii">
@@ -1854,7 +1854,7 @@
                             <constraint firstItem="nfm-Qe-SZj" firstAttribute="leading" secondItem="m7U-rq-Wh7" secondAttribute="leading" constant="10" id="CfN-6z-FwU"/>
                             <constraint firstItem="RsC-2T-ykA" firstAttribute="top" secondItem="xCL-CA-evD" secondAttribute="bottom" constant="4" id="GJj-Ul-6jp"/>
                             <constraint firstItem="nfm-Qe-SZj" firstAttribute="top" secondItem="c4B-G7-DPO" secondAttribute="bottom" id="Hhv-3c-Q7b"/>
-                            <constraint firstItem="xCL-CA-evD" firstAttribute="top" secondItem="mdD-iU-9Ev" secondAttribute="bottom" constant="4" id="T12-fO-wWN"/>
+                            <constraint firstItem="xCL-CA-evD" firstAttribute="top" secondItem="mdD-iU-9Ev" secondAttribute="bottom" id="T12-fO-wWN"/>
                             <constraint firstItem="mdD-iU-9Ev" firstAttribute="leading" secondItem="m7U-rq-Wh7" secondAttribute="leading" constant="10" id="VIr-Gc-erz"/>
                             <constraint firstAttribute="trailing" secondItem="xCL-CA-evD" secondAttribute="trailing" constant="10" id="WnF-1Z-qll"/>
                             <constraint firstAttribute="trailing" secondItem="mdD-iU-9Ev" secondAttribute="trailing" constant="10" id="Xuk-dd-hjh"/>
@@ -1884,7 +1884,6 @@
                         <outlet property="sendToView" destination="nwM-ir-okK" id="iFN-CZ-sxW"/>
                         <outlet property="txtAmount" destination="M7n-jq-rGW" id="Ioe-EN-N3r"/>
                         <outlet property="txtReceiverAddress" destination="WEM-CZ-SAp" id="hgo-PS-NbT"/>
-                        <segue destination="dBD-e1-Rf0" kind="push" identifier="ScanQRSegue" id="rbu-Po-3CO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W12-XH-dVQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2450,12 +2449,8 @@ Press the button on the card to see the next set of numbers</string>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="cameraguide" translatesAutoresizingMaskIntoConstraints="NO" id="gN3-rz-Rwh">
                                 <rect key="frame" x="43" y="146" width="234" height="234"/>
                             </imageView>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yr1-4c-rbH">
-                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="calibratedWhite"/>
-                            </view>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="INa-kg-XG5">
-                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="INa-kg-XG5">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="2Kp-bJ-WtS"/>
@@ -2478,16 +2473,13 @@ Press the button on the card to see the next set of numbers</string>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="BwF-S3-hUu" secondAttribute="trailing" constant="30" id="1ZJ-T2-HZA"/>
-                            <constraint firstItem="Yr1-4c-rbH" firstAttribute="width" secondItem="INa-kg-XG5" secondAttribute="width" id="9zy-Gg-XcM"/>
+                            <constraint firstItem="INa-kg-XG5" firstAttribute="top" secondItem="9h1-d8-yXy" secondAttribute="bottom" id="3lH-bB-JLz"/>
                             <constraint firstItem="BwF-S3-hUu" firstAttribute="top" secondItem="E4j-86-zY8" secondAttribute="top" constant="41" id="AyZ-Ko-HFT"/>
                             <constraint firstAttribute="centerY" secondItem="gN3-rz-Rwh" secondAttribute="centerY" id="GEI-EE-LT8"/>
-                            <constraint firstItem="Yr1-4c-rbH" firstAttribute="centerX" secondItem="INa-kg-XG5" secondAttribute="centerX" id="Gzu-bK-cLG"/>
                             <constraint firstAttribute="trailing" secondItem="INa-kg-XG5" secondAttribute="trailing" id="I8J-OT-pAj"/>
-                            <constraint firstItem="Yr1-4c-rbH" firstAttribute="height" secondItem="INa-kg-XG5" secondAttribute="height" id="Yj1-5J-TEi"/>
                             <constraint firstAttribute="centerX" secondItem="gN3-rz-Rwh" secondAttribute="centerX" id="cpR-4R-f2E"/>
                             <constraint firstItem="BwF-S3-hUu" firstAttribute="leading" secondItem="E4j-86-zY8" secondAttribute="leading" constant="30" id="ffW-QI-HHx"/>
                             <constraint firstAttribute="centerX" secondItem="BwF-S3-hUu" secondAttribute="centerX" id="kQw-ow-4hz"/>
-                            <constraint firstItem="Yr1-4c-rbH" firstAttribute="centerY" secondItem="INa-kg-XG5" secondAttribute="centerY" id="szz-vH-uhs"/>
                             <constraint firstItem="INa-kg-XG5" firstAttribute="leading" secondItem="E4j-86-zY8" secondAttribute="leading" id="zX9-9d-fXt"/>
                         </constraints>
                     </view>
