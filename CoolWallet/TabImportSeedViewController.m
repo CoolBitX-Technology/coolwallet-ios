@@ -47,9 +47,6 @@
 
 @end
 
-CwCard *cwCard;
-CwBtcNetWork *btcNet;
-
 @implementation TabImportSeedViewController
 
 - (void)viewDidLoad {
@@ -57,8 +54,6 @@ CwBtcNetWork *btcNet;
     
     _currentMovedUpHeight = 0.0f;
     //find CW via BLE
-    cwCard = self.cwManager.connectedCwCard;
-    btcNet = [CwBtcNetWork sharedManager];
     self.txtSeed.delegate = self;
     
     self.wordSeeds = [NYMnemonic getSeedsWithLanguage:@"english"];

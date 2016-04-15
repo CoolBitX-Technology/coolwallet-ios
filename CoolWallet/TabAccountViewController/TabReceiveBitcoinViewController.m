@@ -331,7 +331,7 @@ NSString *Label;
     if(addr) {
         UILabel *lblAddressLabel = (UILabel *)[cell viewWithTag:100];
         if([addr.note compare:@""] == 0) {
-            lblAddressLabel.text = [NSString stringWithFormat: @"%ld", (long)indexPath.row];
+            lblAddressLabel.text = [NSString stringWithFormat: @"%d", (int)indexPath.row + 1];
         } else {
             lblAddressLabel.text = addr.note;
         }
