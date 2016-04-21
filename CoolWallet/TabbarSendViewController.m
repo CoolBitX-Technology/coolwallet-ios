@@ -196,8 +196,11 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 }
 
 - (IBAction)btnSendBitcoin:(id)sender {
+    if ([self getSendAmountWithSatoshi] < 1) {
+        [self showHintAlert:@"Unable to send" withMessage:@"Please enter a valid amount." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        return;
+    }
     
-    if([self.txtReceiverAddress.text compare:@""] == 0 ) return;
     if (![self isValidBitcoinAddress:self.txtReceiverAddress.text]) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to send" message:@"Invalid Bitcoin address" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -303,6 +306,18 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     return verify == ADDRESS_VERIFY_BASE;
 }
 
+-(long long) getSendAmountWithSatoshi
+{
+    NSString *sato;
+    if (self.amountUnit == BTC) {
+        sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
+    } else {
+        sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.lblConvertAmount.text];
+    }
+    
+    return [sato longLongValue];
+}
+
 #pragma marks - Account Button Actions
 
 - (void)setAccountButton{
@@ -377,14 +392,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         return;
     }
     
-    NSString *sato;
-    if (self.amountUnit == BTC) {
-        sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
-    } else {
-        sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.lblConvertAmount.text];
-    }
-    
-    [cwCard prepareTransaction: [sato longLongValue] Address:self.txtReceiverAddress.text Change: self.genAddr.address];
+    [cwCard prepareTransaction: [self getSendAmountWithSatoshi] Address:self.txtReceiverAddress.text Change: self.genAddr.address];
 }
 
 -(void) cancelTransaction
