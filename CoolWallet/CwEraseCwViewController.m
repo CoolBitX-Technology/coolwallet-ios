@@ -212,7 +212,13 @@ CwCard *cwCard;
         self.resetHintLabel.hidden = YES;
         self.otpConfirmView.hidden = NO;
         [self.otpField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0];
-        [self.resetBtn setTitle:@"Confirm" forState:UIControlStateNormal];
+        
+        if (![self.resetBtn.currentTitle isEqualToString:@"Confirm"]) {
+            [self.resetBtn setTitle:@"Confirm" forState:UIControlStateNormal];
+            RAC(self.resetBtn, enabled) = [self.otpField.rac_textSignal map:^NSNumber *(NSString *text) {
+                return @(text.length == 6);
+            }];
+        }
     } else {
         if (errId == ERR_CMD_NOT_SUPPORT) {
             // old firmware, allow reset directly
