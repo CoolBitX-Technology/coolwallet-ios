@@ -236,6 +236,7 @@ CwCard *cwCard;
         
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             self.otpField.text = @"";
+            [self.cwManager.connectedCwCard genResetOtp];
         }];
         [alertController addAction:okAction];
         
