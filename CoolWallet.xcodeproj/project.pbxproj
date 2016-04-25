@@ -145,6 +145,7 @@
 		F4A7CC4B1C5884A100E40CD1 /* ExMatchedOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */; };
 		F4A7CC4F1C58959A00E40CD1 /* ExOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4E1C58959A00E40CD1 /* ExOrderCell.m */; };
 		F4A88C351C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A88C341C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m */; };
+		F4AB53F41CCE2FEC008A61B6 /* bitcoin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4AB53F31CCE2FEC008A61B6 /* bitcoin@2x.png */; };
 		F4BE27991C995A3E009B8104 /* cw_card.png in Resources */ = {isa = PBXBuildFile; fileRef = F4BE27931C995A3E009B8104 /* cw_card.png */; };
 		F4BE279A1C995A3E009B8104 /* exchange.png in Resources */ = {isa = PBXBuildFile; fileRef = F4BE27941C995A3E009B8104 /* exchange.png */; };
 		F4BE279B1C995A3E009B8104 /* hosts.png in Resources */ = {isa = PBXBuildFile; fileRef = F4BE27951C995A3E009B8104 /* hosts.png */; };
@@ -428,6 +429,7 @@
 		F4A7CC501C58DFFE00E40CD1 /* CwExAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExAPI.h; path = Model/CwExAPI.h; sourceTree = "<group>"; };
 		F4A88C331C75A33F007AC3C1 /* ExUnclarifyOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExUnclarifyOrderViewController.h; sourceTree = "<group>"; };
 		F4A88C341C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExUnclarifyOrderViewController.m; sourceTree = "<group>"; };
+		F4AB53F31CCE2FEC008A61B6 /* bitcoin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitcoin@2x.png"; sourceTree = "<group>"; };
 		F4BE27931C995A3E009B8104 /* cw_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cw_card.png; sourceTree = "<group>"; };
 		F4BE27941C995A3E009B8104 /* exchange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exchange.png; sourceTree = "<group>"; };
 		F4BE27951C995A3E009B8104 /* hosts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hosts.png; sourceTree = "<group>"; };
@@ -844,6 +846,7 @@
 		EFF1ACC219EFFCEA00DD0BCB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				F4AB53F31CCE2FEC008A61B6 /* bitcoin@2x.png */,
 				F4832FD01C9F9D280092A322 /* change.png */,
 				F4832FCC1C9F9D180092A322 /* white_frame_small.png */,
 				F4832FCD1C9F9D180092A322 /* white_frame.png */,
@@ -1077,6 +1080,7 @@
 				EFA3410A1AA6B81C0035AC6D /* add.png in Resources */,
 				EFAC5FBC1AAD392B0042FF8C /* Accounts.storyboard in Resources */,
 				EFA3410B1AA6B81C0035AC6D /* addressbook.png in Resources */,
+				F4AB53F41CCE2FEC008A61B6 /* bitcoin@2x.png in Resources */,
 				EFFA18321B450EA600FF8FC6 /* FrontViewController.xib in Resources */,
 				EFA341311AA6B81C0035AC6D /* search.png in Resources */,
 				EFA341281AA6B81C0035AC6D /* logo2.png in Resources */,

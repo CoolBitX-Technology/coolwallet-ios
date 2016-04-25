@@ -115,14 +115,23 @@
     [[[[[balanceSignal filter:^BOOL(NSNumber *balance) {
         @strongify(self)
         return self.amountLabel != nil;
-    }] map:^NSString *(NSNumber *balance) {
+    }] map:^NSMutableAttributedString *(NSNumber *balance) {
+        NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+        attachment.image = [UIImage imageNamed:@"bitcoin.png"];
+        
+        NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+        
         OCAppCommon *appCommon = [OCAppCommon getInstance];
-        return [NSString stringWithFormat: @"%@ %@", [appCommon convertBTCStringformUnit: balance.longLongValue], appCommon.BitcoinUnit];
+        
+        NSMutableAttributedString *myString= [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", [appCommon convertBTCStringformUnit: balance.longLongValue]]];
+        [myString insertAttributedString:attachmentString atIndex:0];
+        
+        return myString;
     }] distinctUntilChanged]
      deliverOn:[RACScheduler mainThreadScheduler]]
-     subscribeNext:^(NSString *amount) {
+     subscribeNext:^(NSMutableAttributedString *amount) {
         @strongify(self)
-        self.amountLabel.text = amount;
+        self.amountLabel.attributedText = amount;
     }];
     
     [[[RACObserve(self.reservedView, hidden) distinctUntilChanged]
