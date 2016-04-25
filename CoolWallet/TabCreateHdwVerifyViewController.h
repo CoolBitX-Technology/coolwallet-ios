@@ -17,7 +17,6 @@
 @property NSString *mnemonic;
 @property BOOL SeedOnCard;
 @property NSInteger Seedlen;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actBusyIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *lblSeedOnCardCheck;
 @property (weak, nonatomic) IBOutlet UILabel *lblSeedVerifyCheck;
 @property (weak, nonatomic) IBOutlet UILabel *lblSeedDetail;

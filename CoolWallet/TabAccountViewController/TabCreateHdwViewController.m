@@ -12,9 +12,9 @@
 #import "NYMnemonic.h"
 #import "TabCreateHdwVerifyViewController.h"
 #import "TabImportSeedViewController.h"
+#import "CwCommandDefine.h"
 
-@interface TabCreateHdwViewController () <CwManagerDelegate, CwCardDelegate, UITextFieldDelegate, UITextViewDelegate>
-@property CwManager *cwManager;
+@interface TabCreateHdwViewController () <UITextFieldDelegate, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtHdwName;
 @property (weak, nonatomic) IBOutlet UILabel *lblSeedLen;
@@ -50,16 +50,12 @@
     [super viewDidLoad];
     
     checkWrittenDown = NO;
-    // Do any additional setup after loading the view.
-    //find CW via BLE
-    self.cwManager = [CwManager sharedManager];
-    self.cwManager.connectedCwCard.delegate = self;
     
     self.txtHdwName.delegate = self;
     self.txtSeed.delegate = self;
     
     // Generating a mnemonic
-    [self genMnemonic: [NSNumber numberWithInt: [self.lblSeedLen.text intValue]*32/3]];
+//    [self genMnemonic: [NSNumber numberWithInt: [self.lblSeedLen.text intValue]*32/3]];
     //mnemonic = [NYMnemonic generateMnemonicString:@128 language:@"english"];
     //NSLog(@"mnemonic = %@",mnemonic);
     
@@ -70,8 +66,6 @@
     [super viewWillAppear:animated];
     
     self.actBusyIndicator.hidden = YES;
-    //[self.actBusyIndicator startAnimating];
-    //[self.swSeedOnCard setOn:YES animated:YES];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -83,13 +77,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)unwindHdwToHomeViewcontroller:(UIStoryboardSegue *)unwindSegue
-{
-    NSLog(@"unwindHdwToHomeViewcontroller");
-    //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITextFieldDelegate Delegates
@@ -142,8 +129,6 @@
     
     self.txtSeed.text = showSeedStr;
     self.txtSeed2.text = showSeedStr2;
-    
-    //self.txtSeed.text = mnemonic;
 }
 
 -(void) updateSeedLen {
@@ -151,7 +136,6 @@
     NSLog(@"discreteValue = %d", discreteValue);
     if (self.swSeedOnCard.on) {
         //48/72/96
-        //self.lblSeedLen.text = [[NSString alloc] initWithFormat:@"%d",  (discreteValue * 24 + 48)];
         self.lblSeedLen.text = [[NSString alloc] initWithFormat:@"%d",  (discreteValue * 4 + 8)];
         [self SetBtnwrittenDownToDefult];
     } else {
@@ -220,11 +204,6 @@
         
         self.btnCreateHdw.hidden = NO;
         self.btnVerifySeed.hidden = YES;
-        /*
-         [self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue]];
-         
-         self.actBusyIndicator.hidden = NO;
-         [self.actBusyIndicator startAnimating];*/
         
     } else {
         self.txtSeed.hidden=NO;
@@ -250,21 +229,10 @@
         //ask card to generate seed
         //[self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue]];
         
-        [self.cwManager.connectedCwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:YES];
-        [self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue] * 6];
-        
         [self showIndicatorView:@"Generating seed, please wait"];
         
-    } else {
-        //send seed to Card
-        NSString *seed = [NYMnemonic deterministicSeedStringFromMnemonicString:self.txtSeed.text
-                                                                    passphrase:@""
-                                                                      language:@"english"];
-        
-        //=> "d71de856f81a8acc65e6fc851a38d4d7ec216fd0796d0a6827a3ad6ed5511a30fa280f12eb2e47ed2ac03b5c462a0358d18d69fe4f985ec81778c1b370b652a8"
-        [self.cwManager.connectedCwCard initHdw:self.txtHdwName.text BySeed:seed];
-
-        [self showIndicatorView:@""];
+        [self.cwManager.connectedCwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:YES];
+        [self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue] * 6];
     }
 }
 
@@ -288,24 +256,21 @@
 
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
 {
-    NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
-                                                   message: msg
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
+    [super didCwCardCommandError:cmdId ErrString:errString];
     
-    [alert show];
+    if (cmdId == CwCmdIdHdwInitWalletGen) {
+        [self performDismiss];
+        
+        [self showHintAlert:@"Init wallet fail" withMessage:@"CoolWallet will disconnect, please try again later." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [self.cwManager disconnectCwCard];
+        }]];
+    }
 }
 
 -(void) didSetSecurityPolicy
 {
     CwCard *cwCard = self.cwManager.connectedCwCard;
     NSLog(@"security policy: OTP(%@)/PressButton(%@)/Wachdog(%@)/DisplayAddress(%@)", cwCard.securityPolicy_OtpEnable, cwCard.securityPolicy_BtnEnable, cwCard.securityPolicy_WatchDogEnable, cwCard.securityPolicy_DisplayAddressEnable);
-    
-//    if (self.swSeedOnCard.on && self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable.boolValue) {
-//        [self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue] * 6];
-//    }
 }
 
 -(void) didInitHdwByCard
@@ -334,45 +299,6 @@
     [self performDismiss];
 }
 
--(void) didInitHdwConfirm
-{
-    //disable btn
-    //self.btnConfirmHdw.enabled = NO;
-    //self.btnConfirmHdw.backgroundColor = [UIColor grayColor];
-    /*
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"HDW Created"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];
-    */
-    //back to previous controller
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-#pragma mark - CwManager Delegate
--(void) didDisconnectCwCard: (NSString *)cardName
-{
-    NSLog(@"disconnect");
-    //Add a notification to the systemek3
-    /*
-    UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
-    notify.soundName = UILocalNotificationDefaultSoundName;
-    notify.applicationIconBadgeNumber=1;
-    [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
-
-    // Get the storyboard named secondStoryBoard from the main bundle:
-    UIStoryboard *secondStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    // Load the view controller with the identifier string myTabBar
-    // Change UIViewController to the appropriate class
-    UIViewController *listCV = (UIViewController *)[secondStoryBoard instantiateViewControllerWithIdentifier:@"CwMain"];
-    // Then push the new view controller in the usual way:
-    [self.parentViewController presentViewController:listCV animated:YES completion:nil];
-     */
-}
-
 - (IBAction)btnVerifySeed:(id)sender {
     if(_swSeedOnCard.on){
         if(checkWrittenDown == NO){
@@ -387,32 +313,6 @@
     }
     
     [self performSegueWithIdentifier:@"CreateVerifySegue" sender:self];
-}
-
-- (IBAction)btnImportSeed:(id)sender {
-    [self performSegueWithIdentifier:@"ImportSeedSegue" sender:self];
-}
-
-- (void) showIndicatorView:(NSString *)Msg {
-    mHUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:mHUD];
-    
-    //如果设置此属性则当前的view置于后台
-    mHUD.dimBackground = YES;
-    mHUD.labelText = Msg;
-    
-    [mHUD show:YES];
-
-}
-
-- (void) performDismiss
-{
-    if(mHUD != nil) {
-        [mHUD removeFromSuperview];
-        //[mHUD release];
-        mHUD = nil;
-    }
-    //[IndicatorAlert dismissWithClickedButtonIndex:0 animated:NO];
 }
 
 @end

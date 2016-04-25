@@ -46,8 +46,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.actBusyIndicator.hidden = YES;
-    //[self.actBusyIndicator startAnimating];
+    if (!self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable.boolValue) {
+        [self.cwManager.connectedCwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:YES];
+    }
 }
 
 - (void)ShowSeedDetail
@@ -79,14 +80,10 @@
 
 - (IBAction)btnCreateWallet:(id)sender {
     NSLog(@"btnCreateWallet  SeedOnCard = %d",SeedOnCard);
+    [self showIndicatorView:@""];
+    
     if (SeedOnCard) {
-        if (self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable.boolValue) {
-            [self.cwManager.connectedCwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:NO];
-        }
         [self.cwManager.connectedCwCard initHdwConfirm: self.tfCheckSum.text];
-        
-        self.actBusyIndicator.hidden = NO;
-        [self.actBusyIndicator startAnimating];
     } else {
         //send seed to Card
         NSString *seed = [NYMnemonic deterministicSeedStringFromMnemonicString:self.mnemonic
@@ -96,9 +93,6 @@
         //=> "d71de856f81a8acc65e6fc851a38d4d7ec216fd0796d0a6827a3ad6ed5511a30fa280f12eb2e47ed2ac03b5c462a0358d18d69fe4f985ec81778c1b370b652a8"
         //[self.cwManager.connectedCwCard initHdw:self.txtHdwName.text BySeed:seed];
         [self.cwManager.connectedCwCard initHdw:@"" BySeed:seed];
-        
-        self.actBusyIndicator.hidden = NO;
-        [self.actBusyIndicator startAnimating];
     }
 }
 
@@ -128,8 +122,7 @@
 -(void) didCwCardCommand
 {
     NSLog(@"didCwCardCommand");
-    [self.actBusyIndicator stopAnimating];
-    self.actBusyIndicator.hidden = YES;
+    [self performDismiss];
 }
 
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
@@ -152,40 +145,27 @@
     NSLog(@"didInitHdwBySeed");
     //disable btn
     self.btnCreateWallet.enabled = NO;
-    //self.btnCreateWallet.backgroundColor = [UIColor grayColor];
     
-    //back to previous controller
-    //[self.navigationController popViewControllerAnimated:YES];
-    //[self performSegueWithIdentifier:@"unwindToHome" sender:self];
-    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
-    UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
-    [self.revealViewController pushFrontViewController:vc animated:YES];
-
+    [self createWalletComplet];
 }
 
 //create wallet finish
 -(void) didInitHdwConfirm
 {
     NSLog(@"didInitHdwConfirm");
-    //disable btn
-    //self.btnConfirmHdw.enabled = NO;
-    //self.btnConfirmHdw.backgroundColor = [UIColor grayColor];
-    /*
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"HDW Created"
-                                                   message: nil
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
-    [alert show];
-     */
+    
+    [self createWalletComplet];
+}
+
+-(void) createWalletComplet
+{
+    if (self.cwManager.connectedCwCard.securityPolicy_WatchDogEnable.boolValue) {
+        [self.cwManager.connectedCwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:NO];
+    }
     
     UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
     UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
     [self.revealViewController pushFrontViewController:vc animated:YES];
-
-    //[self performSegueWithIdentifier:@"unwindToHome" sender:self];
-    //back to previous controller
-    //[self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

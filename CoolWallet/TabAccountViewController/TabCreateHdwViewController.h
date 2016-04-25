@@ -7,16 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
+#import "BaseViewController.h"
 
-@interface TabCreateHdwViewController : UIViewController
+@interface TabCreateHdwViewController : BaseViewController
 {
     NSString *mnemonic;
-    MBProgressHUD *mHUD;
 }
 
 - (IBAction)btnVerifySeed:(id)sender;
-- (IBAction)btnImportSeed:(id)sender;
-
 
 @end

@@ -2923,13 +2923,6 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                     <constraint firstItem="RRI-eH-pHG" firstAttribute="leading" secondItem="ukD-4w-t3t" secondAttribute="leading" constant="8" id="t1w-cl-D9E"/>
                                 </constraints>
                             </view>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="P5L-aD-Ija">
-                                <rect key="frame" x="150" y="10" width="20" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="70d-o9-1jq"/>
-                                    <constraint firstAttribute="height" constant="20" id="JaH-XY-fQD"/>
-                                </constraints>
-                            </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cFX-ji-VNO">
                                 <rect key="frame" x="10" y="453" width="300" height="48"/>
                                 <constraints>
@@ -2948,8 +2941,6 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                             <constraint firstAttribute="centerX" secondItem="TL7-65-AJD" secondAttribute="centerX" id="1Xw-Kw-GFN"/>
                             <constraint firstAttribute="centerX" secondItem="DjK-xa-ckk" secondAttribute="centerX" id="1gI-Ju-s6x"/>
                             <constraint firstItem="TL7-65-AJD" firstAttribute="trailing" secondItem="Euv-IM-ofZ" secondAttribute="trailingMargin" constant="10" id="2Pr-Vb-f1h"/>
-                            <constraint firstItem="P5L-aD-Ija" firstAttribute="centerX" secondItem="Euv-IM-ofZ" secondAttribute="centerX" id="4Ph-9K-Kks"/>
-                            <constraint firstItem="P5L-aD-Ija" firstAttribute="top" secondItem="Euv-IM-ofZ" secondAttribute="topMargin" constant="10" id="4bH-Qc-mBE"/>
                             <constraint firstItem="qTV-w1-CwN" firstAttribute="centerX" secondItem="Euv-IM-ofZ" secondAttribute="centerX" constant="16" id="4xQ-9e-gg6"/>
                             <constraint firstItem="DjK-xa-ckk" firstAttribute="trailing" secondItem="Euv-IM-ofZ" secondAttribute="trailingMargin" constant="4" id="5NV-dT-DmQ"/>
                             <constraint firstItem="ukD-4w-t3t" firstAttribute="top" secondItem="TL7-65-AJD" secondAttribute="bottom" constant="5" id="EJ6-Gi-59d"/>
@@ -2973,7 +2964,6 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                     </view>
                     <navigationItem key="navigationItem" title="Create HD Wallet" id="atk-Yo-FAg"/>
                     <connections>
-                        <outlet property="actBusyIndicator" destination="P5L-aD-Ija" id="vMI-aE-3LR"/>
                         <outlet property="btnCreateWallet" destination="AyI-Mr-fb1" id="bVM-Ay-qKK"/>
                         <outlet property="btnNextPage" destination="cFX-ji-VNO" id="iRU-TF-FuA"/>
                         <outlet property="lblSeedDetail" destination="qTV-w1-CwN" id="4dm-e4-FEr"/>
