@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="pJk-oc-UYe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="pJk-oc-UYe">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -4003,7 +4003,6 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                         <state key="highlighted" backgroundImage="button.png"/>
                                         <connections>
                                             <action selector="placeOrder:" destination="hDj-Rv-ioi" eventType="touchUpInside" id="Kss-p2-VHy"/>
-                                            <action selector="signupEx:" destination="OGz-dN-pAy" eventType="touchUpInside" id="16l-0c-Tf6"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -4883,7 +4882,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <image name="x.png" width="417" height="417"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="1rh-8W-cge"/>
+        <segue reference="brK-em-gbO"/>
         <segue reference="t76-YH-dUj"/>
         <segue reference="gzi-1q-gb8"/>
     </inferredMetricsTieBreakers>
