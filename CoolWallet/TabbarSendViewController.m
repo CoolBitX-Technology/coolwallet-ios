@@ -279,10 +279,12 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     NSString *value = @"";
     if ([self.txtAmount.text compare:@""] != 0) {
         if (self.amountUnit == BTC) {
-            NSString *satoshi = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
+            NSString *amount = [self.txtAmount.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+            NSString *satoshi = [[OCAppCommon getInstance] convertBTCtoSatoshi:amount];
             value =  [[OCAppCommon getInstance] convertFiatMoneyString:[satoshi longLongValue] currRate:self.cwManager.connectedCwCard.currRate];
         } else {
-            value = [[OCAppCommon getInstance] convertBTCFromFiatMoney:[self.txtAmount.text doubleValue] currRate:self.cwManager.connectedCwCard.currRate];
+            NSString *amount = [self.txtAmount.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+            value = [[OCAppCommon getInstance] convertBTCFromFiatMoney:[amount doubleValue] currRate:self.cwManager.connectedCwCard.currRate];
         }
         
         self.lblConvertAmount.text = value;
@@ -310,12 +312,13 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 {
     NSString *sato;
     if (self.amountUnit == BTC) {
-        sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.txtAmount.text];
+        sato = [self.txtAmount.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+        
     } else {
-        sato = [[OCAppCommon getInstance] convertBTCtoSatoshi:self.lblConvertAmount.text];
+        sato = [self.txtAmount.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
     }
     
-    return [sato longLongValue];
+    return [[[OCAppCommon getInstance] convertBTCtoSatoshi:sato] longLongValue];
 }
 
 #pragma marks - Account Button Actions

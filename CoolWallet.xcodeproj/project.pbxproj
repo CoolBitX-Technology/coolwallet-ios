@@ -141,6 +141,7 @@
 		F49522A81C966B6B000D8E08 /* CwExchange.m in Sources */ = {isa = PBXBuildFile; fileRef = F49522A71C966B6B000D8E08 /* CwExchange.m */; };
 		F49C2C2E1C5A0C32000B2042 /* ExOrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F49C2C2D1C5A0C32000B2042 /* ExOrderDetailViewController.m */; };
 		F49E7A6B1C8FEB7B000CD4B7 /* CwExUnblock.m in Sources */ = {isa = PBXBuildFile; fileRef = F49E7A6A1C8FEB7B000CD4B7 /* CwExUnblock.m */; };
+		F49D6AA61CE03963004655C2 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = F49D6AA51CE03963004655C2 /* README.md */; };
 		F49F76431BD8AFF800C335B9 /* downarrow-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */; };
 		F4A7CC4B1C5884A100E40CD1 /* ExMatchedOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */; };
 		F4A7CC4F1C58959A00E40CD1 /* ExOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4E1C58959A00E40CD1 /* ExOrderCell.m */; };
@@ -421,6 +422,7 @@
 		F49C2C2D1C5A0C32000B2042 /* ExOrderDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExOrderDetailViewController.m; sourceTree = "<group>"; };
 		F49E7A691C8FEB7B000CD4B7 /* CwExUnblock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExUnblock.h; path = Model/CwExUnblock.h; sourceTree = "<group>"; };
 		F49E7A6A1C8FEB7B000CD4B7 /* CwExUnblock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExUnblock.m; path = Model/CwExUnblock.m; sourceTree = "<group>"; };
+		F49D6AA51CE03963004655C2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downarrow-01@2x.png"; sourceTree = "<group>"; };
 		F4A7CC491C5884A100E40CD1 /* ExMatchedOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExMatchedOrderViewController.h; sourceTree = "<group>"; };
 		F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExMatchedOrderViewController.m; sourceTree = "<group>"; };
@@ -499,6 +501,7 @@
 		93CF968A19EE1A0200466DAF = {
 			isa = PBXGroup;
 			children = (
+				F49D6AA51CE03963004655C2 /* README.md */,
 				EFEF8DBF1B4A62C4004427B8 /* libicucore.dylib */,
 				EFEF8DBD1B4A6208004427B8 /* CFNetwork.framework */,
 				EF698CE31A78C36D00A943B9 /* CoreBluetooth.framework */,
@@ -1279,6 +1282,7 @@
 				EFAC5C521AC25A7000320EA6 /* split.c in Sources */,
 				EF698CF71A78DD2100A943B9 /* CwRegisterHostViewController.m in Sources */,
 				EFCF9A5D1B32C8810076091B /* CwUnspentTxIndex.m in Sources */,
+				F49D6AA61CE03963004655C2 /* README.md in Sources */,
 				EF9F31191AF0C11800D53EE4 /* TabAddressBookViewController.m in Sources */,
 				EFFA18351B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m in Sources */,
 				EF698CF11A78DC4E00A943B9 /* CwEraseCwViewController.m in Sources */,
