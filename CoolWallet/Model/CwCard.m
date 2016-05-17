@@ -1370,7 +1370,12 @@ NSArray *addresses;
 
 -(void) exGetOtp
 {
-    [self cwCmdExGetOtp];
+    [self cwCmdExGetOtpWithOption:CwHdwExOTPKeyInfoLogin];
+}
+
+-(void) exGetBlockOtp
+{
+    [self cwCmdExGetOtpWithOption:CwHdwExOTPKeyInfoBlock];
 }
 
 -(void) exSessionInit: (NSData *)svrChlng withComplete:(void (^)(NSData *seResp, NSData *seChlng))complete withError:(void (^)(NSInteger errorCode))error
@@ -3616,7 +3621,7 @@ NSArray *addresses;
     return CwCardRetSuccess;
 }
 
-- (NSInteger) cwCmdExGetOtp
+- (NSInteger) cwCmdExGetOtpWithOption:(NSInteger)infoId
 {
     CwCardCommand *cmd = [[CwCardCommand alloc] init];
     
@@ -3630,7 +3635,7 @@ NSArray *addresses;
     cmd.cmdPriority = CwCardCommandPriorityNone;
     cmd.cmdCla = CwCmdIdExGetOtpCLA;
     cmd.cmdId = CwCmdIdExGetOtp;
-    cmd.cmdP1 = 0;
+    cmd.cmdP1 = infoId;
     cmd.cmdP2 = 0;
     cmd.cmdInput = nil;
     
@@ -5451,11 +5456,14 @@ NSArray *addresses;
             if (cmd.cmdResult==0x9000) {
                 exOtp = [[NSString alloc] initWithBytes:data length:strlen((char *)(data)) encoding:NSUTF8StringEncoding];
                 
-                if ([self.delegate respondsToSelector:@selector(didExGetOtp:)]) {
-                    [self.delegate didExGetOtp:exOtp];
+                if ([self.delegate respondsToSelector:@selector(didExGetOtp:type:)]) {
+                    [self.delegate didExGetOtp:exOtp type:cmd.cmdP1];
                 }
             } else {
                 NSLog(@"CwCmdIdExGetOtp Error %04lX", (long)cmd.cmdResult);
+                if ([self.delegate respondsToSelector:@selector(didExGetOtpError:type:)]) {
+                    [self.delegate didExGetOtpError:cmd.cmdResult type:cmd.cmdP1];
+                }
             }
             break;
             

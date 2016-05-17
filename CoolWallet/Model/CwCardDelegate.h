@@ -110,7 +110,8 @@ typedef NS_ENUM (NSInteger, CwCardRSSI) {
 
 //Exchange Site Callbacks
 -(void) didExGetRegStatus: (NSInteger) status;
--(void) didExGetOtp: (NSString *) exOtp;
+-(void) didExGetOtp:(NSString *)exOtp type:(NSInteger)otpType;
+-(void) didExGetOtpError:(NSInteger)errId type:(NSInteger)otpType;
 -(void) didExSessionInit: (NSData *)seResp SeChlng: (NSData*)seChlng;
 -(void) didExSessionEstab;
 -(void) didExSessoinLogout;

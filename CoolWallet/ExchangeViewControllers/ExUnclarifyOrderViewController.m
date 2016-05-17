@@ -12,6 +12,7 @@
 #import "QuartzCore/QuartzCore.h"
 #import "CwExUnclarifyOrder.h"
 #import "ExOrderCell.h"
+#import "CwCommandDefine.h"
 
 #import "NSUserDefaults+RMSaveCustomObject.h"
 
@@ -136,20 +137,30 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    [self showOTPEnterView];
+//    [self showOTPEnterView];
+    [self.cwManager.connectedCwCard exGetBlockOtp];
 }
 
 #pragma mark - CwCard delegate
 
--(void) didGenOTPWithError:(NSInteger)errId
+-(void) didExGetOtp:(NSString *)exOtp type:(NSInteger)otpType
 {
     if ([self.presentedViewController isKindOfClass:[UIAlertController class]]) {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
     }
     
-    if (errId == -1) {
+    if (otpType == CwHdwExOTPKeyInfoBlock) {
         [self showOTPEnterView];
-    } else {
+    }
+}
+
+-(void) didExGetOtpError:(NSInteger)errId type:(NSInteger)otpType
+{
+    if ([self.presentedViewController isKindOfClass:[UIAlertController class]]) {
+        [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+    
+    if (otpType == CwHdwExOTPKeyInfoBlock) {
         [self showHintAlert:@"Fail" withMessage:@"Can't gen OTP." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
     }
 }

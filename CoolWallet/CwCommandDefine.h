@@ -253,4 +253,9 @@ typedef NS_ENUM (NSInteger, CwHdwAccountKeyInfo) {
     CwHdwAccountKeyInfoKeyChainPubKey   = 0x02
 };
 
+typedef NS_ENUM (NSInteger, CwHdwExOTPKeyInfo) {
+    CwHdwExOTPKeyInfoLogin              = 0x00,
+    CwHdwExOTPKeyInfoBlock              = 0x01,
+};
+
 #endif /* CwCommandDefine_h */
