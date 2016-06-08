@@ -1219,7 +1219,11 @@ NSArray *addresses;
 
 -(void) prepareTransaction:(int64_t)amount Address: (NSString *)recvAddress Change: (NSString *)changeAddress
 {
-    [self getUnsignedTransaction:amount Address:recvAddress Change:changeAddress AccountId:self.currentAccountId];
+    CwTx *unsignedTx = [self getUnsignedTransaction:amount Address:recvAddress Change:changeAddress AccountId:self.currentAccountId];
+    
+    if (unsignedTx == nil) {
+        return;
+    }
     
     //Sign hashes of the TX (max ins: 256)
     for (int i=0; i<currUnsignedTx.inputs.count; i++) {
@@ -5454,7 +5458,9 @@ NSArray *addresses;
             //output
             //OTP 6B
             if (cmd.cmdResult==0x9000) {
-                exOtp = [[NSString alloc] initWithBytes:data length:strlen((char *)(data)) encoding:NSUTF8StringEncoding];
+                if (data != NULL) {
+                    exOtp = [[NSString alloc] initWithBytes:data length:strlen((char *)(data)) encoding:NSUTF8StringEncoding];
+                }
                 
                 if ([self.delegate respondsToSelector:@selector(didExGetOtp:type:)]) {
                     [self.delegate didExGetOtp:exOtp type:cmd.cmdP1];

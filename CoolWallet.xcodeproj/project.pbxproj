@@ -1428,7 +1428,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dtco.CoolWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "2fa27e06-a2fb-4512-b457-c9947f2a0b5c";
+				PROVISIONING_PROFILE = "4291a491-26cb-44a1-8bb4-8f50bf249380";
 			};
 			name = Debug;
 		};
@@ -1445,7 +1445,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dtco.CoolWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "41245a81-36c0-4170-abbc-674cc2cea06c";
+				PROVISIONING_PROFILE = "42e503cb-e0d0-4958-b381-38078384216e";
 			};
 			name = Release;
 		};

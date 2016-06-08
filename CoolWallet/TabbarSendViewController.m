@@ -422,6 +422,20 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         [PressAlert dismissViewControllerAnimated:YES completion:nil];
         PressAlert = nil;
     }
+    
+    if (OTPalert != nil) {
+        [OTPalert dismissWithClickedButtonIndex:OTPalert.cancelButtonIndex animated:YES];
+    }
+    
+    [self dismissAllAlert];
+}
+
+- (void)dismissAllAlert
+{
+    for (UIWindow* w in [UIApplication sharedApplication].windows)
+        for (NSObject* o in w.subviews)
+            if ([o isKindOfClass:[UIAlertView class]])
+                [(UIAlertView*)o dismissWithClickedButtonIndex:[(UIAlertView*)o cancelButtonIndex] animated:YES];
 }
 
 #define TAG_SEND_OTP 1
@@ -770,26 +784,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     //self.txtExchangeRage.text = numberAsString;
 }
 
-#pragma mark - CwManager Delegate
--(void) didDisconnectCwCard: (NSString *)cardName
-{
-    [self dismissAllAlert];
-    //Add a notification to the system
-    UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
-    notify.soundName = UILocalNotificationDefaultSoundName;
-    notify.applicationIconBadgeNumber=1;
-    [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
-    
-    // Get the storyboard named secondStoryBoard from the main bundle:
-    UIStoryboard *secondStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    // Load the view controller with the identifier string myTabBar
-    // Change UIViewController to the appropriate class
-    UIViewController *listCV = (UIViewController *)[secondStoryBoard instantiateViewControllerWithIdentifier:@"CwMain"];
-    // Then push the new view controller in the usual way:
-    [self.parentViewController presentViewController:listCV animated:YES completion:nil];
-}
-
 - (void) showOTPEnterView
 {
     if(cwCard.securityPolicy_OtpEnable.boolValue == NO) return;
@@ -802,14 +796,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     //alertTextField.keyboardType = UIKeyboardTypeNumberPad;
     //alertTextField.placeholder = @"Enter request BTC";
     [OTPalert show];
-}
-
-- (void)dismissAllAlert
-{
-    for (UIWindow* w in [UIApplication sharedApplication].windows)
-        for (NSObject* o in w.subviews)
-            if ([o isKindOfClass:[UIAlertView class]])
-                [(UIAlertView*)o dismissWithClickedButtonIndex:[(UIAlertView*)o cancelButtonIndex] animated:YES];
 }
 
 -(void) keyboardWillShow:(NSNotification *)notification

@@ -342,7 +342,7 @@
 -(RACSignal *)loginSignal
 {
     @weakify(self);
-    RACSignal *signal = [[[[[self signalCreateExSession] flattenMap:^RACStream *(NSDictionary *response) {
+    RACSignal *signal = [[[[self signalCreateExSession] flattenMap:^RACStream *(NSDictionary *response) {
         @strongify(self);
         NSString *hexString = [response objectForKey:@"challenge"];
         
@@ -358,8 +358,6 @@
         NSString *hexString = [response objectForKey:@"response"];
         
         return [self signalEstablishSessionFromCard:[NSString hexstringToData:hexString]];
-    }] doNext:^(id value) {
-        self.sessionStatus = ExSessionProcess;
     }];
     
     return signal;
@@ -369,7 +367,7 @@
     NSString *url = [NSString stringWithFormat:ExSession, self.card.cardId];
     
     @weakify(self);
-    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    RACSignal *signal = [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
         AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
         [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
@@ -387,6 +385,8 @@
         }];
         
         return nil;
+    }] doNext:^(id value) {
+        self.sessionStatus = ExSessionProcess;
     }];
     
     return signal;

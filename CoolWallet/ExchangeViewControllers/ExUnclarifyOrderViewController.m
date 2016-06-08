@@ -75,6 +75,8 @@
         [exManager blockWithOrderID:self.selectOrder.orderId withOTP:textField.text withComplete:^() {
             [self performDismiss];
             
+            [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
+            
             [self showHintAlert:nil withMessage:@"place order completed" withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
             
             [self.tableView reloadData];
@@ -92,7 +94,7 @@
     [OTPAlert addAction:okAction];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        //TODO: need do something with card?
+        [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
     }];
     
     [OTPAlert addAction:cancelAction];
@@ -137,7 +139,6 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-//    [self showOTPEnterView];
     [self.cwManager.connectedCwCard exGetBlockOtp];
 }
 
