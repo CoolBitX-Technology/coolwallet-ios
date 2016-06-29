@@ -126,7 +126,7 @@
     
     CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
     if (exManager.sessionStatus == ExSessionLogin && exManager.card.cardId == cwid) {
-        [[[exManager signalRequestUnblockInfo] flattenMap:^RACStream *(NSArray *unblocks) {
+        [[[[exManager signalRequestUnblockInfo] flattenMap:^RACStream *(NSArray *unblocks) {
             for (CwExUnblock *unblock in unblocks) {
                 if ([[NSString dataToHexstring:unblock.orderID] isEqualToString:orderID]) {
                     return [exManager signalUnblockWithCard:unblock];
@@ -134,6 +134,8 @@
             }
             
             return [RACSignal empty];
+        }] finally:^(){
+            [[NSUserDefaults standardUserDefaults] rm_setCustomObject:unblock_orders forKey:key];
         }] subscribeNext:^(id value) {
             NSLog(@"unblock success");
             if ([unblock_orders containsObject:orderID]) {

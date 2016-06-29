@@ -4584,6 +4584,7 @@ NSArray *addresses;
                 }
             } else {
                 NSLog(@"CwCmdIdSetPerso Error %04lX", (long)cmd.cmdResult);
+                [self cwCmdGetPerso];
             }
             
             break;
