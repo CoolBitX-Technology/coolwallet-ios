@@ -102,6 +102,7 @@
         }
         
         [self syncCardInfo];
+        [self unblockOrders];
     } error:^(NSError *error) {
         @strongify(self);
         NSLog(@"error(%ld): %@", (long)error.code, error);
@@ -254,6 +255,35 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
         NSLog(@"Fail send txId to ex site.");
         // TODO: should resend to exchange site?
+    }];
+}
+
+-(void) unblockOrders
+{
+    [[self signalRequestUnblockInfo] subscribeNext:^(NSArray *unblocks) {
+        NSString *key = [NSString stringWithFormat:@"exchange_%@", self.card.cardId];
+        __block NSMutableArray *unblock_orders = [[NSUserDefaults standardUserDefaults] rm_customObjectForKey:key];
+        
+        __block NSNumber *unblockCount = [NSNumber numberWithInteger:unblocks.count];
+        
+        for (CwExUnblock *unblock in unblocks) {
+            __block NSString *orderID = [NSString dataToHexstring:unblock.orderID];
+            
+            [[[self signalUnblockWithCard:unblock] finally:^() {
+                unblockCount = [NSNumber numberWithInteger:unblockCount.integerValue - 1];
+                if (unblockCount.integerValue == 0) {
+                    [[NSUserDefaults standardUserDefaults] rm_setCustomObject:unblock_orders forKey:key];
+                }
+            }] subscribeNext:^(id value) {
+                if ([unblock_orders containsObject:orderID]) {
+                    [unblock_orders removeObject:orderID];
+                }
+            } error:^(NSError *error) {
+                if (![unblock_orders containsObject:orderID]) {
+                    [unblock_orders addObject:orderID];
+                }
+            }];
+        }
     }];
 }
 

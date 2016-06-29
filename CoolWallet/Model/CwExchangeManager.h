@@ -30,6 +30,7 @@
 -(void) blockWithOrderID:(NSString *)hexOrderID withOTP:(NSString *)otp withComplete:(void(^)(void))completeCallback error:(void(^)(NSError *error))errorCallback;
 -(void) prepareTransactionWithAmount:(NSNumber *)amountBTC withChangeAddress:(NSString *)changeAddress fromAccountId:(NSInteger)accountId;
 -(void) completeTransactionWithOrderId:(NSString *)orderId TxId:(NSString *)txId;
+-(void) unblockOrders;
 
 -(RACSignal *)signalCancelOrders:(NSString *)orderId;
 -(RACSignal *)signalRequestUnblockInfo;
