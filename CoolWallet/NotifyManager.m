@@ -121,12 +121,9 @@
 
 -(void) cancelOrder:(NSString *)orderID fromCwID:(NSString *)cwid
 {
-    NSString *key = [NSString stringWithFormat:@"exchange_%@", cwid];
-    NSMutableArray *unblock_orders = [[NSUserDefaults standardUserDefaults] rm_customObjectForKey:key];
-    
     CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
     if (exManager.sessionStatus == ExSessionLogin && exManager.card.cardId == cwid) {
-        [[[[exManager signalRequestUnblockInfo] flattenMap:^RACStream *(NSArray *unblocks) {
+        [[[exManager signalRequestUnblockInfo] flattenMap:^RACStream *(NSArray *unblocks) {
             for (CwExUnblock *unblock in unblocks) {
                 if ([[NSString dataToHexstring:unblock.orderID] isEqualToString:orderID]) {
                     return [exManager signalUnblockWithCard:unblock];
@@ -134,26 +131,12 @@
             }
             
             return [RACSignal empty];
-        }] finally:^(){
-            [[NSUserDefaults standardUserDefaults] rm_setCustomObject:unblock_orders forKey:key];
         }] subscribeNext:^(id value) {
             NSLog(@"unblock success");
-            if ([unblock_orders containsObject:orderID]) {
-                [unblock_orders removeObject:orderID];
-            }
         } error:^(NSError *error) {
             NSLog(@"unblock error: %@", error);
-            if (![unblock_orders containsObject:orderID]) {
-                [unblock_orders addObject:orderID];
-            }
         }];
-    } else {
-        if (![unblock_orders containsObject:orderID]) {
-            [unblock_orders addObject:orderID];
-        }
     }
-    
-    [[NSUserDefaults standardUserDefaults] rm_setCustomObject:unblock_orders forKey:key];
 }
 
 -(void) matchOrder:(NSString *)orderID
