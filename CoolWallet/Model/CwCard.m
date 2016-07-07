@@ -3839,7 +3839,7 @@ NSArray *addresses;
     cmd.cmdP1 = 0;
     cmd.cmdP2 = 0;
     
-    cmdInput = trxId;
+    cmdInput = [NSMutableData dataWithData:trxId];
     [cmdInput appendData: okTkn];
     [cmdInput appendData: encUblkTkn];
     [cmdInput appendData: mac1];
@@ -5614,10 +5614,8 @@ NSArray *addresses;
                 }
             }
             
-            if (self.exBlockCancelCompleteBlock || self.exBlockCancelErrorBlock) {
-                self.exBlockCancelCompleteBlock = nil;
-                self.exBlockCancelErrorBlock = nil;
-            }
+            self.exBlockCancelCompleteBlock = nil;
+            self.exBlockCancelErrorBlock = nil;
             
             break;
             

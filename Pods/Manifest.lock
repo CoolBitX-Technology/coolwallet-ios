@@ -23,7 +23,7 @@ PODS:
   - CoreBitcoin (0.6.8.1):
     - ISO8601DateFormatter
     - OpenSSL-Universal (= 1.0.1.16)
-  - Crashlytics (3.7.1):
+  - Crashlytics (3.7.2):
     - Fabric (~> 1.6.3)
   - Fabric (1.6.7)
   - ISO8601DateFormatter (0.7)
@@ -52,7 +52,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   CoreBitcoin: 4ac6f6a61e543f08399c2fe57496d4fdcbaf74f9
-  Crashlytics: 3cdd4c9655be68032a0cf0379e0fb5ef6af22cad
+  Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
   OpenSSL-Universal: 85ef63bf81d0741b03c8719cd29685c37c59518d

@@ -13,7 +13,6 @@
 #import "CwExchangeManager.h"
 #import "CwCard.h"
 #import "CwExUnclarifyOrder.h"
-#import "CwExUnblock.h"
 #import "CwExSellOrder.h"
 #import "CwExchange.h"
 
@@ -51,13 +50,13 @@
     } else if ([action isEqualToString:@"cancelOrder"]) {
         [self cancelOrder:orderID fromCwID:cwid];
     } else if ([action isEqualToString:@"matchOrder"]) {
-        [self matchOrder:orderID];
+        [self matchOrder:orderID fromCwID:cwid];
     }
     
     NSString *targetIdentifier;
     
     CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
-    if (exchange.sessionStatus == ExSessionLogin && [exchange.card.cardId isEqualToString:cwid]) {
+    if ([exchange isCardLoginEx:cwid]) {
         if ([action isEqualToString:@"blockOTP"]) {
             targetIdentifier = @"ExBlockOrderViewController";
         } else if ([action isEqualToString:@"matchOrder"]) {
@@ -67,7 +66,7 @@
     
     NSString *msg = [aps objectForKey:@"alert"];
     NSNumber *content_available = [aps objectForKey:@"content-available"];
-    NSLog(@"%@, %@", content_available, msg);
+    
     if (content_available.intValue == 1 && [msg stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0) {
         return;
     }
@@ -122,35 +121,21 @@
 -(void) cancelOrder:(NSString *)orderID fromCwID:(NSString *)cwid
 {
     CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
-    if (exManager.sessionStatus == ExSessionLogin && exManager.card.cardId == cwid) {
-        [[[exManager signalRequestUnblockInfo] flattenMap:^RACStream *(NSArray *unblocks) {
-            for (CwExUnblock *unblock in unblocks) {
-                if ([[NSString dataToHexstring:unblock.orderID] isEqualToString:orderID]) {
-                    return [exManager signalUnblockWithCard:unblock];
-                }
-            }
-            
-            return [RACSignal empty];
-        }] subscribeNext:^(id value) {
-            NSLog(@"unblock success");
-        } error:^(NSError *error) {
-            NSLog(@"unblock error: %@", error);
-        }];
+    if (![exManager isCardLoginEx:cwid]) {
+        return;
     }
+    
+    [exManager unblockOrderWithOrderId:orderID];
 }
 
--(void) matchOrder:(NSString *)orderID
+-(void) matchOrder:(NSString *)orderID fromCwID:(NSString *)cwid
 {
-    CwExSellOrder *sell = [CwExSellOrder new];
-    sell.orderId = orderID;
-    sell.amountBTC = [NSNumber numberWithInteger:1.2];
-    sell.price = [NSNumber numberWithInteger:5.5];
-    sell.address = @"18FwWjzHGZAwVNF45KBPLfJz55w9fVQuPH";
-    sell.accountId = [NSNumber numberWithInteger:0];
-    sell.expirationUTC = @"2016-03-14T08:23:33Z";
-    
     CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
-    [exManager.exchange.matchedSellOrders addObject:sell];
+    if (![exManager isCardLoginEx:cwid]) {
+        return;
+    }
+    
+    [exManager requestMatchedOrder:orderID];
     
     NSString *key = [NSString stringWithFormat:@"exchange_%@", exManager.card.cardId];
     [[NSUserDefaults standardUserDefaults] rm_setCustomObject:exManager.exchange forKey:key];

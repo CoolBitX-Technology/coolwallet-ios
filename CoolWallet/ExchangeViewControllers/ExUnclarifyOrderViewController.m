@@ -72,18 +72,15 @@
         [self showIndicatorView:@"block with otp..."];
         
         CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
-        [exManager blockWithOrderID:self.selectOrder.orderId withOTP:textField.text withComplete:^() {
-            [self performDismiss];
-            
-            [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
-            
+        [exManager blockWithOrderID:self.selectOrder.orderId withOTP:textField.text withSuccess:^() {            
             [self showHintAlert:nil withMessage:@"place order completed" withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
             
             [self.tableView reloadData];
         } error:^(NSError *error) {
-            [self performDismiss];
-            
             [self showHintAlert:@"block fail" withMessage:error.localizedDescription withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        } finish:^() {
+            [self performDismiss];
+            [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
         }];
     }];
     

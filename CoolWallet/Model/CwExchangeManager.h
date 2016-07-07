@@ -23,18 +23,18 @@
 
 +(id)sharedInstance;
 
+-(BOOL) isCardLoginEx:(NSString *)cardId;
+
 -(void) loginExSession;
 -(void) syncCardInfo;
 -(void) requestUnclarifyOrders;
 -(void) requestMatchedOrders;
--(void) blockWithOrderID:(NSString *)hexOrderID withOTP:(NSString *)otp withComplete:(void(^)(void))completeCallback error:(void(^)(NSError *error))errorCallback;
+-(void) requestMatchedOrder:(NSString *)orderId;
+-(void) blockWithOrderID:(NSString *)hexOrderID withOTP:(NSString *)otp withSuccess:(void(^)(void))successCallback error:(void(^)(NSError *error))errorCallback finish:(void(^)(void))finishCallback;
 -(void) prepareTransactionWithAmount:(NSNumber *)amountBTC withChangeAddress:(NSString *)changeAddress fromAccountId:(NSInteger)accountId;
 -(void) completeTransactionWithOrderId:(NSString *)orderId TxId:(NSString *)txId;
 -(void) unblockOrders;
-
--(RACSignal *)signalCancelOrders:(NSString *)orderId;
--(RACSignal *)signalRequestUnblockInfo;
--(RACSignal *)signalUnblockWithCard:(CwExUnblock *)unblock;
+-(void) unblockOrderWithOrderId:(NSString *)orderId;
 
 -(AFHTTPRequestOperationManager *) defaultJsonManager;
 
