@@ -233,15 +233,15 @@
     }];
 }
 
--(void) prepareTransactionWithAmount:(NSNumber *)amountBTC withChangeAddress:(NSString *)changeAddress fromAccountId:(NSInteger)accountId
+-(void) prepareTransactionFromSellOrder:(CwExSellOrder *)sellOrder withChangeAddress:(NSString *)changeAddress andAccountId:(NSInteger)accountId
 {
     CwExTx *exTx = [CwExTx new];
     exTx.accountId = accountId;
-    exTx.amount = [CwBtc BTCWithBTC:amountBTC];
+    exTx.amount = [CwBtc BTCWithBTC:sellOrder.amountBTC];
     exTx.changeAddress = changeAddress;
     
     @weakify(self)
-    [[[[[self signalGetTrxInfo] flattenMap:^RACStream *(NSDictionary *response) {
+    [[[[[self signalGetTrxInfoFromOrder:sellOrder.orderId] flattenMap:^RACStream *(NSDictionary *response) {
         NSLog(@"response: %@", response);
         @strongify(self)
         NSString *loginData = [response objectForKey:@"loginblk"];
@@ -685,9 +685,9 @@
     return signal;
 }
 
--(RACSignal*)signalGetTrxInfo
+-(RACSignal*)signalGetTrxInfoFromOrder:(NSString *)orderId
 {
-    __block NSString *url = [NSString stringWithFormat:ExGetTrxInfo, self.card.cardId];
+    __block NSString *url = [NSString stringWithFormat:ExGetTrxInfo, orderId];
     
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -749,7 +749,10 @@
 
 -(RACSignal *)signalRequestUnblockInfoWithOrderId:(NSString *)orderId
 {
-    __block NSString *url = [NSString stringWithFormat:ExUnblockOrders, orderId];
+    __block NSString *url = ExUnblockOrders;
+    if (orderId != nil) {
+        url = [url stringByAppendingFormat:@"/%@", orderId];
+    }
     
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -764,7 +767,9 @@
                 [subscriber sendCompleted];
             } else if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 CwExUnblock *unblock = [RMMapper objectWithClass:[CwExUnblock class] fromDictionary:responseObject];
-                unblock.orderID = [NSString hexstringToData:orderId];
+                if (unblock.orderID == nil) {
+                    unblock.orderID = [NSString hexstringToData:orderId];
+                }
                 
                 [subscriber sendNext:unblock];
                 [subscriber sendCompleted];
@@ -801,7 +806,8 @@
         return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
             @strongify(self);
             
-            NSString *url = [NSString stringWithFormat:ExUnblockOrders, [NSString dataToHexstring:unblock.orderID]];
+            NSString *url = [ExUnblockOrders stringByAppendingFormat:@"/%@", [NSString dataToHexstring:unblock.orderID]];
+            
             AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
             [manager DELETE:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
                 [subscriber sendNext:nil];

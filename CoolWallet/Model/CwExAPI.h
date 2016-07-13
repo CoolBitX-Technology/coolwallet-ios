@@ -22,7 +22,7 @@
 #define ExRequestOrderBlock     ExBaseUrl@"/order/%@/%@"
 #define ExCancelOrder           ExBaseUrl@"/order/%@"
 #define ExWriteOKToken          ExBaseUrl@"/oktoken/%@"
-#define ExUnblockOrders         ExBaseUrl@"/unblock/%@"
+#define ExUnblockOrders         ExBaseUrl@"/unblock"
 #define ExOpenOrderCount        ExBaseUrl@"/open/count"
 #define ExUnclarifyOrders       ExBaseUrl@"/unclarify/%@"
 

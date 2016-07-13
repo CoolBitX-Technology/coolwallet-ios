@@ -75,7 +75,7 @@
     self.transactionBegin = YES;
     
     CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
-    [exchange prepareTransactionWithAmount:self.order.amountBTC withChangeAddress:self.changeAddress.address fromAccountId:self.order.accountId.integerValue];
+    [exchange prepareTransactionFromSellOrder:(CwExSellOrder *)self.order withChangeAddress:self.changeAddress.address andAccountId:self.order.accountId.integerValue];
 }
 
 - (void) showOTPEnterView
