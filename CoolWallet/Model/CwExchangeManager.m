@@ -19,6 +19,7 @@
 #import "CwExchange.h"
 #import "CwExSellOrder.h"
 #import "CwExBuyOrder.h"
+#import "CwBase58.h"
 
 #import "NSUserDefaults+RMSaveCustomObject.h"
 
@@ -253,6 +254,8 @@
         
         return [self signalTrxLogin:loginData];
     }] flattenMap:^RACStream *(NSData *trxHandle) {
+        sellOrder.trxHandle = trxHandle;
+        
         exTx.loginHandle = trxHandle;
         CwTx *unsignedTx = [self.card getUnsignedTransaction:exTx.amount.satoshi.longLongValue Address:exTx.receiveAddress Change:exTx.changeAddress AccountId:exTx.accountId];
         if (unsignedTx == nil) {
@@ -267,6 +270,15 @@
         NSLog(@"Ex Trx prepairing...");
     } error:^(NSError *error) {
         NSLog(@"Ex Trx prepaire fail: %@", error);
+        //TODO: nonce rule?
+        if (exTx.loginHandle) {
+            NSMutableData *nonce = [NSMutableData dataWithData:exTx.loginHandle];
+            [nonce appendData:exTx.loginHandle];
+            [nonce appendData:exTx.loginHandle];
+            [nonce appendData:exTx.loginHandle];
+            [self.card exTrxSignLogoutWithTrxHandle:exTx.loginHandle Nonce:nonce];
+        }
+        
         if ([self.card.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
             if (error.userInfo) {
                 [self.card.delegate didPrepareTransactionError:[error.userInfo objectForKey:@"error"]];
@@ -277,8 +289,16 @@
     }];
 }
 
--(void) completeTransactionWithOrderId:(NSString *)orderId TxId:(NSString *)txId
+-(void) completeTransactionWithOrderId:(NSString *)orderId TxId:(NSString *)txId Handle:(NSData *)trxHandle
 {
+    if (trxHandle) {
+        NSMutableData *nonce = [NSMutableData dataWithData:trxHandle];
+        [nonce appendData:trxHandle];
+        [nonce appendData:trxHandle];
+        [nonce appendData:trxHandle];
+        [self.card exTrxSignLogoutWithTrxHandle:trxHandle Nonce:nonce];
+    }
+    
     NSString *url = [NSString stringWithFormat:ExTrx, orderId];
     NSDictionary *dict = @{@"bcTrxId": txId};
     
@@ -715,7 +735,7 @@
     for (int index=0; index < unsignedTx.inputs.count; index++) {
         CwTxin *txin = unsignedTx.inputs[index];
         NSData *inputData = [self composePrepareInputData:index KeyChainId:txin.kcId AccountId:txin.accId KeyId:txin.kId receiveAddress:exTx.receiveAddress changeAddress:exTx.changeAddress SignatureMateiral:txin.hashForSign];
-        [inputBlocks addObject:@{@"ids": @(index), @"blk": [NSString dataToHexstring:inputData]}];
+        [inputBlocks addObject:@{@"idx": @(index), @"blk": [NSString dataToHexstring:inputData]}];
     }
     __block NSDictionary *dict = @{@"blks": inputBlocks};
     
@@ -893,16 +913,16 @@
 
 -(NSData *) composePrepareInputData:(NSInteger)inputId KeyChainId:(NSInteger)keyChainId AccountId:(NSInteger)accountId KeyId:(NSInteger)keyId receiveAddress:(NSString *)receiveAddress changeAddress:(NSString *)changeAddress SignatureMateiral:(NSData *)signatureMaterial
 {
-    NSData *out1Address = [NSString hexstringToData:receiveAddress];
-    NSData *out2Address = [NSString hexstringToData:changeAddress];
+    NSData *out1Address = [CwBase58 base58ToData:receiveAddress];
+    NSData *out2Address = [CwBase58 base58ToData:changeAddress];
     
     NSMutableData *inputData = [[NSMutableData alloc] init];
     [inputData appendBytes:&accountId length:4];
     [inputData appendBytes:&keyChainId length:1];
     [inputData appendBytes: &keyId length: 4];
-    [inputData appendData:out1Address];
-    [inputData appendData:out2Address];
-    [inputData appendData:signatureMaterial];
+    [inputData appendBytes:[out1Address bytes] length:25];
+    [inputData appendBytes:[out2Address bytes] length:25];
+    [inputData appendBytes:[signatureMaterial bytes] length:32];
     
     return inputData;
 }

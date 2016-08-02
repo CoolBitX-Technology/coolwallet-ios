@@ -1454,9 +1454,9 @@ NSArray *addresses;
     [self cwCmdExTrxSignPrepare:inId inputData:inputData];
 }
 
--(void) exTrxSignLogout: (NSInteger)inId TrxHandle:(NSData *)trxHandle Nonce: (NSData *)nonce
+-(void) exTrxSignLogoutWithTrxHandle:(NSData *)trxHandle Nonce: (NSData *)nonce
 {
-    [self cwCmdExTrxSignLogout:inId TrxHandle:trxHandle Nonce:nonce];
+    [self cwCmdExTrxSignLogoutWithTrxHandle:trxHandle Nonce:nonce];
 }
 
 
@@ -3985,11 +3985,10 @@ NSArray *addresses;
     return CwCardRetSuccess;
 }
 
-- (NSInteger) cwCmdExTrxSignLogout: (NSInteger)inId TrxHandle:(NSData *)trxHandle Nonce: (NSData *)nonce
+- (NSInteger) cwCmdExTrxSignLogoutWithTrxHandle:(NSData *)trxHandle Nonce: (NSData *)nonce
 {
     CwCardCommand *cmd = [[CwCardCommand alloc] init];
     NSMutableData *cmdInput = [[NSMutableData alloc] init];
-    int64_t amount_bn; //big endian of amount
     
     //input:
     //trxHandle: 4B
@@ -4043,6 +4042,14 @@ NSArray *addresses;
         }
     }
     [cwCmds addObject:cmd];
+}
+
+-(void) cmdRemoveWithCmdId:(NSInteger)cmdId
+{
+    NSArray *result = [cwCmds filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.cmdId == %ld", cmdId]];
+    if (result.count > 0) {
+        [cwCmds removeObjectsInArray:result];
+    }
 }
 
 -(void) cmdProcessor
@@ -5092,6 +5099,13 @@ NSArray *addresses;
                 }
             } else {
                 NSLog(@"CwCmdIdHdwPrepTrxSign Error %04lX", (long)cmd.cmdResult);
+                if (cmd.cmdId == CwCmdIdExTrxSignPrepare) {
+                    [self cmdRemoveWithCmdId:CwCmdIdExTrxSignPrepare];
+                    
+                    NSData *trxHandle = [NSData dataWithBytes:[cmd.cmdInput bytes] length:4];
+                    NSData *nonce = [NSData dataWithBytes:[cmd.cmdInput bytes] length:16];
+                    [self cwCmdExTrxSignLogoutWithTrxHandle:trxHandle Nonce:nonce];
+                }
             }
             
             break;

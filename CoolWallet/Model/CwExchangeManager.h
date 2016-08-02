@@ -32,7 +32,7 @@
 -(void) requestMatchedOrder:(NSString *)orderId;
 -(void) blockWithOrderID:(NSString *)hexOrderID withOTP:(NSString *)otp withSuccess:(void(^)(void))successCallback error:(void(^)(NSError *error))errorCallback finish:(void(^)(void))finishCallback;
 -(void) prepareTransactionFromSellOrder:(CwExSellOrder *)sellOrder withChangeAddress:(NSString *)changeAddress andAccountId:(NSInteger)accountId;
--(void) completeTransactionWithOrderId:(NSString *)orderId TxId:(NSString *)txId;
+-(void) completeTransactionWithOrderId:(NSString *)orderId TxId:(NSString *)txId Handle:(NSData *)trxHandle;
 -(void) unblockOrders;
 -(void) unblockOrderWithOrderId:(NSString *)orderId;
 

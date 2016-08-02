@@ -226,8 +226,10 @@
     if (self.transactionBegin) {
         [self performDismiss];
         
+        CwExSellOrder *sellOrder = (CwExSellOrder *)self.order;
+        
         CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
-        [exchange completeTransactionWithOrderId:self.order.orderId TxId:txId];
+        [exchange completeTransactionWithOrderId:sellOrder.orderId TxId:txId Handle:sellOrder.trxHandle];
         
         [self showHintAlert:@"Sent" withMessage:[NSString stringWithFormat:@"Sent %@ BTC to %@", self.order.amountBTC, self.order.address] withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
     }

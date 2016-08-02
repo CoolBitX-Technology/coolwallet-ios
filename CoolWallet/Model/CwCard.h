@@ -199,7 +199,7 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) exTrxSignLogin:(NSString *)input withComplete:(void(^)(NSData *loginHandle))complete error:(void(^)(NSInteger errorCode))error;
 -(void) exTrxSignPrepare: (NSInteger)inId TrxHandle:(NSData *)trxHandle AccId: (NSInteger)accId KcId: (NSInteger)kcId KId: (NSInteger)kId Out1Addr: (NSData*) out1Addr Out2Addr:(NSData*) out2Addr SigMtrl: (NSData *)sigMtrl Mac: (NSData *)mac;
 -(void) exTrxSignPrepareWithInputId:(NSInteger)inId withInputData:(NSData *)inputData;
--(void) exTrxSignLogout: (NSInteger)inId TrxHandle:(NSData *)trxHandle Nonce: (NSData *)nonce;
+-(void) exTrxSignLogoutWithTrxHandle:(NSData *)trxHandle Nonce: (NSData *)nonce;
 
 -(void) cmdClear;
 
