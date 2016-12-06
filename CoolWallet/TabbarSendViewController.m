@@ -12,6 +12,7 @@
 #import "CwBtcNetworkDelegate.h"
 #import "BlockChain.h"
 #import "tx.h"
+#import "NSString+Base58.h"
 
 CwCard *cwCard;
 CwAccount *account;
@@ -80,6 +81,7 @@ long TxFee = 10000;
     
     //NSLog(@"payment address = %@", cwCard.paymentAddress);
     self.txtReceiverAddress.text = cwCard.paymentAddress;
+    self.txtReceiverAddress.text = @"3GVrGUkGQcgN6vzXnp1upCS34d4agpXFsS";
     if (cwCard.amount > 0) {
         self.txtAmount.text = [[OCAppCommon getInstance] convertBTCStringformUnit: cwCard.amount];
         [self doneAmountItem:self.txtAmount];
@@ -237,7 +239,8 @@ long TxFee = 10000;
 -(BOOL) isValidBitcoinAddress:(NSString *)address
 {
     int verify = addrVerify([address cStringUsingEncoding:NSUTF8StringEncoding]);
-    return verify == ADDRESS_VERIFY_BASE;
+    NSLog(@"address: %@, isValid: %d, %d", address, [address isValidBitcoinAddress], verify);
+    return [address isValidBitcoinAddress];
 }
 
 #pragma marks - Account Button Actions
