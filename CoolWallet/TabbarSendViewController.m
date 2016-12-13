@@ -117,7 +117,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     }
     
     self.txtReceiverAddress.text = cwCard.paymentAddress;
-    self.txtReceiverAddress.text = @"3GVrGUkGQcgN6vzXnp1upCS34d4agpXFsS";
     NSString *receiveAmount = cwCard.amount > 0 ? [[OCAppCommon getInstance] convertBTCStringformUnit: cwCard.amount] : nil;
     if (receiveAmount != nil) {
         if (self.amountUnit == BTC) {

@@ -8,6 +8,7 @@
 
 #import "SidebarViewController.h"
 #import "APPData.h"
+#import "CwExchangeSettings.h"
 
 @interface SidebarViewController ()
 
@@ -23,7 +24,11 @@
     
     [self.versionLabel setText:[APPData sharedInstance].version];
     
-    self.menuItems = @[@"title", @"HostDevices", @"CoolWalletCard", @"Security", @"Settings", @"Exchange", @"Logout"];
+    if (enableExchangeSite) {
+        self.menuItems = @[@"title", @"HostDevices", @"CoolWalletCard", @"Security", @"Settings", @"Exchange", @"Logout"];
+    } else {
+        self.menuItems = @[@"title", @"HostDevices", @"CoolWalletCard", @"Security", @"Settings", @"Logout"];
+    }
 }
 
 - (void)didReceiveMemoryWarning

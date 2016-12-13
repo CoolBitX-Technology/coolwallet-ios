@@ -406,6 +406,7 @@
 		F47E4DB01C606EAE0032885F /* AccountBalanceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountBalanceView.h; sourceTree = "<group>"; };
 		F47E4DB11C606EAE0032885F /* AccountBalanceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountBalanceView.m; sourceTree = "<group>"; };
 		F47EAA911C4E178700FEDE26 /* ex_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ex_logo.png; sourceTree = "<group>"; };
+		F47FA3FF1E00290100EACD26 /* CwExchangeSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CwExchangeSettings.h; sourceTree = "<group>"; };
 		F4832FCC1C9F9D180092A322 /* white_frame_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white_frame_small.png; sourceTree = "<group>"; };
 		F4832FCD1C9F9D180092A322 /* white_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white_frame.png; sourceTree = "<group>"; };
 		F4832FD01C9F9D280092A322 /* change.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = change.png; sourceTree = "<group>"; };
@@ -701,6 +702,7 @@
 				F49E7A6A1C8FEB7B000CD4B7 /* CwExUnblock.m */,
 				F49522A61C966B6B000D8E08 /* CwExchange.h */,
 				F49522A71C966B6B000D8E08 /* CwExchange.m */,
+				F47FA3FF1E00290100EACD26 /* CwExchangeSettings.h */,
 			);
 			name = Model;
 			sourceTree = "<group>";

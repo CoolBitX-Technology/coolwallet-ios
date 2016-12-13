@@ -7,6 +7,7 @@
 //
 
 #import "CwExchangeManager.h"
+#import "CwExchangeSettings.h"
 #import "CwCard.h"
 #import "CwManager.h"
 #import "NSString+HexToData.h"
@@ -46,9 +47,11 @@
 {
     static dispatch_once_t pred;
     static CwExchangeManager *sharedInstance = nil;
-    dispatch_once(&pred, ^{
-        sharedInstance = [[CwExchangeManager alloc] init];
-    });
+    if (enableExchangeSite) {
+        dispatch_once(&pred, ^{
+            sharedInstance = [[CwExchangeManager alloc] init];
+        });
+    }
     return sharedInstance;
 }
 
