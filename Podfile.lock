@@ -23,10 +23,10 @@ PODS:
   - CoreBitcoin (0.6.8.1):
     - ISO8601DateFormatter
     - OpenSSL-Universal (= 1.0.1.16)
-  - Crashlytics (3.7.2):
+  - Crashlytics (3.8.3):
     - Fabric (~> 1.6.3)
-  - Fabric (1.6.7)
-  - ISO8601DateFormatter (0.7)
+  - Fabric (1.6.11)
+  - ISO8601DateFormatter (0.8)
   - OpenSSL-Universal (1.0.1.16)
   - ReactiveCocoa (2.5):
     - ReactiveCocoa/UI (= 2.5)
@@ -52,13 +52,13 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   CoreBitcoin: 4ac6f6a61e543f08399c2fe57496d4fdcbaf74f9
-  Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
-  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
-  ISO8601DateFormatter: ab926648eebe497f4d167c0fd083992f959f1274
+  Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
+  ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   OpenSSL-Universal: 85ef63bf81d0741b03c8719cd29685c37c59518d
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   RMMapper: 21122d753c736d975f6c61e674afce8db73579af
 
-PODFILE CHECKSUM: 994c6bb4be8dd19aedfdac741f612a7ea5c1d561
+PODFILE CHECKSUM: 4b99ffb6e727d5ec934da93dccb948fa7872cffe
 
 COCOAPODS: 1.0.1

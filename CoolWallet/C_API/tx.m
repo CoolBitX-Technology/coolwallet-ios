@@ -130,11 +130,16 @@ size_t int64toBytes(int64_t n, unsigned char *ptr)
 size_t scriptPubPayToHash(char* addr,unsigned char *ptr)
 {
 	unsigned char scriptPub[25] = {0x76,0xa9,0x14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0x88,0xac};
-	if(addrToPubKeyHash(addr,scriptPub+3) == ADDR_TO_PUBKEY_HASH_BASE)
+    unsigned char scriptMultiPub[23] = {0xa9,0x14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0x87};
+    int addrPubKeyHash = addrToPubKeyHash(addr,scriptPub+3);
+	if(addrPubKeyHash == ADDR_TO_PUBKEY_HASH_BASE)
 	{
 		memcpy(ptr,scriptPub,25);
 		return 25;
-	}
+    } else if (addrPubKeyHash == ADDR_TO_PUBKEY_HASH_ADDR) {
+        memcpy(ptr,scriptMultiPub,23);
+        return 23;
+    }
 	return 0;
 }
 int txCopyHashGen(const Tx *tx,const int index,unsigned char txCopyHash[32])
@@ -182,8 +187,14 @@ int txCopyHashGen(const Tx *tx,const int index,unsigned char txCopyHash[32])
 	{
 		//value
 		pivot += int64toBytes(tx->txoutList[i].value,pivot);
-		//script len
-		pivot += VItoBytes(25,pivot);
+        
+        //script len
+        unsigned int scriptLen = 25;
+        if(addrVerify(tx->txoutList[i].addr)!=ADDRESS_VERIFY_BASE)
+        {
+            scriptLen = 23;
+        }
+		pivot += VItoBytes(scriptLen,pivot);
 		//script
 		pivot += scriptPubPayToHash(tx->txoutList[i].addr,pivot);
 	}
@@ -310,8 +321,13 @@ size_t txToBytes(const Tx* tx,unsigned char** rawTx)
 	{
 		//value
 		pivot += int64toBytes(tx->txoutList[i].value,pivot);
-		//script len
-		pivot += VItoBytes(25,pivot);
+        //script len
+        unsigned int scriptLen = 25;
+        if(addrVerify(tx->txoutList[i].addr)!=ADDRESS_VERIFY_BASE)
+        {
+            scriptLen = 23;
+        }
+        pivot += VItoBytes(scriptLen,pivot);
 		//script
 		pivot += scriptPubPayToHash(tx->txoutList[i].addr,pivot);
 	}
@@ -417,7 +433,13 @@ size_t signature(const Tx *tx,const int index,unsigned char* outPtr,int *ret)
         //value
         pivot += int64toBytes(tx->txoutList[i].value,pivot);
         //script len
-        pivot += VItoBytes(25,pivot);
+        unsigned int scriptLen = 25;
+        if(addrVerify(tx->txoutList[i].addr)!=ADDRESS_VERIFY_BASE)
+        {
+            scriptLen = 23;
+        }
+        pivot += VItoBytes(scriptLen,pivot);
+//        pivot += VItoBytes(25,pivot);
         //script
         pivot += scriptPubPayToHash(tx->txoutList[i].addr,pivot);
     }

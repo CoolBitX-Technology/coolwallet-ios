@@ -11,9 +11,9 @@
 #import "CwUnspentTxIndex.h"
 #import "CwBtcNetworkDelegate.h"
 #import "BlockChain.h"
-#import "tx.h"
 #import "AccountBalanceView.h"
 #import "TabbarAccountViewController.h"
+#import "NSString+Base58.h"
 
 CwCard *cwCard;
 CwAccount *account;
@@ -117,6 +117,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     }
     
     self.txtReceiverAddress.text = cwCard.paymentAddress;
+    self.txtReceiverAddress.text = @"3GVrGUkGQcgN6vzXnp1upCS34d4agpXFsS";
     NSString *receiveAmount = cwCard.amount > 0 ? [[OCAppCommon getInstance] convertBTCStringformUnit: cwCard.amount] : nil;
     if (receiveAmount != nil) {
         if (self.amountUnit == BTC) {
@@ -304,8 +305,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 
 -(BOOL) isValidBitcoinAddress:(NSString *)address
 {
-    int verify = addrVerify([address cStringUsingEncoding:NSUTF8StringEncoding]);
-    return verify == ADDRESS_VERIFY_BASE;
+    return [address isValidBitcoinAddress];
 }
 
 -(long long) getSendAmountWithSatoshi
