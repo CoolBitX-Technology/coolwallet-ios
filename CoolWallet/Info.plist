@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>ex_20160803.1</string>
+	<string>20161213.6</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -47,6 +47,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Bluetooth is used to connect with CoolWallet card</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera will be used to scan QR Code</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Camera will be used to scan QR Code</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>

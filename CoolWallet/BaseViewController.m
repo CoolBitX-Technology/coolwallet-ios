@@ -105,16 +105,17 @@ CwManager *cwManager;
 {
     NSLog(@"%@ didCwCardCommandError: %ld, ErrString: %@", self, (long)cmdId, errString);
     
-    if (DEBUG) {
-        NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
+#if DEBUG
+    NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
                                                        message: msg
                                                       delegate: nil
                                              cancelButtonTitle: nil
                                              otherButtonTitles:@"OK",nil];
         
-        [alert show];
-    }
+    [alert show];
+#endif
+    
 }
 
 #pragma mark - CwManager Delegate

@@ -407,6 +407,7 @@
 		F47E4DB11C606EAE0032885F /* AccountBalanceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountBalanceView.m; sourceTree = "<group>"; };
 		F47EAA911C4E178700FEDE26 /* ex_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ex_logo.png; sourceTree = "<group>"; };
 		F47FA3FF1E00290100EACD26 /* CwExchangeSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CwExchangeSettings.h; sourceTree = "<group>"; };
+		F47FA4001E00348E00EACD26 /* CoolWallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoolWallet.entitlements; sourceTree = "<group>"; };
 		F4832FCC1C9F9D180092A322 /* white_frame_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white_frame_small.png; sourceTree = "<group>"; };
 		F4832FCD1C9F9D180092A322 /* white_frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white_frame.png; sourceTree = "<group>"; };
 		F4832FD01C9F9D280092A322 /* change.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = change.png; sourceTree = "<group>"; };
@@ -516,6 +517,7 @@
 		93CF969519EE1A0200466DAF /* CoolWallet */ = {
 			isa = PBXGroup;
 			children = (
+				F47FA4001E00348E00EACD26 /* CoolWallet.entitlements */,
 				F4A7CC4C1C58957800E40CD1 /* Views */,
 				F4A7CC481C58845000E40CD1 /* ExchangeViewControllers */,
 				A2B6E7D51BD28813001B1592 /* Category */,
@@ -1024,7 +1026,7 @@
 					93CF969219EE1A0200466DAF = {
 						CreatedOnToolsVersion = 6.0.1;
 						DevelopmentTeam = 87HB2LFXY3;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1419,6 +1421,7 @@
 			baseConfigurationReference = 2CBB7DFF75CAE6888DFC4E8A /* Pods-CoolWallet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CoolWallet/CoolWallet.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 87HB2LFXY3;
@@ -1428,7 +1431,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dtco.CoolWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "e3a3a0be-2e64-4e73-b1e4-7d49bf990f66";
+				PROVISIONING_PROFILE_SPECIFIER = dev.dtco.CoolWallet;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1438,6 +1442,7 @@
 			baseConfigurationReference = DD8615E7BC2212802AACC920 /* Pods-CoolWallet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CoolWallet/CoolWallet.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: CoolBitX Technology Ltd. (87HB2LFXY3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: CoolBitX Technology Ltd. (87HB2LFXY3)";
 				DEVELOPMENT_TEAM = 87HB2LFXY3;
@@ -1447,7 +1452,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dtco.CoolWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "f3aee746-bb1e-4220-84d5-5f1e5af01ed7";
+				PROVISIONING_PROFILE_SPECIFIER = dist.dtco.CoolWallet;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

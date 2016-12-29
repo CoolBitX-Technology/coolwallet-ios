@@ -1177,12 +1177,7 @@ NSArray *addresses;
     GenTxErr err = [account genUnsignedTxToAddrByAutoCoinSelection:recvAddress change: changeAddress amount:[CwBtc BTCWithSatoshi:[NSNumber numberWithLongLong:amount]] unsignedTx:&unsignedTx fee:&fee];
     
     //check unsigned tx
-    if (err == GENTX_LESS) {
-        if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
-            [self.delegate didPrepareTransactionError:[NSString stringWithFormat:@"Amount is lower than balance\nTransaction fee: %@ BTC", fee.BTC]];
-        }
-        return nil;
-    } else if (unsignedTx==nil || unsignedTx.inputs.count == 0) {
+    if (err == GENTX_LESS || (unsignedTx==nil || unsignedTx.inputs.count == 0)) {
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
             [self.delegate didPrepareTransactionError:@"At least 1 confirmation needed before sending out."];
         }
@@ -1226,8 +1221,8 @@ NSArray *addresses;
     }
     
     //Sign hashes of the TX (max ins: 256)
-    for (int i=0; i<currUnsignedTx.inputs.count; i++) {
-        CwTxin *txin = currUnsignedTx.inputs[i];
+    for (int i=0; i<unsignedTx.inputs.count; i++) {
+        CwTxin *txin = unsignedTx.inputs[i];
         [self cwCmdHdwPrepTrxSign: i
                        KeyChainId: txin.kcId
                         AccountId: txin.accId
