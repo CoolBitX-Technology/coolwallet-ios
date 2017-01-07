@@ -43,6 +43,12 @@ static const NSString *txInfoURLStr      = @"tx/info";         //query tx infos
 
 BOOL didGetTransactionByAccountFlag[5];
 
+@interface CwBtcNetWork ()
+
+@property (strong, nonatomic) NSMutableArray *updateHistoryTxs;
+
+@end
+
 @implementation CwBtcNetWork
 {
     SRWebSocket *_webSocket;
@@ -77,6 +83,8 @@ BOOL didGetTransactionByAccountFlag[5];
     
     //prepare cwCard
     cwManager = [CwManager sharedManager];
+    
+    self.updateHistoryTxs = [NSMutableArray new];
     
     return self;
 }
@@ -274,9 +282,19 @@ BOOL didGetTransactionByAccountFlag[5];
     NSError *_err = nil;
     GetAllTxsByAddrErr err = GETALLTXSBYADDR_BASE;
     NSURLResponse *_response = nil;
-    NSLog(@"updateHistoryTxs %@", tid);
     
-    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@",serverSite,txInfoURLStr,tid] err:&_err response:&_response];
+    if ([self.updateHistoryTxs containsObject:tid]) {
+        return err;
+    } else {
+        NSLog(@"updateHistoryTxs %@", tid);
+        [self.updateHistoryTxs addObject:tid];
+    }
+    
+    NSString *url = [NSString stringWithFormat:@"%@/%@/%@",serverSite,txInfoURLStr,tid];
+    
+    NSData *data = [self HTTPRequestUsingGETMethodFrom:url err:&_err response:&_response];
+    
+    [self.updateHistoryTxs removeObject:tid];
     
     if(_err)
     {
@@ -293,12 +311,12 @@ BOOL didGetTransactionByAccountFlag[5];
         else
         {
             NSDictionary *data = [JSON objectForKey:@"data"];
-            NSMutableArray *txs = [NSMutableArray new];
+            NSMutableArray *txAddresses = [NSMutableArray new];
             for (NSDictionary *tx in [data objectForKey:@"vins"]) {
-                [txs addObject:[tx objectForKey:@"address"]];
+                [txAddresses addObject:[tx objectForKey:@"address"]];
             }
             for (NSDictionary *tx in [data objectForKey:@"vouts"]) {
-                [txs addObject:[tx objectForKey:@"address"]];
+                [txAddresses addObject:[tx objectForKey:@"address"]];
             }
             
             NSData* _tid = [NSString hexstringToData:tid];
@@ -315,9 +333,9 @@ BOOL didGetTransactionByAccountFlag[5];
                     continue;
                 }
                 
-                NSArray *txAddresses = [[cwAccount getAllAddresses] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.address in %@", txs]];
+                NSArray *addresses = [[cwAccount getAllAddresses] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.address in %@", txAddresses]];
                 
-                if (txAddresses.count == 0) {
+                if (addresses.count == 0) {
                     continue;
                 }
                 
@@ -327,16 +345,18 @@ BOOL didGetTransactionByAccountFlag[5];
                     [historyTx setHistoryTime_utc:timeUTC];
                     [cwAccount.transactions setObject:historyTx forKey:_tid];
                 } else {
-                    NSMutableArray *addresses = [NSMutableArray new];
-                    for (CwAddress *cwaddr in txAddresses) {
-                        [addresses addObject:cwaddr.address];
+                    NSMutableArray *queryAddresses = [NSMutableArray new];
+                    for (CwAddress *cwaddr in addresses) {
+                        [queryAddresses addObject:cwaddr.address];
                         cwaddr.historyUpdateFinish = NO;
                     }
-                    NSDictionary *updateTxs = [self queryHistoryTxs:addresses];
+                    
+                    didGetTransactionByAccountFlag[cwAccount.accId] = NO;
+                    NSDictionary *updateTxs = [self queryHistoryTxs:queryAddresses];
                     [self syncAccountTransactions:updateTxs account:cwAccount];
                 }
                 
-                for (CwAddress *cwAddr in txAddresses) {
+                for (CwAddress *cwAddr in addresses) {
                     NSLog(@"check '%@' unspent", cwAddr.address);
                     [self getUnspentByAddress:cwAddr fromAccount:cwAccount];
                 }
