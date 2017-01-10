@@ -7,7 +7,7 @@
 //
 
 #import "TabExhchangeRateViewController.h"
-#import "CwBtcNetwork.h"
+#import "BlockChain.h"
 
 @implementation TabExhchangeRateViewController
 {
@@ -41,9 +41,7 @@
 -(void) getCurrRate
 {
     NSLog(@"getCurrRate");
-    CwBtcNetWork *btcNet = [CwBtcNetWork sharedManager];
-    
-    rates = [btcNet getCurrRate];
+    rates = [[BlockChain new] getCurrencyRates];
     
     [self performDismiss];
     

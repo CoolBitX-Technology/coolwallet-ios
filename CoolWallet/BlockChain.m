@@ -77,6 +77,23 @@
     return;
 }
 
+-(NSDictionary *) getCurrencyRates
+{
+    NSMutableDictionary *currencyRates = [NSMutableDictionary new];
+    
+    NSString *requestUrl = [NSString stringWithFormat:@"%@%@", BlockChainBaseURL, ExchangeRateAPI];
+    [self getRequestUrl:requestUrl params:nil success:^(NSDictionary *json) {
+        for (NSString *currency in json) {
+            NSDictionary *rates = [json objectForKey:currency];
+            [currencyRates setObject:[rates objectForKey:@"last"] forKey:currency];
+        }
+    } failure:^(NSError *err) {
+        NSLog(@"getCurrencyRates error: %@", err.description);
+    }];
+    
+    return [NSDictionary dictionaryWithDictionary:currencyRates];
+}
+
 -(void) getRequestUrl:(NSString *)url params:(NSDictionary *)params success:(void(^)(NSDictionary *json))success failure:(void(^)(NSError *err))failure
 {
     if (params != nil && params.count > 0) {

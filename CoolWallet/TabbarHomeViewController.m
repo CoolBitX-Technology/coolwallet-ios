@@ -146,7 +146,7 @@ CwBtcNetWork *btcNet;
 {
     [self showIndicatorView:@"synchronizing data"];
     
-    rates = [btcNet getCurrRate];
+    rates = [[BlockChain new] getCurrencyRates];
     
     //find currId from the rates
     NSNumber *rate = [rates objectForKey:self.cwManager.connectedCwCard.currId];

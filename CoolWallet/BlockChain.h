@@ -12,9 +12,11 @@
 #define BlockChainBaseURL @"https://blockchain.info"
 #define MultiAddrAPI @"/multiaddr"
 #define UnspentAPI @"/unspent"
+#define ExchangeRateAPI @"/ticker"
 
 @interface BlockChain : NSObject
 
 -(GetBalanceByAddrErr) getBalanceByAccountID:(NSInteger)accountID;
+-(NSDictionary *) getCurrencyRates;
 
 @end
