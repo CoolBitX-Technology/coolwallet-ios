@@ -351,10 +351,13 @@ BOOL didGetTransactionByAccountFlag[5];
                         cwaddr.historyUpdateFinish = NO;
                     }
                     
-                    didGetTransactionByAccountFlag[cwAccount.accId] = NO;
                     NSDictionary *updateTxs = [self queryHistoryTxs:queryAddresses];
                     [self syncAccountTransactions:updateTxs account:cwAccount];
                 }
+                
+                [cwCard.cwAccounts setObject:cwAccount forKey:[NSString stringWithFormat: @"%ld", (long)cwAccount.accId]];
+                
+                didGetTransactionByAccountFlag[cwAccount.accId] = NO;
                 
                 for (CwAddress *cwAddr in addresses) {
                     NSLog(@"check '%@' unspent", cwAddr.address);
@@ -759,14 +762,19 @@ BOOL didGetTransactionByAccountFlag[5];
             NSArray *dataList = [data objectForKey:@"data"];
             for (NSDictionary *addrData in dataList) {
                 NSArray *txs = [addrData objectForKey:@"unconfirmed"];
+                if (txs.count == 0) {
+                    continue;
+                }
                 NSMutableArray *addrTxs = [self getAddrTxs:txs];
                 [result setObject:addrTxs forKey:[addrData objectForKey:@"address"]];
             }
         } else {
             NSDictionary *addrData = [data objectForKey:@"data"];
             NSArray *txs = [addrData objectForKey:@"unconfirmed"];
-            NSMutableArray *addrTxs = [self getAddrTxs:txs];
-            [result setObject:addrTxs forKey:[addrData objectForKey:@"address"]];
+            if (txs.count > 0) {
+                NSMutableArray *addrTxs = [self getAddrTxs:txs];
+                [result setObject:addrTxs forKey:[addrData objectForKey:@"address"]];
+            }
         }
         
     } failure:^(NSError *err) {

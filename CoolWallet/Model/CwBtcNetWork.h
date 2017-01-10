@@ -30,6 +30,8 @@
 - (GetUnspentTxsByAddrErr) getUnspentTxsByAddr: (NSString*)addr unspentTxs:(NSMutableArray**)unspentTxs;
 -(void) syncAccountTransactions:(NSDictionary *)historyTxData account:(CwAccount *)account;
 -(void) refreshTxsFromAccountAddresses:(CwAccount *)account;
+-(GetAllTxsByAddrErr) updateHistoryTxs:(NSString *)tid;
+- (int64_t) getBalance:(NSNumber *)accountId;
 
 - (PublishErr) publish:(CwTx*)tx result:(NSData **)result;
 - (DecodeErr) decode:(CwTx*)tx result:(NSData **)result;

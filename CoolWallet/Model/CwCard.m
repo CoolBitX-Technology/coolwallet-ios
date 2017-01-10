@@ -5398,11 +5398,14 @@ NSArray *addresses;
                     }
                     else
                     {
+                        NSString *txId = [JSON objectForKey:@"data"];
                         //call success delegate
                         if ([self.delegate respondsToSelector:@selector(didSignTransaction:)]) {
-                            NSString *txId = [JSON objectForKey:@"data"];
                             [self.delegate didSignTransaction:txId];
                         }
+                        
+                        [btcNet getBalance:[NSNumber numberWithInteger:account.accId]];
+                        [btcNet updateHistoryTxs:txId];
                     }
                     
 //                    if([JSON objectForKey:@"error"] != nil)
