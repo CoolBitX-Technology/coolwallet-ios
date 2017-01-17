@@ -131,15 +131,23 @@ size_t scriptPubPayToHash(char* addr,unsigned char *ptr)
 {
 	unsigned char scriptPub[25] = {0x76,0xa9,0x14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0x88,0xac};
     unsigned char scriptMultiPub[23] = {0xa9,0x14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0x87};
-    int addrPubKeyHash = addrToPubKeyHash(addr,scriptPub+3);
-	if(addrPubKeyHash == ADDR_TO_PUBKEY_HASH_BASE)
-	{
-		memcpy(ptr,scriptPub,25);
-		return 25;
-    } else if (addrPubKeyHash == ADDR_TO_PUBKEY_HASH_ADDR) {
-        memcpy(ptr,scriptMultiPub,23);
+    
+    int addrVerifyType = addrVerify(addr);
+    if(addrVerifyType == ADDRESS_VERIFY_DECODE) {
+        // multisig address
+        NSString *address = [[NSString alloc] initWithBytes:addr length:strlen(addr) encoding:NSUTF8StringEncoding];
+        NSData *addDecode = [CwBase58 base58ToData:address];
+        memcpy(scriptMultiPub+2, (addDecode.bytes)+1, 20);
+        memcpy(ptr, scriptMultiPub, 23);
+        
         return 23;
-    }
+    } else if (addrVerifyType == ADDRESS_VERIFY_BASE) {
+        addrToPubKeyHash(addr,scriptPub+3);
+        memcpy(ptr,scriptPub,25);
+        
+        return 25;
+    }    
+
 	return 0;
 }
 int txCopyHashGen(const Tx *tx,const int index,unsigned char txCopyHash[32])
