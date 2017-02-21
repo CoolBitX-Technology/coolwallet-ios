@@ -66,7 +66,10 @@ CwManager *cwManager;
 - (void) performDismiss
 {
     if(mHUD != nil) {
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        });
+        
         mHUD = nil;
     }
 }

@@ -241,6 +241,9 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
             [_unsignedTx.outputs addObject:txout];
         }
         
+        _unsignedTx.totalInput = totalInputAcmout;
+        _unsignedTx.txFee = _fee;
+        
         *unsignedTx = _unsignedTx;
         *fee = _fee;
     }
@@ -358,7 +361,7 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
     Byte *pivot = cScriptSig;
     
     pivot += signatureToDER([[sig subdataWithRange:first]bytes], [[sig subdataWithRange:last]bytes], pivot);
-    
+   
     *(pivot++) = 0x21;
     *(pivot++) = ((*((Byte*)[pubKey bytes]+63)) & 0x01)==1?0x03:0x02;
     memcpy(pivot,[pubKey bytes],32);

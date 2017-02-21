@@ -1216,6 +1216,11 @@ NSArray *addresses;
 {
     CwTx *unsignedTx = [self getUnsignedTransaction:amount Address:recvAddress Change:changeAddress AccountId:self.currentAccountId];
     
+    [self prepareTransactionWithUnsignedTx:unsignedTx];
+}
+
+-(void) prepareTransactionWithUnsignedTx:(CwTx *)unsignedTx
+{
     if (unsignedTx == nil) {
         return;
     }
@@ -1230,7 +1235,6 @@ NSArray *addresses;
                            Amount: txin.amount.satoshi.intValue
                 SignatureMateiral: txin.hashForSign];
     }
-    
 }
 
 -(void) verifyTransactionOtp: (NSString *)otp; //didVerifyOtp, didVerifyOtpError
@@ -5365,9 +5369,10 @@ NSArray *addresses;
                     NSMutableArray *sigs = [[NSMutableArray alloc] init];
                     for (int i=0; i<currUnsignedTx.inputs.count; i++) {
                         CwTxin *txin = currUnsignedTx.inputs[i];
-                        
+                        NSLog(@"signature: %@, pubKey: %@", txin.signature, txin.pubKey);
                         NSData *scriptSig = [NSData dataWithBytes:"" length:0];
                         [account genScriptSig:txin.signature pubKey:txin.pubKey scriptSig:&scriptSig];
+                        NSLog(@"txin: %d, scriptPub: %@", i, scriptSig);
                         ((CwTxin *)(currUnsignedTx.inputs[i])).scriptPub = scriptSig;
                         [sigs addObject: scriptSig];
                     }

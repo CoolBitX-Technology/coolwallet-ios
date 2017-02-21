@@ -16,6 +16,11 @@
 #import "NSDate+Localize.h"
 #import "NSString+HexToData.h"
 
+@interface TabTransactionDetailViewController()
+@property (weak, nonatomic) IBOutlet UILabel *lblCurrency;
+
+@end
+
 @implementation TabTransactionDetailViewController
 
 - (void)viewDidLoad {
@@ -55,6 +60,8 @@
     }
     
     if(self.cwManager.connectedCwCard.currRate != nil) {
+        [self.lblCurrency setText:self.cwManager.connectedCwCard.currId];
+        
         double fiat = [self.tx.historyAmount.BTC doubleValue] * ([self.cwManager.connectedCwCard.currRate doubleValue]/100 );
         _lblTxFiatMoney.text = [NSString stringWithFormat:@"%.2f",fiat];
     }

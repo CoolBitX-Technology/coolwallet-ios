@@ -124,6 +124,7 @@
 		F43E97C71C2808F100D03DA9 /* NSData+Bitcoin.m in Sources */ = {isa = PBXBuildFile; fileRef = F43E97C61C2808F100D03DA9 /* NSData+Bitcoin.m */; };
 		F45962901BDE3FF80046E4CE /* BlockChain.m in Sources */ = {isa = PBXBuildFile; fileRef = F459628F1BDE3FF80046E4CE /* BlockChain.m */; };
 		F45962931BDE411C0046E4CE /* SRWebSocket+CW.m in Sources */ = {isa = PBXBuildFile; fileRef = F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */; };
+		F45F6BE51E54738700652236 /* TabbarSendConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F45F6BE41E54738700652236 /* TabbarSendConfirmViewController.m */; };
 		F47752C61C8EC9FD007F2558 /* NotifyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F47752C51C8EC9FD007F2558 /* NotifyManager.m */; };
 		F47752C91C8EDA1A007F2558 /* CwExUnclarifyOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = F47752C81C8EDA1A007F2558 /* CwExUnclarifyOrder.m */; };
 		F478F4891C7EE25400660D82 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F478F4871C7EE25400660D82 /* Reachability.m */; };
@@ -391,6 +392,8 @@
 		F459628F1BDE3FF80046E4CE /* BlockChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockChain.m; sourceTree = "<group>"; };
 		F45962911BDE411C0046E4CE /* SRWebSocket+CW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRWebSocket+CW.h"; sourceTree = "<group>"; };
 		F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRWebSocket+CW.m"; sourceTree = "<group>"; };
+		F45F6BE31E54738700652236 /* TabbarSendConfirmViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabbarSendConfirmViewController.h; sourceTree = "<group>"; };
+		F45F6BE41E54738700652236 /* TabbarSendConfirmViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabbarSendConfirmViewController.m; sourceTree = "<group>"; };
 		F47752C41C8EC9FD007F2558 /* NotifyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotifyManager.h; sourceTree = "<group>"; };
 		F47752C51C8EC9FD007F2558 /* NotifyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifyManager.m; sourceTree = "<group>"; };
 		F47752C71C8EDA1A007F2558 /* CwExUnclarifyOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExUnclarifyOrder.h; path = Model/CwExUnclarifyOrder.h; sourceTree = "<group>"; };
@@ -786,6 +789,8 @@
 				EFF6DD0D1B9434480089E093 /* TabCreateWalletSelectViewController.m */,
 				EFF6DD0F1B9542880089E093 /* TabExhchangeRateViewController.h */,
 				EFF6DD101B9542880089E093 /* TabExhchangeRateViewController.m */,
+				F45F6BE31E54738700652236 /* TabbarSendConfirmViewController.h */,
+				F45F6BE41E54738700652236 /* TabbarSendConfirmViewController.m */,
 			);
 			name = TabAccountViewController;
 			sourceTree = "<group>";
@@ -1281,6 +1286,7 @@
 				EFCF9A591B32C8810076091B /* CwTransaction.m in Sources */,
 				EFF1ACBB19EFF14800DD0BCB /* SWRevealViewController.m in Sources */,
 				EFEF8DBC1B4A5FCB004427B8 /* SRWebSocket.m in Sources */,
+				F45F6BE51E54738700652236 /* TabbarSendConfirmViewController.m in Sources */,
 				EFAC5C521AC25A7000320EA6 /* split.c in Sources */,
 				EF698CF71A78DD2100A943B9 /* CwRegisterHostViewController.m in Sources */,
 				EFCF9A5D1B32C8810076091B /* CwUnspentTxIndex.m in Sources */,

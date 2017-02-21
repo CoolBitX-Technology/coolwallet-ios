@@ -29,6 +29,8 @@ typedef enum{TypeUnsignedTx,TypeSignedTx,TypeUnspentTx,TypeHistoryTx} TxType;
 @property NSMutableArray* inputs;        //CWTxin[]
 @property NSMutableArray* outputs;       //CWTxout[]
 @property NSData* rawTx;
+@property CwBtc *txFee;
+@property CwBtc *totalInput;
 
 @property (nonatomic, readonly) CwBtc* historyAmount;      //bitcoin value changed after this tx
 

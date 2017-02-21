@@ -14,6 +14,7 @@
 #import "AccountBalanceView.h"
 #import "TabbarAccountViewController.h"
 #import "NSString+Base58.h"
+#import "TabbarSendConfirmViewController.h"
 
 CwCard *cwCard;
 CwAccount *account;
@@ -30,6 +31,8 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     BTC,
     FiatMoney,
 };
+
+static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
 
 @interface TabbarSendViewController () <CwBtcNetworkDelegate>
 {
@@ -52,7 +55,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 @property (weak, nonatomic) IBOutlet UIView *inputView;
 
 @property (strong, nonatomic) CwAddress *genAddr;
-@property (assign, nonatomic) BOOL transactionBegin;
 @property (strong, nonatomic) CwBtcNetWork *btcNet;
 @property (strong, nonatomic) NSMutableArray *updateUnspendBalance;
 @property (strong, nonatomic) NSMutableArray *unspentAddresses;
@@ -62,6 +64,8 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 @property (assign, nonatomic) InputAmountUnit amountUnit;
 
 @property (strong, nonatomic) UIBarButtonItem *addButton;
+
+@property (strong, nonatomic) NSString *performIdentifier;
 
 @end
 
@@ -79,7 +83,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     
     [self addDecimalKeyboardDoneButton];
     
-    self.transactionBegin = NO;
     self.updateUnspendBalance = [NSMutableArray new];
     self.unspentAddresses = [NSMutableArray new];
     self.publicKeyUpdate = [NSMutableDictionary new];
@@ -153,16 +156,13 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         self.btcNet.delegate = nil;
     }
     
-    if (self.transactionBegin) {
-        // TODO: alert cancel?
-    } else {
+    if (self.performIdentifier == nil || ![self.performIdentifier isEqualToString:SendConfirmSegueIdentifier]) {
         cwCard.paymentAddress = @"";
         cwCard.amount = 0;
         cwCard.label = @"";
     }
     
     if (self.updateUnspendBalance.count > 0) {
-        self.transactionBegin = NO;
         [self performDismiss];
         [self.updateUnspendBalance removeAllObjects];
     }
@@ -182,6 +182,38 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     // Dispose of any resources that can be recreated.
 }
 
+- (BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
+    self.performIdentifier = identifier;
+    
+    if ([identifier isEqualToString:SendConfirmSegueIdentifier]) {
+        if ([self.updateUnspendBalance containsObject:[NSString stringWithFormat:@"%ld", (long)account.accId]] ) {
+            [self showIndicatorView:@"Update unspent balance..."];
+            return NO;
+        } else {
+            return [self shouldPerfomConfirmPage];
+        }
+    }
+    
+    return YES;
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:SendConfirmSegueIdentifier]) {
+        cwCard.paymentAddress = self.txtReceiverAddress.text;
+        cwCard.amount = [self getSendAmountWithSatoshi];
+        
+        TabbarSendConfirmViewController *targetVC = segue.destinationViewController;
+        targetVC.sendToAddress = self.txtReceiverAddress.text;
+        if (self.amountUnit == BTC) {
+            targetVC.sendAmountBTC = self.txtAmount.text;
+        } else {
+            targetVC.sendAmountBTC = self.lblConvertAmount.text;
+        }
+    }
+}
+
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
@@ -193,6 +225,27 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 {
     [super touchesBegan:touches withEvent:event];
     
+}
+
+- (BOOL) shouldPerfomConfirmPage
+{
+    if ([self getSendAmountWithSatoshi] < 1) {
+        [self showHintAlert:@"Unable to send" withMessage:@"Please enter a valid amount." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        return NO;
+    }
+    
+    if (![self isValidBitcoinAddress:self.txtReceiverAddress.text]) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to send" message:@"Invalid Bitcoin address" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:okAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        return NO;
+    }
+    
+    if([self.txtAmount.text compare:@""] == 0 ) return NO;
+    
+    return YES;
 }
 
 - (IBAction)btnSendBitcoin:(id)sender {
@@ -211,13 +264,8 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     }
     if([self.txtAmount.text compare:@""] == 0 ) return;
     
-    self.transactionBegin = YES;
-    
     if ([self.updateUnspendBalance containsObject:[NSString stringWithFormat:@"%ld", (long)account.accId]] ) {
         [self showIndicatorView:@"Update unspent balance..."];
-    } else {
-        //send OTP
-        [self sendBitcoin];
     }
 }
 
@@ -246,13 +294,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     self.lblConvertAmount.text = self.txtAmount.text;
     self.txtAmount.text = txtAmountText;
     
-}
-
--(void) sendBitcoin
-{
-    [self showIndicatorView:@"Send..."];
-    
-    [cwCard findEmptyAddressFromAccount:cwCard.currentAccountId keyChainId:CwAddressKeyChainInternal];
 }
 
 - (void)addDecimalKeyboardDoneButton
@@ -314,7 +355,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         sato = [self.txtAmount.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
         
     } else {
-        sato = [self.txtAmount.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
+        sato = [self.lblConvertAmount.text stringByReplacingOccurrencesOfString:@"," withString:@"."];
     }
     
     return [[[OCAppCommon getInstance] convertBTCtoSatoshi:sato] longLongValue];
@@ -337,11 +378,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 }
 
 - (IBAction)btnAccount:(id)sender {
-    if (self.transactionBegin) {
-        // should wait for transaction finish?
-        return;
-    }
-    
     NSInteger currentAccId = self.cwManager.connectedCwCard.currentAccountId;
     for (UIButton *btn in self.accountButtons) {
         if (btn == sender) {
@@ -353,7 +389,8 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     }
     
     if (currentAccId != cwCard.currentAccountId) {
-        self.transactionBegin = NO;
+        self.performIdentifier = nil;
+        
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
     
@@ -381,29 +418,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     [self performSelectorOnMainThread:@selector(SetBalanceText) withObject:nil waitUntilDone:NO];
     
     [self.btcNet getTransactionByAccount: cwAccount.accId];
-}
-
--(void) sendPrepareTransaction
-{
-    if (self.genAddr == nil) {
-        return;
-    }
-    
-    self.transactionBegin = YES;
-    if (![self isGetAllPublicKeyByAccount:cwCard.currentAccountId]) {
-        return;
-    }
-    
-    [cwCard prepareTransaction: [self getSendAmountWithSatoshi] Address:self.txtReceiverAddress.text Change: self.genAddr.address];
-}
-
--(void) cancelTransaction
-{
-    [self showIndicatorView:@"Cancel transaction..."];
-    
-    self.transactionBegin = NO;
-    [cwCard cancelTrancation];
-    [cwCard setDisplayAccount: cwCard.currentAccountId];
 }
 
 -(void) cleanInput
@@ -435,23 +449,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         for (NSObject* o in w.subviews)
             if ([o isKindOfClass:[UIAlertView class]])
                 [(UIAlertView*)o dismissWithClickedButtonIndex:[(UIAlertView*)o cancelButtonIndex] animated:YES];
-}
-
-#define TAG_SEND_OTP 1
-#define TAG_PRESS_BUTTON 2
-- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if(actionSheet.tag == TAG_SEND_OTP) {
-        if (buttonIndex == actionSheet.cancelButtonIndex) {
-            [self cancelTransaction];
-        } else {
-            [self showIndicatorView:@"Send..."];
-            
-            [cwCard verifyTransactionOtp:tfOTP.text];
-        }
-    }else  if(actionSheet.tag == TAG_PRESS_BUTTON) {
-        [self cancelTransaction];
-    }
 }
 
 -(void) checkUnspentPublicKeyByAccount:(NSInteger)accId
@@ -513,8 +510,10 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         [self.updateUnspendBalance removeObject:accountId];
     }
     
-    if (self.transactionBegin && accId == cwCard.currentAccountId) {
-        [self performSelectorOnMainThread:@selector(sendBitcoin) withObject:nil waitUntilDone:YES];
+    if (accId == cwCard.currentAccountId && self.performIdentifier != nil && [self.performIdentifier isEqualToString:SendConfirmSegueIdentifier]) {
+        self.performIdentifier = nil;
+        [self performDismiss];
+        [self performSegueWithIdentifier:SendConfirmSegueIdentifier sender:self.btnSendBitcoin];
     }
 }
 
@@ -522,8 +521,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 -(void) didCwCardCommand
 {
     NSLog(@"didCwCardCommand");
-//    [self.actBusyIndicator stopAnimating];
-//    self.actBusyIndicator.hidden = YES;
     
     [self didGetCwCurrRate];
 }
@@ -533,66 +530,11 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     [super didCwCardCommandError:cmdId ErrString:errString];
     
     [self performDismiss];
-    
-    self.transactionBegin = NO;
 }
 
 -(void) didSetAccountBalance:(NSInteger)accId
 {
     NSLog(@"TabbarSendViewController, didSetAccountBalance:%ld, currentAccountId:%ld", accId, (long)cwCard.currentAccountId);
-}
-
--(void) didPrepareTransactionError: (NSString *) errMsg
-{
-    [self performDismiss];
-    
-    self.transactionBegin = NO;
-    
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Unable to send"
-                                                   message: errMsg
-                                                  delegate: nil
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles: @"OK",nil];
-    
-    [alert show];
-}
-
--(void) didGenAddress: (CwAddress *) addr
-{
-    NSLog(@"didGenAddress, %@, kid = %ld", addr.address, (long)addr.keyId);
-    [self.btcNet registerNotifyByAccount:cwCard.currentAccountId];
-    
-    for (NSString *accIndex in cwCard.cwAccounts) {
-        CwAccount *cwAccount = [cwCard.cwAccounts objectForKey:accIndex];
-        if (cwAccount.accId == account.accId) {
-            continue;
-        }
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.address == %@", self.txtReceiverAddress.text];
-        NSArray *searchResult = [[cwAccount getAllAddresses] filteredArrayUsingPredicate:predicate];
-        if (searchResult.count > 0) {
-            CwAddress *address = searchResult[0];
-            [self.btcNet registerNotifyByAddress:address];
-            break;
-        }
-    }
-    
-    self.genAddr = addr;
-    
-    [self sendPrepareTransaction];
-}
-
--(void) didGenAddressError
-{
-    [self performDismiss];
-    
-    self.transactionBegin = NO;
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to send" message:@"Can't generate address, please try it later." preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-    [alertController addAction:okAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 -(void) didGetAccountInfo: (NSInteger) accId
@@ -633,7 +575,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         return;
     }
     
-    if (self.transactionBegin) {
+    if (self.performIdentifier != nil && [self.performIdentifier isEqualToString:SendConfirmSegueIdentifier]) {
         BOOL isUnspentAddress = NO;
         for (CwUnspentTxIndex *utx in account.unspentTxs)
         {
@@ -644,157 +586,15 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         }
         
         if (isUnspentAddress && [self isGetAllPublicKeyByAccount:account.accId]) {
-            [self sendPrepareTransaction];
+            [self performSegueWithIdentifier:SendConfirmSegueIdentifier sender:self.btnSendBitcoin];
         }
-    }
-}
-
--(void) didPrepareTransaction: (NSString *)OTP
-{
-    NSLog(@"didPrepareTransaction");
-    if (cwCard.securityPolicy_OtpEnable.boolValue == YES) {
-        [self performDismiss];
-        
-        self.btnSendBitcoin.hidden = NO;
-        [self showOTPEnterView];
-    }else{
-        [self didVerifyOtp];
-    }
-}
-
--(void) didGetTapTapOtp: (NSString *)OTP
-{
-    NSLog(@"didGetTapTapOtp");
-    if (cwCard.securityPolicy_OtpEnable.boolValue == YES) {
-        
-        if(OTPalert != nil){
-            tfOTP.text = OTP;
-        }
-        //self.txtOtp.text = OTP;
-        //[self btnVerifyOtp:self];
-    }
-}
-
--(void) didGetButton
-{
-    NSLog(@"didGetButton");
-    [PressAlert dismissViewControllerAnimated:YES completion:nil];
-    
-    PressAlert = [UIAlertController alertControllerWithTitle:@"Sending..." message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        [self cancelTransaction];
-    }];
-    [PressAlert addAction:cancelAction];
-    
-    [self presentViewController:PressAlert animated:YES completion:nil];
-    
-    [cwCard signTransaction];
-}
-
--(void) didVerifyOtp
-{
-    NSLog(@"didVerifyOtp");
-    if (cwCard.securityPolicy_BtnEnable.boolValue == YES) {
-        [self performDismiss];
-        
-        PressAlert = [UIAlertController alertControllerWithTitle:@"Press Button On the Card" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [self cancelTransaction];
-        }];
-        [PressAlert addAction:cancelAction];
-        
-        [self presentViewController:PressAlert animated:YES completion:nil];
-        
-    } else {
-        //self.lblPressButton.text = @"Otp Verified, Sending Bitcoin";
-        [self didGetButton];
-    }
-}
-
--(void) didVerifyOtpError:(NSInteger)errId
-{
-    [self performDismiss];
-        
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"OTP Error" message:@"Generate OTP Again" preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [self showIndicatorView:@"Send..."];
-        [self sendPrepareTransaction];
-    }];
-    [alertController addAction:okAction];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [self cancelTransaction];
-    }];
-    [alertController addAction:cancelAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
--(void) didSignTransaction:(NSString *)txId
-{
-    NSLog(@"didSignTransaction: %@", txId);
-    //[self performDismiss];
-    
-    if(PressAlert != nil) [PressAlert dismissViewControllerAnimated:YES completion:nil] ;
-    
-    if (self.transactionBegin) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Sent"
-                                                       message: [NSString stringWithFormat:@"Sent %@ BTC to %@", self.txtAmount.text, self.txtReceiverAddress.text]
-                                                      delegate: nil
-                                             cancelButtonTitle: nil
-                                             otherButtonTitles: @"OK",nil];
-        [alert show];
-    }
-    
-    self.transactionBegin = NO;
-    
-    [self cleanInput];
-}
-
--(void) didSignTransactionError:(NSString *)errMsg
-{
-    self.transactionBegin = NO;
-    
-    if(PressAlert != nil) [PressAlert dismissViewControllerAnimated:YES completion:nil] ;
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to send" message:errMsg preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-    [alertController addAction:okAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
--(void) didFinishTransaction
-{
-    if (!self.transactionBegin) {
-        [self performDismiss];
     }
 }
 
 -(void) didGetCwCurrRate
 {
     NSLog(@"didGetCwCurrRate");
-    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-    [numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
-    //NSString *numberAsString = [numberFormatter stringFromNumber: cwManager.connectedCwCard.currRate];
-    //_lblFaitMoney.text = numberAsString;
     NSLog(@"string = %@",[[OCAppCommon getInstance] convertFiatMoneyString:(int64_t)account.balance currRate:cwCard.currRate]);
-    //self.txtExchangeRage.text = numberAsString;
-}
-
-- (void) showOTPEnterView
-{
-    if(cwCard.securityPolicy_OtpEnable.boolValue == NO) return;
-    
-    OTPalert = [[UIAlertView alloc] initWithTitle:@"Please enter OTP" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
-    OTPalert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    OTPalert.tag = TAG_SEND_OTP;
-    tfOTP = [OTPalert textFieldAtIndex:0];
-    tfOTP.keyboardType = UIKeyboardTypeDecimalPad;
-    //alertTextField.keyboardType = UIKeyboardTypeNumberPad;
-    //alertTextField.placeholder = @"Enter request BTC";
-    [OTPalert show];
 }
 
 -(void) keyboardWillShow:(NSNotification *)notification
