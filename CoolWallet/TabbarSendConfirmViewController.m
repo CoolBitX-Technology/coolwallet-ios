@@ -33,6 +33,9 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 @property (weak, nonatomic) IBOutlet UILabel *lblChangeAmount;
 @property (weak, nonatomic) IBOutlet UIButton *btnSend;
 @property (weak, nonatomic) IBOutlet UIButton *btnChangeUnit;
+@property (weak, nonatomic) IBOutlet UIView *viewChangeAddr;
+@property (weak, nonatomic) IBOutlet UIView *viewChangeAmount;
+@property (weak, nonatomic) IBOutlet UILabel *lblTxDust;
 
 @property (strong, nonatomic) CwBtcNetWork *btcNet;
 @property (strong, nonatomic) CwCard *cwCard;
@@ -41,6 +44,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 
 @property (strong, nonatomic) UIAlertController *OTPAlertController;
 @property (assign, nonatomic) BOOL transactionBegin;
+@property (assign, nonatomic) BOOL transactionSuccess;
 
 @property (assign, nonatomic) InputAmountUnit amountUnit;
 
@@ -58,6 +62,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     self.cwCard.delegate = self;
     
     self.transactionBegin = NO;
+    self.transactionSuccess = NO;
     self.amountUnit = BTC;
     
     [self.cwCard findEmptyAddressFromAccount:self.cwAccount.accId keyChainId:CwAddressKeyChainInternal];
@@ -66,8 +71,9 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 
 - (void) viewWillDisappear:(BOOL)animated
 {
-    if (self.isMovingFromParentViewController) {
-        
+    if (self.isMovingFromParentViewController && self.transactionSuccess) {
+        self.cwCard.paymentAddress = @"";
+        self.cwCard.amount = 0;
     }
 }
 
@@ -105,7 +111,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         self.amountUnit = FiatMoney;
         [self.btnChangeUnit setTitle:@"BTC" forState:UIControlStateNormal];
         
-        NSArray *updateLabels = @[self.lblSendToAmount, self.lblTxFees, self.lblTotalAmount, self.lblChangeAmount];
+        NSArray *updateLabels = @[self.lblSendToAmount, self.lblTxFees, self.lblTotalAmount, self.lblInputAmount, self.lblChangeAmount];
         for (UILabel *label in updateLabels) {
             label.text = [self convertToFiatMoney:label.text];
         }
@@ -137,10 +143,12 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     self.lblSendToAddress.text = self.sendToAddress;
     self.lblSendToAmount.text = self.sendAmountBTC;
     
+    self.lblTxDust.hidden = YES;
+    
     [[[RACObserve(self, genAddr) ignore:nil]
     subscribeOn:[RACScheduler mainThreadScheduler]]
     subscribeNext:^(CwAddress *cwAddr) {
-        self.lblChangeAddress.text = cwAddr.address;
+        [self getUnsignedTxInfo];
     }];
 }
 
@@ -156,7 +164,23 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     
     self.lblInputs.text = [NSString stringWithFormat:@"%lu Inputs", (unsigned long)self.unsignedTx.inputs.count];
     self.lblInputAmount.text = [self.unsignedTx.totalInput getBTCDisplayFromUnit];
-    self.lblChangeAmount.text = [[self.unsignedTx.totalInput sub:totalAmount] getBTCDisplayFromUnit];
+    
+    if ([self.unsignedTx.dustAmount greater:[CwBtc BTCWithSatoshi:@(0)]]) {
+        self.viewChangeAddr.hidden = YES;
+        self.viewChangeAmount.hidden = YES;
+        
+        [self.lblTxDust setText:[NSString stringWithFormat:@"Notice: the Bitcoin dust of this transaction (BTC %@) will be added to mining fee.", [self.unsignedTx.dustAmount getBTCDisplayFromUnit]]];
+        self.lblTxDust.hidden = NO;
+    } else {
+        self.viewChangeAddr.hidden = NO;
+        self.viewChangeAmount.hidden = NO;
+        
+        self.lblChangeAddress.text = self.genAddr.address;
+        self.lblChangeAmount.text = [[self.unsignedTx.totalInput sub:totalAmount] getBTCDisplayFromUnit];
+        
+        self.lblTxDust.hidden = YES;
+    }
+    
 }
 
 -(long long) getSendAmountWithSatoshi
@@ -250,8 +274,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     }
     
     self.genAddr = addr;
-    
-    [self getUnsignedTxInfo];
 }
 
 -(void) didGenAddressError
@@ -358,6 +380,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     [self performDismiss];
     
     self.transactionBegin = NO;
+    self.transactionSuccess = YES;
     
     NSString *message = [NSString stringWithFormat:@"Sent %@ BTC to %@", self.sendAmountBTC, self.sendToAddress];
     

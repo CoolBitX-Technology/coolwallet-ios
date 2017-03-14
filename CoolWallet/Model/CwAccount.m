@@ -185,6 +185,7 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
         CwTx *_unsignedTx = [[CwTx alloc]init];
         _unsignedTx.txType = TypeUnsignedTx;
         _unsignedTx.inputs = [[NSMutableArray alloc]init];
+        _unsignedTx.dustAmount = [CwBtc BTCWithBTC:[NSNumber numberWithInt:0]];
         
         CwBtc *totalInputAcmout = [CwBtc BTCWithBTC:[NSNumber numberWithInt:0]];
         CwBtc *minimumOutputAmount = [amount add:_fee];
@@ -233,12 +234,16 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
         [_unsignedTx.outputs addObject:txout];
         // Fixed address for change here!!
         _change = [totalInputAcmout sub:[amount add:_fee]];
-        if([[_change satoshi]longLongValue]!=0)
+        int64_t change_satoshi = [[_change satoshi]longLongValue];
+        if(change_satoshi > 5460)
         {
             txout = [[CwTxout alloc]init];
             txout.addr = changeAddr;
             txout.amount = _change;
             [_unsignedTx.outputs addObject:txout];
+        } else if (change_satoshi > 0) {
+            _fee = [_fee add:_change];
+            _unsignedTx.dustAmount = _change;
         }
         
         _unsignedTx.totalInput = totalInputAcmout;

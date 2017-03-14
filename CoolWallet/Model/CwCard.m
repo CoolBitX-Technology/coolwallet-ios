@@ -1156,6 +1156,7 @@ NSArray *addresses;
         return nil;
     }
     
+#ifdef DEBUG
     for (CwUnspentTxIndex *utx in [account unspentTxs])
     {
         NSMutableString *b = [NSMutableString stringWithFormat:@"%@\n",[utx tid]];
@@ -1170,6 +1171,7 @@ NSArray *addresses;
             NSLog(@"public key: %@", addr.publicKey);
         }
     }
+#endif
     
     //Generate UnsignedTx
     CwTx *unsignedTx;
@@ -1184,6 +1186,7 @@ NSArray *addresses;
         return nil;
     }
     
+#ifdef DEBUG
     //print IN and OUT of the tx
     for(CwTxin *txin in [unsignedTx inputs])
     {
@@ -1202,6 +1205,7 @@ NSArray *addresses;
         NSMutableString* b = [NSMutableString stringWithFormat:@"%@",hash];
         NSLog(@"hash: %@\n", b);
     }
+#endif
     
     //save transaction data
     currTrxAmount = amount;
@@ -5104,6 +5108,10 @@ NSArray *addresses;
                     NSData *trxHandle = [NSData dataWithBytes:[cmd.cmdInput bytes] length:4];
                     NSData *nonce = [NSData dataWithBytes:[cmd.cmdInput bytes] length:16];
                     [self cwCmdExTrxSignLogoutWithTrxHandle:trxHandle Nonce:nonce];
+                }
+                
+                if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
+                    [self.delegate didSignTransactionError: @"Can't sign transaction by card."];
                 }
             }
             

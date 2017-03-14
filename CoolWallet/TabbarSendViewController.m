@@ -156,15 +156,17 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
         self.btcNet.delegate = nil;
     }
     
-    if (self.performIdentifier == nil || ![self.performIdentifier isEqualToString:SendConfirmSegueIdentifier]) {
-        cwCard.paymentAddress = @"";
-        cwCard.amount = 0;
-        cwCard.label = @"";
-    }
-    
     if (self.updateUnspendBalance.count > 0) {
         [self performDismiss];
         [self.updateUnspendBalance removeAllObjects];
+    }
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    if ([self.tabBarController.selectedViewController class] != [TabbarSendViewController class]) {
+        cwCard.paymentAddress = @"";
+        cwCard.amount = 0;
     }
 }
 
