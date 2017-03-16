@@ -11,7 +11,7 @@
 #include "sha256.h"
 #include "tx_err.h"
 
-#define FEE_RATE_UNIT 10000
+#define FEE_RATE_UNIT 45000
 static int64_t FEERATE = FEE_RATE_UNIT;
 
 typedef struct
