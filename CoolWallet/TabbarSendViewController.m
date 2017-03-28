@@ -207,6 +207,7 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
         cwCard.amount = [self getSendAmountWithSatoshi];
         
         TabbarSendConfirmViewController *targetVC = segue.destinationViewController;
+        targetVC.cwAccount = account;
         targetVC.sendToAddress = self.txtReceiverAddress.text;
         if (self.amountUnit == BTC) {
             targetVC.sendAmountBTC = self.txtAmount.text;
