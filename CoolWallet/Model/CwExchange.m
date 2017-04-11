@@ -16,7 +16,6 @@
 
 - (NSDictionary *)rm_dataKeysForClassProperties
 {
-    // country_code is json key, countryCode is class property
     return @{
              @"matchedSellOrders" : @"sell",
              @"matchedBuyOrders" : @"buy",

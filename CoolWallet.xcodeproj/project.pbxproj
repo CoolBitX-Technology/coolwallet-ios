@@ -435,6 +435,7 @@
 		F4A88C331C75A33F007AC3C1 /* ExUnclarifyOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExUnclarifyOrderViewController.h; sourceTree = "<group>"; };
 		F4A88C341C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExUnclarifyOrderViewController.m; sourceTree = "<group>"; };
 		F4AB53F31CCE2FEC008A61B6 /* bitcoin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitcoin@2x.png"; sourceTree = "<group>"; };
+		F4ACBD161E9D013000782AD6 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		F4BE27931C995A3E009B8104 /* cw_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cw_card.png; sourceTree = "<group>"; };
 		F4BE27941C995A3E009B8104 /* exchange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = exchange.png; sourceTree = "<group>"; };
 		F4BE27951C995A3E009B8104 /* hosts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hosts.png; sourceTree = "<group>"; };
@@ -560,6 +561,7 @@
 		93CF969619EE1A0200466DAF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F4ACBD161E9D013000782AD6 /* PrefixHeader.pch */,
 				93CF969719EE1A0200466DAF /* Info.plist */,
 				93CF969819EE1A0200466DAF /* main.m */,
 			);
@@ -1433,6 +1435,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 87HB2LFXY3;
 				ENABLE_BITCODE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/CoolWallet/PrefixHeader.pch";
 				INFOPLIST_FILE = CoolWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1451,9 +1455,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CoolWallet/CoolWallet.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: CoolBitX Technology Ltd. (87HB2LFXY3)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: CoolBitX Technology Ltd. (87HB2LFXY3)";
 				DEVELOPMENT_TEAM = 87HB2LFXY3;
 				ENABLE_BITCODE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/CoolWallet/PrefixHeader.pch";
 				INFOPLIST_FILE = CoolWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

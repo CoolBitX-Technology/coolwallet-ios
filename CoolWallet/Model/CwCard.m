@@ -1156,7 +1156,6 @@ NSArray *addresses;
         return nil;
     }
     
-#ifdef DEBUG
     for (CwUnspentTxIndex *utx in [account unspentTxs])
     {
         NSMutableString *b = [NSMutableString stringWithFormat:@"%@\n",[utx tid]];
@@ -1171,7 +1170,6 @@ NSArray *addresses;
             NSLog(@"public key: %@", addr.publicKey);
         }
     }
-#endif
     
     //Generate UnsignedTx
     CwTx *unsignedTx;
@@ -1186,7 +1184,6 @@ NSArray *addresses;
         return nil;
     }
     
-#ifdef DEBUG
     //print IN and OUT of the tx
     for(CwTxin *txin in [unsignedTx inputs])
     {
@@ -1205,7 +1202,6 @@ NSArray *addresses;
         NSMutableString* b = [NSMutableString stringWithFormat:@"%@",hash];
         NSLog(@"hash: %@\n", b);
     }
-#endif
     
     //save transaction data
     currTrxAmount = amount;

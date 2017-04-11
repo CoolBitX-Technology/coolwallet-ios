@@ -35,7 +35,7 @@
         NSString *version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
         self.version = [NSString stringWithFormat:@"V%@", version];
 #if DEBUG
-        self.version = [NSString stringWithFormat:@"%@(%@)", self.version, [infoDictionary objectForKey:@"CFBundleVersion"]];
+        self.version = [self.version stringByAppendingFormat:@"(%@)", [infoDictionary objectForKey:@"CFBundleVersion"]];
 #endif
     }
     

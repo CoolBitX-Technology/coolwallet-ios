@@ -146,7 +146,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     self.lblTxDust.hidden = YES;
     
     [[[RACObserve(self, genAddr) ignore:nil]
-    subscribeOn:[RACScheduler mainThreadScheduler]]
+    deliverOnMainThread]
     subscribeNext:^(CwAddress *cwAddr) {
         [self getUnsignedTxInfo];
     }];
