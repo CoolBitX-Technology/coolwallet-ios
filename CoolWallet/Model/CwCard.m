@@ -1151,7 +1151,7 @@ NSArray *addresses;
     //check unspent tx
     if (account.unspentTxs==nil || account.unspentTxs.count==0) {
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
-            [self.delegate didPrepareTransactionError:@"No avaliable unspent transaction"];
+            [self.delegate didPrepareTransactionError:@"No available unspent transaction"];
         }
         return nil;
     }
