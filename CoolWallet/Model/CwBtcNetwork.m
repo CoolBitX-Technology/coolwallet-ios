@@ -21,7 +21,7 @@
 #import "CwTxout.h"
 #import "CwUnspentTxIndex.h"
 #import "OCAppCommon.h"
-
+#import "CwTransactionFee.h"
 #import "BlockChain.h"
 
 #import "NSUserDefaults+RMSaveCustomObject.h"
@@ -37,6 +37,8 @@ static const NSString *allTxsURLStr      = @"address/txs";     //query address t
 static const NSString *unspentTxsURLStr  = @"address/unspent"; //query unspent, with ?unconfirmed=1
 static const NSString *unconfirmTxsURLStr = @"address/unconfirmed"; //query address unconfirmed txs, get the txs detail by tx/info
 static const NSString *txInfoURLStr      = @"tx/info";         //query tx infos
+
+static NSString *txFeesURLStr      = @"https://bitcoinfees.21.co/api/v1/fees/recommended";
 
 @interface CwBtcNetWork ()  <CWSocketDelegate>
 @end
@@ -1002,6 +1004,22 @@ BOOL didGetTransactionByAccountFlag[5];
     *result = [[NSData alloc] initWithData: decodeTxJSON];
     
     return DECODE_BASE;
+}
+
+-(void) updateTransactionFees
+{
+    NSURLSessionDataTask *dataTask = [[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:txFeesURLStr] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (data && !error) {
+            NSDictionary *json =[NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            
+            CwTransactionFee *transactionFee = [CwTransactionFee sharedInstance];
+            [RMMapper populateObject:transactionFee fromDictionary:json];
+            
+            [CwTransactionFee saveData];
+        }
+    }];
+    
+    [dataTask resume];
 }
 
 -(void) getRequestUrl:(NSString *)url params:(NSDictionary *)params success:(void(^)(NSDictionary *json))success failure:(void(^)(NSError *err))failure

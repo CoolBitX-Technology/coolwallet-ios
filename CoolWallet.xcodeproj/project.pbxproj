@@ -18,6 +18,8 @@
 		973A8220748AB8213872710F /* libPods-CoolWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EBE4865AFFF5EBA19625BA8 /* libPods-CoolWallet.a */; };
 		A267298B1C561155005F452A /* CwExBuyOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = A267298A1C561155005F452A /* CwExBuyOrder.m */; };
 		A2B6E7D81BD28879001B1592 /* NSDate+Localize.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */; };
+		A2DA5ECA1EC2044D002207E6 /* TabTransactionFeeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DA5EC91EC2044D002207E6 /* TabTransactionFeeViewController.m */; };
+		A2DA5ECD1EC20635002207E6 /* CwTransactionFee.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DA5ECC1EC20635002207E6 /* CwTransactionFee.m */; };
 		A2F29F1A1C55FE7100C75E91 /* CwExOrderBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */; };
 		A2F29F1D1C56042600C75E91 /* CwExSellOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F29F1C1C56042600C75E91 /* CwExSellOrder.m */; };
 		EF09E9261BA6C00200C8DCD0 /* TabRecoveryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF09E9251BA6C00200C8DCD0 /* TabRecoveryViewController.m */; };
@@ -203,6 +205,10 @@
 		A267298A1C561155005F452A /* CwExBuyOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExBuyOrder.m; path = Model/CwExBuyOrder.m; sourceTree = "<group>"; };
 		A2B6E7D61BD28879001B1592 /* NSDate+Localize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Localize.h"; sourceTree = "<group>"; };
 		A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Localize.m"; sourceTree = "<group>"; };
+		A2DA5EC81EC2044D002207E6 /* TabTransactionFeeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabTransactionFeeViewController.h; sourceTree = "<group>"; };
+		A2DA5EC91EC2044D002207E6 /* TabTransactionFeeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabTransactionFeeViewController.m; sourceTree = "<group>"; };
+		A2DA5ECB1EC20635002207E6 /* CwTransactionFee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwTransactionFee.h; sourceTree = "<group>"; };
+		A2DA5ECC1EC20635002207E6 /* CwTransactionFee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwTransactionFee.m; sourceTree = "<group>"; };
 		A2F29F181C55FE7100C75E91 /* CwExOrderBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExOrderBase.h; path = Model/CwExOrderBase.h; sourceTree = "<group>"; };
 		A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExOrderBase.m; path = Model/CwExOrderBase.m; sourceTree = "<group>"; };
 		A2F29F1B1C56042600C75E91 /* CwExSellOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExSellOrder.h; path = Model/CwExSellOrder.h; sourceTree = "<group>"; };
@@ -710,6 +716,8 @@
 				F49522A61C966B6B000D8E08 /* CwExchange.h */,
 				F49522A71C966B6B000D8E08 /* CwExchange.m */,
 				F47FA3FF1E00290100EACD26 /* CwExchangeSettings.h */,
+				A2DA5ECB1EC20635002207E6 /* CwTransactionFee.h */,
+				A2DA5ECC1EC20635002207E6 /* CwTransactionFee.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -793,6 +801,8 @@
 				EFF6DD101B9542880089E093 /* TabExhchangeRateViewController.m */,
 				F45F6BE31E54738700652236 /* TabbarSendConfirmViewController.h */,
 				F45F6BE41E54738700652236 /* TabbarSendConfirmViewController.m */,
+				A2DA5EC81EC2044D002207E6 /* TabTransactionFeeViewController.h */,
+				A2DA5EC91EC2044D002207E6 /* TabTransactionFeeViewController.m */,
 			);
 			name = TabAccountViewController;
 			sourceTree = "<group>";
@@ -1155,7 +1165,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		DB883132C4C8411400824A05 /* [CP] Embed Pods Frameworks */ = {
@@ -1237,6 +1247,7 @@
 				F4798AF71C5B2452002DC3A0 /* APPData.m in Sources */,
 				EFF1ACC019EFF1CA00DD0BCB /* OCAppCommon.mm in Sources */,
 				EFAC5FDD1AAD39620042FF8C /* TabReceiveBitcoinViewController.m in Sources */,
+				A2DA5ECD1EC20635002207E6 /* CwTransactionFee.m in Sources */,
 				F4FF8D0D1C45104F00863E54 /* TabExchangeViewController.m in Sources */,
 				F478F4891C7EE25400660D82 /* Reachability.m in Sources */,
 				EFAC5C4E1AC25A7000320EA6 /* qrencode.c in Sources */,
@@ -1296,6 +1307,7 @@
 				EF9F31191AF0C11800D53EE4 /* TabAddressBookViewController.m in Sources */,
 				EFFA18351B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m in Sources */,
 				EF698CF11A78DC4E00A943B9 /* CwEraseCwViewController.m in Sources */,
+				A2DA5ECA1EC2044D002207E6 /* TabTransactionFeeViewController.m in Sources */,
 				EFEE57E21B7AFA7400E5999B /* sha256.m in Sources */,
 				F43E97C71C2808F100D03DA9 /* NSData+Bitcoin.m in Sources */,
 				F4FD98711BE8B46500968A8E /* mpbn_util.c in Sources */,
@@ -1465,7 +1477,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dtco.CoolWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f3aee746-bb1e-4220-84d5-5f1e5af01ed7";
+				PROVISIONING_PROFILE = "42e503cb-e0d0-4958-b381-38078384216e";
 				PROVISIONING_PROFILE_SPECIFIER = dist.dtco.CoolWallet;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

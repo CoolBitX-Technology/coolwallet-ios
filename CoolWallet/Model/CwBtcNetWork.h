@@ -37,5 +37,6 @@
 - (DecodeErr) decode:(CwTx*)tx result:(NSData **)result;
 
 - (NSDictionary *) getCurrRate; //key: CurrId, value: rate
+- (void) updateTransactionFees;
 
 @end

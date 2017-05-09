@@ -402,6 +402,8 @@ Boolean setBtnActionFlag;
     } else {
         [self checkRecoveryState];
         
+        [[CwBtcNetWork sharedManager] updateTransactionFees];
+        
         [self getBitcoinRateforCurrency];
         [self checkAndLoginExSite];
     }
