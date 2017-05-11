@@ -17,6 +17,7 @@
 		93CF96C419EE56A100466DAF /* BindSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF96C319EE56A100466DAF /* BindSuccessViewController.m */; };
 		973A8220748AB8213872710F /* libPods-CoolWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EBE4865AFFF5EBA19625BA8 /* libPods-CoolWallet.a */; };
 		A267298B1C561155005F452A /* CwExBuyOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = A267298A1C561155005F452A /* CwExBuyOrder.m */; };
+		A27D4FBE1EC4A7C500E5B9CB /* attention_48.png in Resources */ = {isa = PBXBuildFile; fileRef = A27D4FBD1EC4A7C500E5B9CB /* attention_48.png */; };
 		A2B6E7D81BD28879001B1592 /* NSDate+Localize.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */; };
 		A2DA5ECA1EC2044D002207E6 /* TabTransactionFeeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DA5EC91EC2044D002207E6 /* TabTransactionFeeViewController.m */; };
 		A2DA5ECD1EC20635002207E6 /* CwTransactionFee.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DA5ECC1EC20635002207E6 /* CwTransactionFee.m */; };
@@ -203,6 +204,7 @@
 		93CF96C319EE56A100466DAF /* BindSuccessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindSuccessViewController.m; sourceTree = "<group>"; };
 		A26729891C561155005F452A /* CwExBuyOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExBuyOrder.h; path = Model/CwExBuyOrder.h; sourceTree = "<group>"; };
 		A267298A1C561155005F452A /* CwExBuyOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExBuyOrder.m; path = Model/CwExBuyOrder.m; sourceTree = "<group>"; };
+		A27D4FBD1EC4A7C500E5B9CB /* attention_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attention_48.png; sourceTree = "<group>"; };
 		A2B6E7D61BD28879001B1592 /* NSDate+Localize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Localize.h"; sourceTree = "<group>"; };
 		A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Localize.m"; sourceTree = "<group>"; };
 		A2DA5EC81EC2044D002207E6 /* TabTransactionFeeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabTransactionFeeViewController.h; sourceTree = "<group>"; };
@@ -867,6 +869,7 @@
 		EFF1ACC219EFFCEA00DD0BCB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				A27D4FBD1EC4A7C500E5B9CB /* attention_48.png */,
 				F4AB53F31CCE2FEC008A61B6 /* bitcoin@2x.png */,
 				F4832FD01C9F9D280092A322 /* change.png */,
 				F4832FCC1C9F9D180092A322 /* white_frame_small.png */,
@@ -1086,6 +1089,7 @@
 			files = (
 				F4BE279E1C995A3E009B8104 /* settings.png in Resources */,
 				F4832FD11C9F9D280092A322 /* change.png in Resources */,
+				A27D4FBE1EC4A7C500E5B9CB /* attention_48.png in Resources */,
 				F4BE279B1C995A3E009B8104 /* hosts.png in Resources */,
 				EFA3410F1AA6B81C0035AC6D /* button.png in Resources */,
 				EFA341371AA6B81C0035AC6D /* unlock.png in Resources */,

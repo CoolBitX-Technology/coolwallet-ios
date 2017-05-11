@@ -30,6 +30,7 @@ typedef enum{TypeUnsignedTx,TypeSignedTx,TypeUnspentTx,TypeHistoryTx} TxType;
 @property NSMutableArray* outputs;       //CWTxout[]
 @property NSData* rawTx;
 @property CwBtc *txFee;
+@property CwBtc *recommendFee;
 @property CwBtc *totalInput;
 @property CwBtc *dustAmount;
 

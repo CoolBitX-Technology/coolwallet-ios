@@ -5088,6 +5088,15 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ETZ-Ny-gVX">
+                                                <rect key="frame" x="44" y="5" width="22" height="22"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <inset key="imageEdgeInsets" minX="3" minY="3" maxX="3" maxY="3"/>
+                                                <connections>
+                                                    <action selector="showFeesInfo:" destination="vTk-1B-moG" eventType="touchUpInside" id="yiP-vN-xTD"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -5326,6 +5335,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                     </navigationItem>
                     <connections>
                         <outlet property="btnChangeUnit" destination="gqx-Cf-Sba" id="O4t-8c-DOh"/>
+                        <outlet property="btnFeesInfo" destination="ETZ-Ny-gVX" id="tne-il-5iB"/>
                         <outlet property="btnSend" destination="UNQ-aE-z7v" id="FWB-1v-j9z"/>
                         <outlet property="lblChangeAddress" destination="hum-f5-OrO" id="K8h-YY-1K4"/>
                         <outlet property="lblChangeAmount" destination="Cuj-wa-F4I" id="53h-N3-PfJ"/>

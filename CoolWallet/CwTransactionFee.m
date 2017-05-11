@@ -8,6 +8,7 @@
 
 #import "CwTransactionFee.h"
 #import "NSUserDefaults+RMSaveCustomObject.h"
+#import "CwBtc.h"
 
 #import <RMMapper/RMMapper.h>
 
@@ -116,14 +117,10 @@ static double SATOSHI_RATE = 0.00000001;
     return estimated;
 }
 
--(void) calculateActualFeeWithTx:(CwTx *)tx
+-(CwBtc *) estimateRecommendFeeByTxSize:(NSInteger)txSize
 {
-    
-}
-
--(void) calculateActualFeeByAutoFeeWithTx:(CwTx *)tx
-{
-    
+    NSInteger recommendFee = txSize * self.fastestFee.integerValue;
+    return [CwBtc BTCWithSatoshi:[NSNumber numberWithInteger:recommendFee]];
 }
 
 @end

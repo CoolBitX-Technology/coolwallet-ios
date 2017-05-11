@@ -12,6 +12,7 @@
 #import "CwBtcNetWork.h"
 #import "CwBtcNetworkDelegate.h"
 #import "CwTxin.h"
+#import "CwTransactionFee.h"
 #import "OCAppCommon.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
@@ -26,6 +27,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 @property (weak, nonatomic) IBOutlet UILabel *lblSendToAddress;
 @property (weak, nonatomic) IBOutlet UILabel *lblSendToAmount;
 @property (weak, nonatomic) IBOutlet UILabel *lblTxFees;
+@property (weak, nonatomic) IBOutlet UIButton *btnFeesInfo;
 @property (weak, nonatomic) IBOutlet UILabel *lblTotalAmount;
 @property (weak, nonatomic) IBOutlet UILabel *lblInputs;
 @property (weak, nonatomic) IBOutlet UILabel *lblInputAmount;
@@ -64,6 +66,8 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     self.transactionBegin = NO;
     self.transactionSuccess = NO;
     self.amountUnit = BTC;
+    
+    self.btnFeesInfo.hidden = YES;
     
     [self.cwCard findEmptyAddressFromAccount:self.cwAccount.accId keyChainId:CwAddressKeyChainInternal];
     [self updateUI];
@@ -124,6 +128,10 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     }
 }
 
+- (IBAction)showFeesInfo:(UIButton *)sender {
+    [self showHintAlert:nil withMessage:@"Your fee is below average and may take longer than 30 minutes to confirm." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+}
+
 - (NSString *) convertToFiatMoney:(NSString *)btc
 {
     NSString *amount = [btc stringByReplacingOccurrencesOfString:@"," withString:@"."];
@@ -172,6 +180,11 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         [self.lblTxDust setText:[NSString stringWithFormat:@"Notice: the Bitcoin dust of this transaction (BTC %@) will be added to mining fee.", [self.unsignedTx.dustAmount getBTCDisplayFromUnit]]];
         self.lblTxDust.hidden = NO;
     } else {
+        if (![CwTransactionFee sharedInstance].enableAutoFee.boolValue) {
+            NSInteger halfRecommendFee = self.unsignedTx.recommendFee.satoshi.integerValue / 2;
+            self.btnFeesInfo.hidden = self.unsignedTx.txFee.satoshi.integerValue >= halfRecommendFee;
+        }
+        
         self.viewChangeAddr.hidden = NO;
         self.viewChangeAmount.hidden = NO;
         

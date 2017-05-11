@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "NSObject+RMArchivable.h"
 
-@class CwTx;
+@class CwTx, CwBtc;
 
 @interface CwTransactionFee : NSObject
 
@@ -29,7 +29,6 @@
 
 -(NSString *) getEstimatedTransactionFeeString;
 
--(void) calculateActualFeeWithTx:(CwTx *)tx;
--(void) calculateActualFeeByAutoFeeWithTx:(CwTx *)tx;
+-(CwBtc *) estimateRecommendFeeByTxSize:(NSInteger)txSize;
 
 @end

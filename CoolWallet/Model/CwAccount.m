@@ -13,6 +13,7 @@
 #import "CwTxout.h"
 #import "CwUnspentTxIndex.h"
 #import "CwAddress.h"
+#import "CwTransactionFee.h"
 
 @implementation CwAccount
 
@@ -119,7 +120,7 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
     return NSOrderedSame;
 }
 
-- (UnspentTxsSelectionErr)unspentTxsSelection:(CwBtc*)outputAmount selectedUtxs:(NSMutableArray**)selectedUtxs change:(CwBtc**)change fee:(CwBtc**)fee
+- (UnspentTxsSelectionErr)unspentTxsSelection:(CwBtc*)outputAmount selectedUtxs:(NSMutableArray**)selectedUtxs
 {
     UnspentTxsSelectionErr err = UNSPENTTXSSELECT_BASE;
     NSArray* sortedUtxs = [_unspentTxs sortedArrayUsingFunction:txCompare context:NULL];
@@ -144,26 +145,17 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
         }
         else
         {
-            if([nTotal greater:[outputAmount add:_fee]])
-                break;
-            else
-            {
-                blank += 1024;
-                _fee = [_fee add:unitFee];
-            }
+            blank += 1024;
         }
     }
     
-    if([[outputAmount add:_fee] greater:nTotal])
+    if([outputAmount greater:nTotal])
     {
         err = UNSPENTTXSSELECT_LESS;
-        *fee = _fee;
     }
     else
     {
-        *fee = _fee;
         *selectedUtxs = _selectedUtxs;
-        *change = [[nTotal sub:_fee]sub:outputAmount];
         err = UNSPENTTXSSELECT_BASE;
     }
     return err;
@@ -173,22 +165,25 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
 {
     GenTxErr err = GENTX_BASE;
     CwBtc *_fee;
-    CwBtc *_change;
+    CwBtc *_change = [CwBtc BTCWithSatoshi:[NSNumber numberWithInteger:0]];
     NSArray *_selectedUtxs;
-    if([self unspentTxsSelection:amount selectedUtxs:&_selectedUtxs change:&_change fee:&_fee] != UNSPENTTXSSELECT_BASE)
+    if([self unspentTxsSelection:amount selectedUtxs:&_selectedUtxs] != UNSPENTTXSSELECT_BASE)
     {
         err = GENTX_LESS;
         *fee = _fee;
     }
     else
     {
-        CwTx *_unsignedTx = [[CwTx alloc]init];
+        CwTx *_unsignedTx = [CwTx new];
         _unsignedTx.txType = TypeUnsignedTx;
-        _unsignedTx.inputs = [[NSMutableArray alloc]init];
+        _unsignedTx.inputs = [NSMutableArray new];
         _unsignedTx.dustAmount = [CwBtc BTCWithBTC:[NSNumber numberWithInt:0]];
         
         CwBtc *totalInputAcmout = [CwBtc BTCWithBTC:[NSNumber numberWithInt:0]];
-        CwBtc *minimumOutputAmount = [amount add:_fee];
+        CwBtc *dust = [CwBtc BTCWithSatoshi:[NSNumber numberWithInteger:5460]];
+        CwBtc *manualFee = [CwBtc BTCWithBTC:[CwTransactionFee sharedInstance].manualFee];
+        
+        int inputCount = 0;
         for (CwUnspentTxIndex *utx in _selectedUtxs)
         {
             if (utx.confirmations.intValue == 0) {
@@ -222,7 +217,32 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
             [_unsignedTx.inputs addObject:txin];
             
             totalInputAcmout = [totalInputAcmout add:[utx amount]];
-            if ([totalInputAcmout greater:minimumOutputAmount]) {
+            inputCount++;
+            
+            CwBtc *remainAmount = [totalInputAcmout sub:amount];
+            
+            NSInteger txLengthWithoutChange = [self getMaxTxSizeWithInputCount:inputCount outputCount:0 compressedPublickKey:YES];
+            CwBtc *estimatedFeeWithoutChange = [[CwTransactionFee sharedInstance] estimateRecommendFeeByTxSize:txLengthWithoutChange];
+            
+            _unsignedTx.recommendFee = estimatedFeeWithoutChange;
+            if ([[remainAmount sub:estimatedFeeWithoutChange] greater:dust]) {
+                NSInteger txLengthWithChange = [self getMaxTxSizeWithInputCount:inputCount outputCount:0 compressedPublickKey:YES];
+                CwBtc *estimatedFeeWithChange = [[CwTransactionFee sharedInstance] estimateRecommendFeeByTxSize:txLengthWithChange];
+                
+                if ([[remainAmount sub:estimatedFeeWithChange] greater:dust]) {
+                    _unsignedTx.recommendFee = estimatedFeeWithChange;
+                }
+            }
+            
+            if ([CwTransactionFee sharedInstance].enableAutoFee.boolValue) {
+                _fee = _unsignedTx.recommendFee;
+            } else {
+                _fee = manualFee;
+            }
+            
+            _change = [remainAmount sub:_fee];
+
+            if ([totalInputAcmout greater:[amount add:_fee]]) {
                 break;
             }
         }
@@ -233,15 +253,12 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
         txout.amount = amount;
         [_unsignedTx.outputs addObject:txout];
         // Fixed address for change here!!
-        _change = [totalInputAcmout sub:[amount add:_fee]];
-        int64_t change_satoshi = [[_change satoshi]longLongValue];
-        if(change_satoshi > 5460)
-        {
+        if([_change greater:dust]) {
             txout = [[CwTxout alloc]init];
             txout.addr = changeAddr;
             txout.amount = _change;
             [_unsignedTx.outputs addObject:txout];
-        } else if (change_satoshi > 0) {
+        } else if (_change.satoshi.integerValue > 0) {
             _fee = [_fee add:_change];
             _unsignedTx.dustAmount = _change;
         }
@@ -253,6 +270,14 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
         *fee = _fee;
     }
     return err;
+}
+
+-(NSInteger) getMaxTxSizeWithInputCount:(int)inputCount outputCount:(int)outputCount compressedPublickKey:(BOOL)compressedPublicKey
+{
+    NSInteger maxInputScriptLen = 73 + (compressedPublicKey ? 33 : 65);
+    NSInteger maxSize = 10 + inputCount * (41 + maxInputScriptLen) + outputCount * 34;
+    
+    return maxSize;
 }
 
 - (NSMutableArray*) genHashesOfTxCopy:(CwTx*)unsignedTx
