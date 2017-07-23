@@ -12,6 +12,7 @@
 #import "CwListTableViewController.h"
 #import "CwCommandDefine.h"
 #import "CwCardApduError.h"
+#import "CwResetInfo.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -37,6 +38,7 @@ CwCard *cwCard;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+        
     // Do any additional setup after loading the view.
     //find CW via BLE
     self.cwManager = [CwManager sharedManager];
@@ -253,24 +255,40 @@ CwCard *cwCard;
 -(void) didPinChlng
 {
     NSLog(@"didPinChlng");
-    [self.cwManager.connectedCwCard eraseCw:NO Pin:@"12345678" NewPin:@"12345678"];
-    //[self.cwManager.connectedCwCard eraseCw:NO Pin:self.txtPin.text NewPin:self.txtNewPin.text];
+    [cwCard eraseCw:NO Pin:cwCard.cardResetInfo.pinOld NewPin:cwCard.cardResetInfo.pinNew];
 }
 
 -(void) didEraseCw {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CoolWallet has reset"
-                                                   message: nil
-                                                  delegate: self
-                                         cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
+    cwCard.cardResetInfo.pinOld = @"12345678";
     
-    //[alert setTag:1];
-    [alert show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"CoolWallet has reset" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.cwManager disconnectCwCard];
+    }];
+    [alertController addAction:okAction];
+    
+    [self.navigationController presentViewController:alertController animated:YES completion:nil];
     
     NSLog(@"CoolWallet Erased");
+}
+
+-(void) didEraseCwError:(NSInteger)errId
+{
+    [self stopLoading];
     
-    //back to previous controller
-    [self.navigationController popViewControllerAnimated:YES];
+    cwCard.cardResetInfo.pinOld = @"123456";
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Update" message:@"Please restart CoolWallet and reset again." preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.cwManager disconnectCwCard];
+    }];
+    [alertController addAction:okAction];
+    
+    [self.navigationController presentViewController:alertController animated:YES completion:nil];
+    
+    NSLog(@"CoolWallet Erased Fail: %ld", errId);
 }
 
 #pragma mark - CwManager Delegate
@@ -284,8 +302,6 @@ CwCard *cwCard;
      notify.soundName = UILocalNotificationDefaultSoundName;
      notify.applicationIconBadgeNumber=1;
      [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
-    
-    //[self.navigationController popViewControllerAnimated:YES];
 
      // Get the storyboard named secondStoryBoard from the main bundle:
      UIStoryboard *secondStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -294,7 +310,6 @@ CwCard *cwCard;
      UIViewController *listCV = (UIViewController *)[secondStoryBoard instantiateViewControllerWithIdentifier:@"CwMain"];
      // Then push the new view controller in the usual way:
      [self.parentViewController presentViewController:listCV animated:YES completion:nil];
-    
 }
 
 - (IBAction)BtnCancelAction:(id)sender {
