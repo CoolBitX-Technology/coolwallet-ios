@@ -14,7 +14,6 @@
 #import "CwCardApduError.h"
 #import "CwCommandDefine.h"
 #import "ViewController.h"
-#import "KeychainItemWrapper.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 

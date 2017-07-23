@@ -21,6 +21,7 @@
 		A2B6E7D81BD28879001B1592 /* NSDate+Localize.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */; };
 		A2DA5ECA1EC2044D002207E6 /* TabTransactionFeeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DA5EC91EC2044D002207E6 /* TabTransactionFeeViewController.m */; };
 		A2DA5ECD1EC20635002207E6 /* CwTransactionFee.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DA5ECC1EC20635002207E6 /* CwTransactionFee.m */; };
+		A2DBEEF61F244A370099FEB5 /* CwResetInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DBEEF51F244A370099FEB5 /* CwResetInfo.m */; };
 		A2F29F1A1C55FE7100C75E91 /* CwExOrderBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */; };
 		A2F29F1D1C56042600C75E91 /* CwExSellOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F29F1C1C56042600C75E91 /* CwExSellOrder.m */; };
 		EF09E9261BA6C00200C8DCD0 /* TabRecoveryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF09E9251BA6C00200C8DCD0 /* TabRecoveryViewController.m */; };
@@ -211,6 +212,8 @@
 		A2DA5EC91EC2044D002207E6 /* TabTransactionFeeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabTransactionFeeViewController.m; sourceTree = "<group>"; };
 		A2DA5ECB1EC20635002207E6 /* CwTransactionFee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwTransactionFee.h; sourceTree = "<group>"; };
 		A2DA5ECC1EC20635002207E6 /* CwTransactionFee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwTransactionFee.m; sourceTree = "<group>"; };
+		A2DBEEF41F244A370099FEB5 /* CwResetInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwResetInfo.h; sourceTree = "<group>"; };
+		A2DBEEF51F244A370099FEB5 /* CwResetInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwResetInfo.m; sourceTree = "<group>"; };
 		A2F29F181C55FE7100C75E91 /* CwExOrderBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExOrderBase.h; path = Model/CwExOrderBase.h; sourceTree = "<group>"; };
 		A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExOrderBase.m; path = Model/CwExOrderBase.m; sourceTree = "<group>"; };
 		A2F29F1B1C56042600C75E91 /* CwExSellOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExSellOrder.h; path = Model/CwExSellOrder.h; sourceTree = "<group>"; };
@@ -720,6 +723,8 @@
 				F47FA3FF1E00290100EACD26 /* CwExchangeSettings.h */,
 				A2DA5ECB1EC20635002207E6 /* CwTransactionFee.h */,
 				A2DA5ECC1EC20635002207E6 /* CwTransactionFee.m */,
+				A2DBEEF41F244A370099FEB5 /* CwResetInfo.h */,
+				A2DBEEF51F244A370099FEB5 /* CwResetInfo.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1310,6 +1315,7 @@
 				EFCF9A5D1B32C8810076091B /* CwUnspentTxIndex.m in Sources */,
 				EF9F31191AF0C11800D53EE4 /* TabAddressBookViewController.m in Sources */,
 				EFFA18351B45527900FF8FC6 /* TabSettingBitcoinUnitViewController.m in Sources */,
+				A2DBEEF61F244A370099FEB5 /* CwResetInfo.m in Sources */,
 				EF698CF11A78DC4E00A943B9 /* CwEraseCwViewController.m in Sources */,
 				A2DA5ECA1EC2044D002207E6 /* TabTransactionFeeViewController.m in Sources */,
 				EFEE57E21B7AFA7400E5999B /* sha256.m in Sources */,

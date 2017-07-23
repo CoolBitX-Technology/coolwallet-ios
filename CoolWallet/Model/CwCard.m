@@ -207,7 +207,7 @@ NSArray *addresses;
     return self;
 }
 
-- (NSArray *)rm_excludedProperties
+- (NSArray *) rm_excludedProperties
 {
     return @[
                 @"delegate",
@@ -215,6 +215,15 @@ NSArray *addresses;
                 @"currentAccountId", @"paymentAddress", @"amount", @"label",
                 @"exSessionInitCompleteBlock", @"exSessionInitErrorBlock",
              ];
+}
+
+- (CwResetInfo *) cardResetInfo
+{
+    if (!_cardResetInfo && self.cardId) {
+        _cardResetInfo = [[CwResetInfo alloc] initWithCardId:self.cardId];
+    }
+    
+    return _cardResetInfo;
 }
 
 -(void) prepareService
@@ -406,6 +415,10 @@ NSArray *addresses;
 -(void) saveCwCardToFile
 {
     NSLog(@"SaveCwToFile:%@ accountptr:%@ accoints:%lu", self.cardId, self.hdwAcccountPointer, (unsigned long)self.cwAccounts.count);
+    
+    if (self.cardResetInfo) {
+        [self.cardResetInfo saveResetInfo];
+    }
     
     if (self.cardId == nil || self.hdwAcccountPointer == nil || self.mode.integerValue != CwCardModeNormal) {
         return;
@@ -4427,6 +4440,9 @@ NSArray *addresses;
                 }
             } else {
                 NSLog(@"CwCmdIdBindBackNoHost Error %04lX", (long)cmd.cmdResult);
+                if ([self.delegate respondsToSelector:@selector(didEraseCwError:)]) {
+                    [self.delegate didEraseCwError:cmd.cmdResult];
+                }
             }
             
             break;

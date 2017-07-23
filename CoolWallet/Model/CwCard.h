@@ -12,6 +12,7 @@
 #import "NSObject+RMArchivable.h" 
 #import "CwCardDelegate.h"
 #import "CwAccount.h"
+#import "CwResetInfo.h"
 
 #define CwHdwRecoveryAddressWindow  5
 
@@ -84,6 +85,7 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 @property NSString *currId;
 @property NSDecimalNumber *currRate;
 @property NSNumber *cardFiatDisplay;
+@property (strong, nonatomic) CwResetInfo *cardResetInfo;
 
 #pragma mark - CwProperties - HDW Info
 @property NSNumber *hdwStatus;
