@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "CwBtcNetwork.h"
+#import "CwBtcNetWork.h"
 //Used to receive balance change notification from block.io
 //#import "SRWebSocket.h"
 #import "SRWebSocket+CW.h"
