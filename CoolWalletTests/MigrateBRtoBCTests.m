@@ -6,10 +6,6 @@
 //  Copyright © 2017年 MAC-BRYAN. All rights reserved.
 //
 
-//
-//  
-//
-
 #import <XCTest/XCTest.h>
 #import "CwBtcNetWork.h"
 
@@ -35,10 +31,6 @@
     network = [CwBtcNetWork new];
     cwAddress = [CwAddress new];
     
-    if (!isBlockChain) {
-    cwAddress.address = @"18NZvKMrjHREtW3aqUDDNL1bvKP2xfx3aS";
-    return;
-    }
     cwAddress.address = @"1Gp7iCzDGMZiV55Kt8uKsux6VyoHe1aJaN";
 }
 
@@ -53,9 +45,6 @@
     NSMutableArray *addrUnspentTxs;
     GetUnspentTxsByAddrErr error = [self getUnspentTxsByAddr:cwAddress.address unspentTxs:&addrUnspentTxs];
     XCTAssert(error == GETUNSPENTTXSBYADDR_BASE);
-}
-
-- (void)testExchangeRate {
 }
 
 - (void)testURLFormate {
@@ -78,13 +67,8 @@
     
     NSString *serverSite;
     NSString *unspentTxsURLStr;
-    serverSite  = @"https://btc.blockr.io/api/v1";
-    unspentTxsURLStr  = @"address/unspent";
-    
-    if (isBlockChain) {
     serverSite  = @"https://blockchain.info/";
     unspentTxsURLStr  = @"unspent?active=";
-    }
     
     NSString *urlOfUnspent = [self urlOfUnspent:serverSite apiName:unspentTxsURLStr address:addr];
     NSData *dataOfAPIResponse = [self HTTPRequestUsingGETMethodFrom: urlOfUnspent
@@ -123,67 +107,12 @@
                 unspentTx.confirmations = [self confirmationsAfterParsing: rawUnspentTx];
                 
                 [_unspentTxs addObject:unspentTx];
-                
-                NSLog(@">>>>>> tid:%@ n:%lu amount:%@", unspentTx.tid, (unsigned long)unspentTx.n, unspentTx.amount.satoshi);
             }
             *unspentTxs = _unspentTxs;
         }
     }
     
     return errorForUnspentTxsByAddr;
-}
-
-- (NSDictionary *) getCurrRate
-{
-    GetCurrErr err = GETCURR_BASE;
-    
-    NSError *_err = nil;
-    
-    NSString *stringURL = [NSString stringWithFormat:@"%@/%@/",serverSite,currencyURLStr];
-    NSURL *url = [NSURL URLWithString:stringURL];
-    NSData *data = [NSData dataWithContentsOfURL:url];
-    
-    if(data)
-    {
-        NSDictionary *JSON =[NSJSONSerialization JSONObjectWithData:data options:0 error:&_err];
-        if(_err || ![@"success" isEqualToString:JSON[@"status"]] || !(JSON[@"data"][0][@"rates"]))
-        {
-            err = CETCURR_JSON;
-        }
-        else
-        {
-            err = GETCURR_BASE;
-            NSMutableDictionary *rates = [JSON[@"data"][0][@"rates"] mutableCopy];
-            
-            //get BTC to USD rate
-            NSNumber *btcRate = [rates objectForKey:@"BTC"];
-            
-            [rates removeObjectForKey:@"BTC"];
-            
-            [rates enumerateKeysAndObjectsUsingBlock: ^(id currId, id currRate, BOOL *stop) {
-                currRate = [NSNumber numberWithFloat: (((NSNumber *)currRate).floatValue/((NSNumber *)btcRate).floatValue)];
-                [rates setObject:currRate forKey:currId];
-            }];
-            
-            /*
-             for (NSString* currId in rates) {
-             NSNumber *currRate = [rates objectForKey:currId];
-             
-             //calculate the rate against BTC
-             currRate =[NSNumber numberWithFloat: (currRate.floatValue/btcRate.floatValue)];
-             
-             [rates setObject:currRate forKey:currId];
-             }*/
-            
-            return rates;
-        }
-    }
-    else
-    {
-        err = GETCURR_NETWORK;
-    }
-    
-    return nil;
 }
 
 #pragma mark - 輔助方法
@@ -194,11 +123,6 @@
 }
 
 - (NSUInteger) nAfterParsing: (NSDictionary *)rawUnspentTx {
-    if (!isBlockChain) {
-    return [rawUnspentTx[@"n"] unsignedIntegerValue];
-    }
-    
-    /* for BlockChain.info */
     return [rawUnspentTx[@"tx_output_n"] unsignedIntegerValue];
 }
 
@@ -207,65 +131,28 @@
 }
 
 - (CwBtc *)satoshiAmounAfterParsing:(NSDictionary *)rawUnspentTx {
-    
-    if (!isBlockChain) {
-    double amountValue = [rawUnspentTx[@"amount"] doubleValue];
-    int64_t amountNum = (int64_t)(amountValue * 1e8 + (amountValue < 0.0 ? -.5:.5));
-    return [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
-    }
-
-    /* for BlockChain.info */
     int64_t amountNum = (int64_t)[rawUnspentTx[@"value"] doubleValue];
     return [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
 }
 
 - (NSData *)tidAfterParsing:(NSDictionary *)rawUnspentTx {
-    if (!isBlockChain) {
-    NSData *tid = [NSString hexstringToData:rawUnspentTx[@"tx"]];
-    return [NSData dataWithData:tid];
-    }
-    
-    /* for BlockChain.info */
     return [NSString hexstringToData:rawUnspentTx[@"tx_hash_big_endian"]];
 }
 
 - (NSString *) urlOfUnspent:(NSString *)serverSite apiName:(NSString *)unspentTxsURLStr address:(NSString *) addr {
-    if (!isBlockChain) {
-    return [NSString stringWithFormat:@"%@/%@/%@?unconfirmed=1", serverSite, unspentTxsURLStr, addr];
-    }
-    
-    /* for BlockChain.info */
     return [NSString stringWithFormat:@"%@%@%@", serverSite, unspentTxsURLStr, addr];
 }
 
 - (BOOL) isResponseValidForError:(NSError *)errorForAPIInvoke andBody:(NSDictionary *)responseBodyInJSON {
-    if (!isBlockChain) {
-    return (!errorForAPIInvoke &&
-            [self isResponseOK: responseBodyInJSON] &&
-            responseBodyInJSON[@"data"] &&
-            [self unspentTxs: responseBodyInJSON]);
-    }
-    
-    /* for BlockChain.info */
     return [self isResponseOK: responseBodyInJSON];
 }
 
 - (BOOL) isResponseOK:(NSDictionary *)responseBodyInJSON {
-    if (!isBlockChain) {
-    return [@"success" isEqualToString: responseBodyInJSON[@"status"]];
-    }
-    
-    /* for BlockChain.info */
     NSString *rootKeyInUnspentResponseJSON = @"unspent_outputs";
     return ([responseBodyInJSON[rootKeyInUnspentResponseJSON] count] > 0);
 }
 
 - (NSArray *) unspentTxs:(NSDictionary *)responseBodyInJSON {
-    if (!isBlockChain) {
-    return responseBodyInJSON[@"data"][@"unspent"];
-    }
-    
-    /* for BlockChain.info */
     NSString *rootKeyInUnspentResponseJSON = @"unspent_outputs";
     return responseBodyInJSON[rootKeyInUnspentResponseJSON];
 }
