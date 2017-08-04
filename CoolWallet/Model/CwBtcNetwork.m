@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "CwBtcNetWork.h"
+#import "CwBtcNetwork.h"
 //Used to receive balance change notification from block.io
 //#import "SRWebSocket.h"
 #import "SRWebSocket+CW.h"
@@ -226,7 +226,7 @@ BOOL didGetTransactionByAccountFlag[5];
 
 #pragma marks - Functions
 
-- (NSDictionary *) getCurrRate;//key: CurrId, value: rate
+- (NSDictionary *) getCurrRate//key: CurrId, value: rate
 {
     GetCurrErr err = GETCURR_BASE;
     
@@ -786,13 +786,14 @@ BOOL didGetTransactionByAccountFlag[5];
     return result;
 }
 
+/*
 - (GetUnspentTxsByAddrErr) getUnspentTxsByAddr:(NSString*)addr unspentTxs:(NSMutableArray**)unspentTxs
 {
     GetUnspentTxsByAddrErr err = GETUNSPENTTXSBYADDR_BASE;
     NSError *_err;
     NSURLResponse *_response = nil;
     NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@?unconfirmed=1",serverSite,unspentTxsURLStr,addr] err:&_err response:&_response];
-    
+    NSLog(@"==> URL: %@", [NSString stringWithFormat:@"%@/%@/%@?unconfirmed=1",serverSite,unspentTxsURLStr,addr]);
     NSLog(@"Get UnspentTxs by Address %@, err: %@", addr, _err);
     
     if(_err)
@@ -838,6 +839,105 @@ BOOL didGetTransactionByAccountFlag[5];
     
     return err;
 }
+ */
+
+- (GetUnspentTxsByAddrErr) getUnspentTxsByAddr:(NSString*)addr unspentTxs:(NSMutableArray**)unspentTxs
+{
+    NSError *errorForAPIInvoke;
+    NSURLResponse *responseOfAPIInvoke = nil;
+    
+    NSString *serverSite;
+    NSString *unspentTxsURLStr;
+    serverSite  = @"https://blockchain.info/";
+    unspentTxsURLStr  = @"unspent?active=";
+    
+    NSString *urlOfUnspent = [self urlOfUnspent:serverSite apiName:unspentTxsURLStr address:addr];
+    NSData *dataOfAPIResponse = [self HTTPRequestUsingGETMethodFrom: urlOfUnspent
+                                                                err: &errorForAPIInvoke
+                                                           response: &responseOfAPIInvoke];
+    
+    GetUnspentTxsByAddrErr errorForUnspentTxsByAddr = GETUNSPENTTXSBYADDR_BASE;
+    
+    if(errorForAPIInvoke)
+    {
+        errorForUnspentTxsByAddr = GETUNSPENTTXSBYADDR_NETWORK;
+    }
+    else
+    {
+        NSDictionary *responseBodyInJSON = [NSJSONSerialization JSONObjectWithData: dataOfAPIResponse
+                                                                           options: 0
+                                                                             error: &errorForAPIInvoke];
+        
+        if(![self isResponseValidForError: errorForAPIInvoke andBody: responseBodyInJSON])
+        {
+            errorForUnspentTxsByAddr = GETUNSPENTTXSBYADDR_JSON;
+            NSLog(@"unspent error: %@", responseBodyInJSON);
+        }
+        else
+        {
+            NSArray* rawUnspentTxs = [self unspentTxs: responseBodyInJSON];
+            NSMutableArray *_unspentTxs = [[NSMutableArray alloc] initWithCapacity:[rawUnspentTxs count]];
+            
+            for (NSDictionary *rawUnspentTx in rawUnspentTxs)
+            {
+                CwUnspentTxIndex *unspentTx = [[CwUnspentTxIndex alloc] init];
+                unspentTx.amount = [self satoshiAmounAfterParsing: rawUnspentTx];
+                unspentTx.tid = [self tidAfterParsing: rawUnspentTx];
+                unspentTx.scriptPub = [self scriptPubAfterParsing: rawUnspentTx];
+                unspentTx.n = [self nAfterParsing:rawUnspentTx];
+                unspentTx.confirmations = [self confirmationsAfterParsing: rawUnspentTx];
+                
+                [_unspentTxs addObject:unspentTx];
+            }
+            *unspentTxs = _unspentTxs;
+        }
+    }
+    
+    return errorForUnspentTxsByAddr;
+}
+
+#pragma mark - 輔助方法
+
+- (NSNumber *) confirmationsAfterParsing: (NSDictionary *)rawUnspentTx
+{
+    return [NSNumber numberWithInteger:[[rawUnspentTx objectForKey:@"confirmations"] unsignedIntegerValue]];
+}
+
+- (NSUInteger) nAfterParsing: (NSDictionary *)rawUnspentTx {
+    return [rawUnspentTx[@"tx_output_n"] unsignedIntegerValue];
+}
+
+- (NSData *)scriptPubAfterParsing: (NSDictionary *)rawUnspentTx {
+    return [NSString hexstringToData:rawUnspentTx[@"script"]];
+}
+
+- (CwBtc *)satoshiAmounAfterParsing:(NSDictionary *)rawUnspentTx {
+    int64_t amountNum = (int64_t)[rawUnspentTx[@"value"] doubleValue];
+    return [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
+}
+
+- (NSData *)tidAfterParsing:(NSDictionary *)rawUnspentTx {
+    return [NSString hexstringToData:rawUnspentTx[@"tx_hash_big_endian"]];
+}
+
+- (NSString *) urlOfUnspent:(NSString *)serverSite apiName:(NSString *)unspentTxsURLStr address:(NSString *) addr {
+    return [NSString stringWithFormat:@"%@%@%@", serverSite, unspentTxsURLStr, addr];
+}
+
+- (BOOL) isResponseValidForError:(NSError *)errorForAPIInvoke andBody:(NSDictionary *)responseBodyInJSON {
+    return [self isResponseOK: responseBodyInJSON];
+}
+
+- (BOOL) isResponseOK:(NSDictionary *)responseBodyInJSON {
+    NSString *rootKeyInUnspentResponseJSON = @"unspent_outputs";
+    return ([responseBodyInJSON[rootKeyInUnspentResponseJSON] count] > 0);
+}
+
+- (NSArray *) unspentTxs:(NSDictionary *)responseBodyInJSON {
+    NSString *rootKeyInUnspentResponseJSON = @"unspent_outputs";
+    return responseBodyInJSON[rootKeyInUnspentResponseJSON];
+}
+
 
 -(void) queryTxInfo:(NSString *)tid success:(void(^)(NSMutableArray *inputs, NSMutableArray *outputs))success fail:(void(^)(NSError *err))fail
 {
