@@ -11,3 +11,12 @@ target 'CoolWallet' do
     pod 'ReactiveCocoa', '~> 2.5'
     pod 'AFNetworking', '~> 2.0'
 end
+
+target 'CoolWalletTests' do
+    pod 'CoreBitcoin', :podspec => 'https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec'
+    pod 'RMMapper'
+    pod 'Fabric'
+    pod 'Crashlytics'
+    pod 'ReactiveCocoa', '~> 2.5'
+    pod 'AFNetworking', '~> 2.0'
+end
