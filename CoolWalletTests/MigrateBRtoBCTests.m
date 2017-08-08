@@ -24,6 +24,7 @@
     CwAddress *cwAddress;
     
     BOOL isBlockChain;
+    NSArray *queryAddresses;
 }
 @end
 
@@ -32,12 +33,14 @@
 - (void)setUp {
     [super setUp];
     
-    isBlockChain = YES;
+    isBlockChain = NO;
     
     network = [CwBtcNetWork new];
     cwAddress = [CwAddress new];
     
     cwAddress.address = @"1Gp7iCzDGMZiV55Kt8uKsux6VyoHe1aJaN";
+    
+    queryAddresses = [NSArray arrayWithObjects: @"1JXrpmxRUmdSpQGzxkmxmTfS3T5tDZi7LF", @"1M3Lwi9PCyteRgJDRZJhVBWQzdJShhVUDB", @"1Jim7VEmW149tRKiPWZDUWZdSucWS5wWBv", @"17j7uPe96AugnAShk8oYFss8GiDgqtJbSm", @"12CLhTSd6iV6K2UNctQ2B51CBwTYcLgkws", @"16qyiXi8D7dELtqtH8isvhZMYQCg4DAi8y", @"186qLTg1ABsQHxkeHnFSL9DXNrTfSapTuY", @"1B6ovUpThqahodrFR33Q8vZyw2jLhdWmX7", @"1Jvduq1NkZy1zpJvVZzchssNfLV9DEpctQ", @"1PQnd1GbEG3LWi53cjYhiP1EA53tDhiKwY", @"1AgR9WG4ydAuu4QcWBUsyKTmU49F9FcPEk", @"1CzwJhzvkyQ1d6Mo4jZTufxdhozTMcizpP", @"16HQmdb6oaajqaHSiFryRis5iz765m8Vtj", @"1CazYuLaYn8iPcyrNZuTt9wD2vNdftwqrg", @"1EfZ2tvHvzJQ7davNT4LXsfQKQvqEizxJL", @"1GiTqTRPjqxoodioQCTD1MYjF5ksLcdV92", @"12oVUPgbu5EgnrER4JVB1mcxTVhpc1Lrdx", @"15nUUswZGgVLtVbs2QrC9kfyiGiRqeAxpf", @"19Tj8jTx7MB8MS7GNWL18RS5whd6XAJdBf", @"1GbEDAQgnywniWqvwmcHJyNCMegBg4BGDB", nil];
 }
 
 - (void)tearDown {
@@ -47,6 +50,21 @@
 
 #pragma mark - Test Case
 
+-(void)testUrlOfMultiAddressAPIOnBlockChainWithAddresses {
+    NSString *serverSite;
+    NSString *allTxsURLStr;
+    
+    serverSite        = @"https://blockchain.info/";
+    allTxsURLStr      = @"rawaddr";
+    
+    NSArray *dummyAddresses = @[@"12", @"34"];
+    NSString *result = [self urlOfMultiAddressAPIOnBlockChainWithAddresses: dummyAddresses
+                                                                   andSite:serverSite
+                                                                andAPIName:allTxsURLStr];
+    
+    XCTAssertEqualObjects(result, @"https://blockchain.info/rawaddr?active=12|34");
+}
+
 - (void)testUnspent {
     NSMutableArray *addrUnspentTxs;
     GetUnspentTxsByAddrErr error = [network getUnspentTxsByAddr:cwAddress.address unspentTxs:&addrUnspentTxs];
@@ -54,53 +72,69 @@
 }
 
 - (void)testQueryHistoryTxs {
-    NSArray *queryAddresses = [NSArray arrayWithObjects: @"1JXrpmxRUmdSpQGzxkmxmTfS3T5tDZi7LF", @"1M3Lwi9PCyteRgJDRZJhVBWQzdJShhVUDB", @"1Jim7VEmW149tRKiPWZDUWZdSucWS5wWBv", @"17j7uPe96AugnAShk8oYFss8GiDgqtJbSm", @"12CLhTSd6iV6K2UNctQ2B51CBwTYcLgkws", @"16qyiXi8D7dELtqtH8isvhZMYQCg4DAi8y", @"186qLTg1ABsQHxkeHnFSL9DXNrTfSapTuY", @"1B6ovUpThqahodrFR33Q8vZyw2jLhdWmX7", @"1Jvduq1NkZy1zpJvVZzchssNfLV9DEpctQ", @"1PQnd1GbEG3LWi53cjYhiP1EA53tDhiKwY", @"1AgR9WG4ydAuu4QcWBUsyKTmU49F9FcPEk", @"1CzwJhzvkyQ1d6Mo4jZTufxdhozTMcizpP", @"16HQmdb6oaajqaHSiFryRis5iz765m8Vtj", @"1CazYuLaYn8iPcyrNZuTt9wD2vNdftwqrg", @"1EfZ2tvHvzJQ7davNT4LXsfQKQvqEizxJL", @"1GiTqTRPjqxoodioQCTD1MYjF5ksLcdV92", @"12oVUPgbu5EgnrER4JVB1mcxTVhpc1Lrdx", @"15nUUswZGgVLtVbs2QrC9kfyiGiRqeAxpf", @"19Tj8jTx7MB8MS7GNWL18RS5whd6XAJdBf", @"1GbEDAQgnywniWqvwmcHJyNCMegBg4BGDB", nil];
-    
     NSDictionary *historyTxsDic = [self queryHistoryTxs: queryAddresses];
     XCTAssertNotNil(historyTxsDic);
+    XCTAssertEqual([historyTxsDic count], [queryAddresses count]);
+    XCTAssertEqual([historyTxsDic count], 20);
+}
+
+-(NSString *)addressFromData:(NSDictionary *)data {
+   return [data objectForKey:@"address"];
+}
+
+-(NSArray *)transcationsFromData:(NSDictionary *)data {
+    return [self getAddrTxs: [[data objectForKey:@"data"] objectForKey:@"txs"]];
+}
+
+-(NSMutableDictionary *)resultFromResponse:(NSDictionary *)dic {
+    
+    NSMutableDictionary *result = [NSMutableDictionary new];
+    
+    for (NSDictionary *aData in [self convertToArray: [dic objectForKey:@"data"]]) {
+        if ([[self addressFromData: aData] isEqualToString:@""]) {
+            continue;
+        }
+        [result setObject:[self getAddrTxs: [self transcationsFromData: aData]]
+                   forKey: [self addressFromData: aData]];
+    }
+    
+    return result;
+}
+
+-(NSArray *)convertToArray:(NSObject *)obj {
+    if (![obj isKindOfClass: [NSArray class]]) {
+        NSMutableArray *result = [NSMutableArray new];
+        [result addObject: obj];
+        return result;
+    }
+    return (NSArray *)obj;
 }
 
 #pragma mark - 要改寫的 API
-
 -(NSDictionary *) queryHistoryTxs:(NSArray *)addresses
 {
-    static const NSString *serverSite        = @"https://btc.blockr.io/api/v1";
-    static const NSString *allTxsURLStr      = @"address/txs";
+    NSString *serverSite;
+    NSString *allTxsURLStr;
+
+    serverSite        = @"https://blockchain.info/";
+    allTxsURLStr      = @"rawaddr";
     
-    NSString *requestUrl = [NSString stringWithFormat:@"%@/%@/%@",serverSite,allTxsURLStr, [addresses componentsJoinedByString:@","]];
+    if (!isBlockChain) {
+        serverSite        = @"https://btc.blockr.io/api/v1";
+        allTxsURLStr      = @"address/txs";
+    }
     
-    NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
-    [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
-    [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    NSString *requestUrl = [self urlOfMultiAddressAPIWithAddresses: addresses
+                                                                   andSite: serverSite
+                                                                andAPIName: allTxsURLStr];
     
     NSMutableDictionary *result = [NSMutableDictionary new];
     [self getRequestUrl:requestUrl params:nil success:^(NSDictionary *data) {
-        NSNumber *code = [data objectForKey:@"code"];
-        if (code.intValue != 200) {
-            NSLog(@"fail: %@, from url: %@", [data objectForKey:@"message"], requestUrl);
+        
+        if ([self isResponseNotOK: data]) {
             return;
         }
-        
-        if ([[data objectForKey:@"data"] isKindOfClass:[NSArray class]]) {
-            NSArray *addrDataList = [data objectForKey:@"data"];
-            for (NSDictionary *addrData in addrDataList) {
-                NSString *address = [addrData objectForKey:@"address"];
-                if ([address isEqualToString:@""]) {
-                    continue;
-                }
-                
-                NSArray *txs = [addrData objectForKey:@"txs"];
-                NSMutableArray *addrTxs = [self getAddrTxs:txs];
-                
-                [result setObject:addrTxs forKey:address];
-            }
-        } else {
-            NSDictionary *addrData = [data objectForKey:@"data"];
-            NSString *address = [addrData objectForKey:@"address"];
-            NSArray *txs = [addrData objectForKey:@"txs"];
-            NSMutableArray *addrTxs = [self getAddrTxs:txs];
-            [result setObject:addrTxs forKey:address];
-        }
+        [result addEntriesFromDictionary: [self resultFromResponse: data]];
         
     } failure:^(NSError *err) {
         NSLog(@"error: %@", err.description);
@@ -122,6 +156,37 @@
     
     return result;
 }
+
+#pragma mark -
+
+-(NSString *)urlOfMultiAddressAPIWithAddresses:(NSArray *)addresses andSite: serverSite andAPIName: apiName
+{
+    return [self urlOfMultiAddressAPIOnBlockrWithAddresses: addresses andSite: serverSite andAPIName: apiName];
+}
+
+-(NSString *)urlOfMultiAddressAPIOnBlockrWithAddresses:(NSArray *)addresses andSite: serverSite andAPIName: apiName
+{
+    return [NSString stringWithFormat:@"%@/%@/%@", serverSite, apiName, [addresses componentsJoinedByString:@","]];
+}
+
+-(NSString *)urlOfMultiAddressAPIOnBlockChainWithAddresses:(NSArray *)addresses andSite: serverSite andAPIName: apiName
+{
+    return [NSString stringWithFormat:@"%@%@?active=%@", serverSite, apiName, [addresses componentsJoinedByString:@"|"]];
+}
+
+-(BOOL)isResponseNotOK:(NSDictionary *)response {
+    NSNumber *code = [response objectForKey:@"code"];
+    if (code.intValue != 200) {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)isSingleData:(NSDictionary *) data {
+    return ![[data objectForKey:@"data"] isKindOfClass:[NSArray class]];
+}
+
+#pragma mark -
 
 -(NSDictionary *) queryUnConfirmedTxs:(NSArray *)addresses
 {
