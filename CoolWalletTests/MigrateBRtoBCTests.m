@@ -111,11 +111,38 @@
 }
 
 #pragma mark - 要改寫的 API
+
 -(NSDictionary *) queryHistoryTxs:(NSArray *)addresses
+{
+    return [self allTxsInAddress: addresses
+                  withACollector: [self confirmedTxs:addresses]];
+}
+
+#pragma mark -
+
+- (NSDictionary *)allTxsInAddress:(NSArray *)addresses withACollector:(NSMutableDictionary *)allTxsCollector
+{
+    NSDictionary *_unconfirmedTxs = [self queryUnConfirmedTxs:addresses];
+    for (NSString *key in _unconfirmedTxs) {
+        NSArray *unconfirmedTx = [_unconfirmedTxs objectForKey:key];
+        if (unconfirmedTx.count == 0) {
+            continue;
+        }
+        NSMutableArray *transactionTxs = [NSMutableArray arrayWithArray:[allTxsCollector objectForKey:key]];
+        if (transactionTxs == nil) {
+            transactionTxs = [NSMutableArray new];
+        }
+        [transactionTxs addObjectsFromArray:unconfirmedTx];
+        [allTxsCollector setObject:transactionTxs forKey:key];
+    }
+    return allTxsCollector;
+}
+
+- (NSMutableDictionary *)confirmedTxs:(NSArray *)addresses
 {
     NSString *serverSite;
     NSString *allTxsURLStr;
-
+    
     serverSite        = @"https://blockchain.info/";
     allTxsURLStr      = @"rawaddr";
     
@@ -125,8 +152,8 @@
     }
     
     NSString *requestUrl = [self urlOfMultiAddressAPIWithAddresses: addresses
-                                                                   andSite: serverSite
-                                                                andAPIName: allTxsURLStr];
+                                                           andSite: serverSite
+                                                        andAPIName: allTxsURLStr];
     
     NSMutableDictionary *result = [NSMutableDictionary new];
     [self getRequestUrl:requestUrl params:nil success:^(NSDictionary *data) {
@@ -139,25 +166,9 @@
     } failure:^(NSError *err) {
         NSLog(@"error: %@", err.description);
     }];
-    
-    NSDictionary *unconfirmedTxs = [self queryUnConfirmedTxs:addresses];
-    for (NSString *key in unconfirmedTxs) {
-        NSArray *unconfirmedTx = [unconfirmedTxs objectForKey:key];
-        if (unconfirmedTx.count == 0) {
-            continue;
-        }
-        NSMutableArray *transactionTxs = [NSMutableArray arrayWithArray:[result objectForKey:key]];
-        if (transactionTxs == nil) {
-            transactionTxs = [NSMutableArray new];
-        }
-        [transactionTxs addObjectsFromArray:unconfirmedTx];
-        [result setObject:transactionTxs forKey:key];
-    }
-    
     return result;
 }
 
-#pragma mark -
 
 -(NSString *)urlOfMultiAddressAPIWithAddresses:(NSArray *)addresses andSite: serverSite andAPIName: apiName
 {
