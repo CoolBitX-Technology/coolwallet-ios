@@ -12,7 +12,6 @@
 #import "SWRevealViewController.h"
 #import "CwExchangeManager.h"
 #import "CwCard.h"
-#import "CwExUnclarifyOrder.h"
 #import "CwExSellOrder.h"
 #import "CwExchange.h"
 
@@ -37,17 +36,7 @@
     NSString *action = [data objectForKey:@"action"];
     NSString *orderID = [data objectForKey:@"order"];
     
-    if ([action isEqualToString:@"blockOTP"]) {
-        NSNumber *amount = [data objectForKey:@"amount"];
-        NSNumber *price = [data objectForKey:@"price"];
-        
-        CwExUnclarifyOrder *unclarifyOrder = [CwExUnclarifyOrder new];
-        unclarifyOrder.orderId = orderID;
-        unclarifyOrder.amountBTC = amount;
-        unclarifyOrder.price = price;
-        
-        [self blockOTPFromCwID:cwid withUnclarifyOrder:unclarifyOrder];
-    } else if ([action isEqualToString:@"cancelOrder"]) {
+    if ([action isEqualToString:@"cancelOrder"]) {
         [self cancelOrder:orderID fromCwID:cwid];
     } else if ([action isEqualToString:@"matchOrder"]) {
         [self matchOrder:orderID fromCwID:cwid];
@@ -57,9 +46,7 @@
     
     CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
     if ([exchange isCardLoginEx:cwid]) {
-        if ([action isEqualToString:@"blockOTP"]) {
-            targetIdentifier = @"ExBlockOrderViewController";
-        } else if ([action isEqualToString:@"matchOrder"]) {
+        if ([action isEqualToString:@"matchOrder"]) {
             targetIdentifier = @"ExMatchedOrderViewController";
         }
     }
@@ -103,19 +90,6 @@
     }
     
     [currentViewController presentViewController:alertController animated:YES completion:nil];
-}
-
--(void) blockOTPFromCwID:(NSString *)cwid withUnclarifyOrder:(CwExUnclarifyOrder *)unclarifyOrder
-{
-    NSString *key = [NSString stringWithFormat:@"exchange_%@", cwid];
-    
-    NSMutableArray *unclarify_orders = [[NSUserDefaults standardUserDefaults] rm_customObjectForKey:key];
-    if (unclarify_orders == nil) {
-        unclarify_orders = [NSMutableArray new];
-    }
-    [unclarify_orders addObject:unclarifyOrder];
-    
-    [[NSUserDefaults standardUserDefaults] rm_setCustomObject:unclarify_orders forKey:key];
 }
 
 -(void) cancelOrder:(NSString *)orderID fromCwID:(NSString *)cwid

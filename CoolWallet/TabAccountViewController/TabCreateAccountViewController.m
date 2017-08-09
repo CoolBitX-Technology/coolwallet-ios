@@ -72,7 +72,7 @@ CwCard *cwCard;
     self.actBusyIndicator.hidden = NO;
     [self.actBusyIndicator startAnimating];
     
-    [cwCard newAccount:cwCard.hdwAcccountPointer Name:self.txtAccName.text];
+    [cwCard newAccount:(long)cwCard.hdwAcccountPointer Name:self.txtAccName.text];
 }
 
 #pragma marks - CwCard Delegate

@@ -6,60 +6,59 @@
 //  Copyright © 2016年 MAC-BRYAN. All rights reserved.
 //
 
-#import "ExMatchedOrderViewController.h"
+#import "ExPendingOrderViewController.h"
 #import "ExOrderCell.h"
 #import "ExOrderDetailViewController.h"
 #import "CwExchangeManager.h"
 #import "CwExchange.h"
 #import "CwExSellOrder.h"
-//#import "QuartzCore/QuartzCore.h"
 
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 #define ExPlaceOrderURL @"http://xsm.coolbitx.com:8080/signup"
 
-@interface ExMatchedOrderViewController() <UITableViewDataSource, UITableViewDelegate>
+@interface ExPendingOrderViewController() <UITableViewDataSource, UITableViewDelegate>
 
-@property (assign, nonatomic) BOOL hasVerifyOrders;
-@property (assign, nonatomic) BOOL hasMatchedOrders;
+@property (assign, nonatomic) BOOL hasOpenOrders;
+@property (assign, nonatomic) BOOL hasPendingOrders;
 @property (strong, nonatomic) CwExOrderBase *selectOrder;
 @property (strong, nonatomic) CwExchange *exchange;
-@property (assign, nonatomic) CGFloat defaultUnclarifyViewHeight;
+@property (assign, nonatomic) CGFloat defaultOpenOrdersViewHeight;
 
-@property (weak, nonatomic) IBOutlet UIView *unclarifyOrderView;
+@property (weak, nonatomic) IBOutlet UIView *openOrdersView;
 @property (weak, nonatomic) IBOutlet UIView *noOrderView;
-@property (weak, nonatomic) IBOutlet UIView *matchedOrderView;
+@property (weak, nonatomic) IBOutlet UIView *pendingOrderView;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewSell;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewBuy;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *unclarifyViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *openOrdersViewHeightConstraint;
 
 @end
 
-@implementation ExMatchedOrderViewController
+@implementation ExPendingOrderViewController
 
 -(void) viewDidLoad
 {
-    self.defaultUnclarifyViewHeight = self.unclarifyViewHeightConstraint.constant;
+    self.defaultOpenOrdersViewHeight = self.openOrdersViewHeightConstraint.constant;
     
-    self.unclarifyOrderView.layer.borderWidth = 0.5;
-    self.unclarifyOrderView.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.unclarifyOrderView.layer.cornerRadius = 3;
+    self.openOrdersView.layer.borderWidth = 0.5;
+    self.openOrdersView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.openOrdersView.layer.cornerRadius = 3;
     
     CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
-    [exManager requestMatchedOrders];
-    [exManager requestUnclarifyOrders];
+    [exManager requestPendingOrders];
+    [exManager requestOpenOrders];
     
     self.exchange = exManager.exchange;
     
     @weakify(self)
-    RAC(self, hasVerifyOrders) = [RACObserve(self.exchange, unclarifyOrders) map:^NSNumber *(id value) {
+    RAC(self, hasOpenOrders) = [RACObserve(self.exchange, openOrders) map:^NSNumber *(id value) {
         @strongify(self)
-        BOOL enabled = self.exchange.unclarifyOrders != nil && self.exchange.unclarifyOrders.count > 0;
+        BOOL enabled = self.exchange.openOrders != nil && self.exchange.openOrders.count > 0;
         
         return @(enabled);
     }];
     
-    RAC(self, hasMatchedOrders) = [RACSignal combineLatest:@[RACObserve(self.exchange, matchedSellOrders), RACObserve(self.exchange, matchedBuyOrders)] reduce:^NSNumber *(NSArray *sellOrders, NSArray *buyOrders) {
+    RAC(self, hasPendingOrders) = [RACSignal combineLatest:@[RACObserve(self.exchange, pendingSellOrders), RACObserve(self.exchange, pendingBuyOrders)] reduce:^NSNumber *(NSArray *sellOrders, NSArray *buyOrders) {
         BOOL enabled = NO;
         if (sellOrders != nil && buyOrders != nil) {
             enabled = sellOrders.count > 0 || buyOrders.count > 0;
@@ -98,32 +97,32 @@
         }];
     }
     
-    [[RACObserve(self, hasVerifyOrders) subscribeOn:[RACScheduler mainThreadScheduler]]
+    [[RACObserve(self, hasOpenOrders) subscribeOn:[RACScheduler mainThreadScheduler]]
      subscribeNext:^(NSNumber *has) {
          @strongify(self)
-         self.unclarifyOrderView.hidden = !has.boolValue;
+         self.openOrdersView.hidden = !has.boolValue;
          
          if (has.boolValue) {
-             self.unclarifyViewHeightConstraint.constant = self.defaultUnclarifyViewHeight;
+             self.openOrdersViewHeightConstraint.constant = self.defaultOpenOrdersViewHeight;
          } else {
-             self.unclarifyViewHeightConstraint.constant = 0;
+             self.openOrdersViewHeightConstraint.constant = 0;
          }
          
-         [self.unclarifyOrderView updateConstraints];
+         [self.openOrdersView updateConstraints];
     }];
     
-    [RACObserve(self, hasMatchedOrders) subscribeNext:^(id has) {
+    [RACObserve(self, hasPendingOrders) subscribeNext:^(id has) {
          @strongify(self)
          if (has) {
              self.noOrderView.hidden = YES;
-             self.matchedOrderView.hidden = NO;
+             self.pendingOrderView.hidden = NO;
          } else {
              self.noOrderView.hidden = NO;
-             self.matchedOrderView.hidden = YES;
+             self.pendingOrderView.hidden = YES;
          }
     }];
     
-    [[[RACObserve(self.exchange, matchedSellOrders) distinctUntilChanged]
+    [[[RACObserve(self.exchange, pendingSellOrders) distinctUntilChanged]
       filter:^BOOL(id value) {
         return value != nil;
     }] subscribeNext:^(id value) {
@@ -131,7 +130,7 @@
         [self.tableViewSell reloadData];
     }];
     
-    [[[RACObserve(self.exchange, matchedBuyOrders) distinctUntilChanged]
+    [[[RACObserve(self.exchange, pendingBuyOrders) distinctUntilChanged]
       filter:^BOOL(id value) {
         return value != nil;
     }] subscribeNext:^(id value) {
@@ -155,9 +154,9 @@
     ExOrderCell *cell = (ExOrderCell *)[tableView dequeueReusableCellWithIdentifier:@"OrderCell"];
 
     if ([tableView isEqual:self.tableViewSell]) {
-        [cell setOrder:[self.exchange.matchedSellOrders objectAtIndex:indexPath.row]];
+        [cell setOrder:(CwExOrderBase *)[self.exchange.pendingSellOrders objectAtIndex:indexPath.row]];
     } else if ([tableView isEqual:self.tableViewBuy]) {
-        [cell setOrder:[self.exchange.matchedBuyOrders objectAtIndex:indexPath.row]];
+        [cell setOrder:(CwExOrderBase *)[self.exchange.pendingBuyOrders objectAtIndex:indexPath.row]];
     }
     
     return cell;
@@ -166,9 +165,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if ([tableView isEqual:self.tableViewSell]) {
-        return self.exchange.matchedSellOrders.count;
+        return self.exchange.pendingSellOrders.count;
     } else if ([tableView isEqual:self.tableViewBuy]) {
-        return self.exchange.matchedBuyOrders.count;
+        return self.exchange.pendingBuyOrders.count;
     }
     
     return 0;
@@ -194,10 +193,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.selectOrder = nil;
-    if ([tableView isEqual:self.tableViewSell] && indexPath.row < self.exchange.matchedSellOrders.count) {
-        self.selectOrder = [self.exchange.matchedSellOrders objectAtIndex:indexPath.row];
-    } else if ([tableView isEqual:self.tableViewBuy] && indexPath.row < self.exchange.matchedBuyOrders.count) {
-        self.selectOrder = [self.exchange.matchedBuyOrders objectAtIndex:indexPath.row];
+    if ([tableView isEqual:self.tableViewSell] && indexPath.row < self.exchange.pendingSellOrders.count) {
+        self.selectOrder = (CwExOrderBase *)[self.exchange.pendingSellOrders objectAtIndex:indexPath.row];
+    } else if ([tableView isEqual:self.tableViewBuy] && indexPath.row < self.exchange.pendingBuyOrders.count) {
+        self.selectOrder = (CwExOrderBase *)[self.exchange.pendingBuyOrders objectAtIndex:indexPath.row];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];

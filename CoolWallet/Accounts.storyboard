@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1421" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="pJk-oc-UYe">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="pJk-oc-UYe">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -4027,8 +4027,8 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zop-xA-Ob9">
-                                <rect key="frame" x="137" y="307" width="46" height="30"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zop-xA-Ob9">
+                                <rect key="frame" x="168.5" y="307" width="38" height="30"/>
                                 <state key="normal" title="Login">
                                     <color key="titleColor" red="0.68235294120000001" green="0.56470588239999997" blue="0.25098039220000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -4069,7 +4069,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <!--Exchange-->
         <scene sceneID="2kp-Hd-Zce">
             <objects>
-                <viewController storyboardIdentifier="ExMatchedOrderViewController" id="hDj-Rv-ioi" customClass="ExMatchedOrderViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ExPendingOrderViewController" id="hDj-Rv-ioi" customClass="ExPendingOrderViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Z48-kQ-UXU"/>
                         <viewControllerLayoutGuide type="bottom" id="mHh-m2-xfa"/>
@@ -4078,12 +4078,12 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XOL-A7-pjk" userLabel="Unclarify Order Exist View">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XOL-A7-pjk" userLabel="Open Orders View">
                                 <rect key="frame" x="10" y="8" width="355" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Sr-pg-JnA">
                                         <rect key="frame" x="5" y="5" width="345" height="30"/>
-                                        <state key="normal" title="Sell order verification">
+                                        <state key="normal" title="Open orders">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
@@ -4144,10 +4144,10 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                     <constraint firstAttribute="trailing" secondItem="bhK-Ap-J4U" secondAttribute="trailing" constant="32" id="XXB-g3-p0L"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ybr-hI-9sv" userLabel="Matched Order View">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ybr-hI-9sv" userLabel="Pending Order View">
                                 <rect key="frame" x="0.0" y="48" width="375" height="555"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Matched sell orders" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aUr-6J-4VA">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending sell orders" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aUr-6J-4VA">
                                         <rect key="frame" x="8" y="14" width="359" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="gBc-z6-wkf"/>
@@ -4262,7 +4262,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <outlet property="delegate" destination="hDj-Rv-ioi" id="7qT-2c-Dtl"/>
                                         </connections>
                                     </tableView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Matched buy orders" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12y-wM-zWV">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending buy orders" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12y-wM-zWV">
                                         <rect key="frame" x="8" y="278.5" width="359" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="YEK-oK-yns"/>
@@ -4281,7 +4281,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                 <rect key="frame" x="0.0" y="28" width="367" height="22"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ztb-65-rKF" id="3yJ-Zw-nGq">
-                                                    <rect key="frame" x="0.0" y="0.0" width="367" height="22"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="367" height="21"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount(BTC)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDg-Sq-bxa">
@@ -4327,7 +4327,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                 <rect key="frame" x="0.0" y="50" width="367" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2b9-C4-Fdb" id="vgj-1N-NJ4">
-                                                    <rect key="frame" x="0.0" y="0.0" width="334" height="44"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="334" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00000001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I1s-Zd-6fT">
@@ -4440,22 +4440,22 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="matchedOrderView" destination="ybr-hI-9sv" id="wXE-2p-yQg"/>
-                        <outlet property="noOrderView" destination="gLD-Jf-TAu" id="dYR-VT-9SF"/>
-                        <outlet property="tableViewBuy" destination="VQT-vY-3Ag" id="fIa-Lp-RSE"/>
-                        <outlet property="tableViewSell" destination="f0p-kQ-Ixr" id="YzW-tc-SGH"/>
-                        <outlet property="unclarifyOrderView" destination="XOL-A7-pjk" id="BBN-rM-SIe"/>
-                        <outlet property="unclarifyViewHeightConstraint" destination="mdI-FJ-veu" id="NEJ-Ud-KYj"/>
+                        <outlet property="noOrderView" destination="gLD-Jf-TAu" id="fwJ-Sj-bWa"/>
+                        <outlet property="openOrdersView" destination="XOL-A7-pjk" id="kIW-Dj-zPr"/>
+                        <outlet property="openOrdersViewHeightConstraint" destination="mdI-FJ-veu" id="Pan-Fi-2at"/>
+                        <outlet property="pendingOrderView" destination="ybr-hI-9sv" id="Tsg-lD-1Z5"/>
+                        <outlet property="tableViewBuy" destination="f0p-kQ-Ixr" id="Thi-Gu-uOC"/>
+                        <outlet property="tableViewSell" destination="VQT-vY-3Ag" id="VY5-qs-LcO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8L5-CM-AmC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-9004" y="-241"/>
         </scene>
-        <!--Verification-->
+        <!--Ex Open Orders View Controller-->
         <scene sceneID="f7f-f2-nXZ">
             <objects>
-                <viewController storyboardIdentifier="ExBlockOrderViewController" id="8Zh-7v-6i3" customClass="ExUnclarifyOrderViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ExBlockOrderViewController" id="8Zh-7v-6i3" customClass="ExOpenOrdersViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="q3M-tr-LiZ"/>
                         <viewControllerLayoutGuide type="bottom" id="p2N-KG-7gH"/>
@@ -4465,22 +4465,22 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fmY-Y5-9fx">
-                                <rect key="frame" x="10" y="37" width="355" height="28"/>
+                                <rect key="frame" x="10" y="8" width="355" height="28"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Order ID" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="42w-LL-kjJ">
-                                        <rect key="frame" x="8" y="3" width="86" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order ID" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="42w-LL-kjJ">
+                                        <rect key="frame" x="8" y="5.5" width="113" height="16"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1EK-ai-BCe">
-                                        <rect key="frame" x="180" y="3" width="86" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1EK-ai-BCe">
+                                        <rect key="frame" x="234" y="5.5" width="113" height="16"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Amount(BTC)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jgU-Np-53G">
-                                        <rect key="frame" x="94" y="3" width="86" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount(BTC)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jgU-Np-53G">
+                                        <rect key="frame" x="121" y="5.5" width="113" height="16"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -4490,7 +4490,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                 <constraints>
                                     <constraint firstItem="jgU-Np-53G" firstAttribute="width" secondItem="1EK-ai-BCe" secondAttribute="width" id="8XG-Xi-HLP"/>
                                     <constraint firstItem="42w-LL-kjJ" firstAttribute="centerY" secondItem="fmY-Y5-9fx" secondAttribute="centerY" id="FSp-Dq-foN"/>
-                                    <constraint firstAttribute="trailing" secondItem="1EK-ai-BCe" secondAttribute="trailing" constant="34" id="HNr-xW-Co3"/>
+                                    <constraint firstAttribute="trailing" secondItem="1EK-ai-BCe" secondAttribute="trailing" constant="8" id="HNr-xW-Co3"/>
                                     <constraint firstItem="jgU-Np-53G" firstAttribute="centerY" secondItem="42w-LL-kjJ" secondAttribute="centerY" id="RpT-GP-C91"/>
                                     <constraint firstAttribute="height" constant="28" id="Zix-Rv-FRp"/>
                                     <constraint firstItem="1EK-ai-BCe" firstAttribute="leading" secondItem="jgU-Np-53G" secondAttribute="trailing" id="dXi-ki-9Hn"/>
@@ -4501,33 +4501,33 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="77" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BvQ-03-Ni2">
-                                <rect key="frame" x="10" y="67" width="355" height="516"/>
+                                <rect key="frame" x="10" y="38" width="355" height="545"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="separatorColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <color key="sectionIndexBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="VerifyOrderCell" rowHeight="44" id="gRL-gA-1mg" customClass="ExOrderCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="OpenOrderCell" rowHeight="44" id="gRL-gA-1mg" customClass="ExOrderCell">
                                         <rect key="frame" x="0.0" y="28" width="355" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gRL-gA-1mg" id="Tlt-sh-qsz">
-                                            <rect key="frame" x="0.0" y="0.0" width="322" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="355" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OrI-pc-MfV">
-                                                    <rect key="frame" x="8" y="11.5" width="86" height="20.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OrI-pc-MfV">
+                                                    <rect key="frame" x="8" y="13" width="113" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LsJ-7U-nQE">
-                                                    <rect key="frame" x="180" y="11.5" width="86" height="20.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LsJ-7U-nQE">
+                                                    <rect key="frame" x="234.5" y="13" width="112.5" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXK-pH-R5H">
-                                                    <rect key="frame" x="94" y="11.5" width="86" height="20.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXK-pH-R5H">
+                                                    <rect key="frame" x="121" y="13" width="113.5" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -4541,7 +4541,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                                 <constraint firstItem="OrI-pc-MfV" firstAttribute="leading" secondItem="Tlt-sh-qsz" secondAttribute="leading" constant="8" id="P5g-Vb-BND"/>
                                                 <constraint firstItem="LsJ-7U-nQE" firstAttribute="leading" secondItem="uXK-pH-R5H" secondAttribute="trailing" id="UoN-Oo-ZAb"/>
                                                 <constraint firstItem="OrI-pc-MfV" firstAttribute="width" secondItem="uXK-pH-R5H" secondAttribute="width" id="cJP-8n-XSL"/>
-                                                <constraint firstAttribute="trailing" secondItem="LsJ-7U-nQE" secondAttribute="trailing" constant="1" id="iuJ-Kv-V9l"/>
+                                                <constraint firstAttribute="trailing" secondItem="LsJ-7U-nQE" secondAttribute="trailing" constant="8" id="iuJ-Kv-V9l"/>
                                                 <constraint firstItem="LsJ-7U-nQE" firstAttribute="centerY" secondItem="uXK-pH-R5H" secondAttribute="centerY" id="yBq-Wa-bDX"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -4558,31 +4558,19 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                     <outlet property="delegate" destination="8Zh-7v-6i3" id="QeH-e1-dng"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Verify OTP to place your sell orders" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xGr-HD-LCU">
-                                <rect key="frame" x="10" y="8" width="355" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="har-BL-dtJ"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.094117647058823528" green="0.094117647058823528" blue="0.094117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="fmY-Y5-9fx" firstAttribute="top" secondItem="xGr-HD-LCU" secondAttribute="bottom" constant="8" id="0aj-XK-HEF"/>
-                            <constraint firstItem="BvQ-03-Ni2" firstAttribute="trailing" secondItem="xGr-HD-LCU" secondAttribute="trailing" id="4Qy-5b-cfM"/>
                             <constraint firstItem="p2N-KG-7gH" firstAttribute="top" secondItem="BvQ-03-Ni2" secondAttribute="bottom" constant="20" id="A2a-mc-ogi"/>
-                            <constraint firstItem="xGr-HD-LCU" firstAttribute="leading" secondItem="dX8-zo-at1" secondAttribute="leading" constant="10" id="ITg-UG-TKP"/>
-                            <constraint firstItem="xGr-HD-LCU" firstAttribute="top" secondItem="q3M-tr-LiZ" secondAttribute="bottom" constant="8" id="RDk-hc-U9z"/>
-                            <constraint firstItem="BvQ-03-Ni2" firstAttribute="leading" secondItem="xGr-HD-LCU" secondAttribute="leading" id="VA6-wH-64D"/>
+                            <constraint firstItem="BvQ-03-Ni2" firstAttribute="trailing" secondItem="fmY-Y5-9fx" secondAttribute="trailing" id="FG6-13-OgI"/>
+                            <constraint firstItem="BvQ-03-Ni2" firstAttribute="leading" secondItem="fmY-Y5-9fx" secondAttribute="leading" id="Jag-6Y-Cwb"/>
+                            <constraint firstItem="fmY-Y5-9fx" firstAttribute="leading" secondItem="dX8-zo-at1" secondAttribute="leading" constant="10" id="Kof-RR-EjQ"/>
+                            <constraint firstItem="fmY-Y5-9fx" firstAttribute="top" secondItem="q3M-tr-LiZ" secondAttribute="bottom" constant="8" id="YnT-Cp-Qog"/>
                             <constraint firstItem="BvQ-03-Ni2" firstAttribute="top" secondItem="fmY-Y5-9fx" secondAttribute="bottom" constant="2" id="aYY-XI-EeS"/>
-                            <constraint firstItem="fmY-Y5-9fx" firstAttribute="trailing" secondItem="xGr-HD-LCU" secondAttribute="trailing" id="g6R-ES-fHT"/>
-                            <constraint firstItem="fmY-Y5-9fx" firstAttribute="leading" secondItem="xGr-HD-LCU" secondAttribute="leading" id="gaP-Ya-qYu"/>
-                            <constraint firstAttribute="trailing" secondItem="xGr-HD-LCU" secondAttribute="trailing" constant="10" id="iuI-Fi-Yp6"/>
+                            <constraint firstAttribute="trailing" secondItem="fmY-Y5-9fx" secondAttribute="trailing" constant="10" id="nrx-PH-fMT"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Verification" id="ThL-Mm-JcY"/>
+                    <navigationItem key="navigationItem" id="ThL-Mm-JcY"/>
                     <connections>
                         <outlet property="tableView" destination="BvQ-03-Ni2" id="Waf-7i-9JM"/>
                     </connections>
@@ -5397,7 +5385,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="AyV-UJ-ITH"/>
+        <segue reference="brK-em-gbO"/>
         <segue reference="t76-YH-dUj"/>
         <segue reference="gzi-1q-gb8"/>
     </inferredMetricsTieBreakers>

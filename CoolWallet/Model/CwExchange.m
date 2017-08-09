@@ -17,15 +17,15 @@
 - (NSDictionary *)rm_dataKeysForClassProperties
 {
     return @{
-             @"matchedSellOrders" : @"sell",
-             @"matchedBuyOrders" : @"buy",
+             @"pendingSellOrders" : @"sell",
+             @"pendingBuyOrders" : @"buy",
              };
 }
 
 -(Class)rm_itemClassForArrayProperty:(NSString *)property {
-    if ([property isEqualToString:@"matchedSellOrders"]) {
+    if ([property isEqualToString:@"pendingSellOrders"]) {
         return [CwExSellOrder class];
-    } else if ([property isEqualToString:@"matchedBuyOrders"]) {
+    } else if ([property isEqualToString:@"pendingBuyOrders"]) {
         return [CwExBuyOrder class];
     }
     

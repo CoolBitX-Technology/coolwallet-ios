@@ -22,11 +22,12 @@
 {
     return @{
              @"orderId" : @"orderId",
-             @"address" : @"addr",
+//             @"cwOrderId" : @"cwOrderId",
+//             @"address" : @"addr",
              @"amountBTC" : @"amount",
              @"price" : @"price",
              @"accountId" : @"account",
-             @"expirationUTC" : @"expiration",
+//             @"expirationUTC" : @"expiration",
              };
 }
 

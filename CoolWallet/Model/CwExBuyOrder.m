@@ -10,4 +10,17 @@
 
 @implementation CwExBuyOrder
 
+- (NSDictionary *)rm_dataKeysForClassProperties
+{
+    return @{
+             @"orderId" : @"orderId",
+             @"cwOrderId" : @"cwOrderId",
+             @"address" : @"addr",
+             @"amountBTC" : @"amount",
+             @"price" : @"price",
+             @"accountId" : @"account",
+             @"expirationUTC" : @"expiration",
+             };
+}
+
 @end

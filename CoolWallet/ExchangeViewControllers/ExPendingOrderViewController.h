@@ -8,6 +8,6 @@
 
 #import "BaseViewController.h"
 
-@interface ExMatchedOrderViewController : BaseViewController
+@interface ExPendingOrderViewController : BaseViewController
 
 @end

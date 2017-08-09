@@ -11,6 +11,7 @@
 @interface CwExOrderBase : NSObject
 
 @property (strong, nonatomic) NSString *orderId;
+@property (strong, nonatomic) NSString *cwOrderId;
 @property (strong, nonatomic) NSString *address;
 @property (strong, nonatomic) NSNumber *amountBTC;
 @property (strong, nonatomic) NSNumber *price;

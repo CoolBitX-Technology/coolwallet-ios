@@ -53,7 +53,8 @@
              @"exBlockBtcCompleteBlock", @"exBlockBtcErrorBlock",
              @"exTrxSignLoginCompleteBlock", @"exTrxSignLoginErrorBlock",
              @"exBlockCancelCompleteBlock", @"exBlockCancelErrorBlock",
-             @"exBlockInfoCompleteBlock", @"exBlockInfoErrorBlock"];
+             @"exBlockInfoCompleteBlock", @"exBlockInfoErrorBlock",
+             @"exTrxSignLogoutCompleteBlock", @"exTrxSignLogoutErrorBlock"];
 }
 
 @end
@@ -72,6 +73,8 @@
 @property (copy) void (^exBlockCancelErrorBlock)(NSInteger errorCode);
 @property (copy) void (^exBlockInfoCompleteBlock)(NSNumber *blockAmount);
 @property (copy) void (^exBlockInfoErrorBlock)(NSInteger errorCode);
+@property (copy) void (^exTrxSignLogoutCompleteBlock)(NSData *receipt);
+@property (copy) void (^exTrxSignLogoutErrorBlock)(NSInteger errorCode);
 
 @end
 
@@ -1466,8 +1469,10 @@ NSArray *addresses;
     [self cwCmdExTrxSignPrepare:inId inputData:inputData];
 }
 
--(void) exTrxSignLogoutWithTrxHandle:(NSData *)trxHandle Nonce: (NSData *)nonce
+-(void) exTrxSignLogoutWithTrxHandle:(NSData *)trxHandle Nonce: (NSData *)nonce withComplete:(void(^)(NSData *receipt))complete error:(void(^)(NSInteger errorCode))error
 {
+    self.exTrxSignLogoutCompleteBlock = complete;
+    self.exTrxSignLogoutErrorBlock = error;
     [self cwCmdExTrxSignLogoutWithTrxHandle:trxHandle Nonce:nonce];
 }
 
@@ -5114,14 +5119,6 @@ NSArray *addresses;
                 }
             } else {
                 NSLog(@"CwCmdIdHdwPrepTrxSign Error %04lX", (long)cmd.cmdResult);
-                if (cmd.cmdId == CwCmdIdExTrxSignPrepare) {
-                    [self cmdRemoveWithCmdId:CwCmdIdExTrxSignPrepare];
-                    
-                    NSData *trxHandle = [NSData dataWithBytes:[cmd.cmdInput bytes] length:4];
-                    NSData *nonce = [NSData dataWithBytes:[cmd.cmdInput bytes] length:16];
-                    [self cwCmdExTrxSignLogoutWithTrxHandle:trxHandle Nonce:nonce];
-                }
-                
                 if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
                     [self.delegate didSignTransactionError: @"Can't sign transaction by card."];
                 }
@@ -5685,6 +5682,11 @@ NSArray *addresses;
             //nonceSe: 16B
             if (cmd.cmdResult==0x9000) {
                 NSLog(@"trxStatus = %ld", (long)trxStatus);
+                
+                if (self.exTrxSignLogoutCompleteBlock) {
+                    NSData *receipt = [NSData dataWithBytes:data length:sizeof(data)];
+                    self.exTrxSignLogoutCompleteBlock(receipt);
+                }
             } else {
                 NSLog(@"CwCmdIdExTrxSignLogout Error %04lX", (long)cmd.cmdResult);
             }

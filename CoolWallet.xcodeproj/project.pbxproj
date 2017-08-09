@@ -22,6 +22,7 @@
 		A2DA5ECA1EC2044D002207E6 /* TabTransactionFeeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DA5EC91EC2044D002207E6 /* TabTransactionFeeViewController.m */; };
 		A2DA5ECD1EC20635002207E6 /* CwTransactionFee.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DA5ECC1EC20635002207E6 /* CwTransactionFee.m */; };
 		A2DBEEF61F244A370099FEB5 /* CwResetInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DBEEF51F244A370099FEB5 /* CwResetInfo.m */; };
+		A2DDC4A01F3B3DCA002618D2 /* CwExOpenOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DDC49F1F3B3DCA002618D2 /* CwExOpenOrder.m */; };
 		A2F29F1A1C55FE7100C75E91 /* CwExOrderBase.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */; };
 		A2F29F1D1C56042600C75E91 /* CwExSellOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F29F1C1C56042600C75E91 /* CwExSellOrder.m */; };
 		EF09E9261BA6C00200C8DCD0 /* TabRecoveryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF09E9251BA6C00200C8DCD0 /* TabRecoveryViewController.m */; };
@@ -130,7 +131,6 @@
 		F45962931BDE411C0046E4CE /* SRWebSocket+CW.m in Sources */ = {isa = PBXBuildFile; fileRef = F45962921BDE411C0046E4CE /* SRWebSocket+CW.m */; };
 		F45F6BE51E54738700652236 /* TabbarSendConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F45F6BE41E54738700652236 /* TabbarSendConfirmViewController.m */; };
 		F47752C61C8EC9FD007F2558 /* NotifyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F47752C51C8EC9FD007F2558 /* NotifyManager.m */; };
-		F47752C91C8EDA1A007F2558 /* CwExUnclarifyOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = F47752C81C8EDA1A007F2558 /* CwExUnclarifyOrder.m */; };
 		F478F4891C7EE25400660D82 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F478F4871C7EE25400660D82 /* Reachability.m */; };
 		F4798AF71C5B2452002DC3A0 /* APPData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4798AF61C5B2452002DC3A0 /* APPData.m */; };
 		F479E4051C5C918500482E59 /* CwExTx.m in Sources */ = {isa = PBXBuildFile; fileRef = F479E4041C5C918500482E59 /* CwExTx.m */; };
@@ -147,9 +147,9 @@
 		F49C2C2E1C5A0C32000B2042 /* ExOrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F49C2C2D1C5A0C32000B2042 /* ExOrderDetailViewController.m */; };
 		F49E7A6B1C8FEB7B000CD4B7 /* CwExUnblock.m in Sources */ = {isa = PBXBuildFile; fileRef = F49E7A6A1C8FEB7B000CD4B7 /* CwExUnblock.m */; };
 		F49F76431BD8AFF800C335B9 /* downarrow-01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */; };
-		F4A7CC4B1C5884A100E40CD1 /* ExMatchedOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */; };
+		F4A7CC4B1C5884A100E40CD1 /* ExPendingOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4A1C5884A100E40CD1 /* ExPendingOrderViewController.m */; };
 		F4A7CC4F1C58959A00E40CD1 /* ExOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A7CC4E1C58959A00E40CD1 /* ExOrderCell.m */; };
-		F4A88C351C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A88C341C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m */; };
+		F4A88C351C75A33F007AC3C1 /* ExOpenOrdersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A88C341C75A33F007AC3C1 /* ExOpenOrdersViewController.m */; };
 		F4AB53F41CCE2FEC008A61B6 /* bitcoin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4AB53F31CCE2FEC008A61B6 /* bitcoin@2x.png */; };
 		F4BE27991C995A3E009B8104 /* cw_card.png in Resources */ = {isa = PBXBuildFile; fileRef = F4BE27931C995A3E009B8104 /* cw_card.png */; };
 		F4BE279A1C995A3E009B8104 /* exchange.png in Resources */ = {isa = PBXBuildFile; fileRef = F4BE27941C995A3E009B8104 /* exchange.png */; };
@@ -214,6 +214,8 @@
 		A2DA5ECC1EC20635002207E6 /* CwTransactionFee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwTransactionFee.m; sourceTree = "<group>"; };
 		A2DBEEF41F244A370099FEB5 /* CwResetInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwResetInfo.h; sourceTree = "<group>"; };
 		A2DBEEF51F244A370099FEB5 /* CwResetInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwResetInfo.m; sourceTree = "<group>"; };
+		A2DDC49E1F3B3DCA002618D2 /* CwExOpenOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwExOpenOrder.h; sourceTree = "<group>"; };
+		A2DDC49F1F3B3DCA002618D2 /* CwExOpenOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwExOpenOrder.m; sourceTree = "<group>"; };
 		A2F29F181C55FE7100C75E91 /* CwExOrderBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExOrderBase.h; path = Model/CwExOrderBase.h; sourceTree = "<group>"; };
 		A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExOrderBase.m; path = Model/CwExOrderBase.m; sourceTree = "<group>"; };
 		A2F29F1B1C56042600C75E91 /* CwExSellOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExSellOrder.h; path = Model/CwExSellOrder.h; sourceTree = "<group>"; };
@@ -407,8 +409,6 @@
 		F45F6BE41E54738700652236 /* TabbarSendConfirmViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabbarSendConfirmViewController.m; sourceTree = "<group>"; };
 		F47752C41C8EC9FD007F2558 /* NotifyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotifyManager.h; sourceTree = "<group>"; };
 		F47752C51C8EC9FD007F2558 /* NotifyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotifyManager.m; sourceTree = "<group>"; };
-		F47752C71C8EDA1A007F2558 /* CwExUnclarifyOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExUnclarifyOrder.h; path = Model/CwExUnclarifyOrder.h; sourceTree = "<group>"; };
-		F47752C81C8EDA1A007F2558 /* CwExUnclarifyOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExUnclarifyOrder.m; path = Model/CwExUnclarifyOrder.m; sourceTree = "<group>"; };
 		F478F4861C7EE25400660D82 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		F478F4871C7EE25400660D82 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		F4798AF51C5B2452002DC3A0 /* APPData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APPData.h; sourceTree = "<group>"; };
@@ -438,13 +438,13 @@
 		F49E7A691C8FEB7B000CD4B7 /* CwExUnblock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExUnblock.h; path = Model/CwExUnblock.h; sourceTree = "<group>"; };
 		F49E7A6A1C8FEB7B000CD4B7 /* CwExUnblock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExUnblock.m; path = Model/CwExUnblock.m; sourceTree = "<group>"; };
 		F49F76421BD8AFF800C335B9 /* downarrow-01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downarrow-01@2x.png"; sourceTree = "<group>"; };
-		F4A7CC491C5884A100E40CD1 /* ExMatchedOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExMatchedOrderViewController.h; sourceTree = "<group>"; };
-		F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExMatchedOrderViewController.m; sourceTree = "<group>"; };
+		F4A7CC491C5884A100E40CD1 /* ExPendingOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExPendingOrderViewController.h; sourceTree = "<group>"; };
+		F4A7CC4A1C5884A100E40CD1 /* ExPendingOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExPendingOrderViewController.m; sourceTree = "<group>"; };
 		F4A7CC4D1C58959A00E40CD1 /* ExOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExOrderCell.h; sourceTree = "<group>"; };
 		F4A7CC4E1C58959A00E40CD1 /* ExOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExOrderCell.m; sourceTree = "<group>"; };
 		F4A7CC501C58DFFE00E40CD1 /* CwExAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExAPI.h; path = Model/CwExAPI.h; sourceTree = "<group>"; };
-		F4A88C331C75A33F007AC3C1 /* ExUnclarifyOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExUnclarifyOrderViewController.h; sourceTree = "<group>"; };
-		F4A88C341C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExUnclarifyOrderViewController.m; sourceTree = "<group>"; };
+		F4A88C331C75A33F007AC3C1 /* ExOpenOrdersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExOpenOrdersViewController.h; sourceTree = "<group>"; };
+		F4A88C341C75A33F007AC3C1 /* ExOpenOrdersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExOpenOrdersViewController.m; sourceTree = "<group>"; };
 		F4AB53F31CCE2FEC008A61B6 /* bitcoin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bitcoin@2x.png"; sourceTree = "<group>"; };
 		F4ACBD161E9D013000782AD6 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		F4BE27931C995A3E009B8104 /* cw_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cw_card.png; sourceTree = "<group>"; };
@@ -617,6 +617,28 @@
 			name = Category;
 			sourceTree = "<group>";
 		};
+		A2DDC49D1F3B3D72002618D2 /* CwExSite */ = {
+			isa = PBXGroup;
+			children = (
+				F47FA3FF1E00290100EACD26 /* CwExchangeSettings.h */,
+				F479E4031C5C918500482E59 /* CwExTx.h */,
+				F479E4041C5C918500482E59 /* CwExTx.m */,
+				F49522A61C966B6B000D8E08 /* CwExchange.h */,
+				F49522A71C966B6B000D8E08 /* CwExchange.m */,
+				A2F29F181C55FE7100C75E91 /* CwExOrderBase.h */,
+				A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */,
+				A2F29F1B1C56042600C75E91 /* CwExSellOrder.h */,
+				A2F29F1C1C56042600C75E91 /* CwExSellOrder.m */,
+				A26729891C561155005F452A /* CwExBuyOrder.h */,
+				A267298A1C561155005F452A /* CwExBuyOrder.m */,
+				F49E7A691C8FEB7B000CD4B7 /* CwExUnblock.h */,
+				F49E7A6A1C8FEB7B000CD4B7 /* CwExUnblock.m */,
+				A2DDC49E1F3B3DCA002618D2 /* CwExOpenOrder.h */,
+				A2DDC49F1F3B3DCA002618D2 /* CwExOpenOrder.m */,
+			);
+			name = CwExSite;
+			sourceTree = "<group>";
+		};
 		BE08787F6C5136570EAE4E4D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -704,23 +726,9 @@
 				F485C2251C18066D00C26E11 /* CwKeychain.m */,
 				F4FF8D0E1C4513B700863E54 /* CwExchangeManager.h */,
 				F4FF8D0F1C4513B700863E54 /* CwExchangeManager.m */,
-				A2F29F181C55FE7100C75E91 /* CwExOrderBase.h */,
-				A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */,
-				A2F29F1B1C56042600C75E91 /* CwExSellOrder.h */,
-				A2F29F1C1C56042600C75E91 /* CwExSellOrder.m */,
-				A26729891C561155005F452A /* CwExBuyOrder.h */,
-				A267298A1C561155005F452A /* CwExBuyOrder.m */,
+				A2DDC49D1F3B3D72002618D2 /* CwExSite */,
 				F4798AF51C5B2452002DC3A0 /* APPData.h */,
 				F4798AF61C5B2452002DC3A0 /* APPData.m */,
-				F479E4031C5C918500482E59 /* CwExTx.h */,
-				F479E4041C5C918500482E59 /* CwExTx.m */,
-				F47752C71C8EDA1A007F2558 /* CwExUnclarifyOrder.h */,
-				F47752C81C8EDA1A007F2558 /* CwExUnclarifyOrder.m */,
-				F49E7A691C8FEB7B000CD4B7 /* CwExUnblock.h */,
-				F49E7A6A1C8FEB7B000CD4B7 /* CwExUnblock.m */,
-				F49522A61C966B6B000D8E08 /* CwExchange.h */,
-				F49522A71C966B6B000D8E08 /* CwExchange.m */,
-				F47FA3FF1E00290100EACD26 /* CwExchangeSettings.h */,
 				A2DA5ECB1EC20635002207E6 /* CwTransactionFee.h */,
 				A2DA5ECC1EC20635002207E6 /* CwTransactionFee.m */,
 				A2DBEEF41F244A370099FEB5 /* CwResetInfo.h */,
@@ -940,12 +948,12 @@
 			children = (
 				F4FF8D0B1C45104F00863E54 /* TabExchangeViewController.h */,
 				F4FF8D0C1C45104F00863E54 /* TabExchangeViewController.m */,
-				F4A7CC491C5884A100E40CD1 /* ExMatchedOrderViewController.h */,
-				F4A7CC4A1C5884A100E40CD1 /* ExMatchedOrderViewController.m */,
+				F4A7CC491C5884A100E40CD1 /* ExPendingOrderViewController.h */,
+				F4A7CC4A1C5884A100E40CD1 /* ExPendingOrderViewController.m */,
 				F49C2C2C1C5A0C32000B2042 /* ExOrderDetailViewController.h */,
 				F49C2C2D1C5A0C32000B2042 /* ExOrderDetailViewController.m */,
-				F4A88C331C75A33F007AC3C1 /* ExUnclarifyOrderViewController.h */,
-				F4A88C341C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m */,
+				F4A88C331C75A33F007AC3C1 /* ExOpenOrdersViewController.h */,
+				F4A88C341C75A33F007AC3C1 /* ExOpenOrdersViewController.m */,
 			);
 			path = ExchangeViewControllers;
 			sourceTree = "<group>";
@@ -1276,7 +1284,6 @@
 				EFEE57E31B7AFA7400E5999B /* tx.m in Sources */,
 				F47AB4E11C7700E500766F3D /* UIViewController+Utils.m in Sources */,
 				EFCF9A551B32C8810076091B /* CwCardCommand.m in Sources */,
-				F47752C91C8EDA1A007F2558 /* CwExUnclarifyOrder.m in Sources */,
 				EFFA18311B450EA600FF8FC6 /* FrontViewController.m in Sources */,
 				EFAC5C4B1AC25A7000320EA6 /* bitstream.c in Sources */,
 				EFCF9A581B32C8810076091B /* CwManager.m in Sources */,
@@ -1290,7 +1297,7 @@
 				EFF6DD111B9542880089E093 /* TabExhchangeRateViewController.m in Sources */,
 				EFAC5FD71AAD39620042FF8C /* TabAddressTableViewController.m in Sources */,
 				EFA341421AA702E80035AC6D /* CwInfoViewCell.m in Sources */,
-				F4A88C351C75A33F007AC3C1 /* ExUnclarifyOrderViewController.m in Sources */,
+				F4A88C351C75A33F007AC3C1 /* ExOpenOrdersViewController.m in Sources */,
 				93CF96BE19EE1DA200466DAF /* CALayer+ColorConfig.m in Sources */,
 				EF09E9261BA6C00200C8DCD0 /* TabRecoveryViewController.m in Sources */,
 				EFAC5C511AC25A7000320EA6 /* rscode.c in Sources */,
@@ -1302,7 +1309,8 @@
 				EFCF9A571B32C8810076091B /* CwHost.m in Sources */,
 				EFABE47D1AB2938200C2B634 /* TabCreateHdwVerifyViewController.m in Sources */,
 				EFCF9A5C1B32C8810076091B /* CwTxout.m in Sources */,
-				F4A7CC4B1C5884A100E40CD1 /* ExMatchedOrderViewController.m in Sources */,
+				A2DDC4A01F3B3DCA002618D2 /* CwExOpenOrder.m in Sources */,
+				F4A7CC4B1C5884A100E40CD1 /* ExPendingOrderViewController.m in Sources */,
 				EFAC5C501AC25A7000320EA6 /* qrspec.c in Sources */,
 				EFCF9A5F1B32C8810076091B /* KeychainItemWrapper.m in Sources */,
 				EFAC5FDA1AAD39620042FF8C /* TabCreateHdwViewController.m in Sources */,

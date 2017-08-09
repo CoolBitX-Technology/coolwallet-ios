@@ -15,16 +15,16 @@
 #define ExSessionLogout         ExBaseUrl@"/session/logout"
 #define ExSyncCardInfo          ExBaseUrl@"/%@"
 #define ExSyncAccountInfo       ExSyncCardInfo@"/%ld"
-#define ExGetMatchedOrders      ExBaseUrl@"/pending/%@"
+#define ExGetPendingOrders      ExBaseUrl@"/pending/%@" // Url: /pending/:CWID(/:orderId)
 #define ExGetTrxInfo            ExBaseUrl@"/trxinfo/%@"
 #define ExGetTrxPrepareBlocks   ExBaseUrl@"/trxblks"
 #define ExTrx                   ExBaseUrl@"/trx/%@"
-#define ExRequestOrderBlock     ExBaseUrl@"/order/%@/%@"
+#define ExTrxOrderBlock         ExBaseUrl@"/trx/%@/%@" // Url: /trx/:orderId/:otp
 #define ExCancelOrder           ExBaseUrl@"/order/%@"
-#define ExWriteOKToken          ExBaseUrl@"/oktoken/%@"
+#define ExWriteOKToken          ExBaseUrl@"/oktoken/%@" // Url: /oktoken/:orderId
 #define ExUnblockOrders         ExBaseUrl@"/unblock"
 #define ExOpenOrderCount        ExBaseUrl@"/open/count"
-#define ExUnclarifyOrders       ExBaseUrl@"/unclarify/%@"
+#define ExGetOrders             ExBaseUrl@"/cw/order/%@"
 
 typedef NS_ENUM (int, ExSessionStatus) {
     ExSessionNone,

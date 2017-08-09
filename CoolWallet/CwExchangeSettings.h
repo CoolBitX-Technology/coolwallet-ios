@@ -9,6 +9,6 @@
 #ifndef CwExchangeSettings_h
 #define CwExchangeSettings_h
 
-static const BOOL enableExchangeSite = NO;
+static const BOOL enableExchangeSite = YES;
 
 #endif /* CwExchangeSettings_h */

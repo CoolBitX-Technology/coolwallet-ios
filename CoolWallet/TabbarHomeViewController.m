@@ -133,7 +133,7 @@ CwBtcNetWork *btcNet;
           subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityBackground name:@"ExSessionLogin"]]
          subscribeNext:^(id value) {
              [exchange loginExSession];
-         }];
+        }];
     }
 }
 

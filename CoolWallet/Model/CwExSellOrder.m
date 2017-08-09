@@ -7,7 +7,33 @@
 //
 
 #import "CwExSellOrder.h"
+#import "CwExTx.h"
+#import "CwBtc.h"
 
 @implementation CwExSellOrder
+
+- (NSDictionary *)rm_dataKeysForClassProperties
+{
+    return @{
+             @"orderId" : @"orderId",
+             @"cwOrderId" : @"cwOrderId",
+             @"address" : @"addr",
+             @"amountBTC" : @"amount",
+             @"price" : @"price",
+             @"accountId" : @"account",
+             @"expirationUTC" : @"expiration",
+             };
+}
+
+- (CwExTx *)exTrx
+{
+    if (!_exTrx) {
+        _exTrx = [CwExTx new];
+        _exTrx.accountId = self.accountId.integerValue;
+        _exTrx.amount = [CwBtc BTCWithBTC:self.amountBTC];
+    }
+    
+    return _exTrx;
+}
 
 @end

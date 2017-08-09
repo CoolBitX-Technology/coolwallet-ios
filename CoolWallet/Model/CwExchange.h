@@ -8,11 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class CwExOpenOrder, CwExSellOrder, CwExBuyOrder, CwExUnblock;
+
 @interface CwExchange : NSObject
 
-@property (strong, nonatomic) NSMutableArray *unclarifyOrders; // class CwExUnclarifyOrder
-@property (strong, nonatomic) NSMutableArray *matchedSellOrders; // class CwExSellOrder
-@property (strong, nonatomic) NSMutableArray *matchedBuyOrders; // class CwExBuyOrder
-@property (strong, nonatomic) NSMutableArray *unblockOrders; // class CwExUnblock
+@property (strong, nonatomic) NSMutableArray<CwExOpenOrder *> *openOrders;
+
+@property (strong, nonatomic) NSMutableArray<CwExSellOrder *> *pendingSellOrders;
+@property (strong, nonatomic) NSMutableArray<CwExBuyOrder *> *pendingBuyOrders;
+@property (strong, nonatomic) NSMutableArray<CwExUnblock *> *unblockOrders;
 
 @end
