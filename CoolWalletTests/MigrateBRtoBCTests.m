@@ -169,7 +169,6 @@
     return result;
 }
 
-
 -(NSString *)urlOfMultiAddressAPIWithAddresses:(NSArray *)addresses andSite: serverSite andAPIName: apiName
 {
     return [self urlOfMultiAddressAPIOnBlockrWithAddresses: addresses andSite: serverSite andAPIName: apiName];
@@ -191,10 +190,6 @@
         return YES;
     }
     return NO;
-}
-
-- (BOOL)isSingleData:(NSDictionary *) data {
-    return ![[data objectForKey:@"data"] isKindOfClass:[NSArray class]];
 }
 
 #pragma mark -
