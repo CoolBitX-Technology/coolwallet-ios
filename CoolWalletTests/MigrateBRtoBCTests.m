@@ -57,9 +57,9 @@
     allTxsURLStr      = @"rawaddr";
     
     NSArray *dummyAddresses = @[@"12", @"34"];
-    NSString *result = [self urlOfMultiAddressAPIOnBlockChainWithAddresses: dummyAddresses
-                                                                   andSite:serverSite
-                                                                andAPIName:allTxsURLStr];
+    NSString *result = [self urlOfMultiAddressAPIWithAddresses: dummyAddresses
+                                                       andSite:serverSite
+                                                    andAPIName:allTxsURLStr];
     
     XCTAssertEqualObjects(result, @"https://blockchain.info/rawaddr?active=12|34");
 }
@@ -94,32 +94,8 @@
     XCTAssert([arrayOf392wr count] == 6);
 }
 
-#pragma mark - 修改過後的 API 呼叫方法
-
--(NSDictionary *) queryHistoryTxs:(NSArray *)addresses
-{
-    return [self transactionsOfAnAddress:addresses];
-}
-
-#pragma mark - 輔助方法
-
-- (NSMutableDictionary *)transactionsOfAnAddress:(NSArray *)addresses
-{
-    NSString *requestUrl = [self urlOfMultiAddressAPIWithAddresses: addresses
-                                                           andSite: serverSite
-                                                        andAPIName: allTxsURLStr];
-    
-    NSMutableDictionary *result = [NSMutableDictionary new];
-    [self getRequestUrl:requestUrl params:nil success:^(NSDictionary *response) {
-        
-        [result addEntriesFromDictionary: [self dictionaryOfAddressKeyAndCwTxsArrayFromResponse: response]];
-        
-    } failure:^(NSError *err) {
-        NSLog(@"error: %@", err.description);
-    }];
-    return result;
-}
-
+#pragma mark - 以下三個方法，在 CwBtcNetwork.m 中有重複
+/* 原因：不想在 .h 中 宣告下面三個方法，但是想測試它們，所以此三個方法沒有刪除。 */
 -(NSString *)urlOfMultiAddressAPIWithAddresses:(NSArray *)addresses andSite: _serverSite andAPIName: _apiName
 {
     return [self urlOfMultiAddressAPIOnBlockChainWithAddresses: addresses andSite: _serverSite andAPIName: _apiName];
@@ -188,55 +164,6 @@
         [result setObject:cwTxs forKey: address];
     }
     return result;
-}
-
--(void) getRequestUrl:(NSString *)url params:(NSDictionary *)params success:(void(^)(NSDictionary *json))success failure:(void(^)(NSError *err))failure
-{
-    if (params != nil && params.count > 0) {
-        NSMutableArray *paramArray = [NSMutableArray new];
-        for (NSString *key in params.keyEnumerator.allObjects) {
-            NSString *value = [params objectForKey:key];
-            [paramArray addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
-        }
-        
-        url = [NSString stringWithFormat:@"%@?%@", url, [paramArray componentsJoinedByString:@"&"]];
-    }
-    
-    NSURL *requestUrl = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-    
-    NSURLResponse *_response = nil;
-    NSError *_err = nil;
-    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
-    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&_response error:&_err];
-    
-    if (data) {
-        NSError *error;
-        NSDictionary *json =[NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-        
-        if (json == nil) {
-            failure(error);
-        } else {
-            success(json);
-        }
-    } else {
-        failure(_err);
-    }
-}
-
-
-- (NSData*) HTTPRequestUsingGETMethodFrom:(NSString*)urlStr err:(NSError**)_err response:(NSURLResponse**)_response
-{
-    NSURL *url = [[NSURL alloc]initWithString:urlStr];
-    NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
-    
-    [httpRequest setURL:url];
-    [httpRequest setHTTPMethod:@"GET"];
-    [httpRequest setHTTPBody:nil];
-    
-    [[NSURLCache sharedURLCache] removeCachedResponseForRequest:httpRequest];
-    NSData *data = [NSURLConnection sendSynchronousRequest:httpRequest returningResponse:_response error:_err];
-    
-    return data;
 }
 
 - (NSDictionary *)dummyResponse
