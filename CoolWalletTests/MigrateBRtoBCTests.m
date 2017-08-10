@@ -98,31 +98,12 @@
 
 -(NSDictionary *) queryHistoryTxs:(NSArray *)addresses
 {
-    return [self allTxsInAddress: addresses
-                  withACollector: [self confirmedTxs:addresses]];
+    return [self transactionsOfAnAddress:addresses];
 }
 
 #pragma mark - 輔助方法
 
-- (NSDictionary *)allTxsInAddress:(NSArray *)addresses withACollector:(NSMutableDictionary *)allTxsCollector
-{
-    NSDictionary *_unconfirmedTxs = [self queryUnConfirmedTxs:addresses];
-    for (NSString *key in _unconfirmedTxs) {
-        NSArray *unconfirmedTx = [_unconfirmedTxs objectForKey:key];
-        if (unconfirmedTx.count == 0) {
-            continue;
-        }
-        NSMutableArray *transactionTxs = [NSMutableArray arrayWithArray:[allTxsCollector objectForKey:key]];
-        if (transactionTxs == nil) {
-            transactionTxs = [NSMutableArray new];
-        }
-        [transactionTxs addObjectsFromArray:unconfirmedTx];
-        [allTxsCollector setObject:transactionTxs forKey:key];
-    }
-    return allTxsCollector;
-}
-
-- (NSMutableDictionary *)confirmedTxs:(NSArray *)addresses
+- (NSMutableDictionary *)transactionsOfAnAddress:(NSArray *)addresses
 {
     NSString *requestUrl = [self urlOfMultiAddressAPIWithAddresses: addresses
                                                            andSite: serverSite
@@ -131,9 +112,6 @@
     NSMutableDictionary *result = [NSMutableDictionary new];
     [self getRequestUrl:requestUrl params:nil success:^(NSDictionary *response) {
         
-        if ([self isResponseNotOK: response]) {
-            return;
-        }
         [result addEntriesFromDictionary: [self dictionaryOfAddressKeyAndCwTxsArrayFromResponse: response]];
         
     } failure:^(NSError *err) {
@@ -150,10 +128,6 @@
 -(NSString *)urlOfMultiAddressAPIOnBlockChainWithAddresses:(NSArray *)addresses andSite: _serverSite andAPIName: _apiName
 {
     return [NSString stringWithFormat:@"%@%@?active=%@", _serverSite, _apiName, [addresses componentsJoinedByString:@"|"]];
-}
-
--(BOOL)isResponseNotOK:(NSDictionary *)response {
-    return NO;
 }
 
 -(NSMutableDictionary *)dictionaryOfAddressKeyAndCwTxsArrayFromResponse: (NSDictionary *)response {
@@ -208,11 +182,6 @@
         [result setObject:cwTxs forKey: address];
     }
     return result;
-}
-
--(NSDictionary *) queryUnConfirmedTxs:(NSArray *)addresses
-{
-    return [NSMutableDictionary new];
 }
 
 -(void) getRequestUrl:(NSString *)url params:(NSDictionary *)params success:(void(^)(NSDictionary *json))success failure:(void(^)(NSError *err))failure
