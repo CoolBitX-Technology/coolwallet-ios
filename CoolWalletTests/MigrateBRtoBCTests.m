@@ -75,7 +75,7 @@
     serverSite        = @"https://blockchain.info/";
     allTxsURLStr      = @"multiaddr";
     
-    NSDictionary *historyTxsDic = [self queryHistoryTxs: queryAddresses];
+    NSDictionary *historyTxsDic = [network queryHistoryTxs: queryAddresses];
     XCTAssertNotNil(historyTxsDic);
     XCTAssertEqual([historyTxsDic count], [queryAddresses count]);
     XCTAssertEqual([historyTxsDic count], 20);
@@ -132,9 +132,10 @@
 
 -(NSMutableDictionary *)dictionaryOfAddressKeyAndCwTxsArrayFromResponse: (NSDictionary *)response {
     NSMutableDictionary *result =  [NSMutableDictionary new];
-    NSArray *addresses = (NSArray *)response[@"addresses"];
     
+    NSArray *addresses = (NSArray *)response[@"addresses"];
     NSArray *txs = (NSArray *)response[@"txs"];
+    double height = [response[@"info"][@"latest_block"][@"height"] doubleValue];
 
     for (NSDictionary *addressInfo in addresses) {
         NSString *address = addressInfo[@"address"];
@@ -147,6 +148,11 @@
         for (NSDictionary *tx in txs) {
             CwTx *cwTx = [CwTx new];
             cwTx.txType = TypeHistoryTx;
+            cwTx.tx = tx[@"hash"];
+            cwTx.txFee = [CwBtc BTCWithSatoshi: [NSNumber numberWithDouble: [tx[@"fee"] doubleValue]]];
+            cwTx.historyTime_utc = [NSDate dateWithTimeIntervalSince1970: [tx[@"time"] doubleValue]];
+            cwTx.amount_btc = [NSNumber numberWithDouble:[tx[@"result"] doubleValue]/100000000];
+            cwTx.confirmations = [NSNumber numberWithDouble: [tx[@"block_height"] doubleValue] > 0 ? height - [tx[@"block_height"] doubleValue] + 1 : 0];
             for (int i=0; i<[(tx[@"inputs"]) count]; i++) {
                 if ([address isEqualToString: tx[@"inputs"][i][@"prev_out"][@"addr"]]) {
                     isInTxInputs = YES;

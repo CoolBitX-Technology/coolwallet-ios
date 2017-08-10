@@ -56,6 +56,7 @@ BOOL didGetTransactionByAccountFlag[5];
     SRWebSocket *_webSocket;
     CwManager *cwManager;
     CwCard *cwCard;
+    BOOL useBlockChain;
 }
 
 #pragma mark - Singleton methods
@@ -87,6 +88,8 @@ BOOL didGetTransactionByAccountFlag[5];
     cwManager = [CwManager sharedManager];
     
     self.updateHistoryTxs = [NSMutableArray new];
+    
+    useBlockChain = YES;
     
     return self;
 }
@@ -674,6 +677,13 @@ BOOL didGetTransactionByAccountFlag[5];
 
 -(NSDictionary *) queryHistoryTxs:(NSArray *)addresses
 {
+    if (useBlockChain) {
+        serverSite        = @"https://blockchain.info/";
+        allTxsURLStr      = @"multiaddr";
+        
+        return [self transactionsOfAnAddress:addresses];
+    }
+    
     NSString *requestUrl = [NSString stringWithFormat:@"%@/%@/%@",serverSite,allTxsURLStr, [addresses componentsJoinedByString:@","]];
     
     NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
@@ -729,6 +739,94 @@ BOOL didGetTransactionByAccountFlag[5];
     
     return result;
 }
+
+- (NSMutableDictionary *)transactionsOfAnAddress:(NSArray *)addresses
+{
+    NSString *requestUrl = [self urlOfMultiAddressAPIWithAddresses: addresses
+                                                           andSite: serverSite
+                                                        andAPIName: allTxsURLStr];
+    
+    NSMutableDictionary *result = [NSMutableDictionary new];
+    [self getRequestUrl:requestUrl params:nil success:^(NSDictionary *response) {
+        
+        [result addEntriesFromDictionary: [self dictionaryOfAddressKeyAndCwTxsArrayFromResponse: response]];
+        
+    } failure:^(NSError *err) {
+        NSLog(@"error: %@", err.description);
+    }];
+    return result;
+}
+
+-(NSString *)urlOfMultiAddressAPIWithAddresses:(NSArray *)addresses andSite: _serverSite andAPIName: _apiName
+{
+    return [self urlOfMultiAddressAPIOnBlockChainWithAddresses: addresses andSite: _serverSite andAPIName: _apiName];
+}
+
+-(NSString *)urlOfMultiAddressAPIOnBlockChainWithAddresses:(NSArray *)addresses andSite: _serverSite andAPIName: _apiName
+{
+    return [NSString stringWithFormat:@"%@%@?active=%@", _serverSite, _apiName, [addresses componentsJoinedByString:@"|"]];
+}
+
+-(NSMutableDictionary *)dictionaryOfAddressKeyAndCwTxsArrayFromResponse: (NSDictionary *)response {
+    NSMutableDictionary *result =  [NSMutableDictionary new];
+    
+    NSArray *addresses = (NSArray *)response[@"addresses"];
+    NSArray *txs = (NSArray *)response[@"txs"];
+    double height = [response[@"info"][@"latest_block"][@"height"] doubleValue];
+    
+    for (NSDictionary *addressInfo in addresses) {
+        NSString *address = addressInfo[@"address"];
+        
+        NSMutableArray *cwTxs = [NSMutableArray new];
+        NSMutableArray *inputs = [NSMutableArray new];
+        NSMutableArray *outs = [NSMutableArray new];
+        BOOL isInTxInputs = NO;
+        BOOL isInTxOut = NO;
+        for (NSDictionary *tx in txs) {
+            CwTx *cwTx = [CwTx new];
+            cwTx.txType = TypeHistoryTx;
+            cwTx.tx = tx[@"hash"];
+            cwTx.txFee = [CwBtc BTCWithSatoshi: [NSNumber numberWithDouble: [tx[@"fee"] doubleValue]]];
+            cwTx.historyTime_utc = [NSDate dateWithTimeIntervalSince1970: [tx[@"time"] doubleValue]];
+            cwTx.amount_btc = [NSNumber numberWithDouble:[tx[@"result"] doubleValue]/100000000];
+            cwTx.confirmations = [NSNumber numberWithDouble: [tx[@"block_height"] doubleValue] > 0 ? height - [tx[@"block_height"] doubleValue] + 1 : 0];
+            for (int i=0; i<[(tx[@"inputs"]) count]; i++) {
+                if ([address isEqualToString: tx[@"inputs"][i][@"prev_out"][@"addr"]]) {
+                    isInTxInputs = YES;
+                    CwTxin *cwTxin = [CwTxin new];
+                    cwTxin.tid = tx[@"hash"];
+                    cwTxin.addr = address;
+                    cwTxin.n = (NSUInteger)tx[@"inputs"][i][@"prev_out"][@"n"];
+                    cwTxin.amount = tx[@"inputs"][i][@"prev_out"][@"value"];
+                    [inputs addObject: cwTxin];
+                }
+            }
+            for (int i=0; i<[(tx[@"out"]) count]; i++) {
+                if ([address isEqualToString: tx[@"out"][i][@"addr"]]) {
+                    isInTxOut = YES;
+                    CwTxout *cwTxout = [CwTxout new];
+                    cwTxout.isSpent = [tx[@"spent"] isEqualToString:@"true"]?YES:NO;
+                    cwTxout.addr = address;
+                    cwTxout.n = (NSInteger)tx[@"out"][i][@"n"];
+                    cwTxout.amount = tx[@"out"][i][@"value"];
+                    [outs addObject: cwTxout];
+                }
+            }
+            
+            if (isInTxInputs || isInTxOut) {
+                cwTx.inputs = inputs;
+                cwTx.outputs = outs;
+                cwTx.txFee = tx[@"fee"];
+                [cwTxs addObject: cwTx];
+                isInTxInputs = isInTxOut = NO;
+            }
+        }
+        
+        [result setObject:cwTxs forKey: address];
+    }
+    return result;
+}
+
 
 -(NSMutableArray *) getAddrTxs:(NSArray *)txs
 {
@@ -1089,6 +1187,9 @@ BOOL didGetTransactionByAccountFlag[5];
 
 - (DecodeErr) decode:(CwTx*)tx result:(NSData **)result
 {
+    serverSite        = @"https://btc.blockr.io/api/v1";
+    decodeURLStr      = @"tx/decode";
+    
     NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, decodeURLStr]];
     NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[NSString dataToHexstring:[tx rawTx]]];
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
