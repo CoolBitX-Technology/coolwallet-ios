@@ -1141,8 +1141,12 @@ BOOL didGetTransactionByAccountFlag[5];
 
 - (PublishErr) publish:(CwTx*)tx result:(NSData **)result
 {
-    NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, pushURLStr]];
-    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[NSString dataToHexstring:[tx rawTx]]];
+    serverSite = @"https://blockchain.info/";
+    pushURLStr = @"pushtx";
+    
+    NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@%@?cors=true", serverSite, pushURLStr]];
+    // NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[NSString dataToHexstring:[tx rawTx]]];
+    NSString *postString = [NSString stringWithFormat:@"tx=%@",[NSString dataToHexstring:[tx rawTx]]];
     
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
     
@@ -1187,11 +1191,12 @@ BOOL didGetTransactionByAccountFlag[5];
 
 - (DecodeErr) decode:(CwTx*)tx result:(NSData **)result
 {
-    serverSite        = @"https://btc.blockr.io/api/v1";
-    decodeURLStr      = @"tx/decode";
+    serverSite        = @"https://blockchain.info/";
+    decodeURLStr      = @"decode-tx";
     
-    NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@/%@", serverSite, decodeURLStr]];
-    NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[NSString dataToHexstring:[tx rawTx]]];
+    NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@%@", serverSite, decodeURLStr]];
+    //NSString *postString = [NSString stringWithFormat:@"{\"hex\":\"%@\"}",[NSString dataToHexstring:[tx rawTx]]];
+    NSString *postString = [NSString stringWithFormat:@"tx=%@",[NSString dataToHexstring:[tx rawTx]]];
     NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
     
     NSLog(@"tx raw: %@", postString);
