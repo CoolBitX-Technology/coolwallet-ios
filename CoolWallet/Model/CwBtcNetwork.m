@@ -1156,9 +1156,14 @@ BOOL didGetTransactionByAccountFlag[5];
     [httpRequest setHTTPMethod:@"POST"];
     [httpRequest setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
     
-    NSData *decodeTxJSON = [NSURLConnection sendSynchronousRequest:httpRequest returningResponse:nil error:nil];
+    NSError *error;
+    NSData *decodeTxJSON = [NSURLConnection sendSynchronousRequest:httpRequest returningResponse:nil error: &error];
     
     *result = [[NSData alloc] initWithData: decodeTxJSON];
+    
+    if (error) {
+        return PUBLISH_NETWORK;
+    }
     
     return PUBLISH_BASE;
 }
