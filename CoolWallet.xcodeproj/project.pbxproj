@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1E4D96B91F2F137000296B1D /* MigrateBRtoBCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E4D96B81F2F137000296B1D /* MigrateBRtoBCTests.m */; };
+		1E68F1521F4D4EAF0036EDBA /* Accounts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E68F1541F4D4EAF0036EDBA /* Accounts.storyboard */; };
 		8FC950531B6AB3200B892B8C /* libPods-CoolWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58CCFA5C45FF92718BD86335 /* libPods-CoolWalletTests.a */; };
 		93CF969919EE1A0200466DAF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF969819EE1A0200466DAF /* main.m */; };
 		93CF969C19EE1A0200466DAF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF969B19EE1A0200466DAF /* AppDelegate.m */; };
@@ -71,7 +72,6 @@
 		EFAC5C501AC25A7000320EA6 /* qrspec.c in Sources */ = {isa = PBXBuildFile; fileRef = EFAC5C451AC25A7000320EA6 /* qrspec.c */; };
 		EFAC5C511AC25A7000320EA6 /* rscode.c in Sources */ = {isa = PBXBuildFile; fileRef = EFAC5C471AC25A7000320EA6 /* rscode.c */; };
 		EFAC5C521AC25A7000320EA6 /* split.c in Sources */ = {isa = PBXBuildFile; fileRef = EFAC5C491AC25A7000320EA6 /* split.c */; };
-		EFAC5FBC1AAD392B0042FF8C /* Accounts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EFAC5FBB1AAD392B0042FF8C /* Accounts.storyboard */; };
 		EFAC5FD71AAD39620042FF8C /* TabAddressTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFAC5FC21AAD39620042FF8C /* TabAddressTableViewController.m */; };
 		EFAC5FD81AAD39620042FF8C /* TabCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFAC5FC41AAD39620042FF8C /* TabCardViewController.m */; };
 		EFAC5FD91AAD39620042FF8C /* TabCreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFAC5FC61AAD39620042FF8C /* TabCreateAccountViewController.m */; };
@@ -193,6 +193,9 @@
 		1E68F14F1F4D3AC70036EDBA /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1E68F1501F4D3AD20036EDBA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
 		1E68F1511F4D3AD20036EDBA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		1E68F1531F4D4EAF0036EDBA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Accounts.storyboard; sourceTree = "<group>"; };
+		1E68F1561F4D4EB80036EDBA /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Accounts.strings; sourceTree = "<group>"; };
+		1E68F1581F4D4ECD0036EDBA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Accounts.strings; sourceTree = "<group>"; };
 		1EBE4865AFFF5EBA19625BA8 /* libPods-CoolWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CoolWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CBB7DFF75CAE6888DFC4E8A /* Pods-CoolWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoolWallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoolWallet/Pods-CoolWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		2F4E7145A6B325168F254630 /* Pods-CoolWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoolWalletTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoolWalletTests/Pods-CoolWalletTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -297,7 +300,6 @@
 		EFAC5C481AC25A7000320EA6 /* rscode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rscode.h; path = QRcodeEncode/rscode.h; sourceTree = SOURCE_ROOT; };
 		EFAC5C491AC25A7000320EA6 /* split.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = split.c; path = QRcodeEncode/split.c; sourceTree = SOURCE_ROOT; };
 		EFAC5C4A1AC25A7000320EA6 /* split.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = split.h; path = QRcodeEncode/split.h; sourceTree = SOURCE_ROOT; };
-		EFAC5FBB1AAD392B0042FF8C /* Accounts.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Accounts.storyboard; sourceTree = "<group>"; };
 		EFAC5FC11AAD39620042FF8C /* TabAddressTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabAddressTableViewController.h; path = TabAccountViewController/TabAddressTableViewController.h; sourceTree = "<group>"; };
 		EFAC5FC21AAD39620042FF8C /* TabAddressTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TabAddressTableViewController.m; path = TabAccountViewController/TabAddressTableViewController.m; sourceTree = "<group>"; };
 		EFAC5FC31AAD39620042FF8C /* TabCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TabCardViewController.h; path = TabAccountViewController/TabCardViewController.h; sourceTree = "<group>"; };
@@ -566,7 +568,7 @@
 				93CF969E19EE1A0200466DAF /* ViewController.m */,
 				EFA207CF1AB834B5004F7B27 /* UIColor+CustomColors.h */,
 				EFA207D01AB834B5004F7B27 /* UIColor+CustomColors.m */,
-				EFAC5FBB1AAD392B0042FF8C /* Accounts.storyboard */,
+				1E68F1541F4D4EAF0036EDBA /* Accounts.storyboard */,
 				EFEF8DB51B4A32AC004427B8 /* Main.storyboard */,
 				93CF96A319EE1A0200466DAF /* Images.xcassets */,
 				93CF96A519EE1A0200466DAF /* LaunchScreen.xib */,
@@ -1095,6 +1097,8 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
+				ru,
 			);
 			mainGroup = 93CF968A19EE1A0200466DAF;
 			productRefGroup = 93CF969419EE1A0200466DAF /* Products */;
@@ -1130,7 +1134,7 @@
 				EFA3412F1AA6B81C0035AC6D /* reveal-icon.png in Resources */,
 				EFEF1BC91B41039A00373B0E /* add@2x.png in Resources */,
 				EFA3410A1AA6B81C0035AC6D /* add.png in Resources */,
-				EFAC5FBC1AAD392B0042FF8C /* Accounts.storyboard in Resources */,
+				1E68F1521F4D4EAF0036EDBA /* Accounts.storyboard in Resources */,
 				EFA3410B1AA6B81C0035AC6D /* addressbook.png in Resources */,
 				F4AB53F41CCE2FEC008A61B6 /* bitcoin@2x.png in Resources */,
 				EFFA18321B450EA600FF8FC6 /* FrontViewController.xib in Resources */,
@@ -1416,6 +1420,16 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		1E68F1541F4D4EAF0036EDBA /* Accounts.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1E68F1531F4D4EAF0036EDBA /* Base */,
+				1E68F1561F4D4EB80036EDBA /* ja */,
+				1E68F1581F4D4ECD0036EDBA /* ru */,
+			);
+			name = Accounts.storyboard;
+			sourceTree = "<group>";
+		};
 		93CF96A519EE1A0200466DAF /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
