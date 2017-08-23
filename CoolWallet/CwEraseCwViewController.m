@@ -215,8 +215,8 @@ CwCard *cwCard;
         self.otpConfirmView.hidden = NO;
         [self.otpField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0];
         
-        if (![self.resetBtn.currentTitle isEqualToString:@"Confirm"]) {
-            [self.resetBtn setTitle:@"Confirm" forState:UIControlStateNormal];
+        if (![self.resetBtn.currentTitle isEqualToString:NSLocalizedString(@"Confirm",nil)]) {
+            [self.resetBtn setTitle:NSLocalizedString(@"Confirm",nil) forState:UIControlStateNormal];
             RAC(self.resetBtn, enabled) = [self.otpField.rac_textSignal map:^NSNumber *(NSString *text) {
                 return @(text.length == 6);
             }];
@@ -240,9 +240,9 @@ CwCard *cwCard;
 -(void) didVerifyOtpError:(NSInteger)errId
 {
     if (errId == ERR_TRX_VERIFY_OTP) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"OTP Error" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"OTP Error",nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             self.otpField.text = @"";
             [self.cwManager.connectedCwCard genResetOtp];
         }];
@@ -261,9 +261,9 @@ CwCard *cwCard;
 -(void) didEraseCw {
     cwCard.cardResetInfo.pinOld = @"12345678";
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"CoolWallet has reset" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"CoolWallet has reset",nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self.cwManager disconnectCwCard];
     }];
     [alertController addAction:okAction];
@@ -279,9 +279,9 @@ CwCard *cwCard;
     
     cwCard.cardResetInfo.pinOld = @"123456";
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Update" message:@"Please restart CoolWallet and reset again." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Update",nil) message:NSLocalizedString(@"Please restart CoolWallet and reset again.",nil) preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self.cwManager disconnectCwCard];
     }];
     [alertController addAction:okAction];
@@ -298,7 +298,7 @@ CwCard *cwCard;
     
     //Add a notification to the system
      UILocalNotification *notify = [[UILocalNotification alloc] init];
-     notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
+     notify.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ Disconnected",nil), cardName];
      notify.soundName = UILocalNotificationDefaultSoundName;
      notify.applicationIconBadgeNumber=1;
      [[UIApplication sharedApplication] presentLocalNotificationNow: notify];

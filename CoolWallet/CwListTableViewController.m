@@ -153,7 +153,7 @@ NSString *segueIdentifier;
         //[self PushCwSegue:@"CwInfoSegue" index:indexPath];
         [self ConnectCwCardIndex:indexPath];
         //[self PushCwSegue:@"CwRegisterHostSegue" index:indexPath];
-        [self showIndicatorView:@"Connecting..."];
+        [self showIndicatorView:NSLocalizedString(@"Connecting...",nil)];
     }
 }
 
@@ -168,7 +168,7 @@ NSString *segueIdentifier;
     if(indexPath != nil) {
         segueIdentifier = @"CwResetSegue";
         [self ConnectCwCardIndex:indexPath];
-        [self showIndicatorView:@"Connecting..."];
+        [self showIndicatorView:NSLocalizedString(@"Connecting...",nil)];
         //[self PushCwSegue:@"CwResetSegue" index:indexPath];
         
     }

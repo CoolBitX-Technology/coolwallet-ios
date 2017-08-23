@@ -57,7 +57,7 @@
 
 #pragma marks - Actions
 - (IBAction)btnDisconnectCw:(id)sender {
-    [self showIndicatorView:@"Logout..."];
+    [self showIndicatorView:NSLocalizedString(@"Logout...",nil)];
     
     CwBtcNetWork *network = [CwBtcNetWork sharedManager];
     network.delegate = nil;

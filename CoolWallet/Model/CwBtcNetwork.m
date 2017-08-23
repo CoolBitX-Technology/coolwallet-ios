@@ -199,10 +199,10 @@ BOOL didGetTransactionByAccountFlag[5];
         if (foundAddr && balanceChange.satoshi.intValue>0 && foundExtInt==0)
         {
             UILocalNotification *notify = [[UILocalNotification alloc] init];
-            notify.userInfo = @{@"title": @"Bitcoin Received"};
+            notify.userInfo = @{@"title": NSLocalizedString(@"Bitcoin Received",nil)};
             
             if ([amountReceived.satoshi intValue]!=0) {
-                notify.alertBody = [NSString stringWithFormat:@"Account %ld\nAddress: %@\nReceived Amount: %@ %@\nConfirmations: %d", foundAccId+1, addr, [amountReceived getBTCDisplayFromUnit], [[OCAppCommon getInstance] BitcoinUnit], confirmations.intValue];
+                notify.alertBody = [NSString stringWithFormat:NSLocalizedString(@"Account %ld\nAddress: %@\nReceived Amount: %@ %@\nConfirmations: %d",nil), foundAccId+1, addr, [amountReceived getBTCDisplayFromUnit], [[OCAppCommon getInstance] BitcoinUnit], confirmations.intValue];
             }
             notify.soundName = UILocalNotificationDefaultSoundName;
             [[UIApplication sharedApplication] presentLocalNotificationNow: notify];

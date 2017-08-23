@@ -59,15 +59,15 @@
     
     switch (host.hostBindStatus) {
         case CwHostBindStatusEmpty:
-            cell.detailTextLabel.text = @"Empty";
+            cell.detailTextLabel.text = NSLocalizedString(@"Empty",nil);
             cell.accessoryType = UITableViewCellAccessoryNone;
             break;
         case CwHostBindStatusRegistered:
-            cell.detailTextLabel.text = @"Registered";
+            cell.detailTextLabel.text = NSLocalizedString(@"Registered",nil);
             cell.accessoryType = UITableViewCellAccessoryNone;
             break;
         case CwHostBindStatusConfirmed:
-            cell.detailTextLabel.text = @"Confirmed";
+            cell.detailTextLabel.text = NSLocalizedString(@"Confirmed",nil);
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
             break;
     }
@@ -86,7 +86,7 @@
     //filter only registered host
     if (host.hostBindStatus==CwHostBindStatusRegistered)
     {
-        [self showIndicatorView:@"approving host"];
+        [self showIndicatorView:NSLocalizedString(@"approving host",nil)];
         
         //confirm the Host
         [self.cwManager.connectedCwCard approveHost: indexPath.row];
@@ -115,7 +115,7 @@
         //filter current hostId and filter empty (0x00) host
         if (self.cwManager.connectedCwCard.hostId.integerValue != indexPath.row  && host.hostBindStatus != CwHostBindStatusEmpty) {
             
-            [self showIndicatorView:@"deleting host"];
+            [self showIndicatorView:NSLocalizedString(@"deleting host",nil)];
             
             //remove hosts at index: indexPath.row
             [self.cwManager.connectedCwCard removeHost: indexPath.row];
@@ -140,11 +140,11 @@
     
     [self.tableView reloadData];
     
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Host Approved"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Host Approved",nil)
                                                    message: nil
                                                   delegate: nil
                                          cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
+                                         otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
     [alert show];
 }
 
@@ -154,11 +154,11 @@
     
     [self.tableView reloadData];
     
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Host Removed"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Host Removed",nil)
                                                    message: nil
                                                   delegate: nil
                                          cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
+                                         otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
     [alert show];
 }
 

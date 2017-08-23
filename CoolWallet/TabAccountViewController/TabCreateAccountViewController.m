@@ -87,11 +87,11 @@ CwCard *cwCard;
 -(void) didNewAccount
 {
 
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Account Created"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Account Created",nil)
                                                    message: nil
                                                   delegate: nil
                                          cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
+                                         otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
     [alert show];
     
     //back to previous controller
@@ -103,7 +103,7 @@ CwCard *cwCard;
 {
     //Add a notification to the system
     UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
+    notify.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ Disconnected",nil), cardName];
     notify.soundName = UILocalNotificationDefaultSoundName;
     notify.applicationIconBadgeNumber=1;
     [[UIApplication sharedApplication] presentLocalNotificationNow: notify];

@@ -119,7 +119,7 @@ CwCard *cwCard;
 {
     //Add a notification to the system
     UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
+    notify.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ Disconnected",nil), cardName];
     notify.soundName = UILocalNotificationDefaultSoundName;
     notify.applicationIconBadgeNumber=1;
     [[UIApplication sharedApplication] presentLocalNotificationNow: notify];

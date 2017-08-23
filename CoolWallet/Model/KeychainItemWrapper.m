@@ -196,7 +196,7 @@
         OSStatus junk =
 #endif
         SecItemDelete((__bridge CFDictionaryRef)tempDictionary);
-        NSAssert( junk == noErr || junk == errSecItemNotFound, @"Problem deleting current dictionary." );
+        NSAssert( junk == noErr || junk == errSecItemNotFound, NSLocalizedString(@"Problem deleting current dictionary.",nil) );
     }
     
     // Default attributes for keychain item.
@@ -274,7 +274,7 @@
     else
     {
         // Don't do anything if nothing is found.
-        NSAssert(NO, @"Serious error, no matching item found in the keychain.\n");
+        NSAssert(NO, NSLocalizedString(@"Serious error, no matching item found in the keychain.\n",nil));
     }
     if(passwordData) CFRelease(passwordData);
     

@@ -69,7 +69,7 @@ CwBtcNetWork *btcNet;
     [super viewWillAppear:animated];
     
     TabbarAccountViewController *parantViewController = (TabbarAccountViewController *)self.parentViewController;
-    [parantViewController.navigationItem setTitle:@"Accounts"];
+    [parantViewController.navigationItem setTitle:NSLocalizedString(@"Accounts",nil)];
     self.addButton = parantViewController.addButton;
     [self.addButton setTarget:self];
     [self.addButton setAction:@selector(CreateAccount)];
@@ -81,7 +81,7 @@ CwBtcNetWork *btcNet;
 -(void) viewDidAppear:(BOOL)animated
 {
     if (account == nil) {
-        [self showIndicatorView:@"checking data"];
+        [self showIndicatorView:NSLocalizedString(@"checking data",nil)];
         [self.cwManager.connectedCwCard getModeState];
     } else {
         [self setAccountButton];
@@ -111,7 +111,7 @@ CwBtcNetWork *btcNet;
     BOOL inRecovery = [[NSUserDefaults standardUserDefaults] boolForKey:[NSString stringWithFormat:@"recovery_%@", self.cwManager.connectedCwCard.cardId]];
     
     if (inRecovery) {
-        [self showHintAlert:@"Recovery incomplete" withMessage:@"Your wallet was not fully recovered, please reset and recover again." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self showHintAlert:NSLocalizedString(@"Recovery incomplete",nil) withMessage:NSLocalizedString(@"Your wallet was not fully recovered, please reset and recover again.",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self.cwManager disconnectCwCard];
         }]];
     }
@@ -130,7 +130,7 @@ CwBtcNetWork *btcNet;
         [[[[cardSignal filter:^BOOL(NSNumber *hdwStatus) {
             return hdwStatus.integerValue != CwHdwStatusInactive && hdwStatus.integerValue != CwHdwStatusWaitConfirm;
         }] take:1]
-          subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityBackground name:@"ExSessionLogin"]]
+          subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityBackground name:NSLocalizedString(@"ExSessionLogin",nil)]]
          subscribeNext:^(id value) {
              [exchange loginExSession];
          }];
@@ -144,7 +144,7 @@ CwBtcNetWork *btcNet;
 
 -(void) getBitcoinRateforCurrency
 {
-    [self showIndicatorView:@"synchronizing data"];
+    [self showIndicatorView:NSLocalizedString(@"synchronizing data",nil)];
     
     rates = [[BlockChain new] getCurrencyRates];
     
@@ -213,7 +213,7 @@ CwBtcNetWork *btcNet;
     account = (CwAccount *) [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)self.cwManager.connectedCwCard.currentAccountId]];
     
     if (currentAccId != self.cwManager.connectedCwCard.currentAccountId || isFirst) {
-        [self showIndicatorView:@"synchronizing data"];
+        [self showIndicatorView:NSLocalizedString(@"synchronizing data",nil)];
         
         [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
         [self.cwManager.connectedCwCard getAccountInfo:self.cwManager.connectedCwCard.currentAccountId];
@@ -304,7 +304,7 @@ Boolean setBtnActionFlag;
     if ([self.cwManager.connectedCwCard.hdwAcccountPointer integerValue] < 5) {
         //self.actBusyIndicator.hidden = NO;
         //[self.actBusyIndicator startAnimating];
-        [self showIndicatorView:@"Creating Account"];
+        [self showIndicatorView:NSLocalizedString(@"Creating Account",nil)];
         
         [self.cwManager.connectedCwCard newAccount:self.cwManager.connectedCwCard.hdwAcccountPointer.integerValue Name:@""];
     }
@@ -387,7 +387,7 @@ Boolean setBtnActionFlag;
         [self performDismiss];
         [self performSegueWithIdentifier:@"SecuritySegue" sender:self];
     }else{
-        [self showIndicatorView:@"synchronizing data"];
+        [self showIndicatorView:NSLocalizedString(@"synchronizing data",nil)];
         [self.cwManager.connectedCwCard syncFromCard];
     }
 }

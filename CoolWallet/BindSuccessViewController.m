@@ -12,7 +12,7 @@
 @implementation BindSuccessViewController 
 
 - (IBAction)BtnNextToAccounts:(id)sender {
-    [self showIndicatorView:@"Login Host"];
+    [self showIndicatorView:NSLocalizedString(@"Login Host",nil)];
     [self.cwManager.connectedCwCard loginHost];
 }
 

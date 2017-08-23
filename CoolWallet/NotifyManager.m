@@ -77,14 +77,14 @@
 -(void) notifyMessage:(NSString *)message targetIdentifier:(NSString *)identifier
 {
     NSLog(@"notifyMessage:%@, targetIdentifier:%@", message, identifier);
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"receive notify" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"receive notify",nil) message:message preferredStyle:UIAlertControllerStyleAlert];
     
     UIViewController *currentViewController = [UIViewController currentViewController];
     if (currentViewController && [currentViewController isKindOfClass:[SWRevealViewController class]]) {
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleDefault handler:nil];
         [alertController addAction:cancelAction];
         
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             if (identifier == nil) {
                 return;
             }
@@ -98,7 +98,7 @@
         }];
         [alertController addAction:okAction];
     } else {
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil];
         [alertController addAction:okAction];
     }
     

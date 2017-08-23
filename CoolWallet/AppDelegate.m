@@ -80,14 +80,14 @@
     
     NSString *alertTitle = [notification.userInfo objectForKey:@"title"];
     if (alertTitle == nil) {
-        alertTitle = @"Notification";
+        alertTitle = NSLocalizedString(@"Notification", nil);
     }
     
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle: alertTitle
                                                    message: notification.alertBody
                                                   delegate: nil
                                          cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
+                                         otherButtonTitles:NSLocalizedString(@"OK",nil),nil];
     [alert show];
 }
 

@@ -62,22 +62,22 @@
 
 - (void) showOTPEnterView
 {
-    UIAlertController *OTPAlert = [UIAlertController alertControllerWithTitle:@"Please enter OTP" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *OTPAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please enter OTP",nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
     [OTPAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     }];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         UITextField *textField = OTPAlert.textFields.firstObject;
-        [self showIndicatorView:@"block with otp..."];
+        [self showIndicatorView:NSLocalizedString(@"block with otp...",nil)];
         
         CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
         [exManager blockWithOrderID:self.selectOrder.orderId withOTP:textField.text withSuccess:^() {            
-            [self showHintAlert:nil withMessage:@"place order completed" withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+            [self showHintAlert:nil withMessage:NSLocalizedString(@"place order completed",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
             
             [self.tableView reloadData];
         } error:^(NSError *error) {
-            [self showHintAlert:@"block fail" withMessage:error.localizedDescription withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+            [self showHintAlert:NSLocalizedString(@"block fail",nil) withMessage:error.localizedDescription withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
         } finish:^() {
             [self performDismiss];
             [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
@@ -90,7 +90,7 @@
     
     [OTPAlert addAction:okAction];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
     }];
     
@@ -159,7 +159,7 @@
     }
     
     if (otpType == CwHdwExOTPKeyInfoBlock) {
-        [self showHintAlert:@"Fail" withMessage:@"Can't gen OTP." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [self showHintAlert:NSLocalizedString(@"Fail",nil) withMessage:NSLocalizedString(@"Can't gen OTP.",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
     }
 }
 

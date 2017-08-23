@@ -93,11 +93,11 @@
     NSData *fwHex = [NSData dataWithContentsOfURL: [NSURL URLWithString:self.fwHexURL]];
     
     if (fwHex==nil) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Firmware Update"
-                                                       message: @"Can't find firmware"
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Firmware Update",nil)
+                                                       message: NSLocalizedString(@"Can't find firmware",nil)
                                                       delegate: nil
                                              cancelButtonTitle: nil
-                                             otherButtonTitles:@"OK",nil];
+                                             otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
         [alert show];
         return;
     }
@@ -137,12 +137,12 @@
 
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
 {
-    NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
+    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"Cmd %02lX %@",nil), (long)cmdId, errString];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Command Error",nil)
                                                    message: msg
                                                   delegate: nil
                                          cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
+                                         otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
     
     [alert show];
 }
@@ -166,21 +166,21 @@
 
 -(void) didBackToSLE97Loader
 {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Back To SLE97 Loader"
-                                                   message: @"Success"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Back To SLE97 Loader",nil)
+                                                   message: NSLocalizedString(@"Success",nil)
                                                   delegate: self
                                          cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
+                                         otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
     [alert show];
 }
 
 -(void) didMcuResetSe
 {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CW Reset SE"
-                                                   message: @"Success"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"CW Reset SE",nil)
+                                                   message: NSLocalizedString(@"Success",nil)
                                                   delegate: self
                                          cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
+                                         otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
     [alert show];
 }
 
@@ -219,7 +219,7 @@
 {
     //Add a notification to the system
     UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
+    notify.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ Disconnected",nil), cardName];
     notify.soundName = UILocalNotificationDefaultSoundName;
     [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
     

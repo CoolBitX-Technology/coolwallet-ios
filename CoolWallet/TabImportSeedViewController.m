@@ -107,7 +107,7 @@
     
     self.netStatus = [curReach currentReachabilityStatus];
     if (self.netStatus == NotReachable) {
-        [self showHintAlert:nil withMessage:@"Internet connection lost." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [self showHintAlert:nil withMessage:NSLocalizedString(@"Internet connection lost.",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
     }
     
 }
@@ -182,7 +182,7 @@
 
 -(void) noNetworkHint
 {
-    [self showHintAlert:nil withMessage:@"Internet connection lost." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self showHintAlert:nil withMessage:NSLocalizedString(@"Internet connection lost.",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
 }
 
 #pragma mark - UITextFieldDelegate Delegates
@@ -226,9 +226,9 @@
 #pragma marks - Actions
 
 - (IBAction)btnSelectSeedType:(UIButton *)sender {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Choose your seed type" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Choose your seed type",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction *englishAction = [UIAlertAction actionWithTitle:@"My seeds is in words" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *englishAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"My seeds is in words",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         self.txtSeed.text = @"";
         [self.txtSeed setKeyboardType:UIKeyboardTypeASCIICapable];
         [self.txtSeed reloadInputViews];
@@ -236,7 +236,7 @@
         [self.btnSeedType setTitle:action.title forState:UIControlStateNormal];
     }];
     
-    UIAlertAction *numberAction = [UIAlertAction actionWithTitle:@"My seeds is in numbers" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *numberAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"My seeds is in numbers",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         self.txtSeed.text = @"";
         [self.txtSeed setKeyboardType:UIKeyboardTypeNumbersAndPunctuation];
         [self.txtSeed reloadInputViews];
@@ -273,7 +273,7 @@
     
     [self.cwManager.connectedCwCard initHdw:@"" BySeed:seed];
     
-    [self showIndicatorView:@"Start init CoolWallet..."];
+    [self showIndicatorView:NSLocalizedString(@"Start init CoolWallet...",nil)];
     
 }
 
@@ -298,7 +298,7 @@
     }
     
     if (!checkResult) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"seed invalid" message:[NSString stringWithFormat:@"'%@' is an invalid seed.", seed] delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"seed invalid",nil) message:[NSString stringWithFormat:NSLocalizedString(@"'%@' is an invalid seed.",nil), seed] delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"OK",nil), nil];
         [alert show];
     }
 }

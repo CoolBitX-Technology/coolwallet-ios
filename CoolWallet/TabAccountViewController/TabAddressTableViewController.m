@@ -90,7 +90,7 @@ CwAccount *account;
     cell.textLabel.text = addr.address;
     
     // m/44'/0'/0'/0/0
-    cell.detailTextLabel.text = [NSString stringWithFormat: @"BIP32 Path: m/44'/0'/%ld'/%ld/%ld", (long)addr.accountId, (long)addr.keyChainId, (long)addr.keyId];
+    cell.detailTextLabel.text = [NSString stringWithFormat: NSLocalizedString(@"BIP32 Path: m/44'/0'/%ld'/%ld/%ld",nil), (long)addr.accountId, (long)addr.keyChainId, (long)addr.keyId];
     
     return cell;
 }
@@ -174,7 +174,7 @@ CwAccount *account;
 {
     //Add a notification to the system
     UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
+    notify.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ Disconnected",nil), cardName];
     notify.soundName = UILocalNotificationDefaultSoundName;
     notify.applicationIconBadgeNumber=1;
     [[UIApplication sharedApplication] presentLocalNotificationNow: notify];

@@ -99,8 +99,8 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
     
     UIViewController *parantViewController = self.parentViewController;
     parantViewController.navigationController.navigationBar.hidden = NO;
-    if (![parantViewController.navigationItem.title isEqualToString:@"Send"]) {
-        [parantViewController.navigationItem setTitle:@"Send"];
+    if (![parantViewController.navigationItem.title isEqualToString:NSLocalizedString(@"Send",nil)]) {
+        [parantViewController.navigationItem setTitle:NSLocalizedString(@"Send",nil)];
         self.addButton = ((TabbarAccountViewController *)parantViewController).addButton;
         [self.addButton setEnabled:NO];
         [self.addButton setTintColor:[UIColor clearColor]];
@@ -190,7 +190,7 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
     
     if ([identifier isEqualToString:SendConfirmSegueIdentifier]) {
         if ([self.updateUnspendBalance containsObject:[NSString stringWithFormat:@"%ld", (long)account.accId]] ) {
-            [self showIndicatorView:@"Update unspent balance..."];
+            [self showIndicatorView:NSLocalizedString(@"Update unspent balance...",nil)];
             return NO;
         } else {
             return [self shouldPerfomConfirmPage];
@@ -233,13 +233,13 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
 - (BOOL) shouldPerfomConfirmPage
 {
     if ([self getSendAmountWithSatoshi] < 1) {
-        [self showHintAlert:@"Unable to send" withMessage:@"Please enter a valid amount." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [self showHintAlert:NSLocalizedString(@"Unable to send",nil) withMessage:NSLocalizedString(@"Please enter a valid amount.",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
         return NO;
     }
     
     if (![self isValidBitcoinAddress:self.txtReceiverAddress.text]) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to send" message:@"Invalid Bitcoin address" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Unable to send",nil) message:NSLocalizedString(@"Invalid Bitcoin address",nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil];
         [alertController addAction:okAction];
         
         [self presentViewController:alertController animated:YES completion:nil];
@@ -253,13 +253,13 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
 
 - (IBAction)btnSendBitcoin:(id)sender {
     if ([self getSendAmountWithSatoshi] < 1) {
-        [self showHintAlert:@"Unable to send" withMessage:@"Please enter a valid amount." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [self showHintAlert:NSLocalizedString(@"Unable to send",nil) withMessage:NSLocalizedString(@"Please enter a valid amount.",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
         return;
     }
     
     if (![self isValidBitcoinAddress:self.txtReceiverAddress.text]) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to send" message:@"Invalid Bitcoin address" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Unable to send",nil) message:NSLocalizedString(@"Invalid Bitcoin address",nil) preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil];
         [alertController addAction:okAction];
         
         [self presentViewController:alertController animated:YES completion:nil];
@@ -268,7 +268,7 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
     if([self.txtAmount.text compare:@""] == 0 ) return;
     
     if ([self.updateUnspendBalance containsObject:[NSString stringWithFormat:@"%ld", (long)account.accId]] ) {
-        [self showIndicatorView:@"Update unspent balance..."];
+        [self showIndicatorView:NSLocalizedString(@"Update unspent balance...",nil)];
     }
 }
 

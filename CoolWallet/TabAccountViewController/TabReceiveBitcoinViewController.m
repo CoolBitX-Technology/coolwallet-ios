@@ -62,7 +62,7 @@ NSString *Label;
     [super viewWillAppear:animated];
     
     UIViewController *parantViewController = self.parentViewController;
-    [parantViewController.navigationItem setTitle:@"Receive"];
+    [parantViewController.navigationItem setTitle:NSLocalizedString(@"Receive",nil)];
     self.addButton = ((TabbarAccountViewController *)parantViewController).addButton;
     [self.addButton setTarget:self];
     [self.addButton setAction:@selector(btnNewAddress:)];
@@ -110,17 +110,17 @@ NSString *Label;
 
 - (IBAction)btnNewAddress:(id)sender {
     if (![cwCard enableGenAddressWithAccountId:account.accId]) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Unable to create new address"
-                                                       message: @"Maximum number of 5 unused addresses reached in this account"
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Unable to create new address",nil)
+                                                       message: NSLocalizedString(@"Maximum number of 5 unused addresses reached in this account",nil)
                                                       delegate: nil
                                              cancelButtonTitle: nil
-                                             otherButtonTitles:@"OK",nil];
+                                             otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
         [alert show];
         
         return;
     }
     
-    [self showIndicatorView:@"create address"];
+    [self showIndicatorView:NSLocalizedString(@"create address",nil)];
     
     [cwCard genAddress: account.accId KeyChainId: CwAddressKeyChainExternal];
 }
@@ -165,7 +165,7 @@ NSString *Label;
     }
     
     if (currentAccId != cwCard.currentAccountId) {
-        [self showIndicatorView:@"loading address..."];
+        [self showIndicatorView:NSLocalizedString(@"loading address...",nil)];
         
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
@@ -285,7 +285,7 @@ NSString *Label;
     [self dismissAllAlert];
     //Add a notification to the system
     UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
+    notify.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ Disconnected",nil), cardName];
     notify.soundName = UILocalNotificationDefaultSoundName;
     notify.applicationIconBadgeNumber=1;
     [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
@@ -384,8 +384,8 @@ NSString *Label;
     
         [_imgQRcode setImage:qrcode];
     }else{
-        _lblLabel.text = @"Label";
-        _lblAddress.text = @"Addess";
+        _lblLabel.text = NSLocalizedString(@"Label",nil);
+        _lblAddress.text = NSLocalizedString(@"Addess",nil);
         [_imgQRcode setImage:[UIImage imageNamed: @"x.png"]];
     }
 }
@@ -466,10 +466,10 @@ void freeRawData(void *info, const void *data, size_t size) {
     //pasteboard.string = @"paste me somewhere";
     pasteboard.string = _lblAddress.text;
     
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Copied"
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Copied",nil)
                                                      message:_lblAddress.text
                                                     delegate:self
-                                           cancelButtonTitle:@"OK"
+                                           cancelButtonTitle: NSLocalizedString(@"OK",nil)
                                            otherButtonTitles:nil];
     [alert show];
 }
@@ -478,19 +478,19 @@ void freeRawData(void *info, const void *data, size_t size) {
 #define TAG_REQUEST 2
 
 - (IBAction)btnRequestPayment:(id)sender {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Request Payment" message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Request Payment",nil) message:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     alert.tag = TAG_REQUEST;
     UITextField * alertTextField = [alert textFieldAtIndex:0];
     alertTextField.keyboardType = UIKeyboardTypeDecimalPad;
     //alertTextField.keyboardType = UIKeyboardTypeNumberPad;
-    alertTextField.placeholder = @"Enter request BTC";
+    alertTextField.placeholder = NSLocalizedString(@"Enter request BTC",nil);
     [alert show];
 }
 
 - (IBAction)btnEditLabel:(id)sender {
     
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Edit Label" message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Edit Label",nil) message:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     alert.tag = TAG_LABEL;
     [alert show];

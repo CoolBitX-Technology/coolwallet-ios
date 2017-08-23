@@ -1156,7 +1156,7 @@ NSArray *addresses;
     //check amount vs (balance - fee - blockAmount)
     if (amount > account.balance - FEERATE - account.blockAmount + account.tempUnblockAmount) {
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
-            [self.delegate didPrepareTransactionError:[NSString stringWithFormat:@"Amount is lower than balance\nTransaction fee: %@ BTC", [[OCAppCommon getInstance] convertBTCStringformUnit: FEERATE]]];
+            [self.delegate didPrepareTransactionError:[NSString stringWithFormat:NSLocalizedString(@"Amount is lower than balance\nTransaction fee: %@ BTC",nil), [[OCAppCommon getInstance] convertBTCStringformUnit: FEERATE]]];
         }
         return nil;
     }
@@ -1164,7 +1164,7 @@ NSArray *addresses;
     //check unspent tx
     if (account.unspentTxs==nil || account.unspentTxs.count==0) {
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
-            [self.delegate didPrepareTransactionError:@"No available unspent transaction"];
+            [self.delegate didPrepareTransactionError:NSLocalizedString(@"No available unspent transaction",nil)];
         }
         return nil;
     }
@@ -1192,7 +1192,7 @@ NSArray *addresses;
     //check unsigned tx
     if (err == GENTX_LESS || (unsignedTx==nil || unsignedTx.inputs.count == 0)) {
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
-            [self.delegate didPrepareTransactionError:@"At least 1 confirmation needed before sending out."];
+            [self.delegate didPrepareTransactionError:NSLocalizedString(@"At least 1 confirmation needed before sending out.",nil)];
         }
         return nil;
     }
@@ -4130,36 +4130,36 @@ NSArray *addresses;
         BOOL callDelegate=NO;
         
         switch (cmd.cmdResult) {
-            case ERR_CMD_NOT_SUPPORT: errString = @"Mode error, Command Not Support";
+            case ERR_CMD_NOT_SUPPORT: errString = NSLocalizedString(@"Mode error, Command Not Support",nil);
                 break;
-            case ERR_BIND_LOGIN: errString = @"Login Error";
+            case ERR_BIND_LOGIN: errString = NSLocalizedString(@"Login Error",nil);
                 callDelegate = YES;
                 break;
-            case ERR_MCU_CMD_NOT_ALLOW: errString = @"Command Not Allow";
+            case ERR_MCU_CMD_NOT_ALLOW: errString = NSLocalizedString(@"Command Not Allow",nil);
                 callDelegate = YES;
                 break;
-            case ERR_MCU_CMD_TIME_OUT: errString = @"Command Timeout";
+            case ERR_MCU_CMD_TIME_OUT: errString = NSLocalizedString(@"Command Timeout",nil);
                 callDelegate = YES;
                 break;
-            case ERR_HDW_STATUS: errString = @"HDW Status Error";
+            case ERR_HDW_STATUS: errString = NSLocalizedString(@"HDW Status Error",nil);
                 break;
-            case ERR_AUTHFAIL: errString = @"Authentication Error";
+            case ERR_AUTHFAIL: errString = NSLocalizedString(@"Authentication Error",nil);
                 callDelegate = YES;
                 break;
-            case ERR_FW_UPDATE_OTP: errString = @"Firmware Auth Error";
+            case ERR_FW_UPDATE_OTP: errString = NSLocalizedString(@"Firmware Auth Error",nil);
                 callDelegate = YES;
                 break;
-            case ERR_HDW_SUM: errString = @"Sum Error";
+            case ERR_HDW_SUM: errString = NSLocalizedString(@"Sum Error",nil);
                 callDelegate = YES;
                 break;
-            case ERR_BCDC_TRX_STATE: errString = @"Transaction State Error";
+            case ERR_BCDC_TRX_STATE: errString = NSLocalizedString(@"Transaction State Error",nil);
                 break;
-            case ERR_TRX_VERIFY_OTP: errString = @"OTP Error";
+            case ERR_TRX_VERIFY_OTP: errString = NSLocalizedString(@"OTP Error",nil);
                 break;
-            case ERR_BIND_REGRESP: errString = @"Pair with device Fail";
+            case ERR_BIND_REGRESP: errString = NSLocalizedString(@"Pair with device Fail",nil);
                 callDelegate = YES;
                 break;
-            default: errString = [NSString stringWithFormat:@"Command Error %04lX", (long)cmd.cmdResult];
+            default: errString = [NSString stringWithFormat:NSLocalizedString(@"Command Error %04lX",nil), (long)cmd.cmdResult];
                 callDelegate = YES;
                 break;
         }
@@ -5123,7 +5123,7 @@ NSArray *addresses;
                 }
                 
                 if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
-                    [self.delegate didSignTransactionError: @"Can't sign transaction by card."];
+                    [self.delegate didSignTransactionError: NSLocalizedString(@"Can't sign transaction by card.",nil)];
                 }
             }
             
@@ -5413,7 +5413,7 @@ NSArray *addresses;
                     if (err == PUBLISH_NETWORK) {
                         //call error delegate
                         if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
-                            [self.delegate didSignTransactionError: @"PushX form Post not Work"];
+                            [self.delegate didSignTransactionError: NSLocalizedString(@"PushX form Post not Work",nil)];
                         }
                     } else {
                         if ([self.delegate respondsToSelector:@selector(didSignTransaction:)]) {
@@ -5469,7 +5469,7 @@ NSArray *addresses;
             } else {
                 NSLog(@"CwCmdIdTrxSign Error %04lX", (long)cmd.cmdResult);
                 if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
-                    [self.delegate didSignTransactionError:[NSString stringWithFormat:@"Card sign error(%04lX)", (long)cmd.cmdResult]];
+                    [self.delegate didSignTransactionError:[NSString stringWithFormat:NSLocalizedString(@"Card sign error(%04lX)",nil), (long)cmd.cmdResult]];
                 }
             }
             

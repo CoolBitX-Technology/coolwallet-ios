@@ -16,7 +16,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    menuItems = @[@"CreateNewWallet", @"RecoverOldWallet"];
+    menuItems = @[NSLocalizedString(@"CreateNewWallet",nil), NSLocalizedString(@"RecoverOldWallet",nil)];
     
     //find CW via BLE
 }

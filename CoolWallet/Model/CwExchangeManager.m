@@ -252,7 +252,7 @@
         exTx.receiveAddress = [response objectForKey:@"out1addr"];
         
         if (!loginData) {
-            return [RACSignal error:[NSError errorWithDomain:@"Exchange site error." code:1001 userInfo:@{@"error": @"Fail to get transaction data from exchange site."}]];
+            return [RACSignal error:[NSError errorWithDomain:NSLocalizedString(@"Exchange site error.",nil) code:1001 userInfo:@{@"error": NSLocalizedString(@"Fail to get transaction data from exchange site.",nil)}]];
         }
         
         return [self signalTrxLogin:loginData];
@@ -262,7 +262,7 @@
         exTx.loginHandle = trxHandle;
         CwTx *unsignedTx = [self.card getUnsignedTransaction:exTx.amount.satoshi.longLongValue Address:exTx.receiveAddress Change:exTx.changeAddress AccountId:exTx.accountId];
         if (unsignedTx == nil) {
-            return [RACSignal error:[NSError errorWithDomain:@"Exchange site error." code:1002 userInfo:@{@"error": @"Check unsigned data error."}]];
+            return [RACSignal error:[NSError errorWithDomain:NSLocalizedString(@"Exchange site error.",nil) code:1002 userInfo:@{@"error": NSLocalizedString(@"Check unsigned data error.",nil)}]];
         } else {
             return [self signalTrxPrepareDataFrom:unsignedTx andExTx:exTx];
         }
@@ -286,7 +286,7 @@
             if (error.userInfo) {
                 [self.card.delegate didPrepareTransactionError:[error.userInfo objectForKey:@"error"]];
             } else {
-                [self.card.delegate didPrepareTransactionError:@"Fail to get transaction data from exchange site."];
+                [self.card.delegate didPrepareTransactionError:NSLocalizedString(@"Fail to get transaction data from exchange site.",nil)];
             }
         }
     }];
@@ -467,7 +467,7 @@
             
             NSString *hexString = [responseObject objectForKey:@"challenge"];
             if (hexString.length == 0) {
-                [subscriber sendError:[NSError errorWithDomain:@"Not exchange site member." code:NotRegistered userInfo:nil]];
+                [subscriber sendError:[NSError errorWithDomain:NSLocalizedString(@"Not exchange site member.",nil) code:NotRegistered userInfo:nil]];
             } else {
                 [subscriber sendNext:responseObject];
                 [subscriber sendCompleted];
@@ -496,7 +496,7 @@
             [subscriber sendNext:@{@"seResp": seResp, @"seChlng": seChlng}];
             [subscriber sendCompleted];
         } withError:^(NSInteger errorCode) {
-            [subscriber sendError:[self cardCmdError:errorCode errorMsg:@"Card init session fail."]];
+            [subscriber sendError:[self cardCmdError:errorCode errorMsg:NSLocalizedString(@"Card init session fail.",nil)]];
         }];
         
         return nil;
@@ -537,7 +537,7 @@
             [subscriber sendNext:nil];
             [subscriber sendCompleted];
         } withError:^(NSInteger errorCode) {
-            NSError *error = [NSError errorWithDomain:@"Card Cmd Error" code:errorCode userInfo:nil];
+            NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Card Cmd Error",nil) code:errorCode userInfo:nil];
             [subscriber sendError:error];
         }];
         
@@ -636,7 +636,7 @@
             [subscriber sendNext:data];
             [subscriber sendCompleted];
         } error:^(NSInteger errorCode) {
-            [subscriber sendError:[self cardCmdError:errorCode errorMsg:@"Block fail."]];
+            [subscriber sendError:[self cardCmdError:errorCode errorMsg:NSLocalizedString(@"Block fail.",nil)]];
         }];
         
         return nil;
@@ -685,7 +685,7 @@
             [subscriber sendNext:logingData];
             [subscriber sendCompleted];
         } withError:^(NSInteger errorCode) {
-            [subscriber sendError:[self cardCmdError:errorCode errorMsg:@"Get block info fail."]];
+            [subscriber sendError:[self cardCmdError:errorCode errorMsg:NSLocalizedString(@"Get block info fail.",nil)]];
         }];
         
         return nil;
@@ -696,7 +696,7 @@
                 [subscriber sendNext:loginHandle];
                 [subscriber sendCompleted];
             } error:^(NSInteger errorCode) {
-                [subscriber sendError:[self cardCmdError:errorCode errorMsg:@"Transaction login fail."]];
+                [subscriber sendError:[self cardCmdError:errorCode errorMsg:NSLocalizedString(@"Transaction login fail.",nil)]];
             }];
             
             return nil;
@@ -797,7 +797,7 @@
                 [subscriber sendNext:unblock];
                 [subscriber sendCompleted];
             } else {
-                NSError *error = [NSError errorWithDomain:@"Exchange Site Error." code:1003 userInfo:@{@"error": @"Can't recognize unblock info."}];
+                NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Exchange Site Error.",nil) code:1003 userInfo:@{@"error": NSLocalizedString(@"Can't recognize unblock info.",nil)}];
                 [subscriber sendError:error];
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
@@ -820,7 +820,7 @@
             [subscriber sendNext:nil];
             [subscriber sendCompleted];
         } withError:^(NSInteger errorCode) {
-            NSError *error = [self cardCmdError:errorCode errorMsg:@"CoolWallet card unblock fail."];
+            NSError *error = [self cardCmdError:errorCode errorMsg:NSLocalizedString(@"CoolWallet card unblock fail.",nil)];
             [subscriber sendError:error];
         }];
         
@@ -932,7 +932,7 @@
 
 -(NSError *) cardCmdError:(NSInteger)errorCode errorMsg:(NSString *)errorMsg
 {
-    NSError *error = [NSError errorWithDomain:@"Card Cmd Error" code:errorCode userInfo:@{@"error": errorMsg}];
+    NSError *error = [NSError errorWithDomain:NSLocalizedString(@"Card Cmd Error",nil) code:errorCode userInfo:@{@"error": errorMsg}];
     
     return error;
 }

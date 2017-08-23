@@ -48,7 +48,7 @@ CwCard *cwCard;
     self.sliDogScale.value = [cwCard.securityPolicy_WatchDogScale integerValue];
     
     if ([cwCard.mode integerValue] == CwCardModeNormal) {
-        [self showIndicatorView:@"loading..."];
+        [self showIndicatorView:NSLocalizedString(@"loading...",nil)];
         
         //get security policy
         [cwCard getSecurityPolicy];
@@ -81,7 +81,7 @@ CwCard *cwCard;
     NSLog(@"mode = %@", self.cwManager.connectedCwCard.mode);
     if ([self.cwManager.connectedCwCard.mode integerValue] == CwCardModeNormal) {
         //get security policy
-        [self showIndicatorView:@"update security policy..."];
+        [self showIndicatorView:NSLocalizedString(@"update security policy...",nil)];
         [self.cwManager.connectedCwCard setSecurityPolicy:self.swOtpEnable.on
                                              ButtonEnable:self.swBtnEnable.on
                                      DisplayAddressEnable:self.swDisplayAddress.on
@@ -89,7 +89,7 @@ CwCard *cwCard;
     } else if ([self.cwManager.connectedCwCard.mode integerValue] == CwCardModePerso) {
         NSLog(@"otp = %d", self.swOtpEnable.on);
         //get security policy
-        [self showIndicatorView:@"update security policy..."];
+        [self showIndicatorView:NSLocalizedString(@"update security policy...",nil)];
         [self.cwManager.connectedCwCard persoSecurityPolicy:self.swOtpEnable.on
                                                ButtonEnable:self.swBtnEnable.on
                                        DisplayAddressEnable:self.swDisplayAddress.on
@@ -98,7 +98,7 @@ CwCard *cwCard;
 }
 
 - (IBAction)btnEraseCw:(id)sender {
-    [self showIndicatorView:@"Start reset CoolWallet..."];
+    [self showIndicatorView:NSLocalizedString(@"Start reset CoolWallet...",nil)];
     
     [cwCard eraseCw:self.swPreserveHostInfo.on Pin:@"" NewPin:@""];
 }
@@ -140,11 +140,11 @@ CwCard *cwCard;
 -(void) didCwCardCommandError:(NSInteger)cmdId ErrString:(NSString *)errString
 {
     NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Command Error",nil)
                                                    message: msg
                                                   delegate: nil
                                          cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
+                                         otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
     
     [alert show];
 }
@@ -185,9 +185,9 @@ CwCard *cwCard;
 {
     [self performDismiss];
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Security policy updated" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Security policy updated",nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Accounts" bundle:nil];
         UIViewController * vc = [sb instantiateViewControllerWithIdentifier:@"CwAccount"];
         [self.revealViewController pushFrontViewController:vc animated:YES];
@@ -203,11 +203,11 @@ CwCard *cwCard;
     //if erase CW, then wait for didEraseCw delegate, don't show the alert here
     if (self.swPreserveHostInfo.on)
     {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CoolWallet has reset"
-                                                       message: @"Host info preserved"
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"CoolWallet has reset",nil)
+                                                       message: NSLocalizedString(@"Host info preserved",nil)
                                                       delegate: nil
                                              cancelButtonTitle: nil
-                                             otherButtonTitles:@"OK",nil];
+                                             otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
         
         [alert show];
     }
@@ -222,11 +222,11 @@ CwCard *cwCard;
 -(void) didEraseCw {
     [self performDismiss];
     
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"CoolWallet has reset"
-                                                   message: @"Host info also erased"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"CoolWallet has reset",nil)
+                                                   message: NSLocalizedString(@"Host info also erased",nil)
                                                   delegate: nil
                                          cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
+                                         otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
     
     [alert show];
     
@@ -243,7 +243,7 @@ CwCard *cwCard;
     NSLog(@"didDisconnectCwCard");
     //Add a notification to the system
     UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
+    notify.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ Disconnected",nil), cardName];
     notify.soundName = UILocalNotificationDefaultSoundName;
     notify.applicationIconBadgeNumber=1;
     [[UIApplication sharedApplication] presentLocalNotificationNow: notify];

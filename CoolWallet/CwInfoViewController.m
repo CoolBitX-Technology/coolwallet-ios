@@ -119,7 +119,7 @@
     
     if ([self.cwCard.mode integerValue] == CwCardModeNoHost) {
         //new Card
-        self.lblCWstatus.text = @"New CW Found";
+        self.lblCWstatus.text = NSLocalizedString(@"New CW Found",nil);
         self.btnRegHostNew.hidden=NO;
         
     } else if ([self.cwCard.mode integerValue] == CwCardModeDisconn || [self.cwCard.mode integerValue] == CwCardModePerso) {
@@ -127,11 +127,11 @@
         if ([self.cwCard.hostId integerValue] >= 0) {
             if ([self.cwCard.hostConfirmStatus integerValue] == CwHostConfirmStatusConfirmed) {
                 //login
-                self.lblCWstatus.text = @"CW Found";
+                self.lblCWstatus.text = NSLocalizedString(@"CW Found",nil);
                 self.btnHostLogin.hidden=NO;
             } else {
                 //need confirm
-                self.lblCWstatus.text = @"CW Found, Need Authed Device to Confirm the Registration";
+                self.lblCWstatus.text = NSLocalizedString(@"CW Found, Need Authed Device to Confirm the Registration",nil);
             }
             
         } else {

@@ -212,7 +212,7 @@ CwCard *cwCard;
     if (cmdId == CwCmdIdBindLogin || cmdId == CwCmdIdBindLoginChlng) {
         [self performDismiss];
         
-        [self showHintAlert:nil withMessage:@"Login fail, please try again later." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self showHintAlert:nil withMessage:NSLocalizedString(@"Login fail, please try again later.",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self.cwManager disconnectCwCard];
         }]];
     }
@@ -284,11 +284,11 @@ CwCard *cwCard;
             if ([cwCard.hostConfirmStatus integerValue] == CwHostConfirmStatusConfirmed) {
                 //login
                 [cwCard loginHost];
-                [self showIndicatorView:@"Login Host"];
+                [self showIndicatorView:NSLocalizedString(@"Login Host",nil)];
             } else {
                 //need confirm
-                msg = @"Waiting for authorization from paired device";
-                [self showHintAlert:nil withMessage:msg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                msg = NSLocalizedString(@"Waiting for authorization from paired device",nil);
+                [self showHintAlert:nil withMessage:msg withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                     [self didLogoutHost];
                 }]];
             }
@@ -344,13 +344,13 @@ CwCard *cwCard;
 
 -(void) didRegisterHostError:(NSInteger)errorId
 {
-    NSString *title = @"Unable to Pair";
+    NSString *title = NSLocalizedString(@"Unable to Pair",nil);
     NSString *message = nil;
     if (errorId == ERR_BIND_HOSTFULL) {
-        message = @"Maximum number of 3 hosts have been paired with this card";
+        message = NSLocalizedString(@"Maximum number of 3 hosts have been paired with this card",nil);
     }
     
-    [self showHintAlert:title withMessage:message withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    [self showHintAlert:title withMessage:message withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self didLogoutHost];
     }]];
 }
@@ -368,8 +368,8 @@ CwCard *cwCard;
         //used Card
         if ([cwCard.hostId integerValue] >= 0) {
             if ([cwCard.hostConfirmStatus integerValue] != CwHostConfirmStatusConfirmed) {
-                NSString *msg = @"Waiting for authorization from paired device.";
-                [self showHintAlert:nil withMessage:msg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                NSString *msg = NSLocalizedString(@"Waiting for authorization from paired device.",nil);
+                [self showHintAlert:nil withMessage:msg withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                     [self didLogoutHost];
                 }]];
             }
@@ -396,10 +396,10 @@ CwCard *cwCard;
     if (errId == ERR_BIND_REGRESP) {
         self.txtOtp.text = @"";
         
-        UIAlertAction *tryAction = [UIAlertAction actionWithTitle:@"try again" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        UIAlertAction *tryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"try again",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self regHost:self];
         }];
-        [self showHintAlert:@"Unable to Pair" withMessage:@"OTP incorrect" withOKAction:tryAction];
+        [self showHintAlert:NSLocalizedString(@"Unable to Pair",nil) withMessage:NSLocalizedString(@"OTP incorrect",nil) withOKAction:tryAction];
     }
 }
 

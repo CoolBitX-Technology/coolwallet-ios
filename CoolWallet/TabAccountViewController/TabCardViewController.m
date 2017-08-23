@@ -93,7 +93,7 @@
         return;
     }
     
-    [self showHintAlert:@"Updated!" withMessage:nil withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self showHintAlert:NSLocalizedString(@"Updated!",nil) withMessage:nil withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
 }
 
 #pragma marks -Actions
@@ -154,7 +154,7 @@
 -(void) didUpdateCurrencyDisplayError:(NSInteger)errorCode
 {
     self.updateCount -= 1;
-    [self showHintAlert:@"Update fail" withMessage:nil withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self showHintAlert:NSLocalizedString(@"Update fail",nil) withMessage:nil withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
     
     self.fiatSwitch.on = self.cwManager.connectedCwCard.cardFiatDisplay.boolValue;
 }
@@ -164,7 +164,7 @@
 {
     //Add a notification to the system
     UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
+    notify.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ Disconnected",nil), cardName];
     notify.soundName = UILocalNotificationDefaultSoundName;
     notify.applicationIconBadgeNumber=1;
     [[UIApplication sharedApplication] presentLocalNotificationNow: notify];

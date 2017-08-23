@@ -102,7 +102,7 @@ static double SATOSHI_RATE = 0.00000001;
 
 -(NSString *) getEstimatedTransactionFeeString
 {
-    NSString *estimated = @"Estimated transaction fee:\nMedian transaction size 226 bytes x %ld (in satoshis per byte)\n= %ld satoshi\n= %@ BTC";
+    NSString *estimated = NSLocalizedString(@"Estimated transaction fee:\nMedian transaction size 226 bytes x %ld (in satoshis per byte)\n= %ld satoshi\n= %@ BTC",nil);
     
     NSInteger recommendedFee = self.fastestFee.integerValue;
     NSInteger estimatedFeeSatoshi = recommendedFee * 226;

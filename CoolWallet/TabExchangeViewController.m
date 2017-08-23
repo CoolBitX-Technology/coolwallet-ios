@@ -36,7 +36,7 @@
     }];
     
     if (exchange.sessionStatus == ExSessionProcess) {
-        [self showIndicatorView:@"login exchange site"];
+        [self showIndicatorView:NSLocalizedString(@"login exchange site",nil)];
     }
 }
 

@@ -30,7 +30,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationItem setTitle:@"Transaction details"];
+    [self.navigationItem setTitle:NSLocalizedString(@"Transaction details",nil)];
     
     [self SetTxDetailData];
 }
@@ -44,14 +44,14 @@
 {    
     NSString *BTCAmount = [self.tx.historyAmount getBTCDisplayFromUnit];
     if([self.tx.historyAmount.BTC doubleValue] >=0) {
-        _lblTxType.text = @"Receive from";
+        _lblTxType.text = NSLocalizedString(@"Receive from",nil);
         _lblTxAmount.text = [NSString stringWithFormat: @"+%@", BTCAmount];
         if(self.tx.inputs.count > 0) {
             CwTxin* txin = (CwTxin *)[self.tx.inputs objectAtIndex:0];
             _lblTxAddr.text = txin.addr;
         }
     }else{
-        _lblTxType.text = @"Send to";
+        _lblTxType.text = NSLocalizedString(@"Send to",nil);
         _lblTxAmount.text = [NSString stringWithFormat: @"%@", BTCAmount];
         if(self.tx.outputs.count > 0) {
             CwTxout* txout = (CwTxout *)[self.tx.outputs objectAtIndex:0];

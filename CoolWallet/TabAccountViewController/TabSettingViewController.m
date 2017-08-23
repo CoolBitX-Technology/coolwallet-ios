@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.menuItems = @[@"ExchangeRate", @"TransactionFees"];
+    self.menuItems = @[NSLocalizedString(@"ExchangeRate",nil), NSLocalizedString(@"TransactionFees",nil)];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }

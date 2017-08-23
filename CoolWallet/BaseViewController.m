@@ -109,12 +109,12 @@ CwManager *cwManager;
     NSLog(@"%@ didCwCardCommandError: %ld, ErrString: %@", self, (long)cmdId, errString);
     
 #if DEBUG
-    NSString *msg = [NSString stringWithFormat:@"Cmd %02lX %@", (long)cmdId, errString];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Command Error"
+    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"Cmd %02lX %@", nil), (long)cmdId, errString];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Command Error",nil)
                                                        message: msg
                                                       delegate: nil
                                              cancelButtonTitle: nil
-                                             otherButtonTitles:@"OK",nil];
+                                             otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
         
     [alert show];
 #endif
@@ -129,7 +129,7 @@ CwManager *cwManager;
     
     //Add a notification to the system
     UILocalNotification *notify = [[UILocalNotification alloc] init];
-    notify.alertBody = [NSString stringWithFormat:@"%@ Disconnected", cardName];
+    notify.alertBody = [NSString stringWithFormat:NSLocalizedString(@"%@ Disconnected",nil), cardName];
     notify.soundName = UILocalNotificationDefaultSoundName;
     [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
     

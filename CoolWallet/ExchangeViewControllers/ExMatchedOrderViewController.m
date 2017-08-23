@@ -89,7 +89,7 @@
     @weakify(self)
     CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
     if (!exManager.cardInfoSynced) {
-        [self showIndicatorView:@"Sync card info"];
+        [self showIndicatorView:NSLocalizedString(@"Sync card info",nil)];
         [[[RACObserve(exManager, cardInfoSynced) filter:^BOOL(NSNumber *synced) {
             return synced.boolValue;
         }] subscribeOn:[RACScheduler mainThreadScheduler]]

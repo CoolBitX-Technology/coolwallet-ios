@@ -91,9 +91,9 @@
     
     NetworkStatus netStatus = [curReach currentReachabilityStatus];
     if (netStatus == NotReachable) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Internet connection lost" message:@"Please reset the CoolWallet and try again with a more stable internet connection." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Internet connection lost",nil) message:NSLocalizedString(@"Please reset the CoolWallet and try again with a more stable internet connection.",nil) preferredStyle:UIAlertControllerStyleAlert];
         
-        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             CwManager *manager = [CwManager sharedManager];
             [manager disconnectCwCard];
         }]];

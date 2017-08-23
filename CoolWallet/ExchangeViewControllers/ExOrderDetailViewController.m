@@ -38,10 +38,10 @@
     [super viewDidLoad];
     
     if ([self.order isKindOfClass:[CwExSellOrder class]]) {
-        self.addressTitleLabel.text = @"Buyer's Address";
+        self.addressTitleLabel.text = NSLocalizedString(@"Buyer's Address",nil);
         self.completeOrderBtn.hidden = NO;
     } else {
-        self.addressTitleLabel.text = @"Receive Address";
+        self.addressTitleLabel.text = NSLocalizedString(@"Receive Address",nil);
         self.completeOrderBtn.hidden = YES;
     }
     
@@ -65,7 +65,7 @@
     // prepare ex transaction & sign transaction
     
 //    [self showOTPEnterView];
-    [self showIndicatorView:@"Send..."];
+    [self showIndicatorView:NSLocalizedString(@"Send...",nil)];
     
     [self.cwManager.connectedCwCard findEmptyAddressFromAccount:self.order.accountId.integerValue keyChainId:CwAddressKeyChainInternal];
 }
@@ -82,14 +82,14 @@
 {
     if(self.cwManager.connectedCwCard.securityPolicy_OtpEnable.boolValue == NO) return;
     
-    UIAlertController *OTPAlert = [UIAlertController alertControllerWithTitle:@"Please enter OTP" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *OTPAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please enter OTP",nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
     [OTPAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     }];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         UITextField *textField = OTPAlert.textFields.firstObject;
-        [self showIndicatorView:@"Send..."];
+        [self showIndicatorView:NSLocalizedString(@"Send...",nil)];
         
         [self.cwManager.connectedCwCard verifyTransactionOtp:textField.text];
     }];
@@ -100,7 +100,7 @@
     
     [OTPAlert addAction:okAction];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self cancelTransaction];
     }];
     
@@ -111,7 +111,7 @@
 
 -(void) cancelTransaction
 {
-    [self showIndicatorView:@"Cancel transaction..."];
+    [self showIndicatorView:NSLocalizedString(@"Cancel transaction...",nil)];
     
     self.transactionBegin = NO;
     
@@ -130,7 +130,7 @@
 {
     [self performDismiss];
     
-    [self showHintAlert:@"Unable to send" withMessage:@"Can't generate address, please try it later." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self showHintAlert:NSLocalizedString(@"Unable to send",nil) withMessage:NSLocalizedString(@"Can't generate address, please try it later.",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
 }
 
 -(void) didPrepareTransaction: (NSString *)OTP
@@ -151,7 +151,7 @@
     
     self.transactionBegin = NO;
     
-    [self showHintAlert:@"Unable to send" withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self showHintAlert:NSLocalizedString(@"Unable to send",nil) withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
 }
 
 -(void) didGetTapTapOtp: (NSString *)OTP
@@ -180,8 +180,8 @@
     if (self.cwManager.connectedCwCard.securityPolicy_BtnEnable.boolValue == YES) {
         [self performDismiss];
         
-        UIAlertController *pressAlert = [UIAlertController alertControllerWithTitle:@"Press Button On the Card" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        UIAlertController *pressAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Press Button On the Card",nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self cancelTransaction];
         }];
         [pressAlert addAction:cancelAction];
@@ -200,15 +200,15 @@
     UIAlertController *OTPAlert = (UIAlertController *)self.navigationController.presentedViewController;
     [OTPAlert dismissViewControllerAnimated:NO completion:nil];
         
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"OTP Error" message:@"Generate OTP Again" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"OTP Error",nil) message:NSLocalizedString(@"Generate OTP Again",nil) preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [self showIndicatorView:@"Send..."];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self showIndicatorView:NSLocalizedString(@"Send...",nil)];
         [self sendPrepareTransaction];
     }];
     [alertController addAction:okAction];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self cancelTransaction];
     }];
     [alertController addAction:cancelAction];
@@ -231,7 +231,7 @@
         CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
         [exchange completeTransactionWithOrderId:sellOrder.orderId TxId:txId Handle:sellOrder.trxHandle];
         
-        [self showHintAlert:@"Sent" withMessage:[NSString stringWithFormat:@"Sent %@ BTC to %@", self.order.amountBTC, self.order.address] withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        [self showHintAlert:NSLocalizedString(@"Sent",nil) withMessage:[NSString stringWithFormat:NSLocalizedString(@"Sent %@ BTC to %@",nil), self.order.amountBTC, self.order.address] withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
     }
     
     self.transactionBegin = NO;
@@ -244,7 +244,7 @@
     UIAlertController *alertController = (UIAlertController *)self.navigationController.presentedViewController;
     if(alertController != nil) [alertController dismissViewControllerAnimated:YES completion:nil] ;
     
-    [self showHintAlert:@"Unable to send" withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self showHintAlert:NSLocalizedString(@"Unable to send",nil) withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
 }
 
 -(void) didCancelTransaction

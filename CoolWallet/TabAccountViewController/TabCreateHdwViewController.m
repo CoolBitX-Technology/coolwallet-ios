@@ -158,15 +158,15 @@
         return;
     }
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Generate seed on" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Generate seed on",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction *englishAction = [UIAlertAction actionWithTitle:@"App (words)" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *englishAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"App (words)",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         self.swSeedOnCard.on = NO;
         [self SetUIforSeedSwitch];
         [self.btnSeedType setTitle:action.title forState:UIControlStateNormal];
     }];
     
-    UIAlertAction *numberAction = [UIAlertAction actionWithTitle:@"Card (numbers)" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *numberAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Card (numbers)",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         self.swSeedOnCard.on = YES;
         [self SetUIforSeedSwitch];
         [self.btnSeedType setTitle:action.title forState:UIControlStateNormal];
@@ -200,7 +200,7 @@
         self.txtSeed2.hidden =YES;
         self.lblOnCardDetail.hidden = YES;
         self.viewWrittenDown.hidden = YES;
-        [self.btnVerifySeed setTitle:@"Next" forState:UIControlStateNormal];
+        [self.btnVerifySeed setTitle:NSLocalizedString(@"Next",nil) forState:UIControlStateNormal];
         
         self.btnCreateHdw.hidden = NO;
         self.btnVerifySeed.hidden = YES;
@@ -212,7 +212,7 @@
         self.viewWrittenDown.hidden = YES;
         self.btnCreateHdw.hidden = YES;
         self.btnVerifySeed.hidden = NO;
-        [self.btnVerifySeed setTitle:@"Verify" forState:UIControlStateNormal];
+        [self.btnVerifySeed setTitle:NSLocalizedString(@"Verify",nil) forState:UIControlStateNormal];
     }
     
     [self SetBtnwrittenDownToDefult];
@@ -229,7 +229,7 @@
         //ask card to generate seed
         //[self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue]];
         
-        [self showIndicatorView:@"Generating seed, please wait"];
+        [self showIndicatorView:NSLocalizedString(@"Generating seed, please wait",nil)];
         
         [self.cwManager.connectedCwCard setSecurityPolicy:NO ButtonEnable:YES DisplayAddressEnable:NO WatchDogEnable:YES];
         [self.cwManager.connectedCwCard initHdw:self.txtHdwName.text ByCard:[self.lblSeedLen.text integerValue] * 6];
@@ -261,7 +261,7 @@
     if (cmdId == CwCmdIdHdwInitWalletGen) {
         [self performDismiss];
         
-        [self showHintAlert:@"Init wallet fail" withMessage:@"CoolWallet will disconnect, please try again later." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self showHintAlert:NSLocalizedString(@"Init wallet fail",nil) withMessage:NSLocalizedString(@"CoolWallet will disconnect, please try again later.",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self.cwManager disconnectCwCard];
         }]];
     }
@@ -289,11 +289,11 @@
     
     //enable confirm btn
     //self.btnConfirmHdw.hidden = NO;
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Please Backup Seed and Confirm"
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Please Backup Seed and Confirm",nil)
                                                    message: nil
                                                   delegate: nil
                                          cancelButtonTitle: nil
-                                         otherButtonTitles:@"OK",nil];
+                                         otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
     [alert show];
 
     [self performDismiss];
@@ -302,11 +302,11 @@
 - (IBAction)btnVerifySeed:(id)sender {
     if(_swSeedOnCard.on){
         if(checkWrittenDown == NO){
-            UIAlertView *alert = [[UIAlertView alloc]initWithTitle: @"Please Backup Seed and Confirm"
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Please Backup Seed and Confirm",nil)
                                                            message: nil
                                                           delegate: nil
                                                  cancelButtonTitle: nil
-                                                 otherButtonTitles:@"OK",nil];
+                                                 otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
             [alert show];
             return;
         }

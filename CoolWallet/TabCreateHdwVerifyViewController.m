@@ -63,10 +63,10 @@
     //}
     if(showcount >= [SeedArray count]) {
         //_btnNextPage.hidden = YES;
-        [_btnNextPage setTitle:@"Verify again" forState:UIControlStateNormal];
+        [_btnNextPage setTitle:NSLocalizedString(@"Verify again",nil) forState:UIControlStateNormal];
         _btnCreateWallet.hidden = NO;
     }else{
-        [_btnNextPage setTitle:@"Next" forState:UIControlStateNormal];
+        [_btnNextPage setTitle:NSLocalizedString(@"Next",nil) forState:UIControlStateNormal];
         _btnCreateWallet.hidden = YES;
     }
     //NSLog(@"showSeedStr = %@",showSeedStr);
@@ -75,7 +75,7 @@
 
 -(void) showHintAlert
 {
-    [self showHintAlert:@"IMPORTANT!" withMessage:@"This is the only time you can make a backup of your bitcoins." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self showHintAlert:NSLocalizedString(@"IMPORTANT!",nil) withMessage:NSLocalizedString(@"This is the only time you can make a backup of your bitcoins.",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
 }
 
 - (IBAction)btnCreateWallet:(id)sender {
@@ -130,13 +130,13 @@
     [super didCwCardCommandError:cmdId ErrString:errString];
     
     if (cmdId == CwCmdIdHdwInitWalletGenConfirm) {
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Try again" style:UIAlertActionStyleDefault handler:nil];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Try again",nil) style:UIAlertActionStyleDefault handler:nil];
         
-        UIAlertAction *backAction = [UIAlertAction actionWithTitle:@"Regenerate" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        UIAlertAction *backAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Regenerate",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self.navigationController popToRootViewControllerAnimated:YES];
         }];
         
-        [self showHintAlert:@"Checksum incorrect" withMessage:@"Please try again or generate seed again" withActions:@[okAction, backAction]];
+        [self showHintAlert:NSLocalizedString(@"Checksum incorrect",nil) withMessage:NSLocalizedString(@"Please try again or generate seed again",nil) withActions:@[okAction, backAction]];
     }
 }
 

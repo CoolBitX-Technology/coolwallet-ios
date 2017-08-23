@@ -101,7 +101,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 }
 
 - (IBAction)sendTransaction:(id)sender {
-    [self showIndicatorView:@"Send..."];
+    [self showIndicatorView:NSLocalizedString(@"Send...",nil)];
     
     self.transactionBegin = YES;
     
@@ -129,7 +129,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 }
 
 - (IBAction)showFeesInfo:(UIButton *)sender {
-    [self showHintAlert:nil withMessage:@"Your fee is below average and may take longer than 30 minutes to confirm." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self showHintAlert:nil withMessage:NSLocalizedString(@"Your fee is below average and may take longer than 30 minutes to confirm.",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
 }
 
 - (NSString *) convertToFiatMoney:(NSString *)btc
@@ -170,14 +170,14 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     CwBtc *totalAmount = [sendAmount add:self.unsignedTx.txFee];
     self.lblTotalAmount.text = [totalAmount getBTCDisplayFromUnit];
     
-    self.lblInputs.text = [NSString stringWithFormat:@"%lu Inputs", (unsigned long)self.unsignedTx.inputs.count];
+    self.lblInputs.text = [NSString stringWithFormat:NSLocalizedString(@"%lu Inputs",nil), (unsigned long)self.unsignedTx.inputs.count];
     self.lblInputAmount.text = [self.unsignedTx.totalInput getBTCDisplayFromUnit];
     
     if ([self.unsignedTx.dustAmount greater:[CwBtc BTCWithSatoshi:@(0)]]) {
         self.viewChangeAddr.hidden = YES;
         self.viewChangeAmount.hidden = YES;
         
-        [self.lblTxDust setText:[NSString stringWithFormat:@"Notice: the Bitcoin dust of this transaction (BTC %@) will be added to mining fee.", [self.unsignedTx.dustAmount getBTCDisplayFromUnit]]];
+        [self.lblTxDust setText:[NSString stringWithFormat:NSLocalizedString(@"Notice: the Bitcoin dust of this transaction (BTC %@) will be added to mining fee.",nil), [self.unsignedTx.dustAmount getBTCDisplayFromUnit]]];
         self.lblTxDust.hidden = NO;
     } else {
         if (![CwTransactionFee sharedInstance].enableAutoFee.boolValue) {
@@ -209,22 +209,22 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     
     [self showIndicatorView:@""];
     
-    self.OTPAlertController = [UIAlertController alertControllerWithTitle:@"Please enter OTP"       message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    self.OTPAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please enter OTP",nil)       message:@"" preferredStyle:UIAlertControllerStyleAlert];
     
     [self.OTPAlertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"OTP";
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     }];
     
-    [self.OTPAlertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    [self.OTPAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self cancelTransaction];
     }]];
     
-    [self.OTPAlertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    [self.OTPAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         NSArray * textfields = self.OTPAlertController.textFields;
         UITextField *otpField = textfields[0];
         
-        [self showIndicatorView:@"Send..."];
+        [self showIndicatorView:NSLocalizedString(@"Send...",nil)];
         [self.cwCard verifyTransactionOtp:otpField.text];
         
         self.OTPAlertController = nil;
@@ -246,7 +246,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 
 -(void) cancelTransaction
 {
-    [self showIndicatorView:@"Cancel transaction..."];
+    [self showIndicatorView:NSLocalizedString(@"Cancel transaction...",nil)];
     
     [self.cwCard cancelTrancation];
 }
@@ -295,8 +295,8 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     
     self.transactionBegin = NO;
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to send" message:@"Can't generate address, please try it later." preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Unable to send",nil) message:NSLocalizedString(@"Can't generate address, please try it later.",nil) preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil];
     [alertController addAction:okAction];
     
     [self presentViewController:alertController animated:YES completion:nil];
@@ -322,7 +322,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     
     self.transactionBegin = NO;
     
-    [self showHintAlert:@"Unable to send" withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self showHintAlert:NSLocalizedString(@"Unable to send",nil) withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
 
     self.btnSend.enabled = NO;
 }
@@ -345,7 +345,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
     }
     
-    [self showHintAlert:@"Sending..." withMessage:nil withOKAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    [self showHintAlert:NSLocalizedString(@"Sending...",nil) withMessage:nil withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         [self cancelTransaction];
     }]];
     
@@ -358,7 +358,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     if (self.cwCard.securityPolicy_BtnEnable.boolValue == YES) {
         [self performDismiss];
         
-        [self showHintAlert:@"Press Button On the Card" withMessage:nil withOKAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self showHintAlert:NSLocalizedString(@"Press Button On the Card",nil) withMessage:nil withOKAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self cancelTransaction];
         }]];
     } else {
@@ -370,15 +370,15 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 {
     [self performDismiss];
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"OTP Error" message:@"Generate OTP Again" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"OTP Error",nil) message:NSLocalizedString(@"Generate OTP Again",nil) preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [self showIndicatorView:@"Send..."];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self showIndicatorView:NSLocalizedString(@"Send...",nil)];
         [self sendPrepareTransaction];
     }];
     [alertController addAction:okAction];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self cancelTransaction];
     }];
     [alertController addAction:cancelAction];
@@ -395,9 +395,9 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     self.transactionBegin = NO;
     self.transactionSuccess = YES;
     
-    NSString *message = [NSString stringWithFormat:@"Sent %@ BTC to %@", self.sendAmountBTC, self.sendToAddress];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Sent %@ BTC to %@",nil), self.sendAmountBTC, self.sendToAddress];
     
-    [self showHintAlert:@"Sent" withMessage:message withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [self showHintAlert:NSLocalizedString(@"Sent",nil) withMessage:message withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self.navigationController popViewControllerAnimated:YES];
     }]];
 }
@@ -406,7 +406,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 {
     [self performDismiss];
     
-    [self showHintAlert:@"Unable to send" withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self showHintAlert:NSLocalizedString(@"Unable to send",nil) withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
 }
 
 -(void) didFinishTransaction

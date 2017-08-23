@@ -25,9 +25,9 @@
     [self.versionLabel setText:[APPData sharedInstance].version];
     
     if (enableExchangeSite) {
-        self.menuItems = @[@"title", @"HostDevices", @"CoolWalletCard", @"Security", @"Settings", @"Exchange", @"Logout"];
+        self.menuItems = @[NSLocalizedString(@"title",nil), NSLocalizedString(@"HostDevices",nil), NSLocalizedString(@"CoolWalletCard",nil), NSLocalizedString(@"Security",nil), NSLocalizedString(@"Settings",nil), NSLocalizedString(@"Exchange",nil), NSLocalizedString(@"Logout",nil)];
     } else {
-        self.menuItems = @[@"title", @"HostDevices", @"CoolWalletCard", @"Security", @"Settings", @"Logout"];
+        self.menuItems = @[NSLocalizedString(@"title",nil), NSLocalizedString(@"HostDevices",nil), NSLocalizedString(@"CoolWalletCard",nil), NSLocalizedString(@"Security",nil), NSLocalizedString(@"Settings",nil), NSLocalizedString(@"Logout",nil)];
     }
 }
 
