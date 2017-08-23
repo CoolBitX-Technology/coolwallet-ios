@@ -1,12 +1,11 @@
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "5Ch-VO-Zf2"; */
+"5Ch-VO-Zf2.normalTitle" = "ОТМЕНА";
 
 /* Class = "UILabel"; text = "Searching for CoolWallet..."; ObjectID = "13M-Nu-HjR"; */
 "13M-Nu-HjR.text" = "Searching for CoolWallet...";
 
 /* Class = "UILabel"; text = "Are you sure you want to reset your CoolWallet?"; ObjectID = "57x-PC-Jsi"; */
-"57x-PC-Jsi.text" = "Are you sure you want to reset your CoolWallet?";
-
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "5Ch-VO-Zf2"; */
-"5Ch-VO-Zf2.normalTitle" = "Cancel";
+"57x-PC-Jsi.text" = "Вы уверены, что вы хотите перезапустить ваш CoolWallet?";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "739-UZ-l9o"; */
 "739-UZ-l9o.text" = "Title";
@@ -21,13 +20,14 @@
 "KrB-kR-cgF.text" = "Subtitle";
 
 /* Class = "UILabel"; text = "Please turn on CoolWallet by\npressing the button on card."; ObjectID = "MnQ-Ih-EVv"; */
-"MnQ-Ih-EVv.text" = "Please turn on CoolWallet by\npressing the button on card.";
+"MnQ-Ih-EVv.text" = "Please turn on CoolWallet by
+pressing the button on card.";
 
 /* Class = "UILabel"; text = "CoolWallet allows you to pair up to 3 devices, This device will be able to authenticate the second device."; ObjectID = "RPX-jL-xJd"; */
 "RPX-jL-xJd.text" = "CoolWallet allows you to pair up to 3 devices, This device will be able to authenticate the second device.";
 
 /* Class = "UIButton"; normalTitle = "Reset"; ObjectID = "UEP-ij-kBO"; */
-"UEP-ij-kBO.normalTitle" = "Reset";
+"UEP-ij-kBO.normalTitle" = "ПЕРЕЗАГРУЗИТЬ";
 
 /* Class = "UILabel"; text = "version"; ObjectID = "W47-Fe-yBC"; */
 "W47-Fe-yBC.text" = "version";
@@ -36,22 +36,23 @@
 "aOw-RQ-zY4.title" = "CW List";
 
 /* Class = "UIButton"; normalTitle = "Pair with this device"; ObjectID = "hCk-TX-6dV"; */
-"hCk-TX-6dV.normalTitle" = "Pair with this device";
+"hCk-TX-6dV.normalTitle" = "ПРИВЯЗАТЬ К УСТРОЙСТВУ";
 
 /* Class = "UIButton"; normalTitle = "Next"; ObjectID = "jau-8x-Rn4"; */
 "jau-8x-Rn4.normalTitle" = "Next";
 
 /* Class = "UILabel"; text = "Confirm One Time Password (OTP)"; ObjectID = "kNT-5K-Yqu"; */
-"kNT-5K-Yqu.text" = "Confirm One Time Password (OTP)";
+"kNT-5K-Yqu.text" = "Подтвердите одноразовый пароль";
 
 /* Class = "UILabel"; text = "Confirm One Time Password (OTP)"; ObjectID = "mHu-2X-7D0"; */
-"mHu-2X-7D0.text" = "Confirm One Time Password (OTP)";
+"mHu-2X-7D0.text" = "Подтвердите одноразовый пароль";
 
 /* Class = "UINavigationItem"; title = "Erase CW"; ObjectID = "q62-az-DPT"; */
 "q62-az-DPT.title" = "Erase CW";
 
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "qjh-VR-2Yk"; */
-"qjh-VR-2Yk.normalTitle" = "Cancel";
+"qjh-VR-2Yk.normalTitle" = "ОТМЕНА";
 
 /* Class = "UILabel"; text = "Type in OTP shown on card"; ObjectID = "wTt-Cg-MOB"; */
-"wTt-Cg-MOB.text" = "Type in OTP shown on card";
+"wTt-Cg-MOB.text" = "Введите одноразовый пароль с вашей карты";
+

@@ -1,18 +1,8 @@
-
-/* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "02y-Fv-jHS"; */
-"02y-Fv-jHS.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
-
-/* Class = "UILabel"; text = "10.00000001"; ObjectID = "033-ce-kjZ"; */
-"033-ce-kjZ.text" = "10.00000001";
-
 /* Class = "UITabBarItem"; title = "Exit"; ObjectID = "0J7-Sm-VOo"; */
 "0J7-Sm-VOo.title" = "Exit";
 
 /* Class = "UILabel"; text = "BTC"; ObjectID = "0eZ-k2-IH1"; */
 "0eZ-k2-IH1.text" = "BTC";
-
-/* Class = "UILabel"; text = "Matched buy orders"; ObjectID = "12y-wM-zWV"; */
-"12y-wM-zWV.text" = "Matched buy orders";
 
 /* Class = "UILabel"; text = "Price"; ObjectID = "1EK-ai-BCe"; */
 "1EK-ai-BCe.text" = "Price";
@@ -21,7 +11,7 @@
 "1HO-we-Z8m.text" = "Show fiat value on card";
 
 /* Class = "UILabel"; text = "Enable Watch dog function"; ObjectID = "1Im-aT-IIE"; */
-"1Im-aT-IIE.text" = "Enable Watch dog function";
+"1Im-aT-IIE.text" = "Включить функцию сторожевого таймера";
 
 /* Class = "UITabBarItem"; title = "CW Card"; ObjectID = "2ZI-qD-hgF"; */
 "2ZI-qD-hgF.title" = "CW Card";
@@ -32,11 +22,14 @@
 /* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "2sq-VJ-BvH"; */
 "2sq-VJ-BvH.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
 
+/* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "02y-Fv-jHS"; */
+"02y-Fv-jHS.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
+
 /* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "3Du-yg-HXQ"; */
 "3Du-yg-HXQ.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
 
 /* Class = "UINavigationItem"; title = "CoolWallet card"; ObjectID = "3M5-JR-pSt"; */
-"3M5-JR-pSt.title" = "CoolWallet card";
+"3M5-JR-pSt.title" = "Карта CoolWallet";
 
 /* Class = "UIButton"; normalTitle = "5"; ObjectID = "3MW-he-CSG"; */
 "3MW-he-CSG.normalTitle" = "5";
@@ -44,17 +37,11 @@
 /* Class = "UILabel"; text = "Price"; ObjectID = "3aF-b8-72j"; */
 "3aF-b8-72j.text" = "Price";
 
-/* Class = "UILabel"; text = "Order ID"; ObjectID = "42w-LL-kjJ"; */
-"42w-LL-kjJ.text" = "Order ID";
-
 /* Class = "UILabel"; text = "0.00000001"; ObjectID = "5JU-qp-woo"; */
 "5JU-qp-woo.text" = "0.00000001";
 
 /* Class = "UIButton"; normalTitle = "Sell order verification"; ObjectID = "5Sr-pg-JnA"; */
 "5Sr-pg-JnA.normalTitle" = "Sell order verification";
-
-/* Class = "UIButton"; normalTitle = "Disconnect CoolWallet"; ObjectID = "61Y-z6-fj4"; */
-"61Y-z6-fj4.normalTitle" = "Disconnect CoolWallet";
 
 /* Class = "UILabel"; text = "USD"; ObjectID = "6rd-bo-67g"; */
 "6rd-bo-67g.text" = "USD";
@@ -72,13 +59,13 @@
 "8HE-Me-rs1.title" = "Address Book";
 
 /* Class = "UILabel"; text = "Auto Fees"; ObjectID = "8O6-92-Ime"; */
-"8O6-92-Ime.text" = "Auto Fees";
+"8O6-92-Ime.text" = "Авто настройка";
 
 /* Class = "UINavigationItem"; title = "Receive"; ObjectID = "8wX-AQ-Dhh"; */
 "8wX-AQ-Dhh.title" = "Receive";
 
 /* Class = "UITabBarItem"; title = "Send"; ObjectID = "8wz-XW-VyG"; */
-"8wz-XW-VyG.title" = "Send";
+"8wz-XW-VyG.title" = "ОТПРАВИТЬ";
 
 /* Class = "UIButton"; normalTitle = ">"; ObjectID = "9Dn-Uu-Bg4"; */
 "9Dn-Uu-Bg4.normalTitle" = ">";
@@ -95,6 +82,18 @@
 /* Class = "UINavigationItem"; title = "Exit"; ObjectID = "9zJ-9T-yeD"; */
 "9zJ-9T-yeD.title" = "Exit";
 
+/* Class = "UILabel"; text = "Matched buy orders"; ObjectID = "12y-wM-zWV"; */
+"12y-wM-zWV.text" = "Matched buy orders";
+
+/* Class = "UILabel"; text = "10.00000001"; ObjectID = "033-ce-kjZ"; */
+"033-ce-kjZ.text" = "10.00000001";
+
+/* Class = "UILabel"; text = "Order ID"; ObjectID = "42w-LL-kjJ"; */
+"42w-LL-kjJ.text" = "Order ID";
+
+/* Class = "UIButton"; normalTitle = "Disconnect CoolWallet"; ObjectID = "61Y-z6-fj4"; */
+"61Y-z6-fj4.normalTitle" = "Disconnect CoolWallet";
+
 /* Class = "UILabel"; text = "Fees"; ObjectID = "Abw-M0-jkg"; */
 "Abw-M0-jkg.text" = "Fees";
 
@@ -102,13 +101,13 @@
 "AdY-yw-Qg3.normalTitle" = "1";
 
 /* Class = "UIButton"; normalTitle = "Update Security Policy"; ObjectID = "AuY-uy-uAI"; */
-"AuY-uy-uAI.normalTitle" = "Update Security Policy";
+"AuY-uy-uAI.normalTitle" = "СОХРАНИТЬ ИЗМЕНЕНИЯ В ПОЛИТИКЕ БЕЗОПАСНОСТИ";
 
 /* Class = "UIButton"; normalTitle = "Create Wallet"; ObjectID = "AyI-Mr-fb1"; */
-"AyI-Mr-fb1.normalTitle" = "Create Wallet";
+"AyI-Mr-fb1.normalTitle" = "Создать кошелек";
 
 /* Class = "UILabel"; text = "Amount"; ObjectID = "BNm-VU-Mbw"; */
-"BNm-VU-Mbw.text" = "Amount";
+"BNm-VU-Mbw.text" = "Сумма";
 
 /* Class = "UILabel"; text = "Order number"; ObjectID = "BkJ-hx-vgv"; */
 "BkJ-hx-vgv.text" = "Order number";
@@ -135,10 +134,11 @@
 "DYR-0h-PJS.text" = "1 BTC = 1,000 mBTC";
 
 /* Class = "UILabel"; text = "Please double check the words you have written down carefully.\nThis is to make sure you can recover your wallet if the card gets lost."; ObjectID = "DjK-xa-ckk"; */
-"DjK-xa-ckk.text" = "Please double check the words you have written down carefully.\nThis is to make sure you can recover your wallet if the card gets lost.";
+"DjK-xa-ckk.text" = "Внимательно проверьте слова, которые вы записали.
+Они потребуются для восстановления кошелька, если карта будет утеряна.";
 
 /* Class = "UILabel"; text = "Amount(BTC)"; ObjectID = "ECZ-2e-sGU"; */
-"ECZ-2e-sGU.text" = "Amount(BTC)";
+"ECZ-2e-sGU.text" = "Сумма(BTC)";
 
 /* Class = "UILabel"; text = "Please wait and put your CoolWallet on the charger."; ObjectID = "EGc-bp-J1Z"; */
 "EGc-bp-J1Z.text" = "Please wait and put your CoolWallet on the charger.";
@@ -156,13 +156,13 @@
 "FN1-A1-R7A.normalTitle" = "2";
 
 /* Class = "UINavigationItem"; title = "Transaction Fee"; ObjectID = "G9J-Fx-sEG"; */
-"G9J-Fx-sEG.title" = "Transaction Fee";
+"G9J-Fx-sEG.title" = "Комиссия за транзакцию";
 
 /* Class = "UILabel"; text = "Price"; ObjectID = "GD0-BZ-4Z9"; */
 "GD0-BZ-4Z9.text" = "Price";
 
 /* Class = "UILabel"; text = "Recover my old wallet  "; ObjectID = "GiR-4r-gKY"; */
-"GiR-4r-gKY.text" = "Recover my old wallet  ";
+"GiR-4r-gKY.text" = "Восстановить старый кошелек  ";
 
 /* Class = "UILabel"; text = "06:32pm 7 Jan"; ObjectID = "H8W-wS-kaA"; */
 "H8W-wS-kaA.text" = "06:32pm 7 Jan";
@@ -171,7 +171,7 @@
 "HlO-lR-BzC.text" = "Transaction ID";
 
 /* Class = "UILabel"; text = "Send to"; ObjectID = "Hn1-nI-ftz"; */
-"Hn1-nI-ftz.text" = "Send to";
+"Hn1-nI-ftz.text" = "Отправить";
 
 /* Class = "UILabel"; text = "BTC"; ObjectID = "HoY-dB-fIm"; */
 "HoY-dB-fIm.text" = "BTC";
@@ -186,7 +186,7 @@
 "I1s-Zd-6fT.text" = "0.00000001";
 
 /* Class = "UILabel"; text = "Amount"; ObjectID = "I2d-Di-2Ue"; */
-"I2d-Di-2Ue.text" = "Amount";
+"I2d-Di-2Ue.text" = "Сумма";
 
 /* Class = "UILabel"; text = "$450.45"; ObjectID = "IXm-Tm-oZc"; */
 "IXm-Tm-oZc.text" = "$450.45";
@@ -195,7 +195,7 @@
 "IcD-M2-A73.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
 
 /* Class = "UILabel"; text = "Create a new wallet  "; ObjectID = "Iq6-d7-TkM"; */
-"Iq6-d7-TkM.text" = "Create a new wallet  ";
+"Iq6-d7-TkM.text" = "Создать новый кошелек  ";
 
 /* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "K7D-5N-AdV"; */
 "K7D-5N-AdV.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
@@ -222,16 +222,16 @@
 "MG3-W7-W1X.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
 
 /* Class = "UINavigationItem"; title = "Settings"; ObjectID = "MZj-ru-yOL"; */
-"MZj-ru-yOL.title" = "Settings";
+"MZj-ru-yOL.title" = "Настройки";
 
 /* Class = "UILabel"; text = "Generate seed on"; ObjectID = "NOW-wa-2cA"; */
-"NOW-wa-2cA.text" = "Generate seed on";
+"NOW-wa-2cA.text" = "Сгенерировать код для приложения";
 
 /* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "Nep-Sb-JOE"; */
 "Nep-Sb-JOE.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
 
 /* Class = "UILabel"; text = "Enable One Time Password (OTP) on transactions "; ObjectID = "Njd-cf-Wfa"; */
-"Njd-cf-Wfa.text" = "Enable One Time Password (OTP) on transactions ";
+"Njd-cf-Wfa.text" = "Включить функцию запроса одноразового пароля при осуществлении транзакций";
 
 /* Class = "UITabBarItem"; title = "Exit"; ObjectID = "Nvp-Uw-wvf"; */
 "Nvp-Uw-wvf.title" = "Exit";
@@ -258,22 +258,25 @@
 "PlA-2P-xCQ.normalTitle" = "Verify";
 
 /* Class = "UILabel"; text = "Please write down all sets of the numbers shown on the CoolWallet onto the seed paper\n\nPress the button on the card to see the next set of numbers"; ObjectID = "RNG-9h-bJS"; */
-"RNG-9h-bJS.text" = "Please write down all sets of the numbers shown on the CoolWallet onto the seed paper\n\nPress the button on the card to see the next set of numbers";
+"RNG-9h-bJS.text" = "Please write down all sets of the numbers shown on the CoolWallet onto the seed paper
+
+Press the button on the card to see the next set of numbers";
 
 /* Class = "UILabel"; text = "For example:\n1111111+123456+234434+....."; ObjectID = "RRI-eH-pHG"; */
-"RRI-eH-pHG.text" = "For example:\n1111111+123456+234434+.....";
+"RRI-eH-pHG.text" = "For example:
+1111111+123456+234434+.....";
 
 /* Class = "UILabel"; text = "--"; ObjectID = "RZF-l1-SCv"; */
 "RZF-l1-SCv.text" = "--";
 
 /* Class = "UILabel"; text = "Please see the segments guide"; ObjectID = "ReR-F3-ubG"; */
-"ReR-F3-ubG.text" = "Please see the segments guide";
+"ReR-F3-ubG.text" = "Обратитесь к руководству пользователя";
 
 /* Class = "UILabel"; text = "Reserved:"; ObjectID = "SHr-K0-ygL"; */
 "SHr-K0-ygL.text" = "Reserved:";
 
 /* Class = "UINavigationItem"; title = "Security"; ObjectID = "ScJ-OJ-sfF"; */
-"ScJ-OJ-sfF.title" = "Security";
+"ScJ-OJ-sfF.title" = "Безопасность";
 
 /* Class = "UILabel"; text = "BTC"; ObjectID = "Sz0-db-2dk"; */
 "Sz0-db-2dk.text" = "BTC";
@@ -297,19 +300,19 @@
 "ThL-Mm-JcY.title" = "Verification";
 
 /* Class = "UINavigationItem"; title = "Send"; ObjectID = "UDy-tR-hgM"; */
-"UDy-tR-hgM.title" = "Send";
+"UDy-tR-hgM.title" = "ОТПРАВИТЬ";
 
 /* Class = "UIButton"; normalTitle = "Request Payment"; ObjectID = "UKr-Rl-fMy"; */
 "UKr-Rl-fMy.normalTitle" = "Request Payment";
 
 /* Class = "UIButton"; normalTitle = "Send"; ObjectID = "UNQ-aE-z7v"; */
-"UNQ-aE-z7v.normalTitle" = "Send";
+"UNQ-aE-z7v.normalTitle" = "ОТПРАВИТЬ";
 
 /* Class = "UINavigationItem"; title = "Create Wallet"; ObjectID = "USl-fb-rVJ"; */
-"USl-fb-rVJ.title" = "Create Wallet";
+"USl-fb-rVJ.title" = "Создать кошелек";
 
 /* Class = "UILabel"; text = "Import my seed"; ObjectID = "UUt-pK-8VY"; */
-"UUt-pK-8VY.text" = "Import my seed";
+"UUt-pK-8VY.text" = "Импортировать свой код";
 
 /* Class = "UILabel"; text = "Reserved:"; ObjectID = "UbP-Xy-KLX"; */
 "UbP-Xy-KLX.text" = "Reserved:";
@@ -318,7 +321,7 @@
 "Ulq-vI-IXF.title" = "CW Card";
 
 /* Class = "UIButton"; normalTitle = "Create Wallet"; ObjectID = "VIS-eO-Yem"; */
-"VIS-eO-Yem.normalTitle" = "Create Wallet";
+"VIS-eO-Yem.normalTitle" = "Создать кошелек";
 
 /* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "Vl6-dW-nLh"; */
 "Vl6-dW-nLh.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
@@ -327,10 +330,10 @@
 "Vxb-EK-to8.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
 
 /* Class = "UILabel"; text = "Security"; ObjectID = "VzY-lr-EEn"; */
-"VzY-lr-EEn.text" = "Security";
+"VzY-lr-EEn.text" = "Безопасность";
 
 /* Class = "UITextField"; placeholder = "Recipient's Address"; ObjectID = "WEM-CZ-SAp"; */
-"WEM-CZ-SAp.placeholder" = "Recipient's Address";
+"WEM-CZ-SAp.placeholder" = "Адрес получателя";
 
 /* Class = "UINavigationItem"; title = "Bitcoin Units preferences"; ObjectID = "WOT-bg-CmQ"; */
 "WOT-bg-CmQ.title" = "Bitcoin Units preferences";
@@ -357,7 +360,7 @@
 "XGu-fY-zqU.text" = "1 BTC = 1,000,000 µBTC";
 
 /* Class = "UILabel"; text = "Settings"; ObjectID = "Xeh-pu-sXE"; */
-"Xeh-pu-sXE.text" = "Settings";
+"Xeh-pu-sXE.text" = "Настройки";
 
 /* Class = "UILabel"; text = "address"; ObjectID = "YLV-AL-7hq"; */
 "YLV-AL-7hq.text" = "address";
@@ -366,10 +369,10 @@
 "YUI-dC-1G3.title" = "Accounts";
 
 /* Class = "UILabel"; text = "Transaction Fees"; ObjectID = "YcE-ob-nRZ"; */
-"YcE-ob-nRZ.text" = "Transaction Fees";
+"YcE-ob-nRZ.text" = "Комиссия за транзакцию";
 
 /* Class = "UILabel"; text = "Send to"; ObjectID = "Yea-oE-i9k"; */
-"Yea-oE-i9k.text" = "Send to";
+"Yea-oE-i9k.text" = "Отправить";
 
 /* Class = "UILabel"; text = "Show recipient's address on card"; ObjectID = "Yw1-KI-ihg"; */
 "Yw1-KI-ihg.text" = "Show recipient's address on card";
@@ -396,13 +399,13 @@
 "afy-SC-jVH.title" = "Setting";
 
 /* Class = "UINavigationItem"; title = "Create HD Wallet"; ObjectID = "atk-Yo-FAg"; */
-"atk-Yo-FAg.title" = "Create HD Wallet";
+"atk-Yo-FAg.title" = "Создать HD кошелек";
 
 /* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "bOT-WN-wj4"; */
 "bOT-WN-wj4.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
 
 /* Class = "UILabel"; text = "Logout"; ObjectID = "bQ2-Pi-Shj"; */
-"bQ2-Pi-Shj.text" = "Logout";
+"bQ2-Pi-Shj.text" = "Выход";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "bUY-TP-ZAB"; */
 "bUY-TP-ZAB.text" = "Label";
@@ -426,7 +429,7 @@
 "cFX-ji-VNO.normalTitle" = "Next";
 
 /* Class = "UILabel"; text = "Host devices"; ObjectID = "ce0-hp-7LT"; */
-"ce0-hp-7LT.text" = "Host devices";
+"ce0-hp-7LT.text" = "Используемые устройства";
 
 /* Class = "UIButton"; normalTitle = "Complete order"; ObjectID = "cfD-7O-gJP"; */
 "cfD-7O-gJP.normalTitle" = "Complete order";
@@ -465,10 +468,10 @@
 "f9G-Aw-gjl.text" = "18";
 
 /* Class = "UILabel"; text = "Seed Length"; ObjectID = "fIV-Eh-uvO"; */
-"fIV-Eh-uvO.text" = "Seed Length";
+"fIV-Eh-uvO.text" = "Длина кода";
 
 /* Class = "UILabel"; text = "Amount"; ObjectID = "fQ1-bH-bJY"; */
-"fQ1-bH-bJY.text" = "Amount";
+"fQ1-bH-bJY.text" = "Сумма";
 
 /* Class = "UILabel"; text = "Subtitle"; ObjectID = "faj-fv-4Vm"; */
 "faj-fv-4Vm.text" = "Subtitle";
@@ -486,37 +489,37 @@
 "fu0-iG-aND.title" = "Scan QR Code";
 
 /* Class = "UILabel"; text = "Request"; ObjectID = "g8X-WP-Ow8"; */
-"g8X-WP-Ow8.text" = "Request";
+"g8X-WP-Ow8.text" = "Запрос";
 
 /* Class = "UILabel"; text = "Exchange Rate"; ObjectID = "gAw-Wd-gUD"; */
 "gAw-Wd-gUD.text" = "Exchange Rate";
 
 /* Class = "UINavigationItem"; title = "Import Seed"; ObjectID = "gSA-21-vt4"; */
-"gSA-21-vt4.title" = "Import Seed";
+"gSA-21-vt4.title" = "Ввести код";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "giA-hG-rId"; */
 "giA-hG-rId.text" = "Title";
 
 /* Class = "UINavigationItem"; title = "Host devices"; ObjectID = "gqA-Ot-kKD"; */
-"gqA-Ot-kKD.title" = "Host devices";
+"gqA-Ot-kKD.title" = "Используемые устройства";
 
 /* Class = "UIButton"; normalTitle = "USD"; ObjectID = "gqx-Cf-Sba"; */
 "gqx-Cf-Sba.normalTitle" = "USD";
 
 /* Class = "UILabel"; text = "Amount(BTC)"; ObjectID = "hDg-Sq-bxa"; */
-"hDg-Sq-bxa.text" = "Amount(BTC)";
+"hDg-Sq-bxa.text" = "Сумма(BTC)";
 
 /* Class = "UIButton"; normalTitle = "4"; ObjectID = "hue-po-L5C"; */
 "hue-po-L5C.normalTitle" = "4";
 
 /* Class = "UILabel"; text = "Copy"; ObjectID = "hxu-Fh-G2c"; */
-"hxu-Fh-G2c.text" = "Copy";
+"hxu-Fh-G2c.text" = "Копия";
 
 /* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "iF0-oe-mii"; */
 "iF0-oe-mii.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
 
 /* Class = "UILabel"; text = "Enable press the button on the card to complete transactions"; ObjectID = "iWh-Z8-30e"; */
-"iWh-Z8-30e.text" = "Enable press the button on the card to complete transactions";
+"iWh-Z8-30e.text" = "Включить функцию нажатия кнопки на карте для завершения транзакций";
 
 /* Class = "UILabel"; text = "Total"; ObjectID = "iw2-YQ-HxC"; */
 "iw2-YQ-HxC.text" = "Total";
@@ -528,7 +531,7 @@
 "jWo-do-qSg.title" = "Exchange";
 
 /* Class = "UILabel"; text = "Amount(BTC)"; ObjectID = "jgU-Np-53G"; */
-"jgU-Np-53G.text" = "Amount(BTC)";
+"jgU-Np-53G.text" = "Сумма(BTC)";
 
 /* Class = "UIButton"; normalTitle = "1"; ObjectID = "kFM-OU-kat"; */
 "kFM-OU-kat.normalTitle" = "1";
@@ -543,7 +546,7 @@
 "l0N-XD-EOX.text" = "Address";
 
 /* Class = "UILabel"; text = "Send to"; ObjectID = "lgS-Gs-Drt"; */
-"lgS-Gs-Drt.text" = "Send to";
+"lgS-Gs-Drt.text" = "Отправить";
 
 /* Class = "UILabel"; text = "Buyer's Address"; ObjectID = "mVE-Y4-rZY"; */
 "mVE-Y4-rZY.text" = "Buyer's Address";
@@ -558,7 +561,7 @@
 "nfE-Ab-MRs.normalTitle" = "Button";
 
 /* Class = "UIButton"; normalTitle = "Create Wallet"; ObjectID = "oWR-Vk-qz2"; */
-"oWR-Vk-qz2.normalTitle" = "Create Wallet";
+"oWR-Vk-qz2.normalTitle" = "Создать кошелек";
 
 /* Class = "UILabel"; text = "Change Address"; ObjectID = "oxv-e8-Tud"; */
 "oxv-e8-Tud.text" = "Change Address";
@@ -570,16 +573,21 @@
 "pB4-NV-dKL.text" = "Confirmation";
 
 /* Class = "UILabel"; text = "amount"; ObjectID = "qBP-KB-HQH"; */
-"qBP-KB-HQH.text" = "amount";
+"qBP-KB-HQH.text" = "Сумма";
 
 /* Class = "UILabel"; text = "Payment"; ObjectID = "qR9-J0-t86"; */
 "qR9-J0-t86.text" = "Payment";
 
 /* Class = "UILabel"; text = "1. monitor\n2. cannon\n3. area\n4. now\n5. body\n6. miner"; ObjectID = "qTV-w1-CwN"; */
-"qTV-w1-CwN.text" = "1. monitor\n2. cannon\n3. area\n4. now\n5. body\n6. miner";
+"qTV-w1-CwN.text" = "1. monitor
+2. cannon
+3. area
+4. now
+5. body
+6. miner";
 
 /* Class = "UILabel"; text = "Choose your seed type"; ObjectID = "qdb-2T-K9H"; */
-"qdb-2T-K9H.text" = "Choose your seed type";
+"qdb-2T-K9H.text" = "Выберите тип вашего кода";
 
 /* Class = "UILabel"; text = "10.00000001"; ObjectID = "qej-7k-rTu"; */
 "qej-7k-rTu.text" = "10.00000001";
@@ -603,10 +611,10 @@
 "s8w-4z-JgT.text" = "Available:";
 
 /* Class = "UILabel"; text = "Please enter your seed (with spaces)"; ObjectID = "slz-v5-3qg"; */
-"slz-v5-3qg.text" = "Please enter your seed (with spaces)";
+"slz-v5-3qg.text" = "Введите ваш код (спробелами)";
 
 /* Class = "UIButton"; normalTitle = "Copy"; ObjectID = "sog-Um-ZvQ"; */
-"sog-Um-ZvQ.normalTitle" = "Copy";
+"sog-Um-ZvQ.normalTitle" = "Копия";
 
 /* Class = "UITabBarItem"; title = "Receive"; ObjectID = "spD-J5-bgS"; */
 "spD-J5-bgS.title" = "Receive";
@@ -621,7 +629,7 @@
 "tSq-IB-eDw.placeholder" = "max 8 charaters";
 
 /* Class = "UILabel"; text = "Sets"; ObjectID = "tYK-aR-pge"; */
-"tYK-aR-pge.text" = "Sets";
+"tYK-aR-pge.text" = "слов";
 
 /* Class = "UIButton"; normalTitle = "4"; ObjectID = "tlt-5l-NeQ"; */
 "tlt-5l-NeQ.normalTitle" = "4";
@@ -630,10 +638,10 @@
 "tt3-zg-j5y.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "uB1-8f-pgG"; */
-"uB1-8f-pgG.text" = "Label";
+"uB1-8f-pgG.text" = "Метка";
 
 /* Class = "UIButton"; normalTitle = "SEND"; ObjectID = "uPl-B4-yPs"; */
-"uPl-B4-yPs.normalTitle" = "SEND";
+"uPl-B4-yPs.normalTitle" = "ОТПРАВИТЬ";
 
 /* Class = "UINavigationItem"; title = "Transaction details"; ObjectID = "uX1-oV-zJy"; */
 "uX1-oV-zJy.title" = "Transaction details";
@@ -642,19 +650,19 @@
 "uXK-pH-R5H.text" = "--";
 
 /* Class = "UILabel"; text = "Manual Fees:"; ObjectID = "ulz-HX-CeJ"; */
-"ulz-HX-CeJ.text" = "Manual Fees:";
+"ulz-HX-CeJ.text" = "Ручная настройка:";
 
 /* Class = "UILabel"; text = "Do you want to disconnect the CoolWallet?"; ObjectID = "v2u-nV-IyZ"; */
 "v2u-nV-IyZ.text" = "Do you want to disconnect the CoolWallet?";
 
 /* Class = "UINavigationItem"; title = "Create Wallet"; ObjectID = "viF-Fh-Vyh"; */
-"viF-Fh-Vyh.title" = "Create Wallet";
+"viF-Fh-Vyh.title" = "Создать кошелек";
 
 /* Class = "UILabel"; text = "CoolWallet card"; ObjectID = "w1O-rD-oaY"; */
-"w1O-rD-oaY.text" = "CoolWallet card";
+"w1O-rD-oaY.text" = "Карта CoolWallet";
 
 /* Class = "UIViewController"; title = "Send"; ObjectID = "wAB-p2-fGw"; */
-"wAB-p2-fGw.title" = "Send";
+"wAB-p2-fGw.title" = "ОТПРАВИТЬ";
 
 /* Class = "UIButton"; normalTitle = "View at Blockchain.info"; ObjectID = "wwP-t0-c2q"; */
 "wwP-t0-c2q.normalTitle" = "View at Blockchain.info";
@@ -676,3 +684,4 @@
 
 /* Class = "UIButton"; normalTitle = "Login"; ObjectID = "zop-xA-Ob9"; */
 "zop-xA-Ob9.normalTitle" = "Login";
+

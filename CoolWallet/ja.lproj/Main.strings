@@ -1,33 +1,33 @@
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "5Ch-VO-Zf2"; */
+"5Ch-VO-Zf2.normalTitle" = "キャンセル";
 
 /* Class = "UILabel"; text = "Searching for CoolWallet..."; ObjectID = "13M-Nu-HjR"; */
-"13M-Nu-HjR.text" = "Searching for CoolWallet...";
+"13M-Nu-HjR.text" = "接続先のCoolwalletを検索中..";
 
 /* Class = "UILabel"; text = "Are you sure you want to reset your CoolWallet?"; ObjectID = "57x-PC-Jsi"; */
-"57x-PC-Jsi.text" = "Are you sure you want to reset your CoolWallet?";
-
-/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "5Ch-VO-Zf2"; */
-"5Ch-VO-Zf2.normalTitle" = "Cancel";
+"57x-PC-Jsi.text" = "CoolWalletをリセットしてもよろしいですか?";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "739-UZ-l9o"; */
 "739-UZ-l9o.text" = "Title";
 
 /* Class = "UILabel"; text = "Type in OTP shown on card"; ObjectID = "IBK-NO-SBS"; */
-"IBK-NO-SBS.text" = "Type in OTP shown on card";
+"IBK-NO-SBS.text" = "カ－ドに表示されたOTPを入力して下さい";
 
 /* Class = "UILabel"; text = "Pairing successful"; ObjectID = "Kee-WI-Roa"; */
-"Kee-WI-Roa.text" = "Pairing successful";
+"Kee-WI-Roa.text" = "接続が成功しました";
 
 /* Class = "UILabel"; text = "Subtitle"; ObjectID = "KrB-kR-cgF"; */
 "KrB-kR-cgF.text" = "Subtitle";
 
 /* Class = "UILabel"; text = "Please turn on CoolWallet by\npressing the button on card."; ObjectID = "MnQ-Ih-EVv"; */
-"MnQ-Ih-EVv.text" = "Please turn on CoolWallet by\npressing the button on card.";
+"MnQ-Ih-EVv.text" = "Please turn on CoolWallet by
+pressing the button on card.";
 
 /* Class = "UILabel"; text = "CoolWallet allows you to pair up to 3 devices, This device will be able to authenticate the second device."; ObjectID = "RPX-jL-xJd"; */
 "RPX-jL-xJd.text" = "CoolWallet allows you to pair up to 3 devices, This device will be able to authenticate the second device.";
 
 /* Class = "UIButton"; normalTitle = "Reset"; ObjectID = "UEP-ij-kBO"; */
-"UEP-ij-kBO.normalTitle" = "Reset";
+"UEP-ij-kBO.normalTitle" = "リセット";
 
 /* Class = "UILabel"; text = "version"; ObjectID = "W47-Fe-yBC"; */
 "W47-Fe-yBC.text" = "version";
@@ -36,22 +36,23 @@
 "aOw-RQ-zY4.title" = "CW List";
 
 /* Class = "UIButton"; normalTitle = "Pair with this device"; ObjectID = "hCk-TX-6dV"; */
-"hCk-TX-6dV.normalTitle" = "Pair with this device";
+"hCk-TX-6dV.normalTitle" = "このデバイスと接続する";
 
 /* Class = "UIButton"; normalTitle = "Next"; ObjectID = "jau-8x-Rn4"; */
 "jau-8x-Rn4.normalTitle" = "Next";
 
 /* Class = "UILabel"; text = "Confirm One Time Password (OTP)"; ObjectID = "kNT-5K-Yqu"; */
-"kNT-5K-Yqu.text" = "Confirm One Time Password (OTP)";
+"kNT-5K-Yqu.text" = "ワンタイムパスワ－ド (OTP) の確認";
 
 /* Class = "UILabel"; text = "Confirm One Time Password (OTP)"; ObjectID = "mHu-2X-7D0"; */
-"mHu-2X-7D0.text" = "Confirm One Time Password (OTP)";
+"mHu-2X-7D0.text" = "ワンタイムパスワ－ド (OTP) の確認";
 
 /* Class = "UINavigationItem"; title = "Erase CW"; ObjectID = "q62-az-DPT"; */
 "q62-az-DPT.title" = "Erase CW";
 
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "qjh-VR-2Yk"; */
-"qjh-VR-2Yk.normalTitle" = "Cancel";
+"qjh-VR-2Yk.normalTitle" = "キャンセル";
 
 /* Class = "UILabel"; text = "Type in OTP shown on card"; ObjectID = "wTt-Cg-MOB"; */
-"wTt-Cg-MOB.text" = "Type in OTP shown on card";
+"wTt-Cg-MOB.text" = "カードに表示されたOTPを入力して下さい";
+

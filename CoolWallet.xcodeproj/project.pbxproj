@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1E4D96B91F2F137000296B1D /* MigrateBRtoBCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E4D96B81F2F137000296B1D /* MigrateBRtoBCTests.m */; };
 		1E68F1521F4D4EAF0036EDBA /* Accounts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E68F1541F4D4EAF0036EDBA /* Accounts.storyboard */; };
+		1E68F15B1F4D67070036EDBA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E68F15D1F4D67070036EDBA /* InfoPlist.strings */; };
+		1E68F1601F4D67080036EDBA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E68F1621F4D67080036EDBA /* Localizable.strings */; };
+		1E68F1651F4D67080036EDBA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E68F1671F4D67080036EDBA /* InfoPlist.strings */; };
 		8FC950531B6AB3200B892B8C /* libPods-CoolWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58CCFA5C45FF92718BD86335 /* libPods-CoolWalletTests.a */; };
 		93CF969919EE1A0200466DAF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF969819EE1A0200466DAF /* main.m */; };
 		93CF969C19EE1A0200466DAF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF969B19EE1A0200466DAF /* AppDelegate.m */; };
@@ -196,6 +199,12 @@
 		1E68F1531F4D4EAF0036EDBA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Accounts.storyboard; sourceTree = "<group>"; };
 		1E68F1561F4D4EB80036EDBA /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Accounts.strings; sourceTree = "<group>"; };
 		1E68F1581F4D4ECD0036EDBA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Accounts.strings; sourceTree = "<group>"; };
+		1E68F15C1F4D67070036EDBA /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1E68F1611F4D67080036EDBA /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1E68F1661F4D67080036EDBA /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1E68F1681F4D714B0036EDBA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1E68F1691F4D714B0036EDBA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1E68F16A1F4D714B0036EDBA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1EBE4865AFFF5EBA19625BA8 /* libPods-CoolWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CoolWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CBB7DFF75CAE6888DFC4E8A /* Pods-CoolWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoolWallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoolWallet/Pods-CoolWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		2F4E7145A6B325168F254630 /* Pods-CoolWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoolWalletTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoolWalletTests/Pods-CoolWalletTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -588,6 +597,8 @@
 		93CF969619EE1A0200466DAF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1E68F1621F4D67080036EDBA /* Localizable.strings */,
+				1E68F15D1F4D67070036EDBA /* InfoPlist.strings */,
 				F4ACBD161E9D013000782AD6 /* PrefixHeader.pch */,
 				93CF969719EE1A0200466DAF /* Info.plist */,
 				93CF969819EE1A0200466DAF /* main.m */,
@@ -608,6 +619,7 @@
 		93CF96B019EE1A0200466DAF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1E68F1671F4D67080036EDBA /* InfoPlist.strings */,
 				93CF96B119EE1A0200466DAF /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -1129,7 +1141,9 @@
 				EFA36D2C1AC3F3C300D7262F /* menu@3x.png in Resources */,
 				F4BE279C1C995A3E009B8104 /* logout.png in Resources */,
 				EFA3412B1AA6B81C0035AC6D /* menu-icon.png in Resources */,
+				1E68F15B1F4D67070036EDBA /* InfoPlist.strings in Resources */,
 				EFA341301AA6B81C0035AC6D /* reveal-icon@2x.png in Resources */,
+				1E68F1601F4D67080036EDBA /* Localizable.strings in Resources */,
 				F4832FCE1C9F9D180092A322 /* white_frame_small.png in Resources */,
 				EFA3412F1AA6B81C0035AC6D /* reveal-icon.png in Resources */,
 				EFEF1BC91B41039A00373B0E /* add@2x.png in Resources */,
@@ -1180,6 +1194,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E68F1651F4D67080036EDBA /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1428,6 +1443,33 @@
 				1E68F1581F4D4ECD0036EDBA /* ru */,
 			);
 			name = Accounts.storyboard;
+			sourceTree = "<group>";
+		};
+		1E68F15D1F4D67070036EDBA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1E68F15C1F4D67070036EDBA /* ja */,
+				1E68F1681F4D714B0036EDBA /* ru */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		1E68F1621F4D67080036EDBA /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1E68F1611F4D67080036EDBA /* ja */,
+				1E68F1691F4D714B0036EDBA /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		1E68F1671F4D67080036EDBA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1E68F1661F4D67080036EDBA /* ja */,
+				1E68F16A1F4D714B0036EDBA /* ru */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		93CF96A519EE1A0200466DAF /* LaunchScreen.xib */ = {
