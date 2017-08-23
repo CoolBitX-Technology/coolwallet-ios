@@ -1,1 +1,3 @@
-/* No Localized Strings */
+/* No comment provided by engineer. */
+"Estimated transaction fee: Median transaction size 226 bytes x %ld (in satoshis per byte) = %ld satoshi = %@ BTC" = "Расчет комиссии за транзакцию:\\nСредний размер транзакции 226 байт х %1$ld (сатоши за 1байт)";
+

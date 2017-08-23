@@ -14,7 +14,7 @@
 "1Im-aT-IIE.text" = "ウォッチドッゴ機能を有効にする";
 
 /* Class = "UITabBarItem"; title = "CW Card"; ObjectID = "2ZI-qD-hgF"; */
-"2ZI-qD-hgF.title" = "CW Card";
+"2ZI-qD-hgF.title" = "CW カード";
 
 /* Class = "UILabel"; text = "Expiration time"; ObjectID = "2eG-gA-iT7"; */
 "2eG-gA-iT7.text" = "Expiration time";
@@ -29,7 +29,7 @@
 "3Du-yg-HXQ.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
 
 /* Class = "UINavigationItem"; title = "CoolWallet card"; ObjectID = "3M5-JR-pSt"; */
-"3M5-JR-pSt.title" = "CoolWallet card";
+"3M5-JR-pSt.title" = "CoolWallet カード";
 
 /* Class = "UIButton"; normalTitle = "5"; ObjectID = "3MW-he-CSG"; */
 "3MW-he-CSG.normalTitle" = "5";
@@ -47,7 +47,7 @@
 "6rd-bo-67g.text" = "USD";
 
 /* Class = "UIButton"; normalTitle = "Label"; ObjectID = "7Hq-Wl-rhy"; */
-"7Hq-Wl-rhy.normalTitle" = "Label";
+"7Hq-Wl-rhy.normalTitle" = "ラベル";
 
 /* Class = "UILabel"; text = "I have written down all the numbers"; ObjectID = "7Jg-jH-jQG"; */
 "7Jg-jH-jQG.text" = "I have written down all the numbers";
