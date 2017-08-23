@@ -189,6 +189,10 @@
 		02FE950B1BBA8D7F00B152FE /* CwBtcNetworkDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwBtcNetworkDelegate.h; sourceTree = "<group>"; };
 		1E4D96B81F2F137000296B1D /* MigrateBRtoBCTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrateBRtoBCTests.m; sourceTree = "<group>"; };
 		1E4D96BA1F2F151300296B1D /* libRMMapper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRMMapper.a; path = "../../../../Developer/Xcode/DerivedData/CoolWallet-adjbdvcfvcbcrnbvhvhpbuxxzdje/Build/Products/Debug-iphonesimulator/RMMapper/libRMMapper.a"; sourceTree = "<group>"; };
+		1E68F14E1F4D3AC70036EDBA /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
+		1E68F14F1F4D3AC70036EDBA /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		1E68F1501F4D3AD20036EDBA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
+		1E68F1511F4D3AD20036EDBA /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1EBE4865AFFF5EBA19625BA8 /* libPods-CoolWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CoolWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CBB7DFF75CAE6888DFC4E8A /* Pods-CoolWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoolWallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoolWallet/Pods-CoolWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		2F4E7145A6B325168F254630 /* Pods-CoolWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoolWalletTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoolWalletTests/Pods-CoolWalletTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -1416,6 +1420,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				93CF96A619EE1A0200466DAF /* Base */,
+				1E68F14F1F4D3AC70036EDBA /* ja */,
+				1E68F1511F4D3AD20036EDBA /* ru */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
@@ -1424,6 +1430,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				EFEF8DB61B4A32AC004427B8 /* Base */,
+				1E68F14E1F4D3AC70036EDBA /* ja */,
+				1E68F1501F4D3AD20036EDBA /* ru */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1435,6 +1443,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1477,6 +1486,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
