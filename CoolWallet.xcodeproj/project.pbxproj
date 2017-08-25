@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E4D96B91F2F137000296B1D /* MigrateBRtoBCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E4D96B81F2F137000296B1D /* MigrateBRtoBCTests.m */; };
+		8FC950531B6AB3200B892B8C /* libPods-CoolWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58CCFA5C45FF92718BD86335 /* libPods-CoolWalletTests.a */; };
 		93CF969919EE1A0200466DAF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF969819EE1A0200466DAF /* main.m */; };
 		93CF969C19EE1A0200466DAF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF969B19EE1A0200466DAF /* AppDelegate.m */; };
 		93CF969F19EE1A0200466DAF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF969E19EE1A0200466DAF /* ViewController.m */; };
@@ -185,8 +187,12 @@
 
 /* Begin PBXFileReference section */
 		02FE950B1BBA8D7F00B152FE /* CwBtcNetworkDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwBtcNetworkDelegate.h; sourceTree = "<group>"; };
+		1E4D96B81F2F137000296B1D /* MigrateBRtoBCTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrateBRtoBCTests.m; sourceTree = "<group>"; };
+		1E4D96BA1F2F151300296B1D /* libRMMapper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRMMapper.a; path = "../../../../Developer/Xcode/DerivedData/CoolWallet-adjbdvcfvcbcrnbvhvhpbuxxzdje/Build/Products/Debug-iphonesimulator/RMMapper/libRMMapper.a"; sourceTree = "<group>"; };
 		1EBE4865AFFF5EBA19625BA8 /* libPods-CoolWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CoolWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CBB7DFF75CAE6888DFC4E8A /* Pods-CoolWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoolWallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoolWallet/Pods-CoolWallet.debug.xcconfig"; sourceTree = "<group>"; };
+		2F4E7145A6B325168F254630 /* Pods-CoolWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoolWalletTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoolWalletTests/Pods-CoolWalletTests.release.xcconfig"; sourceTree = "<group>"; };
+		58CCFA5C45FF92718BD86335 /* libPods-CoolWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CoolWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93CF969319EE1A0200466DAF /* CoolWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoolWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93CF969719EE1A0200466DAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93CF969819EE1A0200466DAF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -220,6 +226,7 @@
 		A2F29F191C55FE7100C75E91 /* CwExOrderBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExOrderBase.m; path = Model/CwExOrderBase.m; sourceTree = "<group>"; };
 		A2F29F1B1C56042600C75E91 /* CwExSellOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExSellOrder.h; path = Model/CwExSellOrder.h; sourceTree = "<group>"; };
 		A2F29F1C1C56042600C75E91 /* CwExSellOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExSellOrder.m; path = Model/CwExSellOrder.m; sourceTree = "<group>"; };
+		A5F7C9CEE542F1E14050234C /* Pods-CoolWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoolWalletTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoolWalletTests/Pods-CoolWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DD8615E7BC2212802AACC920 /* Pods-CoolWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoolWallet.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoolWallet/Pods-CoolWallet.release.xcconfig"; sourceTree = "<group>"; };
 		EF09E9241BA6C00200C8DCD0 /* TabRecoveryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabRecoveryViewController.h; sourceTree = "<group>"; };
 		EF09E9251BA6C00200C8DCD0 /* TabRecoveryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabRecoveryViewController.m; sourceTree = "<group>"; };
@@ -490,6 +497,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FC950531B6AB3200B892B8C /* libPods-CoolWalletTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -501,6 +509,8 @@
 			children = (
 				2CBB7DFF75CAE6888DFC4E8A /* Pods-CoolWallet.debug.xcconfig */,
 				DD8615E7BC2212802AACC920 /* Pods-CoolWallet.release.xcconfig */,
+				A5F7C9CEE542F1E14050234C /* Pods-CoolWalletTests.debug.xcconfig */,
+				2F4E7145A6B325168F254630 /* Pods-CoolWalletTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -584,6 +594,7 @@
 			children = (
 				93CF96B219EE1A0200466DAF /* CoolWalletTests.m */,
 				93CF96B019EE1A0200466DAF /* Supporting Files */,
+				1E4D96B81F2F137000296B1D /* MigrateBRtoBCTests.m */,
 			);
 			path = CoolWalletTests;
 			sourceTree = "<group>";
@@ -642,7 +653,9 @@
 		BE08787F6C5136570EAE4E4D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1E4D96BA1F2F151300296B1D /* libRMMapper.a */,
 				1EBE4865AFFF5EBA19625BA8 /* libPods-CoolWallet.a */,
+				58CCFA5C45FF92718BD86335 /* libPods-CoolWalletTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1033,9 +1046,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 93CF96B919EE1A0200466DAF /* Build configuration list for PBXNativeTarget "CoolWalletTests" */;
 			buildPhases = (
+				60F8E4783D9043F7BE0F81A0 /* [CP] Check Pods Manifest.lock */,
 				93CF96A819EE1A0200466DAF /* Sources */,
 				93CF96A919EE1A0200466DAF /* Frameworks */,
 				93CF96AA19EE1A0200466DAF /* Resources */,
+				AD9997A4D434142D91810B43 /* [CP] Embed Pods Frameworks */,
+				89152592970AF74142D26064 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1170,6 +1186,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		60F8E4783D9043F7BE0F81A0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		803E57B12099704E65FC8897 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1183,6 +1214,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		89152592970AF74142D26064 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CoolWalletTests/Pods-CoolWalletTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AD9997A4D434142D91810B43 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CoolWalletTests/Pods-CoolWalletTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DB883132C4C8411400824A05 /* [CP] Embed Pods Frameworks */ = {
@@ -1344,6 +1405,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93CF96B319EE1A0200466DAF /* CoolWalletTests.m in Sources */,
+				1E4D96B91F2F137000296B1D /* MigrateBRtoBCTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1503,6 +1565,7 @@
 		};
 		93CF96BA19EE1A0200466DAF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5F7C9CEE542F1E14050234C /* Pods-CoolWalletTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1523,6 +1586,7 @@
 		};
 		93CF96BB19EE1A0200466DAF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2F4E7145A6B325168F254630 /* Pods-CoolWalletTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";

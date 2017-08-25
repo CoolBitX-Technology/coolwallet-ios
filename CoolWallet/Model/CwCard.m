@@ -5403,8 +5403,22 @@ NSArray *addresses;
                     [btcNet decode:currUnsignedTx result:&parseResult];
                     NSLog(@"%@",parseResult);
                     
-                    [btcNet publish:currUnsignedTx result:&parseResult];
+                    PublishErr err =  [btcNet publish:currUnsignedTx result:&parseResult];
                     NSLog(@"%@",parseResult);
+                    
+                    NSString *txId = @"";
+                    if (err == PUBLISH_NETWORK) {
+                        //call error delegate
+                        if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
+                            [self.delegate didSignTransactionError: @"PushX form Post not Work"];
+                        }
+                    } else {
+                        if ([self.delegate respondsToSelector:@selector(didSignTransaction:)]) {
+                            [self.delegate didSignTransaction:txId];
+                        }
+                        [btcNet getBalance:[NSNumber numberWithInteger:account.accId]];
+                    }
+/*
                     //{"status":"success","data":"5c6f2ab6a011a6c45fcec6f342d655cf26fd64ecba76c6ddc3e84dd8434bdfa2","code":200,"message":""}
                     
                     //check parseResult
@@ -5429,6 +5443,7 @@ NSArray *addresses;
                         [btcNet getBalance:[NSNumber numberWithInteger:account.accId]];
                         [btcNet updateHistoryTxs:txId];
                     }
+ */
                     
 //                    if([JSON objectForKey:@"error"] != nil)
 //                    {
@@ -5447,7 +5462,7 @@ NSArray *addresses;
                     
                     [self cwCmdTrxFinish];
                 }
-                
+
             } else {
                 NSLog(@"CwCmdIdTrxSign Error %04lX", (long)cmd.cmdResult);
                 if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
