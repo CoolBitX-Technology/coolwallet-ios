@@ -99,9 +99,10 @@
             [self.cwManager.connectedCwCard findEmptyAddressFromAccount:self.order.accountId.integerValue keyChainId:CwAddressKeyChainInternal];
         } error:^(NSError *error) {
             [self showHintAlert:@"block fail" withMessage:error.localizedDescription withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+            
+            [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
         } finish:^() {
             [self performDismiss];
-            [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
         }];
     }];
     
@@ -112,6 +113,7 @@
     [OTPAlert addAction:okAction];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self performDismiss];
         [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
     }];
     
@@ -189,8 +191,7 @@
 -(void) didGenAddress:(CwAddress *) addr
 {
     self.changeAddress = addr;
-    //[self sendPrepareTransaction];
-    [self.cwManager.connectedCwCard exGetBlockOtp];
+    [self sendPrepareTransaction];
 }
 
 -(void) didGenAddressError
