@@ -7,3 +7,18 @@
 /* No comment provided by engineer. */
 "Please enter OTP" = "OTPを入力してください";
 
+/* Added by 武峯 */
+"synchronizing data" = "データの同期";
+"Connect" = "接続する";
+"Reset" = "リセット";
+"Connect..." = "接続する...";
+"Login Host" = "ログインホスト";
+"Accounts" = "アカウント";
+"Send" = "送信";
+"Receive" = "受信";
+"CoolWallet card" = "CoolWalletカード";
+"Manual Fees:" = "手数料：";
+"Please see the segments guide" = "セグメントガイドをご覧ください";
+"Estimated transaction fee:\nMedian transaction size 226 bytes x %ld (in satoshis per byte)\n= %ld satoshi\n= %@ BTC" = "見積もりトランザクション料金：\n 中央トランザクションサイズ226バイト x %ld（1バイトあたりのサトシ）\n= %ld satoshi \n= %@ BTC";
+"Edit Label" = "ラベルの編集";
+"Request Payment" = "支払いリクエスト";

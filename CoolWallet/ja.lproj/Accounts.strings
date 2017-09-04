@@ -262,14 +262,14 @@
 カードのボタンを押すと次の数字が表示されます";
 
 /* Class = "UILabel"; text = "For example:\n1111111+123456+234434+....."; ObjectID = "RRI-eH-pHG"; */
-"RRI-eH-pHG.text" = "For example:
+"RRI-eH-pHG.text" = "例えば:
 1111111+123456+234434+.....";
 
 /* Class = "UILabel"; text = "--"; ObjectID = "RZF-l1-SCv"; */
 "RZF-l1-SCv.text" = "--";
 
 /* Class = "UILabel"; text = "Please see the segments guide"; ObjectID = "ReR-F3-ubG"; */
-"ReR-F3-ubG.text" = "Please see the segments guide";
+"ReR-F3-ubG.text" = "セグメントガイドをご覧ください";
 
 /* Class = "UILabel"; text = "Reserved:"; ObjectID = "SHr-K0-ygL"; */
 "SHr-K0-ygL.text" = "予約済み:";
@@ -643,13 +643,13 @@
 "uPl-B4-yPs.normalTitle" = "送信";
 
 /* Class = "UINavigationItem"; title = "Transaction details"; ObjectID = "uX1-oV-zJy"; */
-"uX1-oV-zJy.title" = "Transaction details";
+"uX1-oV-zJy.title" = "取引詳細";
 
 /* Class = "UILabel"; text = "--"; ObjectID = "uXK-pH-R5H"; */
 "uXK-pH-R5H.text" = "--";
 
 /* Class = "UILabel"; text = "Manual Fees:"; ObjectID = "ulz-HX-CeJ"; */
-"ulz-HX-CeJ.text" = "Manual Fees:";
+"ulz-HX-CeJ.text" = "手数料：";
 
 /* Class = "UILabel"; text = "Do you want to disconnect the CoolWallet?"; ObjectID = "v2u-nV-IyZ"; */
 "v2u-nV-IyZ.text" = "ログアウトしますか？";

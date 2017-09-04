@@ -1,0 +1,9 @@
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "FV8-im-8zn"; */
+"FV8-im-8zn.text" = "Name";
+
+/* Class = "UIButton"; normalTitle = "Reset"; ObjectID = "MXf-Js-xmg"; */
+"MXf-Js-xmg.normalTitle" = "Reset";
+
+/* Class = "UIButton"; normalTitle = "Connect"; ObjectID = "bNs-1m-UD0"; */
+"bNs-1m-UD0.normalTitle" = "Connect";

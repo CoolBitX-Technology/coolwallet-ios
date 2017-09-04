@@ -271,8 +271,8 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnQ-Ih-EVv">
-                                        <rect key="frame" x="62" y="125" width="219.5" height="41"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnQ-Ih-EVv">
+                                        <rect key="frame" x="62" y="125" width="220" height="72"/>
                                         <string key="text">Please turn on CoolWallet by
 pressing the button on card.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -285,9 +285,13 @@ pressing the button on card.</string>
                                     <constraint firstItem="13M-Nu-HjR" firstAttribute="top" secondItem="5O8-Lg-y4R" secondAttribute="bottom" constant="8" id="4Ma-Cb-ZHc"/>
                                     <constraint firstItem="13M-Nu-HjR" firstAttribute="centerX" secondItem="s5q-vF-vq9" secondAttribute="centerX" id="6OV-A6-0RS"/>
                                     <constraint firstItem="MnQ-Ih-EVv" firstAttribute="centerX" secondItem="s5q-vF-vq9" secondAttribute="centerX" id="HVj-CK-Rdg"/>
+                                    <constraint firstItem="MnQ-Ih-EVv" firstAttribute="leading" secondItem="s5q-vF-vq9" secondAttribute="leading" constant="62" id="LVp-8F-vL9"/>
+                                    <constraint firstItem="MnQ-Ih-EVv" firstAttribute="top" secondItem="13M-Nu-HjR" secondAttribute="bottom" constant="8" id="Qcu-R0-lRF"/>
                                     <constraint firstItem="5O8-Lg-y4R" firstAttribute="centerX" secondItem="s5q-vF-vq9" secondAttribute="centerX" id="TKC-AN-hhZ"/>
                                     <constraint firstItem="5O8-Lg-y4R" firstAttribute="top" secondItem="s5q-vF-vq9" secondAttribute="top" constant="8" id="Zzb-7T-c8B"/>
                                     <constraint firstItem="MnQ-Ih-EVv" firstAttribute="top" secondItem="13M-Nu-HjR" secondAttribute="bottom" constant="8" id="hQN-QO-ahL"/>
+                                    <constraint firstAttribute="trailing" secondItem="MnQ-Ih-EVv" secondAttribute="trailing" constant="61.5" id="pE2-JN-m6V"/>
+                                    <constraint firstAttribute="bottom" secondItem="MnQ-Ih-EVv" secondAttribute="bottom" constant="31.5" id="shm-AJ-QOK"/>
                                     <constraint firstAttribute="width" secondItem="s5q-vF-vq9" secondAttribute="height" multiplier="3:2" id="vCP-y3-rXb"/>
                                 </constraints>
                             </view>
@@ -329,7 +333,7 @@ pressing the button on card.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0IJ-M5-Xtn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="646" y="385"/>
+            <point key="canvasLocation" x="645.5" y="384.5"/>
         </scene>
         <!--Erase CW-->
         <scene sceneID="jQZ-Iu-mN8">
@@ -480,7 +484,7 @@ pressing the button on card.</string>
                                 <rect key="frame" x="0.0" y="22" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="557-IK-XjP" id="0MM-2F-kH9">
-                                    <rect key="frame" x="0.0" y="0.0" width="342" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="739-UZ-l9o">
