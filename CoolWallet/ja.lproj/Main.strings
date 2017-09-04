@@ -8,7 +8,7 @@
 "57x-PC-Jsi.text" = "CoolWalletをリセットしてもよろしいですか?";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "739-UZ-l9o"; */
-"739-UZ-l9o.text" = "Title";
+"739-UZ-l9o.text" = "タイトル";
 
 /* Class = "UILabel"; text = "Type in OTP shown on card"; ObjectID = "IBK-NO-SBS"; */
 "IBK-NO-SBS.text" = "カ－ドに表示されたOTPを入力して下さい";
@@ -17,29 +17,28 @@
 "Kee-WI-Roa.text" = "接続が成功しました";
 
 /* Class = "UILabel"; text = "Subtitle"; ObjectID = "KrB-kR-cgF"; */
-"KrB-kR-cgF.text" = "Subtitle";
+"KrB-kR-cgF.text" = "字幕";
 
 /* Class = "UILabel"; text = "Please turn on CoolWallet by\npressing the button on card."; ObjectID = "MnQ-Ih-EVv"; */
-"MnQ-Ih-EVv.text" = "Please turn on CoolWallet by
-pressing the button on card.";
+"MnQ-Ih-EVv.text" = "カードのボタンを押してCoolWalletをオンにしてください。";
 
 /* Class = "UILabel"; text = "CoolWallet allows you to pair up to 3 devices, This device will be able to authenticate the second device."; ObjectID = "RPX-jL-xJd"; */
-"RPX-jL-xJd.text" = "CoolWallet allows you to pair up to 3 devices, This device will be able to authenticate the second device.";
+"RPX-jL-xJd.text" = "CoolWalletでは最大3つのデバイスをペアリングできます。このデバイスは2つ目のデバイスを認証できます。";
 
 /* Class = "UIButton"; normalTitle = "Reset"; ObjectID = "UEP-ij-kBO"; */
 "UEP-ij-kBO.normalTitle" = "リセット";
 
 /* Class = "UILabel"; text = "version"; ObjectID = "W47-Fe-yBC"; */
-"W47-Fe-yBC.text" = "version";
+"W47-Fe-yBC.text" = "バージョン";
 
 /* Class = "UINavigationItem"; title = "CW List"; ObjectID = "aOw-RQ-zY4"; */
-"aOw-RQ-zY4.title" = "CW List";
+"aOw-RQ-zY4.title" = "CWリスト";
 
 /* Class = "UIButton"; normalTitle = "Pair with this device"; ObjectID = "hCk-TX-6dV"; */
 "hCk-TX-6dV.normalTitle" = "このデバイスと接続する";
 
 /* Class = "UIButton"; normalTitle = "Next"; ObjectID = "jau-8x-Rn4"; */
-"jau-8x-Rn4.normalTitle" = "Next";
+"jau-8x-Rn4.normalTitle" = "次";
 
 /* Class = "UILabel"; text = "Confirm One Time Password (OTP)"; ObjectID = "kNT-5K-Yqu"; */
 "kNT-5K-Yqu.text" = "ワンタイムパスワ－ド (OTP) の確認";
@@ -48,7 +47,7 @@ pressing the button on card.";
 "mHu-2X-7D0.text" = "ワンタイムパスワ－ド (OTP) の確認";
 
 /* Class = "UINavigationItem"; title = "Erase CW"; ObjectID = "q62-az-DPT"; */
-"q62-az-DPT.title" = "Erase CW";
+"q62-az-DPT.title" = "CWを消去する";
 
 /* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "qjh-VR-2Yk"; */
 "qjh-VR-2Yk.normalTitle" = "キャンセル";

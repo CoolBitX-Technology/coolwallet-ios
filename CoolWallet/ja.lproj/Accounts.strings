@@ -1,23 +1,23 @@
 /* Class = "UITabBarItem"; title = "Exit"; ObjectID = "0J7-Sm-VOo"; */
-"0J7-Sm-VOo.title" = "Exit";
+"0J7-Sm-VOo.title" = "出口";
 
 /* Class = "UILabel"; text = "BTC"; ObjectID = "0eZ-k2-IH1"; */
 "0eZ-k2-IH1.text" = "BTC";
 
 /* Class = "UILabel"; text = "Price"; ObjectID = "1EK-ai-BCe"; */
-"1EK-ai-BCe.text" = "Price";
+"1EK-ai-BCe.text" = "価格";
 
 /* Class = "UILabel"; text = "Show fiat value on card"; ObjectID = "1HO-we-Z8m"; */
-"1HO-we-Z8m.text" = "Show fiat value on card";
+"1HO-we-Z8m.text" = "カードに金額を表示する";
 
 /* Class = "UILabel"; text = "Enable Watch dog function"; ObjectID = "1Im-aT-IIE"; */
 "1Im-aT-IIE.text" = "ウォッチドッゴ機能を有効にする";
 
 /* Class = "UITabBarItem"; title = "CW Card"; ObjectID = "2ZI-qD-hgF"; */
-"2ZI-qD-hgF.title" = "CW カード";
+"2ZI-qD-hgF.title" = "CWカード";
 
 /* Class = "UILabel"; text = "Expiration time"; ObjectID = "2eG-gA-iT7"; */
-"2eG-gA-iT7.text" = "Expiration time";
+"2eG-gA-iT7.text" = "有効時間";
 
 /* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "2sq-VJ-BvH"; */
 "2sq-VJ-BvH.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
@@ -35,13 +35,13 @@
 "3MW-he-CSG.normalTitle" = "5";
 
 /* Class = "UILabel"; text = "Price"; ObjectID = "3aF-b8-72j"; */
-"3aF-b8-72j.text" = "Price";
+"3aF-b8-72j.text" = "価格";
 
 /* Class = "UILabel"; text = "0.00000001"; ObjectID = "5JU-qp-woo"; */
 "5JU-qp-woo.text" = "0.00000001";
 
 /* Class = "UIButton"; normalTitle = "Sell order verification"; ObjectID = "5Sr-pg-JnA"; */
-"5Sr-pg-JnA.normalTitle" = "Sell order verification";
+"5Sr-pg-JnA.normalTitle" = "売り注文認証";
 
 /* Class = "UILabel"; text = "USD"; ObjectID = "6rd-bo-67g"; */
 "6rd-bo-67g.text" = "USD";
@@ -50,16 +50,16 @@
 "7Hq-Wl-rhy.normalTitle" = "ラベル";
 
 /* Class = "UILabel"; text = "I have written down all the numbers"; ObjectID = "7Jg-jH-jQG"; */
-"7Jg-jH-jQG.text" = "I have written down all the numbers";
+"7Jg-jH-jQG.text" = "私は全ての数字を書きました";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "7aT-bx-cZA"; */
-"7aT-bx-cZA.text" = "Name";
+"7aT-bx-cZA.text" = "名前";
 
 /* Class = "UINavigationItem"; title = "Address Book"; ObjectID = "8HE-Me-rs1"; */
-"8HE-Me-rs1.title" = "Address Book";
+"8HE-Me-rs1.title" = "アドレス帳";
 
 /* Class = "UILabel"; text = "Auto Fees"; ObjectID = "8O6-92-Ime"; */
-"8O6-92-Ime.text" = "Auto Fees";
+"8O6-92-Ime.text" = "自動料金";
 
 /* Class = "UINavigationItem"; title = "Receive"; ObjectID = "8wX-AQ-Dhh"; */
 "8wX-AQ-Dhh.title" = "受信";
@@ -71,31 +71,31 @@
 "9Dn-Uu-Bg4.normalTitle" = ">";
 
 /* Class = "UILabel"; text = "Trade with other CoolWallet holders on CoolBitX Exchange"; ObjectID = "9az-Ux-MP8"; */
-"9az-Ux-MP8.text" = "Trade with other CoolWallet holders on CoolBitX Exchange";
+"9az-Ux-MP8.text" = "CoolBitX Exchange上で他のCoolWallet保有者との取引";
 
 /* Class = "UILabel"; text = "Exchange"; ObjectID = "9dz-cB-ORR"; */
-"9dz-cB-ORR.text" = "Exchange";
+"9dz-cB-ORR.text" = "交換する";
 
 /* Class = "UILabel"; text = "Expriation Time"; ObjectID = "9pk-eV-xBG"; */
-"9pk-eV-xBG.text" = "Expriation Time";
+"9pk-eV-xBG.text" = "有効時間";
 
 /* Class = "UINavigationItem"; title = "Exit"; ObjectID = "9zJ-9T-yeD"; */
-"9zJ-9T-yeD.title" = "Exit";
+"9zJ-9T-yeD.title" = "出口";
 
 /* Class = "UILabel"; text = "Matched buy orders"; ObjectID = "12y-wM-zWV"; */
-"12y-wM-zWV.text" = "Matched buy orders";
+"12y-wM-zWV.text" = "買い注文マッチ";
 
 /* Class = "UILabel"; text = "10.00000001"; ObjectID = "033-ce-kjZ"; */
 "033-ce-kjZ.text" = "10.00000001";
 
 /* Class = "UILabel"; text = "Order ID"; ObjectID = "42w-LL-kjJ"; */
-"42w-LL-kjJ.text" = "Order ID";
+"42w-LL-kjJ.text" = "注文ID";
 
 /* Class = "UIButton"; normalTitle = "Disconnect CoolWallet"; ObjectID = "61Y-z6-fj4"; */
 "61Y-z6-fj4.normalTitle" = "ログアウトする";
 
 /* Class = "UILabel"; text = "Fees"; ObjectID = "Abw-M0-jkg"; */
-"Abw-M0-jkg.text" = "Fees";
+"Abw-M0-jkg.text" = "手数料";
 
 /* Class = "UIButton"; normalTitle = "1"; ObjectID = "AdY-yw-Qg3"; */
 "AdY-yw-Qg3.normalTitle" = "1";
@@ -110,22 +110,22 @@
 "BNm-VU-Mbw.text" = "金額";
 
 /* Class = "UILabel"; text = "Order number"; ObjectID = "BkJ-hx-vgv"; */
-"BkJ-hx-vgv.text" = "Order number";
+"BkJ-hx-vgv.text" = "注文番号";
 
 /* Class = "UILabel"; text = "10.00000001"; ObjectID = "CBB-6J-rpG"; */
 "CBB-6J-rpG.text" = "10.00000001";
 
 /* Class = "UINavigationItem"; title = "Order details"; ObjectID = "CCS-EQ-yKX"; */
-"CCS-EQ-yKX.title" = "Order details";
+"CCS-EQ-yKX.title" = "注文詳細";
 
 /* Class = "UINavigationItem"; title = "Transaction confirm"; ObjectID = "CaZ-Hk-hV9"; */
-"CaZ-Hk-hV9.title" = "Transaction confirm";
+"CaZ-Hk-hV9.title" = "取引確認";
 
 /* Class = "UINavigationItem"; title = "Recover HD Wallet"; ObjectID = "CjR-bG-5SY"; */
-"CjR-bG-5SY.title" = "Recover HD Wallet";
+"CjR-bG-5SY.title" = "HDウォレットを復元する";
 
 /* Class = "UINavigationItem"; title = "Create New Contact"; ObjectID = "D7i-QE-8XV"; */
-"D7i-QE-8XV.title" = "Create New Contact";
+"D7i-QE-8XV.title" = "新しい連絡先を作成します";
 
 /* Class = "UIButton"; normalTitle = "5"; ObjectID = "DSA-f8-S1U"; */
 "DSA-f8-S1U.normalTitle" = "5";
@@ -140,7 +140,7 @@
 "ECZ-2e-sGU.text" = "金額(BTC)";
 
 /* Class = "UILabel"; text = "Please wait and put your CoolWallet on the charger."; ObjectID = "EGc-bp-J1Z"; */
-"EGc-bp-J1Z.text" = "Please wait and put your CoolWallet on the charger.";
+"EGc-bp-J1Z.text" = "あなたのCoolWalletを充電器に置いて下さい。";
 
 /* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "EoZ-iS-dUx"; */
 "EoZ-iS-dUx.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
@@ -155,10 +155,10 @@
 "FN1-A1-R7A.normalTitle" = "2";
 
 /* Class = "UINavigationItem"; title = "Transaction Fee"; ObjectID = "G9J-Fx-sEG"; */
-"G9J-Fx-sEG.title" = "Transaction Fee";
+"G9J-Fx-sEG.title" = "取引手数料";
 
 /* Class = "UILabel"; text = "Price"; ObjectID = "GD0-BZ-4Z9"; */
-"GD0-BZ-4Z9.text" = "Price";
+"GD0-BZ-4Z9.text" = "価格";
 
 /* Class = "UILabel"; text = "Recover my old wallet  "; ObjectID = "GiR-4r-gKY"; */
 "GiR-4r-gKY.text" = "旧ウォレットの復元";
@@ -167,7 +167,7 @@
 "H8W-wS-kaA.text" = "06:32pm 7 Jan";
 
 /* Class = "UILabel"; text = "Transaction ID"; ObjectID = "HlO-lR-BzC"; */
-"HlO-lR-BzC.text" = "Transaction ID";
+"HlO-lR-BzC.text" = "取引ID";
 
 /* Class = "UILabel"; text = "Send to"; ObjectID = "Hn1-nI-ftz"; */
 "Hn1-nI-ftz.text" = "送信先";
@@ -179,7 +179,7 @@
 "HqX-wc-RU3.text" = "--";
 
 /* Class = "UILabel"; text = "Available:"; ObjectID = "I1p-Fb-hSd"; */
-"I1p-Fb-hSd.text" = "Available:";
+"I1p-Fb-hSd.text" = "利用可能:";
 
 /* Class = "UILabel"; text = "0.00000001"; ObjectID = "I1s-Zd-6fT"; */
 "I1s-Zd-6fT.text" = "0.00000001";
@@ -200,16 +200,16 @@
 "K7D-5N-AdV.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
 
 /* Class = "UITabBarItem"; title = "Hosts"; ObjectID = "KBJ-9Z-Htz"; */
-"KBJ-9Z-Htz.title" = "Hosts";
+"KBJ-9Z-Htz.title" = "ホスト";
 
 /* Class = "UIButton"; normalTitle = "USD"; ObjectID = "Kzf-Kg-bRG"; */
 "Kzf-Kg-bRG.normalTitle" = "USD";
 
 /* Class = "UILabel"; text = "No matched orders yet"; ObjectID = "Lhe-gT-gzG"; */
-"Lhe-gT-gzG.text" = "No matched orders yet";
+"Lhe-gT-gzG.text" = "一致する注文がありません";
 
 /* Class = "UITabBarItem"; title = "Overview"; ObjectID = "Lr7-Z9-LxP"; */
-"Lr7-Z9-LxP.title" = "Overview";
+"Lr7-Z9-LxP.title" = "概要";
 
 /* Class = "UILabel"; text = "--"; ObjectID = "LsJ-7U-nQE"; */
 "LsJ-7U-nQE.text" = "--";
@@ -224,7 +224,7 @@
 "MZj-ru-yOL.title" = "設定";
 
 /* Class = "UILabel"; text = "Generate seed on"; ObjectID = "NOW-wa-2cA"; */
-"NOW-wa-2cA.text" = "Generate seed on";
+"NOW-wa-2cA.text" = "上のシードを生成します";
 
 /* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "Nep-Sb-JOE"; */
 "Nep-Sb-JOE.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
@@ -233,7 +233,7 @@
 "Njd-cf-Wfa.text" = "ワンタイムパルワ－ド認証を有効にする";
 
 /* Class = "UITabBarItem"; title = "Exit"; ObjectID = "Nvp-Uw-wvf"; */
-"Nvp-Uw-wvf.title" = "Exit";
+"Nvp-Uw-wvf.title" = "出口";
 
 /* Class = "UILabel"; text = "@"; ObjectID = "O0W-io-tMD"; */
 "O0W-io-tMD.text" = "@";
@@ -251,10 +251,10 @@
 "PDS-mB-zM7.normalTitle" = "3";
 
 /* Class = "UILabel"; text = "Your order will be cancelled automatically after this time"; ObjectID = "PNf-5Q-8cg"; */
-"PNf-5Q-8cg.text" = "Your order will be cancelled automatically after this time";
+"PNf-5Q-8cg.text" = "この時間が経過するとあなたの注文は自動的にキャンセルされます";
 
 /* Class = "UIButton"; normalTitle = "Verify"; ObjectID = "PlA-2P-xCQ"; */
-"PlA-2P-xCQ.normalTitle" = "Verify";
+"PlA-2P-xCQ.normalTitle" = "確認";
 
 /* Class = "UILabel"; text = "Please write down all sets of the numbers shown on the CoolWallet onto the seed paper\n\nPress the button on the card to see the next set of numbers"; ObjectID = "RNG-9h-bJS"; */
 "RNG-9h-bJS.text" = "CoolWalletに表示されている全ての数字を用紙に書き留めて下さい
@@ -272,7 +272,7 @@
 "ReR-F3-ubG.text" = "Please see the segments guide";
 
 /* Class = "UILabel"; text = "Reserved:"; ObjectID = "SHr-K0-ygL"; */
-"SHr-K0-ygL.text" = "Reserved:";
+"SHr-K0-ygL.text" = "予約済み:";
 
 /* Class = "UINavigationItem"; title = "Security"; ObjectID = "ScJ-OJ-sfF"; */
 "ScJ-OJ-sfF.title" = "セキュリティ";
@@ -287,22 +287,22 @@
 "TL8-81-nFL.title" = "+";
 
 /* Class = "UIButton"; normalTitle = "Sign up now"; ObjectID = "TMI-0W-PHW"; */
-"TMI-0W-PHW.normalTitle" = "Sign up now";
+"TMI-0W-PHW.normalTitle" = "今すぐ申込む";
 
 /* Class = "UIButton"; normalTitle = "1"; ObjectID = "Td3-4I-HYD"; */
 "Td3-4I-HYD.normalTitle" = "1";
 
 /* Class = "UILabel"; text = "HDW Name"; ObjectID = "Tez-gK-Xwy"; */
-"Tez-gK-Xwy.text" = "HDW Name";
+"Tez-gK-Xwy.text" = "HDW名";
 
 /* Class = "UINavigationItem"; title = "Verification"; ObjectID = "ThL-Mm-JcY"; */
-"ThL-Mm-JcY.title" = "Verification";
+"ThL-Mm-JcY.title" = "認証";
 
 /* Class = "UINavigationItem"; title = "Send"; ObjectID = "UDy-tR-hgM"; */
 "UDy-tR-hgM.title" = "送信";
 
 /* Class = "UIButton"; normalTitle = "Request Payment"; ObjectID = "UKr-Rl-fMy"; */
-"UKr-Rl-fMy.normalTitle" = "Request Payment";
+"UKr-Rl-fMy.normalTitle" = "支払いリクエスト";
 
 /* Class = "UIButton"; normalTitle = "Send"; ObjectID = "UNQ-aE-z7v"; */
 "UNQ-aE-z7v.normalTitle" = "送信";
@@ -311,13 +311,13 @@
 "USl-fb-rVJ.title" = "ウォレット作成";
 
 /* Class = "UILabel"; text = "Import my seed"; ObjectID = "UUt-pK-8VY"; */
-"UUt-pK-8VY.text" = "Import my seed";
+"UUt-pK-8VY.text" = "シードをインポートする";
 
 /* Class = "UILabel"; text = "Reserved:"; ObjectID = "UbP-Xy-KLX"; */
-"UbP-Xy-KLX.text" = "Reserved:";
+"UbP-Xy-KLX.text" = "予約済み:";
 
 /* Class = "UITabBarItem"; title = "CW Card"; ObjectID = "Ulq-vI-IXF"; */
-"Ulq-vI-IXF.title" = "CW Card";
+"Ulq-vI-IXF.title" = "CWカード";
 
 /* Class = "UIButton"; normalTitle = "Create Wallet"; ObjectID = "VIS-eO-Yem"; */
 "VIS-eO-Yem.normalTitle" = "ウォレット作成";
@@ -338,13 +338,13 @@
 "WOT-bg-CmQ.title" = "Bitcoin Units preferences";
 
 /* Class = "UILabel"; text = "Account"; ObjectID = "WT8-ZS-c76"; */
-"WT8-ZS-c76.text" = "Account";
+"WT8-ZS-c76.text" = "アカウント";
 
 /* Class = "UINavigationItem"; title = "Accounts"; ObjectID = "Wfl-qY-6FS"; */
-"Wfl-qY-6FS.title" = "Accounts";
+"Wfl-qY-6FS.title" = "アカウント";
 
 /* Class = "UIButton"; normalTitle = "Update"; ObjectID = "Wlz-iZ-ToL"; */
-"Wlz-iZ-ToL.normalTitle" = "Update";
+"Wlz-iZ-ToL.normalTitle" = "更新";
 
 /* Class = "UIButton"; normalTitle = "5"; ObjectID = "WmS-gO-Qfp"; */
 "WmS-gO-Qfp.normalTitle" = "5";
@@ -362,10 +362,10 @@
 "Xeh-pu-sXE.text" = "設定";
 
 /* Class = "UILabel"; text = "address"; ObjectID = "YLV-AL-7hq"; */
-"YLV-AL-7hq.text" = "address";
+"YLV-AL-7hq.text" = "アドレス";
 
 /* Class = "UIViewController"; title = "Accounts"; ObjectID = "YUI-dC-1G3"; */
-"YUI-dC-1G3.title" = "Accounts";
+"YUI-dC-1G3.title" = "アカウント";
 
 /* Class = "UILabel"; text = "Transaction Fees"; ObjectID = "YcE-ob-nRZ"; */
 "YcE-ob-nRZ.text" = "手数料設定";
@@ -374,28 +374,28 @@
 "Yea-oE-i9k.text" = "送信先";
 
 /* Class = "UILabel"; text = "Show recipient's address on card"; ObjectID = "Yw1-KI-ihg"; */
-"Yw1-KI-ihg.text" = "Show recipient's address on card";
+"Yw1-KI-ihg.text" = "受信者アドレスをカードに表示する";
 
 /* Class = "UILabel"; text = "Progress"; ObjectID = "ZnF-vF-PWh"; */
-"ZnF-vF-PWh.text" = "Progress";
+"ZnF-vF-PWh.text" = "進捗";
 
 /* Class = "UILabel"; text = "Notice: the Bitcoin dust of this transaction (BTC0.00000xxx) will be added to mining fee."; ObjectID = "aA6-Vy-HRf"; */
-"aA6-Vy-HRf.text" = "Notice: the Bitcoin dust of this transaction (BTC0.00000xxx) will be added to mining fee.";
+"aA6-Vy-HRf.text" = "注意：この取引手数料（BTC0.00000xxx）は,マイニングに加算されます";
 
 /* Class = "UITabBarItem"; title = "Hosts"; ObjectID = "aBI-PC-fS8"; */
-"aBI-PC-fS8.title" = "Hosts";
+"aBI-PC-fS8.title" = "ホスト";
 
 /* Class = "UIButton"; normalTitle = "Card (numbers)"; ObjectID = "aGu-nW-zuq"; */
 "aGu-nW-zuq.normalTitle" = "Card (numbers)";
 
 /* Class = "UILabel"; text = "version"; ObjectID = "aIR-U1-wKf"; */
-"aIR-U1-wKf.text" = "version";
+"aIR-U1-wKf.text" = "バージョン";
 
 /* Class = "UILabel"; text = "Matched sell orders"; ObjectID = "aUr-6J-4VA"; */
-"aUr-6J-4VA.text" = "Matched sell orders";
+"aUr-6J-4VA.text" = "売り注文マッチ";
 
 /* Class = "UITabBarItem"; title = "Setting"; ObjectID = "afy-SC-jVH"; */
-"afy-SC-jVH.title" = "Setting";
+"afy-SC-jVH.title" = "設定";
 
 /* Class = "UINavigationItem"; title = "Create HD Wallet"; ObjectID = "atk-Yo-FAg"; */
 "atk-Yo-FAg.title" = "Create HD Wallet";
@@ -407,37 +407,37 @@
 "bQ2-Pi-Shj.text" = "ログアウト";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "bUY-TP-ZAB"; */
-"bUY-TP-ZAB.text" = "Label";
+"bUY-TP-ZAB.text" = "ラベル";
 
 /* Class = "UIButton"; normalTitle = "Place an order now"; ObjectID = "bhK-Ap-J4U"; */
 "bhK-Ap-J4U.normalTitle" = "すぐ注文する";
 
 /* Class = "UILabel"; text = "# Inputs"; ObjectID = "bsz-JG-Tbl"; */
-"bsz-JG-Tbl.text" = "# Inputs";
+"bsz-JG-Tbl.text" = "# 入力";
 
 /* Class = "UILabel"; text = "SubTitle"; ObjectID = "bwt-Ca-UHv"; */
-"bwt-Ca-UHv.text" = "SubTitle";
+"bwt-Ca-UHv.text" = "字幕";
 
 /* Class = "UILabel"; text = "- - - - - - - - - - - - - - - -"; ObjectID = "bzG-Gk-Njb"; */
 "bzG-Gk-Njb.text" = "- - - - - - - - - - - - - - - -";
 
 /* Class = "UIButton"; normalTitle = "My seeds is in words"; ObjectID = "cEr-OR-sOH"; */
-"cEr-OR-sOH.normalTitle" = "My seeds is in words";
+"cEr-OR-sOH.normalTitle" = "私のシードはwordsである";
 
 /* Class = "UIButton"; normalTitle = "Next"; ObjectID = "cFX-ji-VNO"; */
 "cFX-ji-VNO.normalTitle" = "次ヘ";
 
 /* Class = "UILabel"; text = "Host devices"; ObjectID = "ce0-hp-7LT"; */
-"ce0-hp-7LT.text" = "Host devices";
+"ce0-hp-7LT.text" = "ホストデバイス";
 
 /* Class = "UIButton"; normalTitle = "Complete order"; ObjectID = "cfD-7O-gJP"; */
-"cfD-7O-gJP.normalTitle" = "Complete order";
+"cfD-7O-gJP.normalTitle" = "注文完了";
 
 /* Class = "UILabel"; text = "Card Name"; ObjectID = "ciH-F4-fs9"; */
-"ciH-F4-fs9.text" = "Card Name";
+"ciH-F4-fs9.text" = "カード名";
 
 /* Class = "UILabel"; text = "Date"; ObjectID = "cj8-eJ-67r"; */
-"cj8-eJ-67r.text" = "Date";
+"cj8-eJ-67r.text" = "日付";
 
 /* Class = "UILabel"; text = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"; ObjectID = "cqw-7U-Fet"; */
 "cqw-7U-Fet.text" = "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -";
@@ -473,7 +473,7 @@
 "fQ1-bH-bJY.text" = "金額";
 
 /* Class = "UILabel"; text = "Subtitle"; ObjectID = "faj-fv-4Vm"; */
-"faj-fv-4Vm.text" = "Subtitle";
+"faj-fv-4Vm.text" = "字幕";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "fbt-pW-ztx"; */
 "fbt-pW-ztx.text" = "Title";
@@ -482,10 +482,10 @@
 "fcx-uk-vbS.text" = "06:32pm 7 Jan";
 
 /* Class = "UILabel"; text = "Change Amount"; ObjectID = "fkv-oW-l9T"; */
-"fkv-oW-l9T.text" = "Change Amount";
+"fkv-oW-l9T.text" = "変更額";
 
 /* Class = "UINavigationItem"; title = "Scan QR Code"; ObjectID = "fu0-iG-aND"; */
-"fu0-iG-aND.title" = "Scan QR Code";
+"fu0-iG-aND.title" = "スキャンQRコード";
 
 /* Class = "UILabel"; text = "Request"; ObjectID = "g8X-WP-Ow8"; */
 "g8X-WP-Ow8.text" = "リクエスト";
@@ -494,13 +494,13 @@
 "gAw-Wd-gUD.text" = "通貨設定";
 
 /* Class = "UINavigationItem"; title = "Import Seed"; ObjectID = "gSA-21-vt4"; */
-"gSA-21-vt4.title" = "Import Seed";
+"gSA-21-vt4.title" = "輸入シード";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "giA-hG-rId"; */
-"giA-hG-rId.text" = "Title";
+"giA-hG-rId.text" = "タイトル";
 
 /* Class = "UINavigationItem"; title = "Host devices"; ObjectID = "gqA-Ot-kKD"; */
-"gqA-Ot-kKD.title" = "Host devices";
+"gqA-Ot-kKD.title" = "ホストデバイス";
 
 /* Class = "UIButton"; normalTitle = "USD"; ObjectID = "gqx-Cf-Sba"; */
 "gqx-Cf-Sba.normalTitle" = "USD";
@@ -521,13 +521,13 @@
 "iWh-Z8-30e.text" = "カ－ドのボタンをクリックして取引を完了させることを有効にする";
 
 /* Class = "UILabel"; text = "Total"; ObjectID = "iw2-YQ-HxC"; */
-"iw2-YQ-HxC.text" = "Total";
+"iw2-YQ-HxC.text" = "合計";
 
 /* Class = "UIButton"; normalTitle = "2"; ObjectID = "jB4-Nu-nbO"; */
 "jB4-Nu-nbO.normalTitle" = "2";
 
 /* Class = "UINavigationItem"; title = "Exchange"; ObjectID = "jWo-do-qSg"; */
-"jWo-do-qSg.title" = "Exchange";
+"jWo-do-qSg.title" = "交換する";
 
 /* Class = "UILabel"; text = "Amount(BTC)"; ObjectID = "jgU-Np-53G"; */
 "jgU-Np-53G.text" = "金額(BTC)";
@@ -542,7 +542,7 @@
 "kpR-QU-JtI.text" = "Expiration time";
 
 /* Class = "UILabel"; text = "Address"; ObjectID = "l0N-XD-EOX"; */
-"l0N-XD-EOX.text" = "Address";
+"l0N-XD-EOX.text" = "アドレス";
 
 /* Class = "UILabel"; text = "Send to"; ObjectID = "lgS-Gs-Drt"; */
 "lgS-Gs-Drt.text" = "送信先";
@@ -607,7 +607,7 @@
 "rhh-em-eqz.text" = "ログアウトするとウォッチドッグ機能は無効になります。";
 
 /* Class = "UILabel"; text = "Available:"; ObjectID = "s8w-4z-JgT"; */
-"s8w-4z-JgT.text" = "Available:";
+"s8w-4z-JgT.text" = "利用可能:";
 
 /* Class = "UILabel"; text = "Please enter your seed (with spaces)"; ObjectID = "slz-v5-3qg"; */
 "slz-v5-3qg.text" = "シ－ドを入力して下さい (間にスペ－スを入れて下さい)";
@@ -667,20 +667,20 @@
 "wwP-t0-c2q.normalTitle" = "View at Blockchain.info";
 
 /* Class = "UILabel"; text = "Verify OTP to place your sell orders"; ObjectID = "xGr-HD-LCU"; */
-"xGr-HD-LCU.text" = "Verify OTP to place your sell orders";
+"xGr-HD-LCU.text" = "あなたの売り注文を入れるためにOTPを確認してください。";
 
 /* Class = "UILabel"; text = "Date"; ObjectID = "xnn-kA-tJW"; */
-"xnn-kA-tJW.text" = "Date";
+"xnn-kA-tJW.text" = "日付";
 
 /* Class = "UINavigationItem"; title = "Exchange"; ObjectID = "xuZ-Bx-vT4"; */
-"xuZ-Bx-vT4.title" = "Exchange";
+"xuZ-Bx-vT4.title" = "交換する";
 
 /* Class = "UILabel"; text = "µBTC (bits)"; ObjectID = "y0P-8l-ALw"; */
 "y0P-8l-ALw.text" = "µBTC (bits)";
 
 /* Class = "UILabel"; text = "Price"; ObjectID = "y0p-61-WHW"; */
-"y0p-61-WHW.text" = "Price";
+"y0p-61-WHW.text" = "価格";
 
 /* Class = "UIButton"; normalTitle = "Login"; ObjectID = "zop-xA-Ob9"; */
-"zop-xA-Ob9.normalTitle" = "Login";
+"zop-xA-Ob9.normalTitle" = "ログイン";
 
