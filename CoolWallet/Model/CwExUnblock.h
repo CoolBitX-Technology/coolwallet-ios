@@ -14,6 +14,6 @@
 @property (strong, nonatomic) NSData *okToken;
 @property (strong, nonatomic) NSData *unblockToken;
 @property (strong, nonatomic) NSData *mac;
-@property (strong, nonatomic, readonly) NSData *nonce;
+@property (strong, nonatomic) NSData *nonce;
 
 @end

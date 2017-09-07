@@ -11,12 +11,6 @@
 
 #import <RMMapper/RMMapper.h>
 
-@interface CwExUnblock()
-
-@property (readwrite) NSData *nonce;
-
-@end
-
 @implementation CwExUnblock
 
 - (NSDictionary *)rm_dataKeysForClassProperties
@@ -25,7 +19,8 @@
              @"orderID" : @"orderId",
              @"okToken" : @"okToken",
              @"unblockToken" : @"unblockTkn",
-             @"mac": @"mac"
+             @"mac": @"mac",
+             @"nonce": @"nonce"
              };
 }
 
@@ -65,13 +60,13 @@
     }
 }
 
--(NSData *)nonce
+-(void) setNonce:(NSData *)nonce
 {
-    if (self.mac) {
-        _nonce = [NSData dataWithBytes:[self.mac bytes] length:16];
+    if ([nonce isKindOfClass:[NSString class]]) {
+        _nonce = [NSString hexstringToData:(NSString *)nonce];
+    } else {
+        _nonce = nonce;
     }
-    
-    return _nonce;
 }
 
 @end
