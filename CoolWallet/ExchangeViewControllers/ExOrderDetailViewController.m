@@ -115,9 +115,7 @@
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self performDismiss];
-        
-        [[CwExchangeManager sharedInstance] unblockOrderWithOrderId:self.order.orderId];
-        
+                
         [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
     }];
     
@@ -162,8 +160,6 @@
     [self showIndicatorView:@"Cancel transaction..."];
     
     self.transactionBegin = NO;
-    
-    [[CwExchangeManager sharedInstance] unblockOrderWithOrderId:self.order.orderId];
     
     [self.cwManager.connectedCwCard cancelTrancation];
     [self.cwManager.connectedCwCard setDisplayAccount: self.cwManager.connectedCwCard.currentAccountId];
@@ -319,14 +315,12 @@
 
 -(void) didSignTransactionError:(NSString *)errMsg
 {
-    self.transactionBegin = NO;
+    [self cancelTransaction];
     
     UIAlertController *alertController = (UIAlertController *)self.navigationController.presentedViewController;
     if (alertController != nil) [alertController dismissViewControllerAnimated:YES completion:nil] ;
     
     [self showHintAlert:@"Unable to send" withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-    
-    [[CwExchangeManager sharedInstance] unblockOrderWithOrderId:self.order.orderId];
 }
 
 -(void) didCancelTransaction
