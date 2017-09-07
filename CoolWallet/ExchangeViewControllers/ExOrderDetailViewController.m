@@ -80,7 +80,7 @@
     self.transactionBegin = YES;
     
     CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
-    [exchange prepareTransactionFromSellOrder:(CwExSellOrder *)self.order withChangeAddress:self.changeAddress.address];
+    [exchange prepareTransactionFromSellOrder:(CwExSellOrder *)self.order withChangeAddress:self.changeAddress];
 }
 
 - (void) showBlockOTPEnterView
@@ -97,12 +97,13 @@
         CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
         [exManager blockWithOrderID:self.order.orderId withOTP:textField.text withSuccess:^() {
             [self.cwManager.connectedCwCard findEmptyAddressFromAccount:self.order.accountId.integerValue keyChainId:CwAddressKeyChainInternal];
+            [self showIndicatorView:@"Preparing transaction..."];
         } error:^(NSError *error) {
             [self showHintAlert:@"block fail" withMessage:error.localizedDescription withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
             
             [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
         } finish:^() {
-            [self performDismiss];
+            
         }];
     }];
     
@@ -114,6 +115,9 @@
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self performDismiss];
+        
+        [[CwExchangeManager sharedInstance] unblockOrderWithOrderId:self.order.orderId];
+        
         [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
     }];
     
@@ -159,8 +163,12 @@
     
     self.transactionBegin = NO;
     
+    [[CwExchangeManager sharedInstance] unblockOrderWithOrderId:self.order.orderId];
+    
     [self.cwManager.connectedCwCard cancelTrancation];
     [self.cwManager.connectedCwCard setDisplayAccount: self.cwManager.connectedCwCard.currentAccountId];
+    
+    [[CwExchangeManager sharedInstance] unblockOrderWithOrderId:self.order.orderId];
 }
 
 #pragma mark - CwCard delegate
@@ -220,6 +228,8 @@
     self.transactionBegin = NO;
     
     [self showHintAlert:@"Unable to send" withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    
+    [self cancelTransaction];
 }
 
 -(void) didGetTapTapOtp: (NSString *)OTP
@@ -255,7 +265,6 @@
         [pressAlert addAction:cancelAction];
         
         [self presentViewController:pressAlert animated:YES completion:nil];
-        
     } else {
         [self didGetButton];
     }
@@ -313,9 +322,11 @@
     self.transactionBegin = NO;
     
     UIAlertController *alertController = (UIAlertController *)self.navigationController.presentedViewController;
-    if(alertController != nil) [alertController dismissViewControllerAnimated:YES completion:nil] ;
+    if (alertController != nil) [alertController dismissViewControllerAnimated:YES completion:nil] ;
     
     [self showHintAlert:@"Unable to send" withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    
+    [[CwExchangeManager sharedInstance] unblockOrderWithOrderId:self.order.orderId];
 }
 
 -(void) didCancelTransaction

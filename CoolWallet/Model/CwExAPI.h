@@ -17,12 +17,12 @@
 #define ExSyncAccountInfo       ExSyncCardInfo@"/%ld"
 #define ExGetPendingOrders      ExBaseUrl@"/pending/%@" // Url: /pending/:CWID(/:orderId)
 #define ExGetTrxInfo            ExBaseUrl@"/trxinfo/%@"
-#define ExGetTrxPrepareBlocks   ExBaseUrl@"/trxblks"
+#define ExGetTrxPrepareBlocks   ExBaseUrl@"/trxblks/%@"  // Url: /trxblks/:orderId
 #define ExTrx                   ExBaseUrl@"/trx/%@"
 #define ExTrxOrderBlock         ExBaseUrl@"/trx/%@/%@" // Url: /trx/:orderId/:otp
 #define ExCancelOrder           ExBaseUrl@"/order/%@"
 #define ExWriteOKToken          ExBaseUrl@"/oktoken/%@" // Url: /oktoken/:orderId
-#define ExUnblockOrders         ExBaseUrl@"/unblock"
+#define ExUnblockOrders         ExBaseUrl@"/unblock/%@"  // Url: /unblock/:orderId
 #define ExOpenOrderCount        ExBaseUrl@"/open/count"
 #define ExGetOrders             ExBaseUrl@"/cw/order/%@"
 

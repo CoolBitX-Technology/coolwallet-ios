@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class CwTx, CwBtc;
+@class CwTx, CwBtc, CwAddress;
 @interface CwExTx : NSObject
 
 @property (assign, nonatomic) NSInteger accountId;
 @property (strong, nonatomic) NSData *loginHandle;
 @property (strong, nonatomic) NSString *receiveAddress;
-@property (strong, nonatomic) NSString *changeAddress;
+@property (strong, nonatomic) CwAddress *changeAddress;
 @property (strong, nonatomic) CwBtc *amount;
 @property (strong, nonatomic) CwTx *unsignedTx;
 

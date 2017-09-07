@@ -12,7 +12,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
-@class CwCard, CwAccount, CwExUnblock, CwExchange, CwExSellOrder;
+@class CwCard, CwAccount, CwExUnblock, CwExchange, CwExSellOrder, CwAddress;
 
 @interface CwExchangeManager : NSObject
 
@@ -31,9 +31,8 @@
 -(void) requestPendingOrders;
 -(void) requestMatchedOrder:(NSString *)orderId;
 -(void) blockWithOrderID:(NSString *)hexOrderID withOTP:(NSString *)otp withSuccess:(void(^)(void))successCallback error:(void(^)(NSError *error))errorCallback finish:(void(^)(void))finishCallback;
--(void) prepareTransactionFromSellOrder:(CwExSellOrder *)sellOrder withChangeAddress:(NSString *)changeAddress;
+-(void) prepareTransactionFromSellOrder:(CwExSellOrder *)sellOrder withChangeAddress:(CwAddress *)changeAddress;
 -(void) completeTransactionWith:(CwExSellOrder *)sellOrder;
--(void) unblockOrders;
 -(void) unblockOrderWithOrderId:(NSString *)orderId;
 
 -(AFHTTPRequestOperationManager *) defaultJsonManager;

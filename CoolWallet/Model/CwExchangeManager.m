@@ -16,6 +16,7 @@
 #import "CwBtc.h"
 #import "CwTx.h"
 #import "CwTxin.h"
+#import "CwAddress.h"
 #import "CwExUnblock.h"
 #import "CwExOpenOrder.h"
 #import "CwExchange.h"
@@ -207,7 +208,7 @@
 {
     RACSignal *blockSignal = [self signalRequestOrderBlockWithOrderID:hexOrderID withOTP:otp];
     
-    [[[[blockSignal flattenMap:^RACStream *(NSString *blockData) {
+    [[[[[blockSignal flattenMap:^RACStream *(NSString *blockData) {
         return [self signalBlockBTCFromCard:blockData];
     }] flattenMap:^RACStream *(NSDictionary *data) {
         NSString *okToken = [data objectForKey:@"okToken"];
@@ -218,7 +219,8 @@
         if (finishCallback) {
             finishCallback();
         }
-    }] subscribeNext:^(id value) {
+    }] deliverOnMainThread]
+     subscribeNext:^(id value) {
         if (successCallback) {
             successCallback();
         }
@@ -229,12 +231,12 @@
     }];
 }
 
--(void) prepareTransactionFromSellOrder:(CwExSellOrder *)sellOrder withChangeAddress:(NSString *)changeAddress
+-(void) prepareTransactionFromSellOrder:(CwExSellOrder *)sellOrder withChangeAddress:(CwAddress *)changeAddress
 {
     sellOrder.exTrx.changeAddress = changeAddress;
     
     @weakify(self)
-    [[[[[self signalGetTrxInfoFromOrder:sellOrder.orderId] flattenMap:^RACStream *(NSDictionary *response) {
+    [[[[[[self signalGetTrxInfoFromOrder:sellOrder.orderId] flattenMap:^RACStream *(NSDictionary *response) {
         NSLog(@"response: %@", response);
         @strongify(self)
         NSString *loginData = [response objectForKey:@"loginblk"];
@@ -245,18 +247,21 @@
         }
         
         return [self signalTrxLogin:loginData];
-    }] flattenMap:^RACStream *(NSData *trxHandle) {        
+    }] flattenMap:^RACStream *(NSData *trxHandle) {
+        NSString *changeAddress = sellOrder.exTrx.changeAddress.address;
+        
         sellOrder.exTrx.loginHandle = trxHandle;
-        CwTx *unsignedTx = [self.card getUnsignedTransaction:sellOrder.exTrx.amount.satoshi.longLongValue Address:sellOrder.exTrx.receiveAddress Change:sellOrder.exTrx.changeAddress AccountId:sellOrder.exTrx.accountId];
-        if (unsignedTx == nil) {
+        sellOrder.exTrx.unsignedTx = [self.card getUnsignedTransaction:sellOrder.exTrx.amount.satoshi.longLongValue Address:sellOrder.exTrx.receiveAddress Change:changeAddress AccountId:sellOrder.exTrx.accountId];
+        if (sellOrder.exTrx.unsignedTx == nil) {
             return [RACSignal error:[NSError errorWithDomain:@"Exchange site error." code:1002 userInfo:@{@"error": @"Check unsigned data error."}]];
         } else {
-            return [self signalTrxPrepareDataFrom:unsignedTx andExTx:sellOrder.exTrx];
+            return [self signalTrxPrepareDataFrom:sellOrder];
         }
     }] finally:^() {
         CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", sellOrder.exTrx.accountId]];
         account.tempUnblockAmount = 0;
-    }] subscribeNext:^(id value) {
+    }] deliverOnMainThread]
+     subscribeNext:^(id value) {
         NSLog(@"Ex Trx prepairing...");
     } error:^(NSError *error) {
         NSLog(@"Ex Trx prepaire fail: %@", error);
@@ -280,7 +285,7 @@
         NSString *url = [NSString stringWithFormat:ExTrx, sellOrder.orderId];
         NSDictionary *dict = @{@"inputs": [NSNumber numberWithInteger:sellOrder.exTrx.unsignedTx.inputs.count],
                                @"bcTrxId": sellOrder.exTrx.trxId,
-                               @"changeAddr": sellOrder.exTrx.changeAddress,
+                               @"changeAddr": sellOrder.exTrx.changeAddress.address,
                                @"trxReceipt": receipt,
                                @"uid": self.card.uid,
                                @"nonce": sellOrder.exTrx.nonce};
@@ -305,19 +310,6 @@
         }];
     } error:^(NSInteger errorCode) {
         
-    }];
-}
-
--(void) unblockOrders
-{
-    [[self signalRequestUnblockInfoWithOrderId:nil] subscribeNext:^(NSArray *unblocks) {
-        for (CwExUnblock *unblock in unblocks) {
-            [[self signalUnblock:unblock] subscribeNext:^(id value) {
-                
-            } error:^(NSError *error) {
-                
-            }];
-        }
     }];
 }
 
@@ -364,7 +356,7 @@
     }
     
     @weakify(self);
-    RACDisposable *disposable = [[[RACObserve(account, infoSynced) distinctUntilChanged] filter:^BOOL(NSNumber *synced) {
+    __block RACDisposable *disposable = [[[RACObserve(account, infoSynced) distinctUntilChanged] filter:^BOOL(NSNumber *synced) {
         @strongify(self);
         return synced.boolValue && ![self.syncedAccount containsObject:account];
     }] subscribeNext:^(NSNumber *synced) {
@@ -399,7 +391,7 @@
                                               return counter.intValue * self.cardInfoSynced <= 0;
                                           }] distinctUntilChanged];
     
-    RACDisposable *disposable = [[signal flattenMap:^RACStream *(NSArray *counter) {
+    __block RACDisposable *disposable = [[signal flattenMap:^RACStream *(NSArray *counter) {
         @strongify(self)
         return [self signalSyncAccountInfo:account];
     }] subscribeNext:^(id response) {
@@ -715,18 +707,29 @@
     return signal;
 }
 
--(RACSignal *)signalTrxPrepareDataFrom:(CwTx *)unsignedTx andExTx:(CwExTx *)exTx
+-(RACSignal *)signalTrxPrepareDataFrom:(CwExSellOrder *)sellOrder
 {
-    __block NSString *url = ExGetTrxPrepareBlocks;
+    __block NSString *url = [NSString stringWithFormat:ExGetTrxPrepareBlocks, sellOrder.orderId];
     
+    CwTx *unsignedTx = sellOrder.exTrx.unsignedTx;
     NSMutableArray *inputBlocks = [NSMutableArray new];
     for (int index=0; index < unsignedTx.inputs.count; index++) {
         CwTxin *txin = unsignedTx.inputs[index];
-        NSData *inputData = [self composePrepareInputData:index KeyChainId:txin.kcId AccountId:txin.accId KeyId:txin.kId receiveAddress:exTx.receiveAddress changeAddress:exTx.changeAddress SignatureMateiral:txin.hashForSign];
+        NSData *inputData = [self composePrepareInputData:index
+                                               KeyChainId:txin.kcId
+                                                AccountId:txin.accId
+                                                    KeyId:txin.kId
+                                           receiveAddress:sellOrder.exTrx.receiveAddress
+                                            changeAddress:sellOrder.exTrx.changeAddress.address
+                                        SignatureMateiral:txin.hashForSign];
         [inputBlocks addObject:@{@"idx": @(index), @"blk": [NSString dataToHexstring:inputData]}];
     }
-    __block NSDictionary *dict = @{@"blks": inputBlocks};
     
+    __block NSDictionary *dict = @{
+                                   @"changeKid": @(sellOrder.exTrx.changeAddress.keyId),
+                                   @"blks": inputBlocks
+                                   };
+    NSLog(@"%@, dict: %@", url, dict);
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
@@ -737,7 +740,7 @@
             for (NSDictionary *blockData in blocks) {
                 NSInteger index = (NSInteger)[blockData objectForKey:@"idx"];
                 NSString *block = [blockData objectForKey:@"blk"];
-                NSMutableData *inputData = [NSMutableData dataWithData:exTx.loginHandle];
+                NSMutableData *inputData = [NSMutableData dataWithData:sellOrder.exTrx.loginHandle];
                 [inputData appendData:[NSString hexstringToData:block]];
                 
                 [self.card exTrxSignPrepareWithInputId:index withInputData:inputData];
@@ -746,6 +749,11 @@
             [subscriber sendNext:responseObject];
             [subscriber sendCompleted];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            NSMutableDictionary *errorDict = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+            [errorDict setObject:@"Preparing Transaction fail with Exchange Site" forKey:@"error"];
+            NSLog(@"error: %@", errorDict);
+            error = [NSError errorWithDomain:error.domain code:error.code userInfo:errorDict];
+            
             [subscriber sendError:error];
         }];
         
@@ -757,10 +765,7 @@
 
 -(RACSignal *)signalRequestUnblockInfoWithOrderId:(NSString *)orderId
 {
-    __block NSString *url = ExUnblockOrders;
-    if (orderId != nil) {
-        url = [url stringByAppendingFormat:@"/%@", orderId];
-    }
+    __block NSString *url = [NSString stringWithFormat:ExUnblockOrders, orderId];
     
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
