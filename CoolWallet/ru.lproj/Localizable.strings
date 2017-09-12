@@ -1,3 +1,29 @@
 /* No comment provided by engineer. */
-"Estimated transaction fee: Median transaction size 226 bytes x %ld (in satoshis per byte) = %ld satoshi = %@ BTC" = "Расчет комиссии за транзакцию:\\nСредний размер транзакции 226 байт х %1$ld (сатоши за 1байт)";
+"Cancel" = "Отмена";
 
+/* No comment provided by engineer. */
+"IMPORTANT!" = "ВАЖНЫЙ！";
+
+/* No comment provided by engineer. */
+"Please enter OTP" = "Введите OTP";
+
+/* Added by 武峯 */
+"synchronizing data" = "синхронизация данных";
+"Connect" = "соединять";
+"Reset" = "Сброс";
+"Connect..." = "соединять...";
+"Login Host" = "Вход в систему";
+"Accounts" = "Счета";
+"Send" = "послать";
+"Receive" = "Получать";
+"CoolWallet card" = "Карта CoolWallet";
+"Manual Fees:" = "Ручные сборы：";
+"Please see the segments guide" = "См. Руководство по сегментам";
+"Estimated transaction fee:\nMedian transaction size 226 bytes x %ld (in satoshis per byte)\n= %ld satoshi\n= %@ BTC" = "Ориентировочная транзакционная комиссия: \ Размер медианной транзакции 226 байт x% ld (в сатоши на один байт) \ n =% ld satoshi \ n =% @ BTC";
+"Edit Label" = "Изменить ярлык";
+"Request Payment" = "Запросить платеж";
+"Confirmed" = "подтвердил";
+"Card Name" = "Название карты";
+"Update Security Policy" = "Обновление политики безопасности";
+"Date" = "Дата";
+"Receive from" = "Получить от";
