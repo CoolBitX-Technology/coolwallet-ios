@@ -164,7 +164,7 @@ NSTimer *scanTimer;
     
     //update cwCards if CW found
     
-    if ([peripheral.name containsString:@"CoolWallet"])
+    if ([peripheral.name containsString:@"CoolWallet "]) // 在 CoolWallet 後面的空格是必須的。(為了和二代卡做區別)
     {
         //[central stopScan];
         NSLog(@"CoolWallet Found");
