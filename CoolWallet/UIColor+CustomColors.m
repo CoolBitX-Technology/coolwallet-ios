@@ -23,4 +23,9 @@
     return [UIColor colorWithRed:25.0/255.0 green:25.0/255.0 blue:25.0/255.0 alpha:1.0];
 }
 
++(UIColor *) colorGold
+{
+    return [UIColor colorWithRed:174.0/255.0 green:144.0/255.0 blue:64.0/255.0 alpha:1.0];
+}
+
 @end

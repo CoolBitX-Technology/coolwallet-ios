@@ -8,8 +8,10 @@
 
 #import "ExOrderCell.h"
 #import "CwExOrderBase.h"
+#import "CwExSellOrder.h"
 
 #import "NSDate+Localize.h"
+#import "UIColor+CustomColors.h"
 
 @interface ExOrderCell()
 
@@ -46,6 +48,24 @@
         self.timeLabel.text = [order.expiration exDateString];
     } else {
         self.timeLabel.text = @"--";
+    }
+    
+    [self updateTextColor:order];
+}
+
+-(void) updateTextColor:(CwExOrderBase *)order
+{
+    if (![order isKindOfClass:[CwExSellOrder class]]) {
+        return;
+    }
+    
+    CwExSellOrder *sellOrder = (CwExSellOrder *)order;
+    if (sellOrder.submitted && sellOrder.submitted.boolValue == YES) {
+        UIColor *gold = [UIColor colorGold];
+        [self.orderIdLabel setTextColor:gold];
+        [self.amountBTCLabel setTextColor:gold];
+        [self.priceLabel setTextColor:gold];
+        [self.timeLabel setTextColor:gold];
     }
 }
 

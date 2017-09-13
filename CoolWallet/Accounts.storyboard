@@ -4444,8 +4444,8 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <outlet property="openOrdersView" destination="XOL-A7-pjk" id="kIW-Dj-zPr"/>
                         <outlet property="openOrdersViewHeightConstraint" destination="mdI-FJ-veu" id="Pan-Fi-2at"/>
                         <outlet property="pendingOrderView" destination="ybr-hI-9sv" id="Tsg-lD-1Z5"/>
-                        <outlet property="tableViewBuy" destination="f0p-kQ-Ixr" id="Thi-Gu-uOC"/>
-                        <outlet property="tableViewSell" destination="VQT-vY-3Ag" id="VY5-qs-LcO"/>
+                        <outlet property="tableViewBuy" destination="VQT-vY-3Ag" id="ZSF-f3-Mtu"/>
+                        <outlet property="tableViewSell" destination="f0p-kQ-Ixr" id="QC2-RA-ooY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8L5-CM-AmC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4515,19 +4515,19 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OrI-pc-MfV">
-                                                    <rect key="frame" x="8" y="13" width="113" height="18"/>
+                                                    <rect key="frame" x="8" y="13" width="112.5" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LsJ-7U-nQE">
-                                                    <rect key="frame" x="234.5" y="13" width="112.5" height="18"/>
+                                                    <rect key="frame" x="234" y="13" width="113" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXK-pH-R5H">
-                                                    <rect key="frame" x="121" y="13" width="113.5" height="18"/>
+                                                    <rect key="frame" x="120.5" y="13" width="113.5" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -5385,7 +5385,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="brK-em-gbO"/>
+        <segue reference="1rh-8W-cge"/>
         <segue reference="t76-YH-dUj"/>
         <segue reference="gzi-1q-gb8"/>
     </inferredMetricsTieBreakers>

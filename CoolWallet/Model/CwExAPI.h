@@ -24,7 +24,7 @@
 #define ExWriteOKToken          ExBaseUrl@"/oktoken/%@" // Url: /oktoken/:orderId
 #define ExUnblockOrders         ExBaseUrl@"/unblock/%@"  // Url: /unblock/:orderId
 #define ExOpenOrderCount        ExBaseUrl@"/open/count"
-#define ExGetOrders             ExBaseUrl@"/cw/order/%@"
+#define ExGetOrders             ExBaseUrl@"/order/%@"
 
 typedef NS_ENUM (int, ExSessionStatus) {
     ExSessionNone,

@@ -13,5 +13,6 @@
 +(UIColor *) colorMainBackground;
 +(UIColor *) colorContentBackground;
 +(UIColor *) colorAccountBackground;
++(UIColor *) colorGold;
 
 @end
