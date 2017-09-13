@@ -82,7 +82,7 @@
         self.completeOrderBtn.hidden = NO;
         
         CwExSellOrder *sellOrder = (CwExSellOrder *)self.order;
-        [self.completeOrderBtn setEnabled:!sellOrder.submitted];
+        [self.completeOrderBtn setEnabled:!sellOrder.submitted.boolValue];
     } else {
         self.addressTitleLabel.text = @"Receive Address";
         self.completeOrderBtn.hidden = YES;
