@@ -286,9 +286,9 @@
         NSDictionary *dict = @{@"inputs": [NSNumber numberWithInteger:sellOrder.exTrx.unsignedTx.inputs.count],
                                @"bcTrxId": sellOrder.exTrx.trxId,
                                @"changeAddr": sellOrder.exTrx.changeAddress.address,
-                               @"trxReceipt": receipt,
+                               @"trxReceipt": [NSString dataToHexstring:receipt],
                                @"uid": self.card.uid,
-                               @"nonce": sellOrder.exTrx.nonce};
+                               @"nonce": [NSString dataToHexstring:sellOrder.exTrx.nonce]};
         
         AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
         [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
@@ -299,7 +299,7 @@
                 NSArray *result = [self.exchange.pendingSellOrders filteredArrayUsingPredicate:predicate];
                 if (result.count > 0) {
                     for (CwExSellOrder *sellOrder in result) {
-                        sellOrder.sumbitted = [NSNumber numberWithBool:YES];
+                        sellOrder.submitted = [NSNumber numberWithBool:YES];
                     }
                 }
             }
@@ -738,12 +738,12 @@
         [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
             NSArray *blocks = [responseObject objectForKey:@"blks"];
             for (NSDictionary *blockData in blocks) {
-                NSInteger index = (NSInteger)[blockData objectForKey:@"idx"];
+                NSNumber *index = [blockData objectForKey:@"idx"];
                 NSString *block = [blockData objectForKey:@"blk"];
                 NSMutableData *inputData = [NSMutableData dataWithData:sellOrder.exTrx.loginHandle];
                 [inputData appendData:[NSString hexstringToData:block]];
                 
-                [self.card exTrxSignPrepareWithInputId:index withInputData:inputData];
+                [self.card exTrxSignPrepareWithInputId:index.integerValue withInputData:inputData];
             }
             
             [subscriber sendNext:responseObject];

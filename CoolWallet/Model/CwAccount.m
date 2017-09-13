@@ -108,6 +108,28 @@
     return YES;
 }
 
+-(BOOL) isAllUnspentPublicKeysExists
+{
+    BOOL result = YES;
+    //get address publickey uf the unspent if needed
+    for (CwUnspentTxIndex *utx in self.unspentTxs)
+    {
+        CwAddress *addr;
+        if (utx.kcId==0) {
+            addr = self.extKeys[utx.kId];
+        } else {
+            addr = self.intKeys[utx.kId];
+        }
+        
+        if (!addr.publicKey) {
+            result = NO;
+            break;
+        }
+    }
+    
+    return result;
+}
+
 NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
 {
     CwBtc* amount1 = [unspentTx1 amount];

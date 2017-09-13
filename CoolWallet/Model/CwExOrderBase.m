@@ -7,12 +7,14 @@
 //
 
 #import "CwExOrderBase.h"
+#import "CwManager.h"
 
 #import <RMMapper/RMMapper.h>
 
 @interface CwExOrderBase()
 
 @property (readwrite, nonatomic) NSDate *expiration;
+@property (readwrite, nonatomic) CwAccount *cwAccount;
 
 @end
 
@@ -22,12 +24,9 @@
 {
     return @{
              @"orderId" : @"orderId",
-//             @"cwOrderId" : @"cwOrderId",
-//             @"address" : @"addr",
              @"amountBTC" : @"amount",
              @"price" : @"price",
              @"accountId" : @"account",
-//             @"expirationUTC" : @"expiration",
              };
 }
 
@@ -40,6 +39,16 @@
     [dateformat setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
     
     _expiration = [dateformat dateFromString:expirationUTC];
+}
+
+-(CwAccount *) cwAccount
+{
+    if (!_cwAccount || _cwAccount.accId != self.accountId.integerValue) {
+        CwManager *cwManager = [CwManager sharedManager];
+        _cwAccount = [cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)self.accountId.integerValue]];
+    }
+    
+    return _cwAccount;
 }
 
 @end

@@ -37,6 +37,8 @@
 #import "NSUserDefaults+RMSaveCustomObject.h"
 #import "NSString+HexToData.h"
 
+#import "NSData+Hash.h"
+
 #import "mpbn_util.h"
 #import "tx.h"
 
@@ -5401,10 +5403,10 @@ NSArray *addresses;
                     
                     CwBtcNetWork *btcNet = [CwBtcNetWork sharedManager];
                     [btcNet decode:currUnsignedTx result:&parseResult];
-                    NSLog(@"%@",parseResult);
+                    NSLog(@"decode: %@",parseResult);
                     
                     PublishErr err =  [btcNet publish:currUnsignedTx result:&parseResult];
-                    NSLog(@"%@",parseResult);
+                    NSLog(@"publish: %@",parseResult);
                     
                     NSString *txId = @"";
                     if (err == PUBLISH_NETWORK) {
@@ -5413,6 +5415,7 @@ NSArray *addresses;
                             [self.delegate didSignTransactionError: @"PushX form Post not Work"];
                         }
                     } else {
+                        txId = [NSString dataToHexstring:currUnsignedTx.rawTx.SHA256_2];
                         if ([self.delegate respondsToSelector:@selector(didSignTransaction:)]) {
                             [self.delegate didSignTransaction:txId];
                         }
@@ -5699,7 +5702,7 @@ NSArray *addresses;
                 NSLog(@"trxStatus = %ld", (long)trxStatus);
                 
                 if (self.exTrxSignLogoutCompleteBlock) {
-                    NSData *receipt = [NSData dataWithBytes:data length:sizeof(data)];
+                    NSData *receipt = [NSData dataWithBytes:data length:80];
                     self.exTrxSignLogoutCompleteBlock(receipt);
                 }
             } else {

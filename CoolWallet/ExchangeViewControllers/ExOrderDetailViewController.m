@@ -12,13 +12,16 @@
 #import "CwExchangeManager.h"
 #import "CwExTx.h"
 #import "CwCommandDefine.h"
+#import "BlockChain.h"
+#import "CwBtcNetWork.h"
+#import "CwUnspentTxIndex.h"
 
 #import "NSDate+Localize.h"
 
 #import <AFNetworking/AFNetworking.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
-@interface ExOrderDetailViewController()
+@interface ExOrderDetailViewController() <CwBtcNetworkDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *addressTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
@@ -32,6 +35,11 @@
 @property (strong, nonatomic) CwAddress *changeAddress;
 @property (assign, nonatomic) BOOL transactionBegin;
 
+@property (strong, nonatomic) CwBtcNetWork *btcNet;
+@property (strong, nonatomic) NSMutableArray *unspentAddresses;
+
+@property (assign, nonatomic) BOOL needUpdateAccountInfo;
+
 @end
 
 @implementation ExOrderDetailViewController
@@ -40,45 +48,125 @@
 {
     [super viewDidLoad];
     
+    [self updateUI];
+    
+    [self updateAccount];
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (self.cwManager.connectedCwCard.delegate == self) {
+        self.cwManager.connectedCwCard.delegate = nil;
+    }
+    
+    if (self.btcNet && self.btcNet.delegate == self) {
+        self.btcNet.delegate = nil;
+    }
+}
+
+-(CwBtcNetWork *) btcNet
+{
+    if (_btcNet == nil) {
+        _btcNet = [CwBtcNetWork sharedManager];
+    }
+    
+    return _btcNet;
+}
+
+- (void) updateUI
+{
     if ([self.order isKindOfClass:[CwExSellOrder class]]) {
         self.addressTitleLabel.text = @"Buyer's Address";
         self.completeOrderBtn.hidden = NO;
         
         CwExSellOrder *sellOrder = (CwExSellOrder *)self.order;
-        [self.completeOrderBtn setEnabled:!sellOrder.sumbitted];
+        [self.completeOrderBtn setEnabled:!sellOrder.submitted];
     } else {
         self.addressTitleLabel.text = @"Receive Address";
         self.completeOrderBtn.hidden = YES;
     }
     
     self.addressLabel.text = self.order.address;
+    
     if (self.order.amountBTC) {
         self.amountLabel.text = [NSString stringWithFormat:@"%@ BTC", self.order.amountBTC];
     }
+    
     if (self.order.price) {
         self.priceLabel.text = [NSString stringWithFormat:@"$%@", self.order.price];
     }
+    
     self.orderNumberLabel.text = [NSString stringWithFormat:@"#%@", self.order.orderId];
+    
     if (self.order.accountId) {
         self.accountLabel.text = [NSString stringWithFormat:@"%d", self.order.accountId.intValue+1];
     }
+    
     if (self.order.expiration) {
         self.timeLabel.text = [self.order.expiration localizeDateString:@"hh:mm a MM/dd/yyyy"];
     }
 }
 
+- (void) updateAccount
+{
+    self.unspentAddresses = [NSMutableArray new];
+    
+    NSInteger orderAccId = self.order.accountId.integerValue;
+    
+    self.cwManager.connectedCwCard.delegate = self;
+    self.cwManager.connectedCwCard.currentAccountId = orderAccId;
+    [self.cwManager.connectedCwCard setDisplayAccount:orderAccId];
+    
+    self.btcNet.delegate = self;
+    
+    self.needUpdateAccountInfo = NO;
+    if (self.order.cwAccount.lastUpdate == nil) {
+        self.needUpdateAccountInfo = YES;
+        [self.cwManager.connectedCwCard getAccountAddresses:orderAccId];
+    } else if (![self.order.cwAccount isAllUnspentPublicKeysExists]) {
+        self.needUpdateAccountInfo = YES;
+        [self updateUnspentPublicKeys];
+    }
+}
+
+- (void) updateUnspentPublicKeys
+{
+    NSInteger orderAccId = self.order.accountId.integerValue;
+
+    for (CwUnspentTxIndex *utx in self.order.cwAccount.unspentTxs)
+    {
+        [self.cwManager.connectedCwCard getAddressPublickey:orderAccId KeyChainId:utx.kcId KeyId:utx.kId];
+    }
+}
+
+-(void) updateAccountTransaction
+{
+    [self.btcNet getTransactionByAccount: self.order.accountId.integerValue];
+}
+
 - (IBAction)completeOrder:(UIButton *)sender {
     // prepare ex transaction & sign transaction
     
-    [self showIndicatorView:@"Send..."];
+    self.transactionBegin = YES;
     
+    if (self.needUpdateAccountInfo) {
+        [self showIndicatorView:@"Update account info first..."];
+    } else {
+        [self startCompleteOrder];
+    }
+}
+
+-(void) startCompleteOrder
+{
+    [self performDismiss];
+    [self showIndicatorView:@"Send..."];
     [self.cwManager.connectedCwCard exGetBlockOtp];
 }
 
 -(void) sendPrepareTransaction
 {
-    self.transactionBegin = YES;
-    
     CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
     [exchange prepareTransactionFromSellOrder:(CwExSellOrder *)self.order withChangeAddress:self.changeAddress];
 }
@@ -167,7 +255,47 @@
     [[CwExchangeManager sharedInstance] unblockOrderWithOrderId:self.order.orderId];
 }
 
+#pragma mark - CwBtc delegate
+
+-(void) didGetTransactionByAccount: (NSInteger) accId
+{
+    if (accId != self.order.accountId.integerValue) {
+        return;
+    }
+    
+    [self updateUnspentPublicKeys];
+}
+
 #pragma mark - CwCard delegate
+-(void) didGetAccountAddresses:(NSInteger)accId
+{
+    if (accId != self.order.accountId.integerValue) {
+        return;
+    }
+    
+    if (self.order.cwAccount.extKeys.count <= 0) {
+        return;
+    }
+    
+    CwAddress *address = [self.order.cwAccount.extKeys objectAtIndex:0];
+    if (address.address != nil) {
+        [self performSelectorInBackground:@selector(updateAccountTransaction) withObject:nil];
+    }
+}
+
+-(void) didGetAddressPublicKey:(CwAddress *)address
+{
+    if (address.accountId != self.order.accountId.integerValue || !self.needUpdateAccountInfo) {
+        return;
+    }
+    
+    self.needUpdateAccountInfo = ![self.order.cwAccount isAllUnspentPublicKeysExists];
+    
+    if (!self.needUpdateAccountInfo && self.transactionBegin) {
+        [self startCompleteOrder];
+    }
+}
+
 -(void) didExGetOtp:(NSString *)exOtp type:(NSInteger)otpType
 {
     if ([self.presentedViewController isKindOfClass:[UIAlertController class]]) {
@@ -291,7 +419,7 @@
 
 -(void) didSignTransaction:(NSString *)txId
 {
-    NSLog(@"didSignTransaction");
+    NSLog(@"didSignTransaction: %@", txId);
     
     UIAlertController *alertController = (UIAlertController *)self.navigationController.presentedViewController;
     if(alertController != nil) [alertController dismissViewControllerAnimated:YES completion:nil] ;

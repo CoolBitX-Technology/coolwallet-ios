@@ -36,6 +36,8 @@
                 [nonce appendData:[self.loginHandle subdataWithRange:NSMakeRange(0, remainder)]];
             }
         }
+        
+        _nonce = nonce;
     }
     
     return _nonce;

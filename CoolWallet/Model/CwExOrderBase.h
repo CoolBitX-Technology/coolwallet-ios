@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class CwAccount;
+
 @interface CwExOrderBase : NSObject
 
 @property (strong, nonatomic) NSString *orderId;
@@ -19,5 +21,7 @@
 @property (strong, nonatomic) NSString *expirationUTC;
 
 @property (readonly, nonatomic) NSDate *expiration;
+
+@property (readonly, nonatomic) CwAccount *cwAccount;
 
 @end
