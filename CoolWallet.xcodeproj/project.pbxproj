@@ -21,6 +21,7 @@
 		A267298B1C561155005F452A /* CwExBuyOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = A267298A1C561155005F452A /* CwExBuyOrder.m */; };
 		A27D4FBE1EC4A7C500E5B9CB /* attention_48.png in Resources */ = {isa = PBXBuildFile; fileRef = A27D4FBD1EC4A7C500E5B9CB /* attention_48.png */; };
 		A2B6E7D81BD28879001B1592 /* NSDate+Localize.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */; };
+		A2C9CD121F6FC4190050B78A /* CwBlockInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A2C9CD111F6FC4190050B78A /* CwBlockInfo.m */; };
 		A2DA5ECA1EC2044D002207E6 /* TabTransactionFeeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DA5EC91EC2044D002207E6 /* TabTransactionFeeViewController.m */; };
 		A2DA5ECD1EC20635002207E6 /* CwTransactionFee.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DA5ECC1EC20635002207E6 /* CwTransactionFee.m */; };
 		A2DBEEF61F244A370099FEB5 /* CwResetInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DBEEF51F244A370099FEB5 /* CwResetInfo.m */; };
@@ -214,6 +215,8 @@
 		A27D4FBD1EC4A7C500E5B9CB /* attention_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attention_48.png; sourceTree = "<group>"; };
 		A2B6E7D61BD28879001B1592 /* NSDate+Localize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Localize.h"; sourceTree = "<group>"; };
 		A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Localize.m"; sourceTree = "<group>"; };
+		A2C9CD101F6FC4190050B78A /* CwBlockInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwBlockInfo.h; sourceTree = "<group>"; };
+		A2C9CD111F6FC4190050B78A /* CwBlockInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CwBlockInfo.m; sourceTree = "<group>"; };
 		A2DA5EC81EC2044D002207E6 /* TabTransactionFeeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabTransactionFeeViewController.h; sourceTree = "<group>"; };
 		A2DA5EC91EC2044D002207E6 /* TabTransactionFeeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabTransactionFeeViewController.m; sourceTree = "<group>"; };
 		A2DA5ECB1EC20635002207E6 /* CwTransactionFee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CwTransactionFee.h; sourceTree = "<group>"; };
@@ -746,6 +749,8 @@
 				A2DA5ECC1EC20635002207E6 /* CwTransactionFee.m */,
 				A2DBEEF41F244A370099FEB5 /* CwResetInfo.h */,
 				A2DBEEF51F244A370099FEB5 /* CwResetInfo.m */,
+				A2C9CD101F6FC4190050B78A /* CwBlockInfo.h */,
+				A2C9CD111F6FC4190050B78A /* CwBlockInfo.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1313,6 +1318,7 @@
 				93CF96C419EE56A100466DAF /* BindSuccessViewController.m in Sources */,
 				EFAC5C4C1AC25A7000320EA6 /* mask.c in Sources */,
 				EFAC5FE01AAD39620042FF8C /* TabSettingViewController.m in Sources */,
+				A2C9CD121F6FC4190050B78A /* CwBlockInfo.m in Sources */,
 				EFA9D58C1ABA6850005C27F2 /* TabbarHomeViewController.m in Sources */,
 				F45962901BDE3FF80046E4CE /* BlockChain.m in Sources */,
 				EFCF9A501B32C8810076091B /* CwAccount.m in Sources */,

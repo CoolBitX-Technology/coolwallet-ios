@@ -251,8 +251,6 @@
     
     [self.cwManager.connectedCwCard cancelTrancation];
     [self.cwManager.connectedCwCard setDisplayAccount: self.cwManager.connectedCwCard.currentAccountId];
-    
-    [[CwExchangeManager sharedInstance] unblockOrderWithOrderId:self.order.orderId];
 }
 
 #pragma mark - CwBtc delegate

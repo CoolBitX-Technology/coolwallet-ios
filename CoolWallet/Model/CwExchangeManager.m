@@ -23,6 +23,7 @@
 #import "CwExSellOrder.h"
 #import "CwExBuyOrder.h"
 #import "CwBase58.h"
+#import "CwBlockInfo.h"
 
 #import "NSUserDefaults+RMSaveCustomObject.h"
 
@@ -258,6 +259,8 @@
             return [self signalTrxPrepareDataFrom:sellOrder];
         }
     }] finally:^() {
+        [self logoutTransactionWith:sellOrder];
+        
         CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", sellOrder.exTrx.accountId]];
         account.tempUnblockAmount = 0;
     }] deliverOnMainThread]
@@ -278,8 +281,6 @@
 -(void) completeTransactionWith:(CwExSellOrder *)sellOrder
 {
     if (!sellOrder.exTrx.loginHandle) {return;}
-    
-    NSLog(@"nonce = %@", sellOrder.exTrx.nonce);
     
     [self.card exTrxSignLogoutWithTrxHandle:sellOrder.exTrx.loginHandle Nonce:sellOrder.exTrx.nonce withComplete:^(NSData *receipt) {
         NSString *url = [NSString stringWithFormat:ExTrx, sellOrder.orderId];
@@ -313,6 +314,17 @@
     }];
 }
 
+-(void) logoutTransactionWith:(CwExSellOrder *)sellOrder
+{
+    if (!sellOrder.exTrx.loginHandle) {return;}
+    
+    [self.card exTrxSignLogoutWithTrxHandle:sellOrder.exTrx.loginHandle Nonce:sellOrder.exTrx.nonce withComplete:^(NSData *receipt) {
+        
+    } error:^(NSInteger errorCode) {
+        
+    }];
+}
+
 -(void) unblockOrderWithOrderId:(NSString *)orderId
 {
     RACSignal *unblockSignal = [self signalRequestUnblockInfoWithOrderId:orderId];
@@ -323,6 +335,43 @@
         
     } error:^(NSError *error) {
         
+    }];
+}
+
+-(void) cancelOrderWithOrderId:(NSString *)orderId withSuccess:(void(^)(void))successCallback error:(void(^)(NSError *error))errorCallback
+{
+    @weakify(self);
+    [[[[[self signalGetTrxInfoFromOrder:orderId]
+     flattenMap:^RACStream *(NSDictionary *response) {
+        @strongify(self)
+        NSString *loginData = [response objectForKey:@"loginblk"];
+        NSData *okToken = [NSString hexstringToData:[loginData substringWithRange:NSMakeRange(8, 8)]];
+        
+        if (!loginData) {
+            return [RACSignal error:[NSError errorWithDomain:@"Exchange site error." code:1001 userInfo:@{@"error": @"Fail to get transaction data from exchange site."}]];
+        }
+        
+        return [self signalCardBlockInfo:okToken];
+    }]
+    flattenMap:^RACStream *(CwBlockInfo *blockInfo) {
+        if (blockInfo.blockStatus == BlockWithoutLogin) {
+            return [self signalCancelOrder:orderId];
+        } else if (blockInfo.blockStatus == BlockWithLogin) {
+            return [self signalCancelTrx:orderId];
+        } else {
+            return [RACSignal empty];
+        }
+    }] deliverOnMainThread]
+    subscribeNext:^(id x) {
+        if (successCallback) {
+            successCallback();
+        }
+    } error:^(NSError *error) {
+        if (errorCallback) {
+            errorCallback(error);
+        }
+    } completed:^{
+        [self requestPendingOrders];
     }];
 }
 
@@ -406,7 +455,7 @@
     }];
 }
 
-// signals
+# pragma mark - signals
 
 -(RACSignal *)loginSignal
 {
@@ -645,21 +694,21 @@
     return signal;
 }
 
--(RACSignal *)signalTrxLogin:(NSString *)logingData
+-(RACSignal *)signalTrxLogin:(NSString *)loginData
 {
     @weakify(self)
     RACSignal *signal = [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
         
-        NSData *okToken = [NSString hexstringToData:[logingData substringWithRange:NSMakeRange(8, 8)]];
-        NSData *accountData = [NSString hexstringToData:[logingData substringWithRange:NSMakeRange(48, 8)]];
+        NSData *okToken = [NSString hexstringToData:[loginData substringWithRange:NSMakeRange(8, 8)]];
+        NSData *accountData = [NSString hexstringToData:[loginData substringWithRange:NSMakeRange(48, 8)]];
         NSInteger accId = *(int32_t *)[accountData bytes];
         
-        [self.card exBlockInfo:okToken withComplete:^(NSNumber *blockAmount) {
+        [self.card exBlockInfo:okToken withComplete:^(CwBlockInfo *blockInfo) {
             CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", accId]];
-            account.tempUnblockAmount = blockAmount.longLongValue;
+            account.tempUnblockAmount = blockInfo.blockAmount.longLongValue;
             
-            [subscriber sendNext:logingData];
+            [subscriber sendNext:loginData];
             [subscriber sendCompleted];
         } withError:^(NSInteger errorCode) {
             [subscriber sendError:[self cardCmdError:errorCode errorMsg:@"Get block info fail."]];
@@ -858,7 +907,7 @@
     return signal;
 }
 
--(RACSignal *)signalCancelOrders:(NSString *)orderId
+-(RACSignal *)signalCancelOrder:(NSString *)orderId
 {
     __block NSString *url = [NSString stringWithFormat:ExCancelOrder, orderId];
     
@@ -867,11 +916,64 @@
         @strongify(self);
         
         AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
-        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-            [subscriber sendNext:nil];
-            [subscriber sendCompleted];
+        [manager DELETE:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            NSNumber *responseCode = [responseObject objectForKey:@"Code"];
+            if (responseCode.integerValue == 200) {
+                [subscriber sendNext:nil];
+                [subscriber sendCompleted];
+            } else {
+                NSError *error = [NSError errorWithDomain:@"Exchange site error." code:1004 userInfo:@{@"error": @"Failed to cancel order, please try again"}];
+                [subscriber sendError:error];
+            }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             [subscriber sendError:error];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(RACSignal *)signalCancelTrx:(NSString *)orderId
+{
+    __block NSString *url = [NSString stringWithFormat:ExCancelTrx, orderId];
+    
+    @weakify(self);
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+        [manager DELETE:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            NSNumber *responseCode = [responseObject objectForKey:@"Code"];
+            if (responseCode.integerValue == 200) {
+                [subscriber sendNext:nil];
+                [subscriber sendCompleted];
+            } else {
+                NSError *error = [NSError errorWithDomain:@"Exchange site error." code:1004 userInfo:@{@"error": @"Failed to cancel order, please try again"}];
+                [subscriber sendError:error];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            [subscriber sendError:error];
+        }];
+        
+        return nil;
+    }];
+    
+    return signal;
+}
+
+-(RACSignal *)signalCardBlockInfo:(NSData *)okToken
+{
+    @weakify(self);
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        [self.card exBlockInfo:okToken withComplete:^(CwBlockInfo *blockInfo) {
+            [subscriber sendNext:blockInfo];
+            [subscriber sendCompleted];
+        } withError:^(NSInteger errorCode) {
+            [subscriber sendError:[self cardCmdError:errorCode errorMsg:@"Get block info fail."]];
         }];
         
         return nil;

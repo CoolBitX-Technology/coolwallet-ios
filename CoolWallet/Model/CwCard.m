@@ -19,8 +19,9 @@
 #import "CwAddress.h"
 #import "CwCardInfo.h"
 #import "CwKeychain.h"
+#import "CwBlockInfo.h"
 
-#import "CwBtcNetwork.h"
+#import "CwBtcNetWork.h"
 
 #import "CwCommandDefine.h"
 #import "CwCardCommand.h"
@@ -73,7 +74,7 @@
 @property (copy) void (^exTrxSignLoginErrorBlock)(NSInteger errorCode);
 @property (copy) void (^exBlockCancelCompleteBlock)(void);
 @property (copy) void (^exBlockCancelErrorBlock)(NSInteger errorCode);
-@property (copy) void (^exBlockInfoCompleteBlock)(NSNumber *blockAmount);
+@property (copy) void (^exBlockInfoCompleteBlock)(CwBlockInfo *blockInfo);
 @property (copy) void (^exBlockInfoErrorBlock)(NSInteger errorCode);
 @property (copy) void (^exTrxSignLogoutCompleteBlock)(NSData *receipt);
 @property (copy) void (^exTrxSignLogoutErrorBlock)(NSInteger errorCode);
@@ -1418,7 +1419,7 @@ NSArray *addresses;
     [self cwCmdExSessionLogout];
 }
 
--(void) exBlockInfo: (NSData *)okTkn withComplete:(void (^)(NSNumber *blockAmount))complete withError:(void (^)(NSInteger errorCode))error
+-(void) exBlockInfo: (NSData *)okTkn withComplete:(void (^)(CwBlockInfo *blockInfo))complete withError:(void (^)(NSInteger errorCode))error
 {
     self.exBlockInfoCompleteBlock = complete;
     self.exBlockInfoErrorBlock = error;
@@ -5595,11 +5596,19 @@ NSArray *addresses;
             if (cmd.cmdResult==0x9000) {
                 NSLog(@"trxStatus = %ld", (long)trxStatus);
                 
-                int64_t blockAmount = CFSwapInt64(*(int64_t *)[[NSData dataWithBytes:data+5 length:8] bytes]);
-                NSNumber *amount = [NSNumber numberWithLongLong:blockAmount];
-                NSLog(@"block amount: %lld, %@", blockAmount, amount);
                 if (self.exBlockInfoCompleteBlock) {
-                    self.exBlockInfoCompleteBlock(amount);
+                    int64_t blockStatus = CFSwapInt64(*(int64_t *)[[NSData dataWithBytes:data length:1] bytes]);
+                    int64_t blockAccountId = CFSwapInt64(*(int64_t *)[[NSData dataWithBytes:data+1 length:4] bytes]);
+                    int64_t blockAmount = CFSwapInt64(*(int64_t *)[[NSData dataWithBytes:data+5 length:8] bytes]);
+                    
+                    CwBlockInfo *blockInfo = [CwBlockInfo new];
+                    blockInfo.blockStatus = blockStatus;
+                    blockInfo.blockAccountId = blockAccountId;
+                    blockInfo.blockAmount = [NSNumber numberWithLongLong:blockAmount];
+                    
+                    NSLog(@"block amount: %@", blockInfo.blockAmount);
+                    
+                    self.exBlockInfoCompleteBlock(blockInfo);
                 }
             } else {
                 NSLog(@"CwCmdIdExBlockInfo Error %04lX", (long)cmd.cmdResult);

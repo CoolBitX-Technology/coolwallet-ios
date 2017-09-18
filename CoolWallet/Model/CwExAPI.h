@@ -21,6 +21,7 @@
 #define ExTrx                   ExBaseUrl@"/trx/%@"
 #define ExTrxOrderBlock         ExBaseUrl@"/trx/%@/%@" // Url: /trx/:orderId/:otp
 #define ExCancelOrder           ExBaseUrl@"/order/%@"
+#define ExCancelTrx             ExTrx
 #define ExWriteOKToken          ExBaseUrl@"/oktoken/%@" // Url: /oktoken/:orderId
 #define ExUnblockOrders         ExBaseUrl@"/unblock/%@"  // Url: /unblock/:orderId
 #define ExOpenOrderCount        ExBaseUrl@"/open/count"

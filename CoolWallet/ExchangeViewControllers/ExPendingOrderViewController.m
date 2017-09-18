@@ -173,21 +173,9 @@
     return 0;
 }
 
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *header = [tableView dequeueReusableCellWithIdentifier:@"HeaderCell"];
-    
-    return header;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 44;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 22;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -204,6 +192,39 @@
     if (self.selectOrder != nil) {
         [self performSegueWithIdentifier:@"ExOrderDetailSegue" sender:self];
     }
+}
+
+-(BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.tableViewSell) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+-(NSArray<UITableViewRowAction *> *) tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    __weak typeof(self) weakSelf = self;
+    UITableViewRowAction *cancel = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"Cancel" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        CwExSellOrder *sellOrder = [strongSelf.exchange.pendingSellOrders objectAtIndex:indexPath.row];
+        
+        __weak typeof(strongSelf) _weakSelf = strongSelf;
+        [[CwExchangeManager sharedInstance] cancelOrderWithOrderId:sellOrder.orderId withSuccess:^{
+            
+        } error:^(NSError *error) {
+            NSString *errorMessage = [error.userInfo objectForKey:@"error"];
+            if (!errorMessage) {
+                errorMessage = @"Failed to cancel order, please try again";
+            }
+            __strong typeof(weakSelf) strongSelf = _weakSelf;
+            [strongSelf showHintAlert:nil withMessage:errorMessage withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+        }];
+    }];
+    
+    return @[cancel];
 }
 
 -(BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
