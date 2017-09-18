@@ -249,8 +249,21 @@
     
     self.transactionBegin = NO;
     
-    [self.cwManager.connectedCwCard cancelTrancation];
-    [self.cwManager.connectedCwCard setDisplayAccount: self.cwManager.connectedCwCard.currentAccountId];
+    if ([self.order isKindOfClass:[CwExSellOrder class]]) {
+        CwExSellOrder *sellOrder = (CwExSellOrder *)self.order;
+        if (sellOrder.exTrx.loginHandle) {
+            [self.cwManager.connectedCwCard exTrxSignLogoutWithTrxHandle:sellOrder.exTrx.loginHandle Nonce:sellOrder.exTrx.nonce withComplete:^(NSData *receipt) {
+                
+            } error:^(NSInteger errorCode) {
+                
+            }];
+            
+            [self.cwManager.connectedCwCard cancelTrancation];
+            [self.cwManager.connectedCwCard setDisplayAccount: self.cwManager.connectedCwCard.currentAccountId];
+        }
+    }
+    
+    
 }
 
 #pragma mark - CwBtc delegate
@@ -261,7 +274,13 @@
         return;
     }
     
-    [self updateUnspentPublicKeys];
+    self.needUpdateAccountInfo = ![self.order.cwAccount isAllUnspentPublicKeysExists];
+    
+    if (self.needUpdateAccountInfo) {
+        [self updateUnspentPublicKeys];
+    } else if (self.transactionBegin) {
+        [self performSelectorOnMainThread:@selector(startCompleteOrder) withObject:nil waitUntilDone:NO];
+    }
 }
 
 #pragma mark - CwCard delegate
@@ -290,7 +309,7 @@
     self.needUpdateAccountInfo = ![self.order.cwAccount isAllUnspentPublicKeysExists];
     
     if (!self.needUpdateAccountInfo && self.transactionBegin) {
-        [self startCompleteOrder];
+        [self performSelectorOnMainThread:@selector(startCompleteOrder) withObject:nil waitUntilDone:NO];
     }
 }
 

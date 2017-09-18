@@ -259,8 +259,6 @@
             return [self signalTrxPrepareDataFrom:sellOrder];
         }
     }] finally:^() {
-        [self logoutTransactionWith:sellOrder];
-        
         CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", sellOrder.exTrx.accountId]];
         account.tempUnblockAmount = 0;
     }] deliverOnMainThread]
@@ -314,17 +312,6 @@
     }];
 }
 
--(void) logoutTransactionWith:(CwExSellOrder *)sellOrder
-{
-    if (!sellOrder.exTrx.loginHandle) {return;}
-    
-    [self.card exTrxSignLogoutWithTrxHandle:sellOrder.exTrx.loginHandle Nonce:sellOrder.exTrx.nonce withComplete:^(NSData *receipt) {
-        
-    } error:^(NSInteger errorCode) {
-        
-    }];
-}
-
 -(void) unblockOrderWithOrderId:(NSString *)orderId
 {
     RACSignal *unblockSignal = [self signalRequestUnblockInfoWithOrderId:orderId];
@@ -354,7 +341,7 @@
         return [self signalCardBlockInfo:okToken];
     }]
     flattenMap:^RACStream *(CwBlockInfo *blockInfo) {
-        if (blockInfo.blockStatus == BlockWithoutLogin) {
+        if (blockInfo.blockStatus == BlockWithoutLogin || blockInfo.blockStatus == BlockNothing) {
             return [self signalCancelOrder:orderId];
         } else if (blockInfo.blockStatus == BlockWithLogin) {
             return [self signalCancelTrx:orderId];

@@ -1127,6 +1127,10 @@ NSArray *addresses;
     
     CwAddress *address = (CwAddress *)addrs[keyId];
     if (address.publicKey != nil) {
+        if ([self.delegate respondsToSelector:@selector(didGetAddressPublicKey:)]) {
+            [self.delegate didGetAddressPublicKey:address];
+        }
+        
         return;
     }
     
@@ -5607,6 +5611,14 @@ NSArray *addresses;
                     blockInfo.blockAmount = [NSNumber numberWithLongLong:blockAmount];
                     
                     NSLog(@"block amount: %@", blockInfo.blockAmount);
+                    
+                    self.exBlockInfoCompleteBlock(blockInfo);
+                }
+            } else if (cmd.cmdResult == 0x664E) {
+                NSLog(@"No block info with account");
+                if (self.exBlockInfoCompleteBlock) {
+                    CwBlockInfo *blockInfo = [CwBlockInfo new];
+                    blockInfo.blockStatus = BlockNothing;
                     
                     self.exBlockInfoCompleteBlock(blockInfo);
                 }
