@@ -262,8 +262,6 @@
             [self.cwManager.connectedCwCard setDisplayAccount: self.cwManager.connectedCwCard.currentAccountId];
         }
     }
-    
-    
 }
 
 #pragma mark - CwBtc delegate

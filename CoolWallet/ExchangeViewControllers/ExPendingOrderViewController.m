@@ -206,25 +206,42 @@
 -(NSArray<UITableViewRowAction *> *) tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    __weak typeof(self) weakSelf = self;
+    @weakify(self)
     UITableViewRowAction *cancel = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"Cancel" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        CwExSellOrder *sellOrder = [strongSelf.exchange.pendingSellOrders objectAtIndex:indexPath.row];
+        @strongify(self)
+        CwExSellOrder *sellOrder = [self.exchange.pendingSellOrders objectAtIndex:indexPath.row];
         
-        __weak typeof(strongSelf) _weakSelf = strongSelf;
-        [[CwExchangeManager sharedInstance] cancelOrderWithOrderId:sellOrder.orderId withSuccess:^{
-            
-        } error:^(NSError *error) {
-            NSString *errorMessage = [error.userInfo objectForKey:@"error"];
-            if (!errorMessage) {
-                errorMessage = @"Failed to cancel order, please try again";
-            }
-            __strong typeof(weakSelf) strongSelf = _weakSelf;
-            [strongSelf showHintAlert:nil withMessage:errorMessage withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-        }];
+        [self cancelOrder:sellOrder];
     }];
     
     return @[cancel];
+}
+
+-(void) cancelOrder:(CwExSellOrder *)sellOrder
+{
+    @weakify(self)
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        __block NSString *message;
+        [[[[CwExchangeManager sharedInstance] signalCancelOrder:sellOrder.orderId]
+        deliverOnMainThread]
+        subscribeNext:^(id x) {
+            message = @"Order cancelled.";
+        } error:^(NSError *error) {
+            message = [error.userInfo objectForKey:@"error"];
+            if (!message) {
+                message = @"Failed to cancel order, please try again";
+            }
+        } completed:^{
+            if (message) {
+                @strongify(self)
+                [self showHintAlert:nil withMessage:message withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+            }
+        }];
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleCancel handler:nil];
+    
+    [self showHintAlert:@"Cancel Order" withMessage:@"Are you sure you want to cancel order?" withActions:@[okAction, cancelAction]];
 }
 
 -(BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
