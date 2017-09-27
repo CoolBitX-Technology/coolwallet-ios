@@ -1476,7 +1476,7 @@ NSArray *addresses;
     [self cwCmdExTrxSignPrepare:inId inputData:inputData];
 }
 
--(void) exTrxSignLogoutWithTrxHandle:(NSData *)trxHandle Nonce: (NSData *)nonce withComplete:(void(^)(NSData *receipt))complete error:(void(^)(NSInteger errorCode))error
+-(void) exTrxSignLogoutWithTrxHandle:(NSData *)trxHandle nonce:(NSData *)nonce complete:(void(^)(NSData *receipt))complete error:(void(^)(NSInteger errorCode))error
 {
     self.exTrxSignLogoutCompleteBlock = complete;
     self.exTrxSignLogoutErrorBlock = error;

@@ -34,7 +34,8 @@
 -(void) prepareTransactionFromSellOrder:(CwExSellOrder *)sellOrder withChangeAddress:(CwAddress *)changeAddress;
 -(void) completeTransactionWith:(CwExSellOrder *)sellOrder;
 -(void) unblockOrderWithOrderId:(NSString *)orderId;
--(void) cancelOrderWithOrderId:(NSString *)orderId withSuccess:(void(^)(void))successCallback error:(void(^)(NSError *error))errorCallback;
+
+-(RACSignal *)signalCancelOrder:(NSString *)orderId;
 
 -(AFHTTPRequestOperationManager *) defaultJsonManager;
 

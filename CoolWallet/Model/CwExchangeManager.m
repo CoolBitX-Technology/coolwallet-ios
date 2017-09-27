@@ -237,34 +237,41 @@
     sellOrder.exTrx.changeAddress = changeAddress;
     
     @weakify(self)
-    [[[[[[self signalGetTrxInfoFromOrder:sellOrder.orderId] flattenMap:^RACStream *(NSDictionary *response) {
-        NSLog(@"response: %@", response);
+    RACSignal *step1 = [[self signalGetTrxInfoFromOrder:sellOrder.orderId] flattenMap:^RACStream *(NSDictionary *response) {
         @strongify(self)
         NSString *loginData = [response objectForKey:@"loginblk"];
         sellOrder.exTrx.receiveAddress = [response objectForKey:@"out1addr"];
         
-        if (!loginData) {
-            return [RACSignal error:[NSError errorWithDomain:@"Exchange site error." code:1001 userInfo:@{@"error": @"Fail to get transaction data from exchange site."}]];
-        }
-        
         return [self signalTrxLogin:loginData];
-    }] flattenMap:^RACStream *(NSData *trxHandle) {
+    }];
+    
+    [[step1 finally:^{
+        CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", sellOrder.exTrx.accountId]];
+        account.tempUnblockAmount = 0;
+    }] subscribeNext:^(NSData *trxHandle) {
         NSString *changeAddress = sellOrder.exTrx.changeAddress.address;
         
         sellOrder.exTrx.loginHandle = trxHandle;
         sellOrder.exTrx.unsignedTx = [self.card getUnsignedTransaction:sellOrder.exTrx.amount.satoshi.longLongValue Address:sellOrder.exTrx.receiveAddress Change:changeAddress AccountId:sellOrder.exTrx.accountId];
-        if (sellOrder.exTrx.unsignedTx == nil) {
-            return [RACSignal error:[NSError errorWithDomain:@"Exchange site error." code:1002 userInfo:@{@"error": @"Check unsigned data error."}]];
-        } else {
-            return [self signalTrxPrepareDataFrom:sellOrder];
-        }
-    }] finally:^() {
-        CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", sellOrder.exTrx.accountId]];
-        account.tempUnblockAmount = 0;
-    }] deliverOnMainThread]
-     subscribeNext:^(id value) {
-        NSLog(@"Ex Trx prepairing...");
+        
+        [[self signalTrxPrepareDataFrom:sellOrder] subscribeError:^(NSError *error) {
+            // [H2] Ex trx sign logout
+            [self.card exTrxSignLogoutWithTrxHandle:sellOrder.exTrx.loginHandle nonce:sellOrder.exTrx.nonce complete:nil error:^(NSInteger errorCode) {
+                // [H3] Store txHandle(loginHandle)
+            }];
+            
+            NSLog(@"Ex Trx prepaire fail: %@", error);
+            if ([self.card.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
+                if (error.userInfo) {
+                    [self.card.delegate didPrepareTransactionError:[error.userInfo objectForKey:@"error"]];
+                } else {
+                    [self.card.delegate didPrepareTransactionError:@"Fail to get transaction data from exchange site."];
+                }
+            }
+        }];
     } error:^(NSError *error) {
+        // [H1] Cancel block
+        
         NSLog(@"Ex Trx prepaire fail: %@", error);
         if ([self.card.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
             if (error.userInfo) {
@@ -280,7 +287,7 @@
 {
     if (!sellOrder.exTrx.loginHandle) {return;}
     
-    [self.card exTrxSignLogoutWithTrxHandle:sellOrder.exTrx.loginHandle Nonce:sellOrder.exTrx.nonce withComplete:^(NSData *receipt) {
+    [self.card exTrxSignLogoutWithTrxHandle:sellOrder.exTrx.loginHandle nonce:sellOrder.exTrx.nonce complete:^(NSData *receipt) {
         NSString *url = [NSString stringWithFormat:ExTrx, sellOrder.orderId];
         NSDictionary *dict = @{@"inputs": [NSNumber numberWithInteger:sellOrder.exTrx.unsignedTx.inputs.count],
                                @"bcTrxId": sellOrder.exTrx.trxId,
@@ -308,7 +315,7 @@
             // TODO: should resend to exchange site?
         }];
     } error:^(NSInteger errorCode) {
-        
+        // [H3]
     }];
 }
 
@@ -322,43 +329,6 @@
         
     } error:^(NSError *error) {
         
-    }];
-}
-
--(void) cancelOrderWithOrderId:(NSString *)orderId withSuccess:(void(^)(void))successCallback error:(void(^)(NSError *error))errorCallback
-{
-    @weakify(self);
-    [[[[[self signalGetTrxInfoFromOrder:orderId]
-     flattenMap:^RACStream *(NSDictionary *response) {
-        @strongify(self)
-        NSString *loginData = [response objectForKey:@"loginblk"];
-        NSData *okToken = [NSString hexstringToData:[loginData substringWithRange:NSMakeRange(8, 8)]];
-        
-        if (!loginData) {
-            return [RACSignal error:[NSError errorWithDomain:@"Exchange site error." code:1001 userInfo:@{@"error": @"Fail to get transaction data from exchange site."}]];
-        }
-        
-        return [self signalCardBlockInfo:okToken];
-    }]
-    flattenMap:^RACStream *(CwBlockInfo *blockInfo) {
-        if (blockInfo.blockStatus == BlockWithoutLogin || blockInfo.blockStatus == BlockNothing) {
-            return [self signalCancelOrder:orderId];
-        } else if (blockInfo.blockStatus == BlockWithLogin) {
-            return [self signalCancelTrx:orderId];
-        } else {
-            return [RACSignal empty];
-        }
-    }] deliverOnMainThread]
-    subscribeNext:^(id x) {
-        if (successCallback) {
-            successCallback();
-        }
-    } error:^(NSError *error) {
-        if (errorCallback) {
-            errorCallback(error);
-        }
-    } completed:^{
-        [self requestPendingOrders];
     }];
 }
 
@@ -730,9 +700,17 @@
         @strongify(self);
         
         AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
-        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-            [subscriber sendNext:responseObject];
-            [subscriber sendCompleted];
+        [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
+            NSLog(@"response: %@", response);
+            NSString *loginblk = [response objectForKey:@"loginblk"];
+            NSString *out1addr = [response objectForKey:@"out1addr"];
+            
+            if (!loginblk || !out1addr) {
+                NSError *error = [NSError errorWithDomain:@"Exchange site error." code:1001 userInfo:@{@"error": @"Fail to get transaction data from exchange site."}];
+                [subscriber sendError:error];
+            } else {
+                [subscriber sendNext:response];
+            }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
             [subscriber sendError:error];
         }];
@@ -748,7 +726,8 @@
     __block NSString *url = [NSString stringWithFormat:ExGetTrxPrepareBlocks, sellOrder.orderId];
     
     CwTx *unsignedTx = sellOrder.exTrx.unsignedTx;
-    NSMutableArray *inputBlocks = [NSMutableArray new];
+    
+    __block NSMutableArray *inputBlocks = [NSMutableArray new];
     for (int index=0; index < unsignedTx.inputs.count; index++) {
         CwTxin *txin = unsignedTx.inputs[index];
         NSData *inputData = [self composePrepareInputData:index
@@ -761,37 +740,43 @@
         [inputBlocks addObject:@{@"idx": @(index), @"blk": [NSString dataToHexstring:inputData]}];
     }
     
-    __block NSDictionary *dict = @{
-                                   @"changeKid": @(sellOrder.exTrx.changeAddress.keyId),
-                                   @"blks": inputBlocks
-                                   };
-    NSLog(@"%@, dict: %@", url, dict);
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
         
-        AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
-        [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-            NSArray *blocks = [responseObject objectForKey:@"blks"];
-            for (NSDictionary *blockData in blocks) {
-                NSNumber *index = [blockData objectForKey:@"idx"];
-                NSString *block = [blockData objectForKey:@"blk"];
-                NSMutableData *inputData = [NSMutableData dataWithData:sellOrder.exTrx.loginHandle];
-                [inputData appendData:[NSString hexstringToData:block]];
+        if (inputBlocks.count > 0) {
+            NSDictionary *dict = @{
+                                   @"changeKid": @(sellOrder.exTrx.changeAddress.keyId),
+                                   @"blks": inputBlocks
+                                   };
+            NSLog(@"%@, dict: %@", url, dict);
+            
+            AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+            [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+                NSArray *blocks = [responseObject objectForKey:@"blks"];
+                for (NSDictionary *blockData in blocks) {
+                    NSNumber *index = [blockData objectForKey:@"idx"];
+                    NSString *block = [blockData objectForKey:@"blk"];
+                    NSMutableData *inputData = [NSMutableData dataWithData:sellOrder.exTrx.loginHandle];
+                    [inputData appendData:[NSString hexstringToData:block]];
+                    
+                    [self.card exTrxSignPrepareWithInputId:index.integerValue withInputData:inputData];
+                }
                 
-                [self.card exTrxSignPrepareWithInputId:index.integerValue withInputData:inputData];
-            }
-            
-            [subscriber sendNext:responseObject];
-            [subscriber sendCompleted];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-            NSMutableDictionary *errorDict = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
-            [errorDict setObject:@"Preparing Transaction fail with Exchange Site" forKey:@"error"];
-            NSLog(@"error: %@", errorDict);
-            error = [NSError errorWithDomain:error.domain code:error.code userInfo:errorDict];
-            
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+                NSMutableDictionary *errorDict = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+                [errorDict setObject:@"Preparing Transaction fail with Exchange Site" forKey:@"error"];
+                NSLog(@"error: %@", errorDict);
+                error = [NSError errorWithDomain:error.domain code:error.code userInfo:errorDict];
+                
+                [subscriber sendError:error];
+            }];
+        } else {
+            NSError *error = [NSError errorWithDomain:@"Exchange site error." code:1002 userInfo:@{@"error": @"Check unsigned data error."}];
             [subscriber sendError:error];
-        }];
+        }
         
         return nil;
     }];
