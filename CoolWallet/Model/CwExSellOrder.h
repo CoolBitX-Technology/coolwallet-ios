@@ -7,8 +7,9 @@
 //
 
 #import "CwExOrderBase.h"
+#import <NSUserDefaults+RMSaveCustomObject.h>
 
-@class CwExTx;
+@class CwExTx, CwExUnblock;
 
 @interface CwExSellOrder : CwExOrderBase
 
@@ -18,5 +19,9 @@
 @property (strong, nonatomic) NSNumber *submitted;
 
 @property (strong, nonatomic) CwExTx *exTrx;
+@property (strong, nonatomic) CwExUnblock *unblock;
+
++ (NSArray *) getStoredOrdersWithCardId:(NSString *)cardId;
+- (void) storeOrderWithCardId:(NSString *)cardId;
 
 @end

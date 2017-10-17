@@ -69,4 +69,9 @@
     }
 }
 
+-(BOOL) hasValidUnblockInfo
+{
+    return self.orderID && self.okToken && self.unblockToken && self.mac && self.nonce;
+}
+
 @end

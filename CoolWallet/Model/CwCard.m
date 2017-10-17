@@ -761,7 +761,7 @@ NSArray *addresses;
     }
 }
 
--(void) getAccountInfo: (NSInteger) accountId;
+-(void) getAccountInfo:(NSInteger)accountId;
 {
     //get account from dictionary
     CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", (long)accountId]];
@@ -807,7 +807,12 @@ NSArray *addresses;
     }
 }
 
--(void) getAccountAddresses: (NSInteger) accountId;
+-(void) getBlockAmountWithAccount:(NSInteger)accountId
+{
+    [self cwCmdHdwQueryAccountInfo:CwHdwAccountInfoBlockAmount AccountId:accountId];
+}
+
+-(void) getAccountAddresses:(NSInteger)accountId
 {
     //get account from dictionary
     CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", (long)accountId]];

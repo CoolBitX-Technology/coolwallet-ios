@@ -16,6 +16,18 @@
 
 @implementation CwExTx
 
+-(instancetype) initWithOrderId:(NSString *)orderId accountId:(NSNumber *)accountId
+{
+    self = [super init];
+    
+    if (self) {
+        self.orderId = orderId;
+        self.accountId = accountId;
+    }
+    
+    return self;
+}
+
 -(NSData *) nonce
 {
     if (!_nonce) {

@@ -30,8 +30,8 @@
 -(void) requestOpenOrders;
 -(void) requestPendingOrders;
 -(void) requestMatchedOrder:(NSString *)orderId;
--(void) blockWithOrderID:(NSString *)hexOrderID withOTP:(NSString *)otp withSuccess:(void(^)(void))successCallback error:(void(^)(NSError *error))errorCallback finish:(void(^)(void))finishCallback;
--(void) prepareTransactionFromSellOrder:(CwExSellOrder *)sellOrder withChangeAddress:(CwAddress *)changeAddress;
+-(void) blockWithOrder:(CwExSellOrder *)sellOrder withOTP:(NSString *)otp withSuccess:(void(^)(void))successCallback error:(void(^)(NSError *error))errorCallback finish:(void(^)(void))finishCallback;
+-(void) prepareTransactionFrom:(CwExSellOrder *)sellOrder withChangeAddress:(CwAddress *)changeAddress;
 -(void) completeTransactionWith:(CwExSellOrder *)sellOrder;
 -(void) unblockOrderWithOrderId:(NSString *)orderId;
 

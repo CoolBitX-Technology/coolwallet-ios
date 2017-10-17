@@ -168,7 +168,8 @@
 -(void) sendPrepareTransaction
 {
     CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
-    [exchange prepareTransactionFromSellOrder:(CwExSellOrder *)self.order withChangeAddress:self.changeAddress];
+    CwExSellOrder *sellOrder = (CwExSellOrder *)self.order;
+    [exchange prepareTransactionFrom:sellOrder withChangeAddress:self.changeAddress];
 }
 
 - (void) showBlockOTPEnterView
@@ -178,15 +179,20 @@
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     }];
     
+    @weakify(self)
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         UITextField *textField = OTPAlert.textFields.firstObject;
+        @strongify(self)
         [self showIndicatorView:@"block with otp..."];
         
         CwExchangeManager *exManager = [CwExchangeManager sharedInstance];
-        [exManager blockWithOrderID:self.order.orderId withOTP:textField.text withSuccess:^() {
+        [exManager blockWithOrder:(CwExSellOrder *)self.order withOTP:textField.text withSuccess:^() {
+            @strongify(self)
             [self.cwManager.connectedCwCard findEmptyAddressFromAccount:self.order.accountId.integerValue keyChainId:CwAddressKeyChainInternal];
             [self showIndicatorView:@"Preparing transaction..."];
         } error:^(NSError *error) {
+            @strongify(self)
+            [self performDismiss];
             [self showHintAlert:@"block fail" withMessage:error.localizedDescription withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
             
             [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
@@ -249,18 +255,16 @@
     
     self.transactionBegin = NO;
     
+    [self.cwManager.connectedCwCard setDisplayAccount: self.cwManager.connectedCwCard.currentAccountId];
+    
     if ([self.order isKindOfClass:[CwExSellOrder class]]) {
         CwExSellOrder *sellOrder = (CwExSellOrder *)self.order;
         if (sellOrder.exTrx.loginHandle) {
-            [self.cwManager.connectedCwCard exTrxSignLogoutWithTrxHandle:sellOrder.exTrx.loginHandle Nonce:sellOrder.exTrx.nonce withComplete:^(NSData *receipt) {
-                
-            } error:^(NSInteger errorCode) {
-                
-            }];
-            
             [self.cwManager.connectedCwCard cancelTrancation];
-            [self.cwManager.connectedCwCard setDisplayAccount: self.cwManager.connectedCwCard.currentAccountId];
         }
+        
+        [self.cwManager.connectedCwCard getBlockAmountWithAccount:self.order.accountId.integerValue];
+
     }
 }
 
@@ -348,7 +352,7 @@
     [self showHintAlert:@"Unable to send" withMessage:@"Can't generate address, please try it later." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
 }
 
--(void) didPrepareTransaction: (NSString *)OTP
+-(void) didPrepareTransaction:(NSString *)OTP
 {
     NSLog(@"didPrepareTransaction, OTP: %@, OTP enabled? %@", OTP, self.cwManager.connectedCwCard.securityPolicy_OtpEnable);
     if (self.cwManager.connectedCwCard.securityPolicy_OtpEnable.boolValue == YES) {
@@ -371,7 +375,7 @@
     [self cancelTransaction];
 }
 
--(void) didGetTapTapOtp: (NSString *)OTP
+-(void) didGetTapTapOtp:(NSString *)OTP
 {
     NSLog(@"didGetTapTapOtp");
     if (self.cwManager.connectedCwCard.securityPolicy_OtpEnable.boolValue != YES) {
@@ -448,6 +452,8 @@
         CwExchangeManager *exchange = [CwExchangeManager sharedInstance];
         [exchange completeTransactionWith:sellOrder];
         
+        [self.cwManager.connectedCwCard getBlockAmountWithAccount:self.order.accountId.integerValue];
+                
         [self showHintAlert:@"Sent" withMessage:[NSString stringWithFormat:@"Sent %@ BTC to %@", self.order.amountBTC, self.order.address] withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
         
         [self.completeOrderBtn setEnabled:NO];

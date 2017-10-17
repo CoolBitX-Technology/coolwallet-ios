@@ -157,10 +157,11 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) pinLogout;
 
 -(void) getAccounts; //didGetAccounts
--(void) newAccount: (NSInteger) accountId Name: (NSString *)accountName;
--(void) getAccountInfo: (NSInteger) accountId;                                  //didGetAccountInfo
--(void) setAccount: (NSInteger) accountId Name:(NSString *)accountName;         //didSetAccountName
--(void) setAccount: (NSInteger) accountId Balance:(int64_t)balance;             //didSetAccountBalance
+-(void) newAccount:(NSInteger)accountId Name:(NSString *)accountName;
+-(void) getAccountInfo:(NSInteger)accountId;                                  //didGetAccountInfo
+-(void) getBlockAmountWithAccount:(NSInteger)accountId;
+-(void) setAccount:(NSInteger) accountId Name:(NSString *)accountName;         //didSetAccountName
+-(void) setAccount:(NSInteger) accountId Balance:(int64_t)balance;             //didSetAccountBalance
 -(void) setAccount: (NSInteger) accountId ExtKeyPtr:(NSInteger)extKeyPtr;       //didSetAccountExtKeyPtr
 -(void) setAccount: (NSInteger) accountId IntKeyPtr:(NSInteger)intKeyPtr;       //didSetAccountIntKeyPtr
 

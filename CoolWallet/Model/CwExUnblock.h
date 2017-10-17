@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <NSUserDefaults+RMSaveCustomObject.h>
 
 @interface CwExUnblock : NSObject
 
@@ -15,5 +16,7 @@
 @property (strong, nonatomic) NSData *unblockToken;
 @property (strong, nonatomic) NSData *mac;
 @property (strong, nonatomic) NSData *nonce;
+
+-(BOOL) hasValidUnblockInfo;
 
 @end

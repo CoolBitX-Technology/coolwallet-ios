@@ -205,17 +205,20 @@
     }];
 }
 
--(void) blockWithOrderID:(NSString *)hexOrderID withOTP:(NSString *)otp withSuccess:(void(^)(void))successCallback error:(void(^)(NSError *error))errorCallback finish:(void(^)(void))finishCallback
+-(void) blockWithOrder:(CwExSellOrder *)sellOrder withOTP:(NSString *)otp withSuccess:(void(^)(void))successCallback error:(void(^)(NSError *error))errorCallback finish:(void(^)(void))finishCallback
 {
-    RACSignal *blockSignal = [self signalRequestOrderBlockWithOrderID:hexOrderID withOTP:otp];
+    RACSignal *blockSignal = [self signalRequestOrderBlockWithOrderID:sellOrder.orderId withOTP:otp];
     
+    @weakify(self)
     [[[[[blockSignal flattenMap:^RACStream *(NSString *blockData) {
+        @strongify(self)
         return [self signalBlockBTCFromCard:blockData];
     }] flattenMap:^RACStream *(NSDictionary *data) {
-        NSString *okToken = [data objectForKey:@"okToken"];
-        NSString *unblockToken = [data objectForKey:@"unblockToken"];
+        sellOrder.exTrx.okToken = [data objectForKey:@"okToken"];
+        sellOrder.exTrx.unblockToken = [data objectForKey:@"unblockToken"];
         
-        return [self signalWriteOKTokenToServer:okToken unblockToken:unblockToken withOrder:hexOrderID];
+        @strongify(self)
+        return [self signalWriteOKTokenToServer:sellOrder.exTrx.okToken unblockToken:sellOrder.exTrx.unblockToken withOrder:sellOrder.orderId];
     }] finally:^() {
         if (finishCallback) {
             finishCallback();
@@ -226,39 +229,45 @@
             successCallback();
         }
     } error:^(NSError *error) {
+        if (sellOrder.exTrx.okToken) {
+            @strongify(self)
+            [self performSelector:@selector(reWriteOkTokenWith:) withObject:sellOrder afterDelay:3];
+        }
+        
         if (errorCallback) {
             errorCallback(error);
         }
     }];
 }
 
--(void) prepareTransactionFromSellOrder:(CwExSellOrder *)sellOrder withChangeAddress:(CwAddress *)changeAddress
+-(void) prepareTransactionFrom:(CwExSellOrder *)sellOrder withChangeAddress:(CwAddress *)changeAddress
 {
-    sellOrder.exTrx.changeAddress = changeAddress;
+    CwExTx *exTrx = sellOrder.exTrx;
+    exTrx.changeAddress = changeAddress;
     
     @weakify(self)
-    RACSignal *step1 = [[self signalGetTrxInfoFromOrder:sellOrder.orderId] flattenMap:^RACStream *(NSDictionary *response) {
+    RACSignal *prepareSignal = [[self signalGetTrxInfoFromOrder:exTrx.orderId] flattenMap:^RACStream *(NSDictionary *response) {
         @strongify(self)
         NSString *loginData = [response objectForKey:@"loginblk"];
-        sellOrder.exTrx.receiveAddress = [response objectForKey:@"out1addr"];
+        exTrx.receiveAddress = [response objectForKey:@"out1addr"];
         
         return [self signalTrxLogin:loginData];
     }];
     
-    [[step1 finally:^{
-        CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", sellOrder.exTrx.accountId]];
+    [[prepareSignal finally:^{
+        CwAccount *account = [self.card.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", exTrx.accountId.integerValue]];
         account.tempUnblockAmount = 0;
     }] subscribeNext:^(NSData *trxHandle) {
-        NSString *changeAddress = sellOrder.exTrx.changeAddress.address;
+        NSString *changeAddress = exTrx.changeAddress.address;
         
-        sellOrder.exTrx.loginHandle = trxHandle;
-        sellOrder.exTrx.unsignedTx = [self.card getUnsignedTransaction:sellOrder.exTrx.amount.satoshi.longLongValue Address:sellOrder.exTrx.receiveAddress Change:changeAddress AccountId:sellOrder.exTrx.accountId];
+        exTrx.loginHandle = trxHandle;
+        exTrx.unsignedTx = [self.card getUnsignedTransaction:exTrx.amount.satoshi.longLongValue Address:exTrx.receiveAddress Change:changeAddress AccountId:exTrx.accountId.integerValue];
         
-        [[self signalTrxPrepareDataFrom:sellOrder] subscribeError:^(NSError *error) {
+        @strongify(self)
+        [[self signalTrxPrepareDataFrom:exTrx] subscribeError:^(NSError *error) {
             // [H2] Ex trx sign logout
-            [self.card exTrxSignLogoutWithTrxHandle:sellOrder.exTrx.loginHandle nonce:sellOrder.exTrx.nonce complete:nil error:^(NSInteger errorCode) {
-                // [H3] Store txHandle(loginHandle)
-            }];
+            @strongify(self)
+            [self signLogout:sellOrder needRetry:YES];
             
             NSLog(@"Ex Trx prepaire fail: %@", error);
             if ([self.card.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
@@ -271,6 +280,8 @@
         }];
     } error:^(NSError *error) {
         // [H1] Cancel block
+        @strongify(self)
+        [self unblockOrder:sellOrder];
         
         NSLog(@"Ex Trx prepaire fail: %@", error);
         if ([self.card.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
@@ -287,48 +298,102 @@
 {
     if (!sellOrder.exTrx.loginHandle) {return;}
     
+    @weakify(self)
     [self.card exTrxSignLogoutWithTrxHandle:sellOrder.exTrx.loginHandle nonce:sellOrder.exTrx.nonce complete:^(NSData *receipt) {
-        NSString *url = [NSString stringWithFormat:ExTrx, sellOrder.orderId];
-        NSDictionary *dict = @{@"inputs": [NSNumber numberWithInteger:sellOrder.exTrx.unsignedTx.inputs.count],
-                               @"bcTrxId": sellOrder.exTrx.trxId,
-                               @"changeAddr": sellOrder.exTrx.changeAddress.address,
-                               @"trxReceipt": [NSString dataToHexstring:receipt],
-                               @"uid": self.card.uid,
-                               @"nonce": [NSString dataToHexstring:sellOrder.exTrx.nonce]};
+        sellOrder.exTrx.receipt = [NSString dataToHexstring:receipt];
         
-        AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
-        [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-            NSLog(@"Success send txId to ex site.");
-            
-            if (self.exchange.pendingSellOrders != nil && self.exchange.pendingSellOrders.count > 0) {
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.orderId == %@", sellOrder.orderId];
-                NSArray *result = [self.exchange.pendingSellOrders filteredArrayUsingPredicate:predicate];
-                if (result.count > 0) {
-                    for (CwExSellOrder *sellOrder in result) {
-                        sellOrder.submitted = [NSNumber numberWithBool:YES];
-                    }
-                }
-            }
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-            NSLog(@"Fail send txId to ex site.");
-            // TODO: should resend to exchange site?
-        }];
+        @strongify(self)
+        [self postReceiptToServer:sellOrder];
     } error:^(NSInteger errorCode) {
         // [H3]
     }];
 }
 
--(void) unblockOrderWithOrderId:(NSString *)orderId
+-(void) postReceiptToServer:(CwExSellOrder *)sellOrder
 {
-    RACSignal *unblockSignal = [self signalRequestUnblockInfoWithOrderId:orderId];
+    if (!sellOrder.exTrx.receipt) {
+        return;
+    }
     
-    [[unblockSignal flattenMap:^RACStream *(CwExUnblock *unblock) {
+    NSString *url = [NSString stringWithFormat:ExTrx, sellOrder.orderId];
+    NSDictionary *dict = @{@"inputs": [NSNumber numberWithInteger:sellOrder.exTrx.unsignedTx.inputs.count],
+                           @"bcTrxId": sellOrder.exTrx.trxId,
+                           @"changeAddr": sellOrder.exTrx.changeAddress.address,
+                           @"trxReceipt": sellOrder.exTrx.receipt,
+                           @"uid": self.card.uid,
+                           @"nonce": [NSString dataToHexstring:sellOrder.exTrx.nonce]};
+    
+    AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+    [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        NSLog(@"Success send txId to ex site.");
+        
+        if (self.exchange.pendingSellOrders != nil && self.exchange.pendingSellOrders.count > 0) {
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.orderId == %@", sellOrder.orderId];
+            NSArray *result = [self.exchange.pendingSellOrders filteredArrayUsingPredicate:predicate];
+            if (result.count > 0) {
+                for (CwExSellOrder *sellOrder in result) {
+                    sellOrder.submitted = [NSNumber numberWithBool:YES];
+                }
+            }
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        NSLog(@"Fail send txId to ex site.");
+        [sellOrder storeOrderWithCardId:self.card.cardId];
+    }];
+}
+
+// re-write ok token
+-(void) reWriteOkTokenWith:(CwExSellOrder *)sellOrder
+{
+    RACSignal *writeSignal = [self signalWriteOKTokenToServer:sellOrder.exTrx.okToken unblockToken:sellOrder.exTrx.unblockToken withOrder:sellOrder.orderId];
+    
+    @weakify(self)
+    [[writeSignal subscribeOn:[RACScheduler schedulerWithPriority:RACSchedulerPriorityBackground]]
+    subscribeNext:^(id x) {
+        @strongify(self)
+        [self unblockOrder:sellOrder];
+    } error:^(NSError *error) {
+        @strongify(self)
+        [self performSelector:@selector(reWriteOkTokenWith:) withObject:sellOrder afterDelay:3];
+    }];
+}
+
+// [H1] Cancel block
+-(void) unblockOrder:(CwExSellOrder *)sellOrder
+{
+    [[[self signalRequestUnblockInfoWithOrderId:sellOrder.orderId]
+      flattenMap:^RACStream *(CwExUnblock *unblock) {
         return [self signalUnblock:unblock];
     }] subscribeNext:^(id value) {
+        sellOrder.unblock = nil;
+        [sellOrder storeOrderWithCardId:self.card.cardId];
         
+        CwManager *manager = [CwManager sharedManager];
+        [manager.connectedCwCard getBlockAmountWithAccount:sellOrder.accountId.integerValue];
     } error:^(NSError *error) {
+        // store unblock info, and try to unblock again at next time connect to the same card
+        if (sellOrder.unblock && sellOrder.unblock.hasValidUnblockInfo) {
+            [sellOrder storeOrderWithCardId:self.card.cardId];
+        }
+    }];
+}
+
+// [H2] sign logout + [H3] store txHandle and retry logout extx from coolwallet
+-(void) signLogout:(CwExSellOrder *)sellOrder needRetry:(BOOL)needRetry
+{
+    CwExTx *exTrx = sellOrder.exTrx;
+    if (!exTrx.loginHandle) {
+        return;
+    }
+    
+    [self.card exTrxSignLogoutWithTrxHandle:exTrx.loginHandle nonce:exTrx.nonce complete:^(NSData *receipt) {
         
+    } error:^(NSInteger errorCode) {
+        [sellOrder storeOrderWithCardId:self.card.cardId];
+        if (needRetry) {
+            [self signLogout:sellOrder needRetry:NO];
+        }
     }];
 }
 
@@ -721,11 +786,11 @@
     return signal;
 }
 
--(RACSignal *)signalTrxPrepareDataFrom:(CwExSellOrder *)sellOrder
+-(RACSignal *)signalTrxPrepareDataFrom:(CwExTx *)exTrx
 {
-    __block NSString *url = [NSString stringWithFormat:ExGetTrxPrepareBlocks, sellOrder.orderId];
+    __block NSString *url = [NSString stringWithFormat:ExGetTrxPrepareBlocks, exTrx.orderId];
     
-    CwTx *unsignedTx = sellOrder.exTrx.unsignedTx;
+    CwTx *unsignedTx = exTrx.unsignedTx;
     
     __block NSMutableArray *inputBlocks = [NSMutableArray new];
     for (int index=0; index < unsignedTx.inputs.count; index++) {
@@ -734,8 +799,8 @@
                                                KeyChainId:txin.kcId
                                                 AccountId:txin.accId
                                                     KeyId:txin.kId
-                                           receiveAddress:sellOrder.exTrx.receiveAddress
-                                            changeAddress:sellOrder.exTrx.changeAddress.address
+                                           receiveAddress:exTrx.receiveAddress
+                                            changeAddress:exTrx.changeAddress.address
                                         SignatureMateiral:txin.hashForSign];
         [inputBlocks addObject:@{@"idx": @(index), @"blk": [NSString dataToHexstring:inputData]}];
     }
@@ -746,7 +811,7 @@
         
         if (inputBlocks.count > 0) {
             NSDictionary *dict = @{
-                                   @"changeKid": @(sellOrder.exTrx.changeAddress.keyId),
+                                   @"changeKid": @(exTrx.changeAddress.keyId),
                                    @"blks": inputBlocks
                                    };
             NSLog(@"%@, dict: %@", url, dict);
@@ -757,7 +822,7 @@
                 for (NSDictionary *blockData in blocks) {
                     NSNumber *index = [blockData objectForKey:@"idx"];
                     NSString *block = [blockData objectForKey:@"blk"];
-                    NSMutableData *inputData = [NSMutableData dataWithData:sellOrder.exTrx.loginHandle];
+                    NSMutableData *inputData = [NSMutableData dataWithData:exTrx.loginHandle];
                     [inputData appendData:[NSString hexstringToData:block]];
                     
                     [self.card exTrxSignPrepareWithInputId:index.integerValue withInputData:inputData];
@@ -824,7 +889,7 @@
 -(RACSignal *)signalUnblock:(CwExUnblock *)unblock
 {
     @weakify(self);
-    RACSignal *signal = [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
         
         [self.card exBlockCancel:unblock.orderID OkTkn:unblock.okToken EncUblkTkn:unblock.unblockToken Mac1:unblock.mac Nonce:unblock.nonce withComplete:^() {
@@ -836,22 +901,6 @@
         }];
         
         return nil;
-    }] flattenMap:^RACStream *(id value) {
-        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-            @strongify(self);
-            
-            NSString *url = [ExUnblockOrders stringByAppendingFormat:@"/%@", [NSString dataToHexstring:unblock.orderID]];
-            
-            AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
-            [manager DELETE:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-                [subscriber sendNext:nil];
-                [subscriber sendCompleted];
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-                [subscriber sendError:error];
-            }];
-            
-            return nil;
-        }];
     }];
         
     return signal;
@@ -914,7 +963,6 @@
     @weakify(self);
     RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
-        
         AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
         [manager DELETE:url parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
             NSNumber *responseCode = [responseObject objectForKey:@"Code"];

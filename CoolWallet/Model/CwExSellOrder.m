@@ -10,6 +10,8 @@
 #import "CwExTx.h"
 #import "CwBtc.h"
 
+static NSString *KEYSELLORDER = @"sellOrders";
+
 @implementation CwExSellOrder
 
 - (NSDictionary *)rm_dataKeysForClassProperties
@@ -29,12 +31,49 @@
 - (CwExTx *)exTrx
 {
     if (!_exTrx) {
-        _exTrx = [CwExTx new];
-        _exTrx.accountId = self.accountId.integerValue;
+        _exTrx = [[CwExTx alloc] initWithOrderId:self.orderId accountId:self.accountId];
         _exTrx.amount = [CwBtc BTCWithBTC:self.amountBTC];
     }
     
     return _exTrx;
+}
+
+- (void) storeOrderWithCardId:(NSString *)cardId
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *allSellOrders = [userDefaults rm_customObjectForKey:KEYSELLORDER];
+    if (!allSellOrders) {
+        NSDictionary *cardOrders = @{cardId: @[self]};
+        [userDefaults rm_setCustomObject:cardOrders forKey:KEYSELLORDER];
+        return;
+    }
+    
+    NSMutableDictionary *storedOrders = [NSMutableDictionary dictionaryWithDictionary:allSellOrders];
+    NSArray *storedCardOrders = [storedOrders objectForKey:cardId];
+    NSMutableArray *cardOrders = [NSMutableArray new];
+    if (storedCardOrders) {
+        cardOrders = [NSMutableArray arrayWithArray:storedCardOrders];
+        NSArray *matchedOrders = [cardOrders filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"orderId == %@", self.orderId]];
+        if (matchedOrders) {
+            [cardOrders removeObjectsInArray:matchedOrders];
+        }
+    }
+    
+    [cardOrders addObject:self];
+    [storedOrders setObject:cardOrders forKey:cardId];
+    
+    [userDefaults rm_setCustomObject:storedOrders forKey:KEYSELLORDER];
+}
+
++ (NSArray *) getStoredOrdersWithCardId:(NSString *)cardId
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *allSellOrders = [userDefaults rm_customObjectForKey:KEYSELLORDER];
+    if (allSellOrders) {
+        return [allSellOrders objectForKey:cardId];
+    } else {
+        return nil;
+    }
 }
 
 @end
