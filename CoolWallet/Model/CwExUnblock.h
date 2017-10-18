@@ -12,6 +12,7 @@
 @interface CwExUnblock : NSObject
 
 @property (strong, nonatomic) NSData *orderID;
+@property (strong, nonatomic) NSData *cworderId;
 @property (strong, nonatomic) NSData *okToken;
 @property (strong, nonatomic) NSData *unblockToken;
 @property (strong, nonatomic) NSData *mac;

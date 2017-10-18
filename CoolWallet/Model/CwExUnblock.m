@@ -17,6 +17,7 @@
 {
     return @{
              @"orderID" : @"orderId",
+             @"cworderId" : @"cworderId",
              @"okToken" : @"okToken",
              @"unblockToken" : @"unblockTkn",
              @"mac": @"mac",
@@ -30,6 +31,15 @@
         _orderID = [NSString hexstringToData:(NSString *)orderID];
     } else {
         _orderID = orderID;
+    }
+}
+
+-(void) setCworderId:(NSData *)cworderId
+{
+    if ([cworderId isKindOfClass:[NSString class]]) {
+        _cworderId = [NSString hexstringToData:(NSString *)cworderId];
+    } else {
+        _cworderId = cworderId;
     }
 }
 
