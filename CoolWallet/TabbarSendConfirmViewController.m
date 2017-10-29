@@ -389,17 +389,6 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 -(void) didSignTransaction:(NSString *)txId
 {
     NSLog(@"didSignTransaction: %@", txId);
-    
-    [self performDismiss];
-    
-    self.transactionBegin = NO;
-    self.transactionSuccess = YES;
-    
-    NSString *message = [NSString stringWithFormat:@"Sent %@ BTC to %@", self.sendAmountBTC, self.sendToAddress];
-    
-    [self showHintAlert:@"Sent" withMessage:message withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }]];
 }
 
 -(void) didSignTransactionError:(NSString *)errMsg
@@ -415,6 +404,27 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         [self performDismiss];
         self.transactionBegin = NO;
         [self.cwCard setDisplayAccount:self.cwAccount.accId];
+    }
+}
+
+-(void) didPublishTransactionWith:(CwTx *)tx result:(NSData *)result error:(NSError *)error
+{
+    [self performDismiss];
+    
+    self.transactionBegin = NO;
+    
+    if (!error) {
+        self.transactionSuccess = YES;
+        
+        NSString *message = [NSString stringWithFormat:@"Sent %@ BTC to %@", self.sendAmountBTC, self.sendToAddress];
+        
+        [self showHintAlert:@"Sent" withMessage:message withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }]];
+    } else {
+        [self performDismiss];
+        
+        [self showHintAlert:@"Unable to send" withMessage:@"PushX form Post not Work" withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
     }
 }
 

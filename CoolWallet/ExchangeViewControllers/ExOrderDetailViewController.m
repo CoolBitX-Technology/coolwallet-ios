@@ -15,6 +15,7 @@
 #import "BlockChain.h"
 #import "CwBtcNetWork.h"
 #import "CwUnspentTxIndex.h"
+#import "CwExRetryManager.h"
 
 #import "NSDate+Localize.h"
 
@@ -192,7 +193,6 @@
             [self showIndicatorView:@"Preparing transaction..."];
         } error:^(NSError *error) {
             @strongify(self)
-            [self performDismiss];
             [self showHintAlert:@"block fail" withMessage:error.localizedDescription withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
             
             [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
@@ -347,8 +347,6 @@
 
 -(void) didGenAddressError
 {
-    [self performDismiss];
-    
     [self showHintAlert:@"Unable to send" withMessage:@"Can't generate address, please try it later." withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
 }
 
@@ -365,9 +363,7 @@
 }
 
 -(void) didPrepareTransactionError: (NSString *) errMsg
-{
-    [self performDismiss];
-    
+{    
     self.transactionBegin = NO;
     
     [self showHintAlert:@"Unable to send" withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
@@ -440,9 +436,6 @@
 {
     NSLog(@"didSignTransaction: %@", txId);
     
-    UIAlertController *alertController = (UIAlertController *)self.navigationController.presentedViewController;
-    if(alertController != nil) [alertController dismissViewControllerAnimated:YES completion:nil] ;
-    
     if (self.transactionBegin) {
         [self performDismiss];
         
@@ -453,28 +446,50 @@
         [exchange completeTransactionWith:sellOrder];
         
         [self.cwManager.connectedCwCard getBlockAmountWithAccount:self.order.accountId.integerValue];
-                
-        [self showHintAlert:@"Sent" withMessage:[NSString stringWithFormat:@"Sent %@ BTC to %@", self.order.amountBTC, self.order.address] withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-        
-        [self.completeOrderBtn setEnabled:NO];
     }
-    
-    self.transactionBegin = NO;
 }
 
 -(void) didSignTransactionError:(NSString *)errMsg
 {
     [self cancelTransaction];
     
-    UIAlertController *alertController = (UIAlertController *)self.navigationController.presentedViewController;
-    if (alertController != nil) [alertController dismissViewControllerAnimated:YES completion:nil] ;
-    
     [self showHintAlert:@"Unable to send" withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+}
+
+-(void) didPublishTransactionWith:(CwTx *)tx result:(NSData *)result error:(NSError *)error
+{
+    UIAlertController *alertController = (UIAlertController *)self.navigationController.presentedViewController;
+    if(alertController != nil) [alertController dismissViewControllerAnimated:YES completion:nil];
+    
+    if (self.transactionBegin) {
+        [self performDismiss];
+        
+        if (error) {
+            CwExRetryManager *retryManager = [CwExRetryManager sharedInstance];
+            [retryManager saveTx:tx];
+        } else {
+            [self showHintAlert:@"Sent" withMessage:[NSString stringWithFormat:@"Sent %@ BTC to %@", self.order.amountBTC, self.order.address] withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+            
+            [self.completeOrderBtn setEnabled:NO];
+        }
+    }
+    
+    self.transactionBegin = NO;
 }
 
 -(void) didCancelTransaction
 {
     [self performDismiss];
+}
+
+-(void) showHintAlert:(NSString *)title withMessage:(NSString *)message withOKAction:(UIAlertAction *)okAction
+{
+    UIAlertController *alertController = (UIAlertController *)self.navigationController.presentedViewController;
+    if (alertController != nil) [alertController dismissViewControllerAnimated:YES completion:nil] ;
+    
+    [self performDismiss];
+    
+    [super showHintAlert:title withMessage:message withOKAction:okAction];
 }
 
 @end

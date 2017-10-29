@@ -5408,6 +5408,11 @@ NSArray *addresses;
                     
                     [account genRawTxData:currUnsignedTx scriptSigs:sigs];
                     
+                    NSString *txId = [NSString dataToHexstring:currUnsignedTx.rawTx.SHA256_2];
+                    if ([self.delegate respondsToSelector:@selector(didSignTransaction:)]) {
+                        [self.delegate didSignTransaction:txId];
+                    }
+                    
                     //publish to Network
                     NSData *parseResult;
                     
@@ -5415,63 +5420,8 @@ NSArray *addresses;
                     [btcNet decode:currUnsignedTx result:&parseResult];
                     NSLog(@"decode: %@",parseResult);
                     
-                    PublishErr err =  [btcNet publish:currUnsignedTx result:&parseResult];
-                    NSLog(@"publish: %@",parseResult);
-                    
-                    NSString *txId = @"";
-                    if (err == PUBLISH_NETWORK) {
-                        //call error delegate
-                        if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
-                            [self.delegate didSignTransactionError: @"PushX form Post not Work"];
-                        }
-                    } else {
-                        txId = [NSString dataToHexstring:currUnsignedTx.rawTx.SHA256_2];
-                        if ([self.delegate respondsToSelector:@selector(didSignTransaction:)]) {
-                            [self.delegate didSignTransaction:txId];
-                        }
-                        [btcNet getBalance:[NSNumber numberWithInteger:account.accId]];
-                    }
-/*
-                    //{"status":"success","data":"5c6f2ab6a011a6c45fcec6f342d655cf26fd64ecba76c6ddc3e84dd8434bdfa2","code":200,"message":""}
-                    
-                    //check parseResult
-                    NSError *_err = nil;
-                    NSDictionary *JSON =[NSJSONSerialization JSONObjectWithData:parseResult options:0 error:&_err];
-                    
-                    if(!(!_err && [@"success" isEqualToString:JSON[@"status"]]))
-                    {
-                        //call error delegate
-                        if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
-                            [self.delegate didSignTransactionError: JSON[@"message"]];
-                        }
-                    }
-                    else
-                    {
-                        NSString *txId = [JSON objectForKey:@"data"];
-                        //call success delegate
-                        if ([self.delegate respondsToSelector:@selector(didSignTransaction:)]) {
-                            [self.delegate didSignTransaction:txId];
-                        }
-                        
-                        [btcNet getBalance:[NSNumber numberWithInteger:account.accId]];
-                        [btcNet updateHistoryTxs:txId];
-                    }
- */
-                    
-//                    if([JSON objectForKey:@"error"] != nil)
-//                    {
-//                        //call error delegate
-//                        if ([self.delegate respondsToSelector:@selector(didSignTransactionError:)]) {
-//                            [self.delegate didSignTransactionError: [JSON objectForKey:@"error"]];
-//                        }
-//                    }
-//                    else
-//                    {
-//                        //call success delegate
-//                        if ([self.delegate respondsToSelector:@selector(didSignTransaction)]) {
-//                            [self.delegate didSignTransaction];
-//                        }
-//                    }
+                    NSData *result;
+                    [btcNet publish:currUnsignedTx result:&result];
                     
                     [self cwCmdTrxFinish];
                 }
@@ -5733,6 +5683,9 @@ NSArray *addresses;
                 }
             } else {
                 NSLog(@"CwCmdIdExTrxSignLogout Error %04lX", (long)cmd.cmdResult);
+                if (self.exTrxSignLogoutErrorBlock) {
+                    self.exTrxSignLogoutErrorBlock((long)cmd.cmdResult);
+                }
             }
             
             break;

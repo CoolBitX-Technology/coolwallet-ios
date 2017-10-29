@@ -25,6 +25,9 @@
 #import "CwBase58.h"
 #import "CwBlockInfo.h"
 
+#import "CwExRetryTxSignLogout.h"
+#import "CwExRetryManager.h"
+
 #import "NSUserDefaults+RMSaveCustomObject.h"
 
 @interface CwExchangeManager()
@@ -126,6 +129,9 @@
             }
             
             [self syncCardInfo];
+            
+            CwExRetryManager *retryManager = [CwExRetryManager sharedInstance];
+            [retryManager startRetry];
         } else {
             [disposable dispose];
         }
@@ -141,6 +147,11 @@
     }
     
     AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
+    [manager.operationQueue cancelAllOperations];
+    
+    CwExRetryManager *retryManager = [CwExRetryManager sharedInstance];
+    [retryManager clear];
+    
     [manager GET:ExSessionLogout parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
@@ -267,7 +278,7 @@
         [[self signalTrxPrepareDataFrom:exTrx] subscribeError:^(NSError *error) {
             // [H2] Ex trx sign logout
             @strongify(self)
-            [self signLogout:sellOrder needRetry:YES];
+            [self retryTxSignLogout:sellOrder];
             
             NSLog(@"Ex Trx prepaire fail: %@", error);
             if ([self.card.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
@@ -305,14 +316,15 @@
         @strongify(self)
         [self postReceiptToServer:sellOrder];
     } error:^(NSInteger errorCode) {
-        // [H3]
+        @strongify(self)
+        [self retryTxSignLogout:sellOrder];
     }];
 }
 
--(void) postReceiptToServer:(CwExSellOrder *)sellOrder
+-(AFHTTPRequestOperation *) postReceiptToServer:(CwExSellOrder *)sellOrder
 {
     if (!sellOrder.exTrx.receipt) {
-        return;
+        return nil;
     }
     
     NSString *url = [NSString stringWithFormat:ExTrx, sellOrder.orderId];
@@ -323,8 +335,9 @@
                            @"uid": self.card.uid,
                            @"nonce": [NSString dataToHexstring:sellOrder.exTrx.nonce]};
     
+    @weakify(self)
     AFHTTPRequestOperationManager *manager = [self defaultJsonManager];
-    [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+    return [manager POST:url parameters:dict success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         NSLog(@"Success send txId to ex site.");
         
         if (self.exchange.pendingSellOrders != nil && self.exchange.pendingSellOrders.count > 0) {
@@ -336,10 +349,10 @@
                 }
             }
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        @strongify(self)
         NSLog(@"Fail send txId to ex site.");
-        [sellOrder storeOrderWithCardId:self.card.cardId];
+        [self resendReceipt:sellOrder];
     }];
 }
 
@@ -365,36 +378,35 @@
     [[[self signalRequestUnblockInfoWithOrderId:sellOrder.orderId]
       flattenMap:^RACStream *(CwExUnblock *unblock) {
         return [self signalUnblock:unblock];
-    }] subscribeNext:^(id value) {
-        sellOrder.unblock = nil;
-        [sellOrder storeOrderWithCardId:self.card.cardId];
-        
+    }] subscribeNext:^(id value) {        
         CwManager *manager = [CwManager sharedManager];
         [manager.connectedCwCard getBlockAmountWithAccount:sellOrder.accountId.integerValue];
     } error:^(NSError *error) {
-        // store unblock info, and try to unblock again at next time connect to the same card
-        if (sellOrder.unblock && sellOrder.unblock.hasValidUnblockInfo) {
-            [sellOrder storeOrderWithCardId:self.card.cardId];
-        }
+        
     }];
 }
 
 // [H2] sign logout + [H3] store txHandle and retry logout extx from coolwallet
--(void) signLogout:(CwExSellOrder *)sellOrder needRetry:(BOOL)needRetry
+-(void) retryTxSignLogout:(CwExSellOrder *)sellOrder
 {
     CwExTx *exTrx = sellOrder.exTrx;
     if (!exTrx.loginHandle) {
         return;
     }
     
-    [self.card exTrxSignLogoutWithTrxHandle:exTrx.loginHandle nonce:exTrx.nonce complete:^(NSData *receipt) {
-        
-    } error:^(NSInteger errorCode) {
-        [sellOrder storeOrderWithCardId:self.card.cardId];
-        if (needRetry) {
-            [self signLogout:sellOrder needRetry:NO];
-        }
-    }];
+    CwExRetryTxSignLogout *retryTxSignLogout = [[CwExRetryTxSignLogout alloc] initWithCardId:self.card.cardId];
+    retryTxSignLogout.txLoginHandle = exTrx.loginHandle;
+    retryTxSignLogout.nonce = exTrx.nonce;
+    
+    CwExRetryManager *retryManager = [CwExRetryManager sharedInstance];
+    [retryManager saveRetryTxSignLogout:retryTxSignLogout];
+}
+
+// [H4] resend receipt
+-(void) resendReceipt:(CwExSellOrder *)sellOrder
+{
+    CwExRetryManager *retryManager = [CwExRetryManager sharedInstance];
+    [retryManager saveReceiptFrom:sellOrder];
 }
 
 -(void) observeHdwAccountPointer
@@ -828,8 +840,10 @@
                     [self.card exTrxSignPrepareWithInputId:index.integerValue withInputData:inputData];
                 }
                 
-                [subscriber sendNext:responseObject];
-                [subscriber sendCompleted];
+                [subscriber sendError:[NSError errorWithDomain:@"Test [H2]" code:222 userInfo:nil]];
+
+//                [subscriber sendNext:responseObject];
+//                [subscriber sendCompleted];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error){
                 NSMutableDictionary *errorDict = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
                 [errorDict setObject:@"Preparing Transaction fail with Exchange Site" forKey:@"error"];
@@ -1049,9 +1063,14 @@
 
 -(AFHTTPRequestOperationManager *) defaultJsonManager
 {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    manager.requestSerializer=[AFJSONRequestSerializer serializer];
+    static AFHTTPRequestOperationManager *manager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        manager = [AFHTTPRequestOperationManager manager];
+        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    });
+    
     if (self.loginSession != nil) {
         [manager.requestSerializer setValue:self.loginSession forHTTPHeaderField:@"Set-Cookie"];
     }

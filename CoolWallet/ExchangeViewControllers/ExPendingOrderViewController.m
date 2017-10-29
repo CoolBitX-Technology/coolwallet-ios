@@ -197,7 +197,9 @@
 -(BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView == self.tableViewSell) {
-        return YES;
+        CwExSellOrder *sellOrder = [self.exchange.pendingSellOrders objectAtIndex:indexPath.row];
+        
+        return !sellOrder.submitted.boolValue;
     }
     
     return NO;

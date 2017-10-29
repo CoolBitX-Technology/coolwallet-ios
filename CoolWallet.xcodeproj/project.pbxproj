@@ -18,6 +18,9 @@
 		93CF96BE19EE1DA200466DAF /* CALayer+ColorConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF96BD19EE1DA200466DAF /* CALayer+ColorConfig.m */; };
 		93CF96C419EE56A100466DAF /* BindSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF96C319EE56A100466DAF /* BindSuccessViewController.m */; };
 		973A8220748AB8213872710F /* libPods-CoolWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EBE4865AFFF5EBA19625BA8 /* libPods-CoolWallet.a */; };
+		A2588C651FA0C6A70081BBAC /* CwExRetryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A2588C641FA0C6A70081BBAC /* CwExRetryModel.m */; };
+		A2588C681FA0C83E0081BBAC /* CwExRetryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A2588C671FA0C83E0081BBAC /* CwExRetryManager.m */; };
+		A2588C6B1FA0C9510081BBAC /* CwExRetryTxSignLogout.m in Sources */ = {isa = PBXBuildFile; fileRef = A2588C6A1FA0C9510081BBAC /* CwExRetryTxSignLogout.m */; };
 		A267298B1C561155005F452A /* CwExBuyOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = A267298A1C561155005F452A /* CwExBuyOrder.m */; };
 		A27D4FBE1EC4A7C500E5B9CB /* attention_48.png in Resources */ = {isa = PBXBuildFile; fileRef = A27D4FBD1EC4A7C500E5B9CB /* attention_48.png */; };
 		A2B6E7D81BD28879001B1592 /* NSDate+Localize.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B6E7D71BD28879001B1592 /* NSDate+Localize.m */; };
@@ -210,6 +213,12 @@
 		93CF96BD19EE1DA200466DAF /* CALayer+ColorConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+ColorConfig.m"; sourceTree = "<group>"; };
 		93CF96C219EE56A100466DAF /* BindSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BindSuccessViewController.h; sourceTree = "<group>"; };
 		93CF96C319EE56A100466DAF /* BindSuccessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BindSuccessViewController.m; sourceTree = "<group>"; };
+		A2588C631FA0C6A70081BBAC /* CwExRetryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExRetryModel.h; path = Model/CwExRetryModel.h; sourceTree = "<group>"; };
+		A2588C641FA0C6A70081BBAC /* CwExRetryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExRetryModel.m; path = Model/CwExRetryModel.m; sourceTree = "<group>"; };
+		A2588C661FA0C83E0081BBAC /* CwExRetryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExRetryManager.h; path = Model/CwExRetryManager.h; sourceTree = "<group>"; };
+		A2588C671FA0C83E0081BBAC /* CwExRetryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExRetryManager.m; path = Model/CwExRetryManager.m; sourceTree = "<group>"; };
+		A2588C691FA0C9510081BBAC /* CwExRetryTxSignLogout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExRetryTxSignLogout.h; path = Model/CwExRetryTxSignLogout.h; sourceTree = "<group>"; };
+		A2588C6A1FA0C9510081BBAC /* CwExRetryTxSignLogout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExRetryTxSignLogout.m; path = Model/CwExRetryTxSignLogout.m; sourceTree = "<group>"; };
 		A26729891C561155005F452A /* CwExBuyOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CwExBuyOrder.h; path = Model/CwExBuyOrder.h; sourceTree = "<group>"; };
 		A267298A1C561155005F452A /* CwExBuyOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CwExBuyOrder.m; path = Model/CwExBuyOrder.m; sourceTree = "<group>"; };
 		A27D4FBD1EC4A7C500E5B9CB /* attention_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attention_48.png; sourceTree = "<group>"; };
@@ -610,6 +619,19 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A2588C6C1FA0C9DC0081BBAC /* Retry */ = {
+			isa = PBXGroup;
+			children = (
+				A2588C631FA0C6A70081BBAC /* CwExRetryModel.h */,
+				A2588C641FA0C6A70081BBAC /* CwExRetryModel.m */,
+				A2588C661FA0C83E0081BBAC /* CwExRetryManager.h */,
+				A2588C671FA0C83E0081BBAC /* CwExRetryManager.m */,
+				A2588C691FA0C9510081BBAC /* CwExRetryTxSignLogout.h */,
+				A2588C6A1FA0C9510081BBAC /* CwExRetryTxSignLogout.m */,
+			);
+			name = Retry;
+			sourceTree = "<group>";
+		};
 		A2B6E7D51BD28813001B1592 /* Category */ = {
 			isa = PBXGroup;
 			children = (
@@ -634,6 +656,7 @@
 		A2DDC49D1F3B3D72002618D2 /* CwExSite */ = {
 			isa = PBXGroup;
 			children = (
+				A2588C6C1FA0C9DC0081BBAC /* Retry */,
 				F47FA3FF1E00290100EACD26 /* CwExchangeSettings.h */,
 				F479E4031C5C918500482E59 /* CwExTx.h */,
 				F479E4041C5C918500482E59 /* CwExTx.m */,
@@ -1349,10 +1372,12 @@
 				F45962931BDE411C0046E4CE /* SRWebSocket+CW.m in Sources */,
 				F49E7A6B1C8FEB7B000CD4B7 /* CwExUnblock.m in Sources */,
 				EFEE57E31B7AFA7400E5999B /* tx.m in Sources */,
+				A2588C651FA0C6A70081BBAC /* CwExRetryModel.m in Sources */,
 				F47AB4E11C7700E500766F3D /* UIViewController+Utils.m in Sources */,
 				EFCF9A551B32C8810076091B /* CwCardCommand.m in Sources */,
 				EFFA18311B450EA600FF8FC6 /* FrontViewController.m in Sources */,
 				EFAC5C4B1AC25A7000320EA6 /* bitstream.c in Sources */,
+				A2588C681FA0C83E0081BBAC /* CwExRetryManager.m in Sources */,
 				EFCF9A581B32C8810076091B /* CwManager.m in Sources */,
 				EFBED9DA1B56B460008EF9DD /* TabImportSeedViewController.m in Sources */,
 				EFA9D5891ABA67F2005C27F2 /* TabbarSendViewController.m in Sources */,
@@ -1364,6 +1389,7 @@
 				EFF6DD111B9542880089E093 /* TabExhchangeRateViewController.m in Sources */,
 				EFAC5FD71AAD39620042FF8C /* TabAddressTableViewController.m in Sources */,
 				EFA341421AA702E80035AC6D /* CwInfoViewCell.m in Sources */,
+				A2588C6B1FA0C9510081BBAC /* CwExRetryTxSignLogout.m in Sources */,
 				F4A88C351C75A33F007AC3C1 /* ExOpenOrdersViewController.m in Sources */,
 				93CF96BE19EE1DA200466DAF /* CALayer+ColorConfig.m in Sources */,
 				EF09E9261BA6C00200C8DCD0 /* TabRecoveryViewController.m in Sources */,

@@ -9,6 +9,8 @@
 #ifndef CwBtcNetworkDelegate_h
 #define CwBtcNetworkDelegate_h
 
+@class CwTx;
+
 @protocol CwBtcNetworkDelegate <NSObject>
 
 //@required
@@ -16,6 +18,7 @@
 @optional
 
 -(void) didGetTransactionByAccount: (NSInteger) accId;
+-(void) didPublishTransactionWith:(CwTx *)tx result:(NSData *)result error:(NSError *)error;
 
 @end
 

@@ -33,9 +33,11 @@
 -(void) blockWithOrder:(CwExSellOrder *)sellOrder withOTP:(NSString *)otp withSuccess:(void(^)(void))successCallback error:(void(^)(NSError *error))errorCallback finish:(void(^)(void))finishCallback;
 -(void) prepareTransactionFrom:(CwExSellOrder *)sellOrder withChangeAddress:(CwAddress *)changeAddress;
 -(void) completeTransactionWith:(CwExSellOrder *)sellOrder;
--(void) unblockOrderWithOrderId:(NSString *)orderId;
+-(void) unblockOrder:(CwExSellOrder *)sellOrder;
 
 -(RACSignal *)signalCancelOrder:(NSString *)orderId;
+
+-(AFHTTPRequestOperation *) postReceiptToServer:(CwExSellOrder *)sellOrder;
 
 -(AFHTTPRequestOperationManager *) defaultJsonManager;
 
