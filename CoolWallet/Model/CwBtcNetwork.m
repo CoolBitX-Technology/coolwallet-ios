@@ -1139,7 +1139,7 @@ BOOL didGetTransactionByAccountFlag[5];
     }
 }
 
-- (void) publish:(CwTx*)tx result:(NSData **)result
+- (void) publish:(CwTx*)tx result:(NSData **)result error:(NSError **)error
 {
     serverSite = @"https://blockchain.info/";
     pushURLStr = @"pushtx";
@@ -1156,18 +1156,14 @@ BOOL didGetTransactionByAccountFlag[5];
     [httpRequest setHTTPMethod:@"POST"];
     [httpRequest setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
     
-    NSError *error;
-    NSData *decodeTxJSON = [NSURLConnection sendSynchronousRequest:httpRequest returningResponse:nil error: &error];
+    NSData *decodeTxJSON = [NSURLConnection sendSynchronousRequest:httpRequest returningResponse:nil error: error];
     
     if (!error) {
         *result = [[NSData alloc] initWithData: decodeTxJSON];
-        
-        CwAccount *account= [cwCard.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", (long)cwCard.currentAccountId]];
-        [self getBalance:[NSNumber numberWithInteger:account.accId]];
     }
     
     if ([self.delegate respondsToSelector:@selector(didPublishTransactionWith:result:error:)]) {
-        [self.delegate didPublishTransactionWith:tx result:*result error:error];
+        [self.delegate didPublishTransactionWith:tx result:*result error:*error];
     }
 }
 

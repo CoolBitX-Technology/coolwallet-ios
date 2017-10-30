@@ -33,7 +33,7 @@
 -(GetAllTxsByAddrErr) updateHistoryTxs:(NSString *)tid;
 - (int64_t) getBalance:(NSNumber *)accountId;
 
-- (void) publish:(CwTx*)tx result:(NSData **)result;
+- (void) publish:(CwTx*)tx result:(NSData **)result error:(NSError **)error;
 - (DecodeErr) decode:(CwTx*)tx result:(NSData **)result;
 
 - (NSDictionary *) getCurrRate; //key: CurrId, value: rate

@@ -193,6 +193,8 @@
             [self showIndicatorView:@"Preparing transaction..."];
         } error:^(NSError *error) {
             @strongify(self)
+            [self performDismiss];
+            
             [self showHintAlert:@"block fail" withMessage:error.localizedDescription withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
             
             [self.cwManager.connectedCwCard setDisplayAccount:self.cwManager.connectedCwCard.currentAccountId];
@@ -251,8 +253,6 @@
 
 -(void) cancelTransaction
 {
-    [self showIndicatorView:@"Cancel transaction..."];
-    
     self.transactionBegin = NO;
     
     [self.cwManager.connectedCwCard setDisplayAccount: self.cwManager.connectedCwCard.currentAccountId];
@@ -366,9 +366,11 @@
 {    
     self.transactionBegin = NO;
     
-    [self showHintAlert:@"Unable to send" withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    [self performDismiss];
     
-    [self cancelTransaction];
+    [self showHintAlert:@"Unable to send" withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self cancelTransaction];
+    }]];
 }
 
 -(void) didGetTapTapOtp:(NSString *)OTP
@@ -451,9 +453,11 @@
 
 -(void) didSignTransactionError:(NSString *)errMsg
 {
-    [self cancelTransaction];
+    [self performDismiss];
     
     [self showHintAlert:@"Unable to send" withMessage:errMsg withOKAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+    
+    [self cancelTransaction];
 }
 
 -(void) didPublishTransactionWith:(CwTx *)tx result:(NSData *)result error:(NSError *)error
@@ -462,6 +466,9 @@
     if(alertController != nil) [alertController dismissViewControllerAnimated:YES completion:nil];
     
     if (self.transactionBegin) {
+        CwBtcNetWork *btcNetwork = [CwBtcNetWork sharedManager];
+        [btcNetwork getBalance:[NSNumber numberWithInteger:self.order.accountId.integerValue]];
+        
         [self performDismiss];
         
         if (error) {
@@ -475,21 +482,6 @@
     }
     
     self.transactionBegin = NO;
-}
-
--(void) didCancelTransaction
-{
-    [self performDismiss];
-}
-
--(void) showHintAlert:(NSString *)title withMessage:(NSString *)message withOKAction:(UIAlertAction *)okAction
-{
-    UIAlertController *alertController = (UIAlertController *)self.navigationController.presentedViewController;
-    if (alertController != nil) [alertController dismissViewControllerAnimated:YES completion:nil] ;
-    
-    [self performDismiss];
-    
-    [super showHintAlert:title withMessage:message withOKAction:okAction];
 }
 
 @end

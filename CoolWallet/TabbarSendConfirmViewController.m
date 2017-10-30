@@ -409,6 +409,9 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 
 -(void) didPublishTransactionWith:(CwTx *)tx result:(NSData *)result error:(NSError *)error
 {
+    CwBtcNetWork *btcNetwork = [CwBtcNetWork sharedManager];
+    [btcNetwork getBalance:[NSNumber numberWithInteger:self.cwAccount.accId]];
+    
     [self performDismiss];
     
     self.transactionBegin = NO;

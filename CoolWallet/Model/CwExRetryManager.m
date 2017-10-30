@@ -248,8 +248,9 @@ static NSString const *prefixKeyOfRetryTx = @"RetryTx_";
         @strongify(self)
         CwBtcNetWork *btcNet = [CwBtcNetWork sharedManager];
         NSData *result;
-        [btcNet publish:tx result:&result];
-        if (!result && !operation.isCancelled) {
+        NSError *error;
+        [btcNet publish:tx result:&result error:&error];
+        if (error && !operation.isCancelled) {
             [self runResendTx:tx];
         }
     }];

@@ -282,11 +282,14 @@
             
             NSLog(@"Ex Trx prepaire fail: %@", error);
             if ([self.card.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
+                NSString *errorMessage = @"Fail to get transaction data from exchange site.";
                 if (error.userInfo) {
-                    [self.card.delegate didPrepareTransactionError:[error.userInfo objectForKey:@"error"]];
-                } else {
-                    [self.card.delegate didPrepareTransactionError:@"Fail to get transaction data from exchange site."];
+                    errorMessage = [error.userInfo objectForKey:@"error"];
                 }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.card.delegate didPrepareTransactionError:errorMessage];
+                });
             }
         }];
     } error:^(NSError *error) {
@@ -296,11 +299,15 @@
         
         NSLog(@"Ex Trx prepaire fail: %@", error);
         if ([self.card.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
+            NSString *errorMessage = @"Fail to get transaction data from exchange site.";
+            
             if (error.userInfo) {
-                [self.card.delegate didPrepareTransactionError:[error.userInfo objectForKey:@"error"]];
-            } else {
-                [self.card.delegate didPrepareTransactionError:@"Fail to get transaction data from exchange site."];
+                errorMessage = [error.userInfo objectForKey:@"error"];
             }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.card.delegate didPrepareTransactionError:errorMessage];
+            });
         }
     }];
 }
@@ -375,6 +382,7 @@
 // [H1] Cancel block
 -(void) unblockOrder:(CwExSellOrder *)sellOrder
 {
+    @weakify(self)
     [[[self signalRequestUnblockInfoWithOrderId:sellOrder.orderId]
       flattenMap:^RACStream *(CwExUnblock *unblock) {
         return [self signalUnblock:unblock];
@@ -382,7 +390,8 @@
         CwManager *manager = [CwManager sharedManager];
         [manager.connectedCwCard getBlockAmountWithAccount:sellOrder.accountId.integerValue];
     } error:^(NSError *error) {
-        
+        @strongify(self)
+        [self performSelector:@selector(unblockOrder:) withObject:sellOrder afterDelay:3];
     }];
 }
 
@@ -840,10 +849,8 @@
                     [self.card exTrxSignPrepareWithInputId:index.integerValue withInputData:inputData];
                 }
                 
-                [subscriber sendError:[NSError errorWithDomain:@"Test [H2]" code:222 userInfo:nil]];
-
-//                [subscriber sendNext:responseObject];
-//                [subscriber sendCompleted];
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error){
                 NSMutableDictionary *errorDict = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
                 [errorDict setObject:@"Preparing Transaction fail with Exchange Site" forKey:@"error"];

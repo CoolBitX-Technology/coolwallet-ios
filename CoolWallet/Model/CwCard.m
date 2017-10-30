@@ -5421,7 +5421,9 @@ NSArray *addresses;
                     NSLog(@"decode: %@",parseResult);
                     
                     NSData *result;
-                    [btcNet publish:currUnsignedTx result:&result];
+                    NSError *error;
+                    [btcNet publish:currUnsignedTx result:&result error:&error];
+                    [btcNet getBalance:@(account.accId)];
                     
                     [self cwCmdTrxFinish];
                 }
