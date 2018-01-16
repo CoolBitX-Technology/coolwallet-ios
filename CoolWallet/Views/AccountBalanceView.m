@@ -132,6 +132,7 @@
      subscribeNext:^(NSMutableAttributedString *amount) {
         @strongify(self)
         self.amountLabel.attributedText = amount;
+//         self.amountLabel.attributedText = [[NSMutableAttributedString alloc] initWithString:@"100"];
     }];
     
     [[[RACObserve(self.reservedView, hidden) distinctUntilChanged]

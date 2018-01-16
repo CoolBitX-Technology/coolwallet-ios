@@ -31,6 +31,8 @@
 {
     CwBtc *_newBTC = [[CwBtc alloc]init];
     [_newBTC setMBTC:mBTC];
+    //Test
+//    [_newBTC setMBTC:[NSNumber numberWithLongLong:2300000000]];
     [_newBTC setCurrRate:[NSNumber numberWithDouble:0]];
     return _newBTC;
 }

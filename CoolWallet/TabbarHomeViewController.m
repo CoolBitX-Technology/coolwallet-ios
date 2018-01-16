@@ -347,7 +347,8 @@ Boolean setBtnActionFlag;
     UILabel *lblTxAmount = (UILabel *)[cell viewWithTag:103];
     
     lblTxAmount.text = [NSString stringWithFormat: @"%@", [tx.historyAmount getBTCDisplayFromUnit]];
-    if ([tx.historyAmount.satoshi intValue]>0){
+    NSLog(@"lblTxAmount:%@",lblTxAmount.text);
+    if ([tx.historyAmount.satoshi doubleValue]>0){
         lblTxAmount.text = [NSString stringWithFormat:@"+%@", lblTxAmount.text];
         lblTxAmount.textColor = [UIColor greenColor];
         

@@ -41,14 +41,16 @@
 {
     if (data == nil) {return;}
     
-    NSDictionary *wallet = [data objectForKey:@"wallet"];
+    NSMutableDictionary *wallet = [data objectForKey:@"wallet"];
     NSDictionary *addresses = [data objectForKey:@"addresses"];
     if (wallet == nil || addresses == nil) {
         return;
     }
-    
+
+//    NSNumber *balance = [NSNumber numberWithLong:2300000000];
     NSNumber *balance = [wallet objectForKey:@"final_balance"];
-    self.balance = balance.longLongValue;
+    long long longBalance = balance.longLongValue;
+    self.balance = longBalance;
 }
 
 - (void) encodeWithCoder:(NSCoder *)encoder {
@@ -258,7 +260,7 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
             txout.addr = changeAddr;
             txout.amount = _change;
             [_unsignedTx.outputs addObject:txout];
-        } else if (_change.satoshi.integerValue > 0) {
+        } else if (_change.satoshi.longLongValue > 0) {
             _fee = [_fee add:_change];
             _unsignedTx.dustAmount = _change;
         }

@@ -181,8 +181,8 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
         self.lblTxDust.hidden = NO;
     } else {
         if (![CwTransactionFee sharedInstance].enableAutoFee.boolValue) {
-            NSInteger halfRecommendFee = self.unsignedTx.recommendFee.satoshi.integerValue / 2;
-            self.btnFeesInfo.hidden = self.unsignedTx.txFee.satoshi.integerValue >= halfRecommendFee;
+            long halfRecommendFee = self.unsignedTx.recommendFee.satoshi.longLongValue / 2;
+            self.btnFeesInfo.hidden = self.unsignedTx.txFee.satoshi.longLongValue >= halfRecommendFee;
         }
         
         self.viewChangeAddr.hidden = NO;
@@ -199,7 +199,7 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
 -(long long) getSendAmountWithSatoshi
 {
     NSString *sato = [self.sendAmountBTC stringByReplacingOccurrencesOfString:@"," withString:@"."];;
-    
+
     return [[[OCAppCommon getInstance] convertBTCtoSatoshi:sato] longLongValue];
 }
 

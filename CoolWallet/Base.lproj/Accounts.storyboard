@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="pJk-oc-UYe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="pJk-oc-UYe">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Hosts-->
         <scene sceneID="5xb-Uv-Ccy">
@@ -17,7 +22,7 @@
                     <tabBarItem key="tabBarItem" title="Hosts" image="+" id="aBI-PC-fS8"/>
                     <navigationItem key="navigationItem" id="DNh-aJ-j7g"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" backIndicatorImage="x.png" id="puI-hr-a7f">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
@@ -41,7 +46,7 @@
                         <viewControllerLayoutGuide type="bottom" id="zU7-gI-VO0"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="GyN-va-RcG">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="rr5-wb-jVp">
@@ -61,7 +66,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="giA-hG-rId">
-                                                    <rect key="frame" x="15" y="12" width="31.5" height="19.5"/>
+                                                    <rect key="frame" x="15" y="9" width="31.5" height="19.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -130,7 +135,7 @@
                         <viewControllerLayoutGuide type="bottom" id="1n7-GN-1t4"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="J3v-0x-xCe">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kjE-aB-dwJ">
@@ -276,7 +281,7 @@
                         <viewControllerLayoutGuide type="bottom" id="nJe-Do-IgI"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="soJ-Cp-B3b">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ae8-Q5-aDE" userLabel="Accounts View">
@@ -526,13 +531,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7aT-bx-cZA">
-                                                    <rect key="frame" x="66" y="0.0" width="116" height="21"/>
+                                                    <rect key="frame" x="73" y="3" width="102" height="15.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xnn-kA-tJW">
-                                                    <rect key="frame" x="4" y="0.0" width="60" height="54"/>
+                                                    <rect key="frame" x="11" y="3" width="60" height="49"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="60" id="Wqa-mh-0r4"/>
                                                     </constraints>
@@ -541,7 +546,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="103" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="amount" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qBP-KB-HQH">
-                                                    <rect key="frame" x="275" y="16" width="80" height="21"/>
+                                                    <rect key="frame" x="268" y="19" width="80" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="80" id="lzc-du-YPz"/>
                                                     </constraints>
@@ -550,7 +555,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rK0-27-QOJ">
-                                                    <rect key="frame" x="66" y="6" width="207" height="42"/>
+                                                    <rect key="frame" x="73" y="6" width="193" height="42"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="42" id="uO9-qW-xm3"/>
                                                     </constraints>
@@ -631,11 +636,11 @@
                         <viewControllerLayoutGuide type="bottom" id="Cq1-jU-Fbc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jbO-Kp-ge0">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYu-mP-na7">
-                                <rect key="frame" x="0.0" y="8" width="375" height="478"/>
+                                <rect key="frame" x="0.0" y="8" width="375" height="527"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hIK-Gk-LTt">
                                         <rect key="frame" x="10" y="8" width="355" height="82"/>
@@ -976,7 +981,7 @@
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wwP-t0-c2q">
-                                <rect key="frame" x="10" y="498" width="355" height="48"/>
+                                <rect key="frame" x="10" y="547" width="355" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="yg5-5k-oCU"/>
                                 </constraints>
@@ -1025,7 +1030,7 @@
                         <viewControllerLayoutGuide type="bottom" id="4eL-tr-5z2"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="EbX-vV-Rbv">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="meh-2k-drU" userLabel="Accounts View">
@@ -1328,7 +1333,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fbt-pW-ztx">
-                                                    <rect key="frame" x="8" y="0.0" width="359" height="18"/>
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="18" id="rln-UA-7rR"/>
                                                     </constraints>
@@ -1337,7 +1342,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SubTitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwt-Ca-UHv">
-                                                    <rect key="frame" x="8" y="20" width="359" height="21"/>
+                                                    <rect key="frame" x="15" y="20" width="345" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1410,7 +1415,7 @@
                         <viewControllerLayoutGuide type="bottom" id="RsC-2T-ykA"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="m7U-rq-Wh7">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nfm-Qe-SZj" userLabel="Accounts View">
@@ -2221,7 +2226,7 @@ Press the button on the card to see the next set of numbers</string>
             <objects>
                 <tableViewController id="IUC-TT-tyf" customClass="TabAddressBookViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="qeu-mh-lK6">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
@@ -2233,13 +2238,13 @@ Press the button on the card to see the next set of numbers</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bUY-TP-ZAB">
-                                            <rect key="frame" x="8" y="0.0" width="359" height="21"/>
+                                            <rect key="frame" x="16" y="3" width="343" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLV-AL-7hq">
-                                            <rect key="frame" x="8" y="22" width="359" height="21"/>
+                                            <rect key="frame" x="16" y="25" width="343" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -2292,7 +2297,7 @@ Press the button on the card to see the next set of numbers</string>
                         <viewControllerLayoutGuide type="bottom" id="aNw-YP-ZoW"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="UZ9-l4-tMh">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="dyy-57-pqj">
@@ -2332,7 +2337,7 @@ Press the button on the card to see the next set of numbers</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Fees" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YcE-ob-nRZ">
-                                                    <rect key="frame" x="18" y="14" width="308" height="21"/>
+                                                    <rect key="frame" x="25" y="14" width="301" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2389,7 +2394,7 @@ Press the button on the card to see the next set of numbers</string>
                 <navigationController id="yO1-L1-NTv" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="qTp-i1-4zt"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="LT7-3G-xyc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
@@ -2406,7 +2411,7 @@ Press the button on the card to see the next set of numbers</string>
             <objects>
                 <navigationController id="0XT-Lg-IU7" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="FiH-VM-QR4">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -2422,7 +2427,7 @@ Press the button on the card to see the next set of numbers</string>
             <objects>
                 <navigationController id="h4S-em-NaY" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="HsU-iF-BcS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
@@ -2439,7 +2444,7 @@ Press the button on the card to see the next set of numbers</string>
             <objects>
                 <navigationController id="ahN-MJ-ddW" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="Oil-eI-pty">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
@@ -2463,7 +2468,7 @@ Press the button on the card to see the next set of numbers</string>
                         <viewControllerLayoutGuide type="bottom" id="p72-tu-1Gr"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="E4j-86-zY8">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E49-dq-VfG">
@@ -2479,7 +2484,7 @@ Press the button on the card to see the next set of numbers</string>
                                 <size key="shadowOffset" width="0.0" height="1"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraguide" translatesAutoresizingMaskIntoConstraints="NO" id="gN3-rz-Rwh">
-                                <rect key="frame" x="71" y="185" width="234" height="234"/>
+                                <rect key="frame" x="71" y="184.5" width="234" height="234"/>
                             </imageView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="INa-kg-XG5">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -2569,7 +2574,7 @@ Press the button on the card to see the next set of numbers</string>
                         <viewControllerLayoutGuide type="bottom" id="U4H-hY-kMM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Jhe-Vq-yUj">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you want to disconnect the CoolWallet?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v2u-nV-IyZ">
@@ -3021,7 +3026,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <viewControllerLayoutGuide type="bottom" id="qik-Jw-bjS"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Opz-VW-WTz">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -3142,7 +3147,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                 <navigationController id="9AD-kW-Scz" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="CW Card" image="card" id="Ulq-vI-IXF"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="WVM-UE-Qpd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
@@ -3161,7 +3166,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                     <tabBarItem key="tabBarItem" title="Setting" image="setting" id="afy-SC-jVH"/>
                     <navigationItem key="navigationItem" id="aWB-Ab-f38"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="hha-HL-Mn8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
@@ -3179,7 +3184,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                 <navigationController id="k1k-Rz-p6W" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Exit" id="0J7-Sm-VOo"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="oul-kg-M2I">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
@@ -3200,7 +3205,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <viewControllerLayoutGuide type="bottom" id="g4U-SH-QHE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pgb-Vj-w4X">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yiV-rt-3Gd">
@@ -3477,14 +3482,14 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hosts.png" translatesAutoresizingMaskIntoConstraints="NO" id="Bol-d4-6Bc">
-                                                    <rect key="frame" x="28" y="10" width="30" height="30"/>
+                                                    <rect key="frame" x="35" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="BRY-4d-Bsm"/>
                                                         <constraint firstAttribute="width" constant="30" id="UnR-sp-w5F"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Host devices" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="ce0-hp-7LT">
-                                                    <rect key="frame" x="83" y="11" width="139" height="29"/>
+                                                    <rect key="frame" x="90" y="11" width="135" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -3511,13 +3516,13 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CoolWallet card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="w1O-rD-oaY">
-                                                    <rect key="frame" x="83" y="11" width="168" height="29"/>
+                                                    <rect key="frame" x="90" y="11" width="163.5" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cw_card.png" translatesAutoresizingMaskIntoConstraints="NO" id="x6l-zb-LWh">
-                                                    <rect key="frame" x="28" y="10" width="30" height="30"/>
+                                                    <rect key="frame" x="35" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="007-Br-FF9"/>
                                                         <constraint firstAttribute="width" constant="30" id="oMt-LT-hoJ"/>
@@ -3545,13 +3550,13 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Security" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="VzY-lr-EEn">
-                                                    <rect key="frame" x="83" y="11" width="88" height="29"/>
+                                                    <rect key="frame" x="90" y="11" width="85.5" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="security.png" translatesAutoresizingMaskIntoConstraints="NO" id="s9k-Ak-fEb">
-                                                    <rect key="frame" x="28" y="10" width="30" height="30"/>
+                                                    <rect key="frame" x="35" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="7d3-sa-HIt"/>
                                                         <constraint firstAttribute="width" constant="30" id="yfc-pV-whu"/>
@@ -3579,13 +3584,13 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="Xeh-pu-sXE">
-                                                    <rect key="frame" x="83" y="11" width="88" height="29"/>
+                                                    <rect key="frame" x="90" y="11" width="86" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings.png" translatesAutoresizingMaskIntoConstraints="NO" id="Alt-Cb-3UQ">
-                                                    <rect key="frame" x="28" y="10" width="30" height="30"/>
+                                                    <rect key="frame" x="35" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="41l-yC-kn7"/>
                                                         <constraint firstAttribute="height" constant="30" id="iY5-M1-cWa"/>
@@ -3613,13 +3618,13 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exchange" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="9dz-cB-ORR">
-                                                    <rect key="frame" x="83" y="11" width="106" height="29"/>
+                                                    <rect key="frame" x="90" y="11" width="102.5" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="exchange.png" translatesAutoresizingMaskIntoConstraints="NO" id="uvK-6F-Bvj">
-                                                    <rect key="frame" x="28" y="10" width="30" height="30"/>
+                                                    <rect key="frame" x="35" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="mqU-0t-AXd"/>
                                                         <constraint firstAttribute="height" constant="30" id="xkD-eY-LS5"/>
@@ -3647,13 +3652,13 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logout" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="bQ2-Pi-Shj">
-                                                    <rect key="frame" x="83" y="11" width="75" height="29"/>
+                                                    <rect key="frame" x="90" y="11" width="73" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logout.png" translatesAutoresizingMaskIntoConstraints="NO" id="FHJ-fE-mE8">
-                                                    <rect key="frame" x="28" y="10" width="30" height="30"/>
+                                                    <rect key="frame" x="35" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="6Mi-R4-11d"/>
                                                         <constraint firstAttribute="height" constant="30" id="qlu-xm-NYl"/>
@@ -3715,7 +3720,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="MbB-dP-3Ly"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="X7N-RT-oAC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
@@ -3762,7 +3767,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <viewControllerLayoutGuide type="bottom" id="Qg4-mz-HWi"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="m83-kp-eeq">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="g22-kf-S9g">
@@ -3821,7 +3826,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <viewControllerLayoutGuide type="bottom" id="Dkf-Uk-2hB"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="5JW-5S-jpt">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manual Fees:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ulz-HX-CeJ">
@@ -3993,7 +3998,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <viewControllerLayoutGuide type="bottom" id="Yhy-QX-Cuh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="KZZ-3C-83h">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ex_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="1YX-v3-nwZ">
@@ -4075,7 +4080,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <viewControllerLayoutGuide type="bottom" id="mHh-m2-xfa"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="XhG-e4-XbJ">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XOL-A7-pjk" userLabel="Unclarify Order Exist View">
@@ -4461,7 +4466,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <viewControllerLayoutGuide type="bottom" id="p2N-KG-7gH"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="dX8-zo-at1">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fmY-Y5-9fx">
@@ -4600,7 +4605,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <viewControllerLayoutGuide type="bottom" id="POS-HB-CNu"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="aTJ-jH-QgL">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfD-7O-gJP">
@@ -4984,11 +4989,11 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                         <viewControllerLayoutGuide type="bottom" id="Xdd-fq-uKk"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="GTb-lQ-OU3">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oGL-eX-LbG">
-                                <rect key="frame" x="0.0" y="8" width="375" height="478"/>
+                                <rect key="frame" x="0.0" y="8" width="375" height="527"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cy4-Ys-BWs">
                                         <rect key="frame" x="10" y="8" width="355" height="82"/>
@@ -5295,7 +5300,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UNQ-aE-z7v">
-                                <rect key="frame" x="10" y="498" width="355" height="48"/>
+                                <rect key="frame" x="10" y="547" width="355" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="8lp-R6-IhD"/>
                                 </constraints>
@@ -5322,7 +5327,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                     <navigationItem key="navigationItem" title="Transaction confirm" id="CaZ-Hk-hV9">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="Z4J-bS-gn7">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gqx-Cf-Sba">
-                                <rect key="frame" x="321" y="10" width="38" height="24"/>
+                                <rect key="frame" x="205" y="0.0" width="154" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <state key="normal" title="USD" backgroundImage="white_frame_small.png"/>
@@ -5391,14 +5396,9 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
         <image name="white_frame_small.png" width="154" height="100"/>
         <image name="x.png" width="417" height="417"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="uP1-PA-axM"/>
         <segue reference="t76-YH-dUj"/>
         <segue reference="BaF-zy-sDT"/>
+        <segue reference="gzi-1q-gb8"/>
     </inferredMetricsTieBreakers>
 </document>

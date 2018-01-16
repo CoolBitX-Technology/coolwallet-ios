@@ -21,8 +21,8 @@ typedef NS_ENUM (NSInteger, CwAccountStatus) {
 
 @property NSInteger accId;
 @property NSString *accName;
-@property int64_t balance; //shatoshi (sum of address balance)
-@property int64_t blockAmount; //blocked by Exchange Site
+@property long long balance; //shatoshi (sum of address balance)
+@property long long blockAmount; //blocked by Exchange Site
 @property NSInteger extKeyPointer;
 @property NSInteger intKeyPointer;
 
