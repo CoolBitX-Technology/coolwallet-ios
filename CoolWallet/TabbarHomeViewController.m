@@ -336,7 +336,6 @@ Boolean setBtnActionFlag;
     
     if((sortedTxKeys.count - 1) < indexPath.row) return cell;
     CwTx *tx = [account.transactions objectForKey:sortedTxKeys[indexPath.row]];
-    //CwTx *tx = [account.transactions objectForKey: [NSString stringWithFormat:@"%d",indexPath.row]];
     
     UILabel *lblTxUTC = (UILabel *)[cell viewWithTag:100];
     lblTxUTC.text = [tx.historyTime_utc cwDateString];
@@ -346,7 +345,7 @@ Boolean setBtnActionFlag;
     //lblTxNotes.text = [NSString stringWithFormat: @"%@", tx.tid];
     UILabel *lblTxAmount = (UILabel *)[cell viewWithTag:103];
     
-    lblTxAmount.text = [NSString stringWithFormat: @"%@", [tx.historyAmount getBTCDisplayFromUnit]];
+    lblTxAmount.text = (NSString*)[NSString stringWithFormat: @"%@", [tx.historyAmount getBTCDisplayFromUnit]];
     NSLog(@"lblTxAmount:%@",lblTxAmount.text);
     if ([tx.historyAmount.satoshi doubleValue]>0){
         lblTxAmount.text = [NSString stringWithFormat:@"+%@", lblTxAmount.text];

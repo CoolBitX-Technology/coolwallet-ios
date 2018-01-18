@@ -462,7 +462,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 
                 if (cwAddress.historyTrx == nil) {
 //                    record.historyAmount = [record.historyAmount add:htx.historyAmount];
-                    CwBtc *btc = [record.historyAmount add:htx.historyAmount];
+                    CwBtc *btc = (CwBtc*)[record.historyAmount add:htx.historyAmount];
                     record.amount_btc = btc.BTC;
                 } else {
                     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@", htx.tid];
@@ -470,7 +470,7 @@ BOOL didGetTransactionByAccountFlag[5];
                     
                     if (searchResult.count == 0) {
 //                        record.historyAmount = [record.historyAmount add:htx.historyAmount];
-                        CwBtc *btc = [record.historyAmount add:htx.historyAmount];
+                        CwBtc *btc = record.historyAmount;
                         record.amount_btc = btc.BTC;
                     }
                 }
