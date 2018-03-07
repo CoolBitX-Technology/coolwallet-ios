@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "CwBase58.h"
+#import "NSString+Base58.h"
+#import "NSData+Hash.h"
 
 static const UniChar base58chars[] = {
     '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P',
@@ -21,16 +23,27 @@ static const UniChar base58chars[] = {
 {
     if (! d) return nil;
     
+    NSString *hexStr = [NSString hexWithData:d];
+    NSLog(@"1%@",[NSString stringWithString: hexStr]);
+    NSString *newHexString = [hexStr stringByReplacingCharactersInRange:NSMakeRange(0, 2) withString:@"6F"];
+    NSString *newPrefixFingerprintString = [newHexString substringToIndex:42];
+    NSMutableData *newPrefixFingerprintData = [newPrefixFingerprintString hexToData].mutableCopy;
+    NSMutableData *newChecksumData = [[NSMutableData alloc]initWithBytes:newPrefixFingerprintData.SHA256_2.bytes length:4];
+    NSString *newChecksumString = [NSString hexWithData:newChecksumData];
+    newHexString = [newHexString stringByReplacingCharactersInRange:NSMakeRange(42, 8) withString:newChecksumString];
+    NSLog(@"2%@",[NSString stringWithString: newHexString]);
+    NSData *newData = [newHexString hexToData];
+    NSLog(@"3%@",[NSString hexWithData:newData]);
     size_t i, z = 0;
     
-    while (z < d.length && ((const uint8_t *)d.bytes)[z] == 0) z++; // count leading zeroes
+    while (z < newData.length && ((const uint8_t *)newData.bytes)[z] == 0) z++; // count leading zeroes
     
-    uint8_t buf[(d.length - z)*138/100 + 1]; // log(256)/log(58), rounded up
+    uint8_t buf[(newData.length - z)*138/100 + 1]; // log(256)/log(58), rounded up
     
     memset(buf, 0, sizeof(buf));
     
-    for (i = z; i < d.length; i++) {
-        uint32_t carry = ((const uint8_t *)d.bytes)[i];
+    for (i = z; i < newData.length; i++) {
+        uint32_t carry = ((const uint8_t *)newData.bytes)[i];
         
         for (size_t j = sizeof(buf); j > 0; j--) {
             carry += (uint32_t)buf[j - 1] << 8;
@@ -120,3 +133,5 @@ static const UniChar base58chars[] = {
 }
 
 @end
+
+
