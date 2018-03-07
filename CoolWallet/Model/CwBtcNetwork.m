@@ -73,13 +73,13 @@ BOOL didGetTransactionByAccountFlag[5];
     self = [super init];
     
     //connect to websocket
-//    _webSocket.delegate = nil;
-//    [_webSocket close];
-//    
-//    _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"wss://n.block.io/"]]];
-//    _webSocket.delegate = self;
-//    
-//    [_webSocket open];
+    //    _webSocket.delegate = nil;
+    //    [_webSocket close];
+    //
+    //    _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"wss://n.block.io/"]]];
+    //    _webSocket.delegate = self;
+    //
+    //    [_webSocket open];
     
     _webSocket = [SRWebSocket sharedSocket];
     _webSocket.cwDelegate = self;
@@ -168,7 +168,7 @@ BOOL didGetTransactionByAccountFlag[5];
                     if ([add.address isEqualToString:addr]) {
                         foundAccId = acc.accId;
                         foundAddr = YES;
-                        foundExtInt = 1; //Internal Key                        
+                        foundExtInt = 1; //Internal Key
                         break;
                     }
                 }
@@ -262,14 +262,14 @@ BOOL didGetTransactionByAccountFlag[5];
             }];
             
             /*
-            for (NSString* currId in rates) {
-                NSNumber *currRate = [rates objectForKey:currId];
-                
-                //calculate the rate against BTC
-                currRate =[NSNumber numberWithFloat: (currRate.floatValue/btcRate.floatValue)];
-
-                [rates setObject:currRate forKey:currId];
-            }*/
+             for (NSString* currId in rates) {
+             NSNumber *currRate = [rates objectForKey:currId];
+             
+             //calculate the rate against BTC
+             currRate =[NSNumber numberWithFloat: (currRate.floatValue/btcRate.floatValue)];
+             
+             [rates setObject:currRate forKey:currId];
+             }*/
             
             return rates;
         }
@@ -438,7 +438,7 @@ BOOL didGetTransactionByAccountFlag[5];
     }
     
     [self isGetTransactionByAccount:account.accId];
-
+    
     return err;
 }
 
@@ -461,7 +461,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 NSLog(@"Update Trx %@ amount %@ with %@, conifrm: %@", record.tid, record.historyAmount.satoshi,  htx.historyAmount.satoshi, [htx confirmations]);
                 
                 if (cwAddress.historyTrx == nil) {
-//                    record.historyAmount = [record.historyAmount add:htx.historyAmount];
+                    //                    record.historyAmount = [record.historyAmount add:htx.historyAmount];
                     CwBtc *btc = (CwBtc*)[record.historyAmount add:htx.historyAmount];
                     record.amount_btc = btc.BTC;
                 } else {
@@ -469,7 +469,7 @@ BOOL didGetTransactionByAccountFlag[5];
                     NSArray *searchResult = [cwAddress.historyTrx filteredArrayUsingPredicate:predicate];
                     
                     if (searchResult.count == 0) {
-//                        record.historyAmount = [record.historyAmount add:htx.historyAmount];
+                        //                        record.historyAmount = [record.historyAmount add:htx.historyAmount];
                         CwBtc *btc = record.historyAmount;
                         record.amount_btc = btc.BTC;
                     }
@@ -678,13 +678,13 @@ BOOL didGetTransactionByAccountFlag[5];
 -(NSDictionary *) queryHistoryTxs:(NSArray *)addresses
 {
     if (useBlockChain) {
-        serverSite        = @"https://blockchain.info/";
+        serverSite        = BlockChainBaseURL;
         allTxsURLStr      = @"multiaddr";
         
         return [self transactionsOfAnAddress:addresses];
     }
     
-    NSString *requestUrl = [NSString stringWithFormat:@"%@/%@/%@",serverSite,allTxsURLStr, [addresses componentsJoinedByString:@","]];
+    NSString *requestUrl = [NSString stringWithFormat:@"%@%@/%@",serverSite,allTxsURLStr, [addresses componentsJoinedByString:@","]];
     
     NSDateFormatter *dateformat = [[NSDateFormatter alloc]init];
     [dateformat setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
@@ -885,58 +885,58 @@ BOOL didGetTransactionByAccountFlag[5];
 }
 
 /*
-- (GetUnspentTxsByAddrErr) getUnspentTxsByAddr:(NSString*)addr unspentTxs:(NSMutableArray**)unspentTxs
-{
-    GetUnspentTxsByAddrErr err = GETUNSPENTTXSBYADDR_BASE;
-    NSError *_err;
-    NSURLResponse *_response = nil;
-    NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@?unconfirmed=1",serverSite,unspentTxsURLStr,addr] err:&_err response:&_response];
-    NSLog(@"==> URL: %@", [NSString stringWithFormat:@"%@/%@/%@?unconfirmed=1",serverSite,unspentTxsURLStr,addr]);
-    NSLog(@"Get UnspentTxs by Address %@, err: %@", addr, _err);
-    
-    if(_err)
-    {
-        err = GETUNSPENTTXSBYADDR_NETWORK;
-    }
-    else
-    {
-        NSDictionary *JSON =[NSJSONSerialization JSONObjectWithData:data options:0 error:&_err];
-        if(!(!_err && [@"success" isEqualToString:JSON[@"status"]] && JSON[@"data"] && JSON[@"data"][@"unspent"]))
-        {
-            NSLog(@"unspent error: %@", JSON);
-            err = GETUNSPENTTXSBYADDR_JSON;
-        }
-        else
-        {
-            NSArray* rawUnspentTxs = JSON[@"data"][@"unspent"];
-            NSMutableArray *_unspentTxs = [[NSMutableArray alloc] initWithCapacity:[rawUnspentTxs count]];
-            
-            for (NSDictionary *rawUnspentTx in rawUnspentTxs)
-            {
-                double amountValue = [rawUnspentTx[@"amount"] doubleValue];
-                int64_t amountNum = (int64_t)(amountValue * 1e8 + (amountValue < 0.0 ? -.5:.5));
-                CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
-                
-                NSData* tid = [NSString hexstringToData:rawUnspentTx[@"tx"]];
-                NSData* scriptPub = [NSString hexstringToData:rawUnspentTx[@"script"]];
-                NSUInteger n = [rawUnspentTx[@"n"] unsignedIntegerValue];
-                
-                CwUnspentTxIndex *unspentTx = [[CwUnspentTxIndex alloc]init];
-                unspentTx.tid = [NSData dataWithData:tid];
-                unspentTx.n = n;
-                unspentTx.amount = amount;
-                unspentTx.scriptPub = scriptPub;
-                unspentTx.confirmations = [NSNumber numberWithInteger:[[rawUnspentTx objectForKey:@"confirmations"] unsignedIntegerValue]];
-                
-                [_unspentTxs addObject:unspentTx];
-                NSLog(@"    tid:%@ n:%lu amount:%@", tid, (unsigned long)n, amount.satoshi);
-            }
-            *unspentTxs = _unspentTxs;
-        }
-    }
-    
-    return err;
-}
+ - (GetUnspentTxsByAddrErr) getUnspentTxsByAddr:(NSString*)addr unspentTxs:(NSMutableArray**)unspentTxs
+ {
+ GetUnspentTxsByAddrErr err = GETUNSPENTTXSBYADDR_BASE;
+ NSError *_err;
+ NSURLResponse *_response = nil;
+ NSData *data = [self HTTPRequestUsingGETMethodFrom:[NSString stringWithFormat:@"%@/%@/%@?unconfirmed=1",serverSite,unspentTxsURLStr,addr] err:&_err response:&_response];
+ NSLog(@"==> URL: %@", [NSString stringWithFormat:@"%@/%@/%@?unconfirmed=1",serverSite,unspentTxsURLStr,addr]);
+ NSLog(@"Get UnspentTxs by Address %@, err: %@", addr, _err);
+ 
+ if(_err)
+ {
+ err = GETUNSPENTTXSBYADDR_NETWORK;
+ }
+ else
+ {
+ NSDictionary *JSON =[NSJSONSerialization JSONObjectWithData:data options:0 error:&_err];
+ if(!(!_err && [@"success" isEqualToString:JSON[@"status"]] && JSON[@"data"] && JSON[@"data"][@"unspent"]))
+ {
+ NSLog(@"unspent error: %@", JSON);
+ err = GETUNSPENTTXSBYADDR_JSON;
+ }
+ else
+ {
+ NSArray* rawUnspentTxs = JSON[@"data"][@"unspent"];
+ NSMutableArray *_unspentTxs = [[NSMutableArray alloc] initWithCapacity:[rawUnspentTxs count]];
+ 
+ for (NSDictionary *rawUnspentTx in rawUnspentTxs)
+ {
+ double amountValue = [rawUnspentTx[@"amount"] doubleValue];
+ int64_t amountNum = (int64_t)(amountValue * 1e8 + (amountValue < 0.0 ? -.5:.5));
+ CwBtc* amount = [CwBtc BTCWithSatoshi: [NSNumber numberWithLongLong:amountNum]];
+ 
+ NSData* tid = [NSString hexstringToData:rawUnspentTx[@"tx"]];
+ NSData* scriptPub = [NSString hexstringToData:rawUnspentTx[@"script"]];
+ NSUInteger n = [rawUnspentTx[@"n"] unsignedIntegerValue];
+ 
+ CwUnspentTxIndex *unspentTx = [[CwUnspentTxIndex alloc]init];
+ unspentTx.tid = [NSData dataWithData:tid];
+ unspentTx.n = n;
+ unspentTx.amount = amount;
+ unspentTx.scriptPub = scriptPub;
+ unspentTx.confirmations = [NSNumber numberWithInteger:[[rawUnspentTx objectForKey:@"confirmations"] unsignedIntegerValue]];
+ 
+ [_unspentTxs addObject:unspentTx];
+ NSLog(@"    tid:%@ n:%lu amount:%@", tid, (unsigned long)n, amount.satoshi);
+ }
+ *unspentTxs = _unspentTxs;
+ }
+ }
+ 
+ return err;
+ }
  */
 
 - (GetUnspentTxsByAddrErr) getUnspentTxsByAddr:(NSString*)addr unspentTxs:(NSMutableArray**)unspentTxs
@@ -946,7 +946,7 @@ BOOL didGetTransactionByAccountFlag[5];
     
     NSString *serverSite;
     NSString *unspentTxsURLStr;
-    serverSite  = @"https://blockchain.info/";
+    serverSite  = BlockChainBaseURL;
     unspentTxsURLStr  = @"unspent?active=";
     
     NSString *urlOfUnspent = [self urlOfUnspent:serverSite apiName:unspentTxsURLStr address:addr];
@@ -1141,7 +1141,7 @@ BOOL didGetTransactionByAccountFlag[5];
 
 - (PublishErr) publish:(CwTx*)tx result:(NSData **)result
 {
-    serverSite = @"https://blockchain.info/";
+    serverSite = BlockChainBaseURL;
     pushURLStr = @"pushtx";
     
     NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@%@?cors=true", serverSite, pushURLStr]];
@@ -1172,19 +1172,19 @@ BOOL didGetTransactionByAccountFlag[5];
 //{
 //    NSURL *connection = [[NSURL alloc]initWithString:@"https://api-blockcypher-com-soziedsyodjk.runscope.net/v1/btc/main/txs/push"];
 //    NSString *postString = [NSString stringWithFormat:@"{\"tx\":\"%@\"}",[self dataToHexstring:[tx rawTx]]];
-//    
+//
 //    NSMutableURLRequest *httpRequest = [[NSMutableURLRequest alloc]init];
-//    
+//
 //    NSLog(@"tx raw: %@", postString);
-//    
+//
 //    [httpRequest setURL:connection];
 //    [httpRequest setHTTPMethod:@"POST"];
 //    [httpRequest setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
-//    
+//
 //    NSData *decodeTxJSON = [NSURLConnection sendSynchronousRequest:httpRequest returningResponse:nil error:nil];
-//    
+//
 //    *result = [[NSData alloc] initWithData: decodeTxJSON];
-//    
+//
 //    return PUBLISH_BASE;
 //}
 
@@ -1196,7 +1196,7 @@ BOOL didGetTransactionByAccountFlag[5];
 
 - (DecodeErr) decode:(CwTx*)tx result:(NSData **)result
 {
-    serverSite        = @"https://blockchain.info/";
+    serverSite        = BlockChainBaseURL;
     decodeURLStr      = @"decode-tx";
     
     NSURL *connection = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@%@", serverSite, decodeURLStr]];

@@ -15,6 +15,7 @@
 #import "OCAppCommon.h"
 #import "NSDate+Localize.h"
 #import "NSString+HexToData.h"
+#import "BlockChain.h"
 
 @interface TabTransactionDetailViewController()
 @property (weak, nonatomic) IBOutlet UILabel *lblCurrency;
@@ -24,7 +25,7 @@
 @implementation TabTransactionDetailViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];    
+    [super viewDidLoad];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -41,7 +42,7 @@
 }
 
 - (void) SetTxDetailData
-{    
+{
     NSString *BTCAmount = [self.tx.historyAmount getBTCDisplayFromUnit];
     if([self.tx.historyAmount.BTC doubleValue] >=0) {
         _lblTxType.text = NSLocalizedString(@"Receive from",nil);
@@ -75,7 +76,7 @@
 }
 
 - (IBAction)btnBlockchain:(id)sender {
-    NSString *url = [NSString stringWithFormat:@"https://blockchain.info/tx/%@", _lblTxId.text];
+    NSString *url = [NSString stringWithFormat:@"%@tx/%@",BlockChainBaseURL, _lblTxId.text];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
 }
 @end

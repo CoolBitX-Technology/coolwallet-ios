@@ -9,10 +9,16 @@
 #import <Foundation/Foundation.h>
 #import "CwBtcNetworkError.h"
 
+#ifdef DEBUG
+#define BlockChainBaseURL @"https://testnet.blockchain.info/"
+//#define BlockChainBaseURL @"https://blockchain.info"
+#else
 #define BlockChainBaseURL @"https://blockchain.info"
-#define MultiAddrAPI @"/multiaddr"
-#define UnspentAPI @"/unspent"
-#define ExchangeRateAPI @"/ticker"
+#endif
+
+#define MultiAddrAPI @"multiaddr"
+#define UnspentAPI @"unspent"
+#define ExchangeRateAPI @"ticker"
 
 @interface BlockChain : NSObject
 
