@@ -1245,7 +1245,7 @@ NSArray *addresses;
                        KeyChainId: txin.kcId
                         AccountId: txin.accId
                             KeyId: txin.kId
-                           Amount: txin.amount.satoshi.intValue
+                           Amount: txin.amount.satoshi.longLongValue
                 SignatureMateiral: txin.hashForSign];
     }
 }
