@@ -13,6 +13,8 @@
 		1E68F15B1F4D67070036EDBA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E68F15D1F4D67070036EDBA /* InfoPlist.strings */; };
 		1E68F1601F4D67080036EDBA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E68F1621F4D67080036EDBA /* Localizable.strings */; };
 		1E68F1651F4D67080036EDBA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E68F1671F4D67080036EDBA /* InfoPlist.strings */; };
+		64CC2CAD206118AB0004E1BC /* fabric.buildsecret in Resources */ = {isa = PBXBuildFile; fileRef = 64CC2CAB206118AB0004E1BC /* fabric.buildsecret */; };
+		64CC2CAE206118AB0004E1BC /* fabric.apikey in Resources */ = {isa = PBXBuildFile; fileRef = 64CC2CAC206118AB0004E1BC /* fabric.apikey */; };
 		8FC950531B6AB3200B892B8C /* libPods-CoolWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58CCFA5C45FF92718BD86335 /* libPods-CoolWalletTests.a */; };
 		93CF969919EE1A0200466DAF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF969819EE1A0200466DAF /* main.m */; };
 		93CF969C19EE1A0200466DAF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF969B19EE1A0200466DAF /* AppDelegate.m */; };
@@ -212,6 +214,8 @@
 		2CBB7DFF75CAE6888DFC4E8A /* Pods-CoolWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoolWallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoolWallet/Pods-CoolWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		2F4E7145A6B325168F254630 /* Pods-CoolWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoolWalletTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoolWalletTests/Pods-CoolWalletTests.release.xcconfig"; sourceTree = "<group>"; };
 		58CCFA5C45FF92718BD86335 /* libPods-CoolWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CoolWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		64CC2CAB206118AB0004E1BC /* fabric.buildsecret */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fabric.buildsecret; sourceTree = "<group>"; };
+		64CC2CAC206118AB0004E1BC /* fabric.apikey */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fabric.apikey; sourceTree = "<group>"; };
 		93CF969319EE1A0200466DAF /* CoolWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoolWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93CF969719EE1A0200466DAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93CF969819EE1A0200466DAF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -535,6 +539,8 @@
 		93CF968A19EE1A0200466DAF = {
 			isa = PBXGroup;
 			children = (
+				64CC2CAC206118AB0004E1BC /* fabric.apikey */,
+				64CC2CAB206118AB0004E1BC /* fabric.buildsecret */,
 				EFEF8DBF1B4A62C4004427B8 /* libicucore.dylib */,
 				EFEF8DBD1B4A6208004427B8 /* CFNetwork.framework */,
 				EF698CE31A78C36D00A943B9 /* CoreBluetooth.framework */,
@@ -1041,7 +1047,7 @@
 				93CF968F19EE1A0200466DAF /* Sources */,
 				93CF969019EE1A0200466DAF /* Frameworks */,
 				93CF969119EE1A0200466DAF /* Resources */,
-				F42AB7901C3BDA2500CFDC56 /* ShellScript */,
+				F42AB7901C3BDA2500CFDC56 /* Fabric Script */,
 				DB883132C4C8411400824A05 /* [CP] Embed Pods Frameworks */,
 				F191C7F2DDB1AC2656097653 /* [CP] Copy Pods Resources */,
 			);
@@ -1155,6 +1161,7 @@
 				F4AB53F41CCE2FEC008A61B6 /* bitcoin@2x.png in Resources */,
 				EFFA18321B450EA600FF8FC6 /* FrontViewController.xib in Resources */,
 				EFA341311AA6B81C0035AC6D /* search.png in Resources */,
+				64CC2CAD206118AB0004E1BC /* fabric.buildsecret in Resources */,
 				EFA341281AA6B81C0035AC6D /* logo2.png in Resources */,
 				EFA36D301AC3F5C200D7262F /* cancel.png in Resources */,
 				F4BE27BB1C997316009B8104 /* receive@2x.png in Resources */,
@@ -1171,6 +1178,7 @@
 				EFA341361AA6B81C0035AC6D /* transaction.png in Resources */,
 				F4BE27991C995A3E009B8104 /* cw_card.png in Resources */,
 				F47EAA941C4E178700FEDE26 /* ex_logo.png in Resources */,
+				64CC2CAE206118AB0004E1BC /* fabric.apikey in Resources */,
 				F4BE27BC1C997316009B8104 /* receive_active@2x.png in Resources */,
 				1E15C9A31F5D0D610070F432 /* CwInfoViewCell.xib in Resources */,
 				F4BE279A1C995A3E009B8104 /* exchange.png in Resources */,
@@ -1299,18 +1307,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CoolWallet/Pods-CoolWallet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F42AB7901C3BDA2500CFDC56 /* ShellScript */ = {
+		F42AB7901C3BDA2500CFDC56 /* Fabric Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Fabric Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 68521535b4c532c476bc000a7304e95422ee5e99 d73c50f5e3399de9f4aa26349f463e063416659592250944cce01154a975019f";
+			shellScript = "FABRIC_APIKEY_FILE=\"${SRCROOT}/fabric.apikey\"\nFABRIC_BUILDSECRET_FILE=\"${SRCROOT}/fabric.buildsecret\"\n\nif test ! -f \"$FABRIC_APIKEY_FILE\" -o ! -f \"$FABRIC_BUILDSECRET_FILE\"; then\necho \"This build wants to upload dSYM files to Crashlytics.\"\necho \"Uploading is possible only if a Fabric API key and a Fabric build secret are\"\necho \"available. This build is failing because at least one of these pieces of\"\necho \"information is missing.\"\necho \"\"\necho \"To fix the problem, create the following files and store the API key and\"\necho \"build secret, respectively, within those files:\"\necho \"\"\necho \"  $FABRIC_APIKEY_FILE\"\necho \"  $FABRIC_BUILDSECRET_FILE\"\necho \"\"\necho \"If you forked the project then you must register with Crashlytics and\"\necho \"get your own API key and build secret.\"\n\n# Let the build fail\nexit 1\nfi\n\nFABRIC_APIKEY=$(cat \"$FABRIC_APIKEY_FILE\")\nif test $? -ne 0; then\necho \"Cannot read $FABRIC_APIKEY_FILE\"\nexit 1\nfi\n\nFABRIC_BUILDSECRET=$(cat \"$FABRIC_BUILDSECRET_FILE\")\nif test $? -ne 0; then\necho \"Cannot read $FABRIC_BUILDSECRET_FILE\"\nexit 1\nfi\n\necho \"Uploading dSYM files to Crashlytics\"\n\"${PODS_ROOT}/Fabric/run\" \"$FABRIC_APIKEY\" \"$FABRIC_BUILDSECRET\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
