@@ -28,6 +28,7 @@
 +(void) saveData;
 
 -(NSString *) getEstimatedTransactionFeeString;
+-(NSInteger *) getEstimatedTransactionFee;
 
 -(CwBtc *) estimateRecommendFeeByTxSize:(NSInteger)txSize;
 
