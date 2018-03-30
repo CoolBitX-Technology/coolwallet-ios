@@ -24,11 +24,20 @@
     
     [self updateUI];
     [self addObservers];
+    
+    UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+    [self.view addGestureRecognizer:tapRecognizer];
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated
 {
     [CwTransactionFee saveData];
+}
+
+- (void)handleSingleTap:(UITapGestureRecognizer *) sender
+{
+    [self.view endEditing:YES];
 }
 
 - (void) updateUI
@@ -37,7 +46,13 @@
     [self.autoFeeSwitch setOn:transactionFee.enableAutoFee.boolValue animated:YES];
     self.autoFeeSwitch.on = transactionFee.enableAutoFee.boolValue;
     self.estimatedTransactionFeeLabel.hidden = !self.autoFeeSwitch.on;
-    self.manualFeeTextField.text = transactionFee.manualFee.stringValue;
+    
+    NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    [formatter setMaximumFractionDigits:8];
+    [formatter setMinimumFractionDigits:0];
+    NSString* manualFeeText = [formatter stringFromNumber:transactionFee.manualFee];
+    self.manualFeeTextField.text = manualFeeText;
     self.manualFeeTextField.enabled = !self.autoFeeSwitch.on;
 }
 
