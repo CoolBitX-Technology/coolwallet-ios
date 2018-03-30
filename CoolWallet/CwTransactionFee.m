@@ -117,6 +117,14 @@ static double SATOSHI_RATE = 0.00000001;
     return estimated;
 }
 
+- (NSInteger*)getEstimatedTransactionFee
+{
+    NSInteger recommendedFee = self.fastestFee.integerValue;
+    NSInteger estimatedFeeSatoshi = recommendedFee * 226;
+    
+    return estimatedFeeSatoshi;
+}
+
 -(CwBtc *) estimateRecommendFeeByTxSize:(NSInteger)txSize
 {
     NSInteger recommendFee = txSize * self.fastestFee.integerValue;

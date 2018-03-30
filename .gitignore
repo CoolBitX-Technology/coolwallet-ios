@@ -20,6 +20,8 @@ xcuserdata/
 ## Other
 *.moved-aside
 *.xcuserstate
+fabric.apikey
+fabric.buildsecret
 
 ## Obj-C/Swift specific
 *.hmap

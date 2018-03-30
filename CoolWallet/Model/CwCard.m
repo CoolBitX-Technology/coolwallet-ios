@@ -39,6 +39,7 @@
 
 #import "mpbn_util.h"
 #import "tx.h"
+#import "CwTransactionFee.h"
 
 @interface RMMapper(CwCard)
 
@@ -1154,9 +1155,17 @@ NSArray *addresses;
     CwAccount *account= [self.cwAccounts objectForKey: [NSString stringWithFormat: @"%ld", accountId]];
     
     //check amount vs (balance - fee - blockAmount)
-    if (amount > account.balance - FEERATE - account.blockAmount + account.tempUnblockAmount) {
+    //work around: 為了解決此處feeRate值寫死的問題，改取用setting頁auto fee的值來做計算
+    long long feeRate = 0;
+    if ([CwTransactionFee sharedInstance].enableAutoFee.boolValue) {
+        feeRate = (long long)[[CwTransactionFee sharedInstance] getEstimatedTransactionFee];
+    } else {
+        feeRate = [[CwTransactionFee sharedInstance].manualFee doubleValue] * 100000000;
+    }
+    if (amount > account.balance - feeRate - account.blockAmount + account.tempUnblockAmount) {
+        
         if ([self.delegate respondsToSelector:@selector(didPrepareTransactionError:)]) {
-            [self.delegate didPrepareTransactionError:[NSString stringWithFormat:NSLocalizedString(@"Amount is lower than balance\nTransaction fee: %@ BTC",nil), [[OCAppCommon getInstance] convertBTCStringformUnit: FEERATE]]];
+            [self.delegate didPrepareTransactionError:[NSString stringWithFormat:NSLocalizedString(@"Amount is lower than balance\nTransaction fee: %@ BTC",nil), [[OCAppCommon getInstance] convertBTCStringformUnit: feeRate]]];
         }
         return nil;
     }
