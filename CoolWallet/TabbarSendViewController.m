@@ -251,27 +251,6 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
     return YES;
 }
 
-- (IBAction)btnSendBitcoin:(id)sender {
-    if ([self getSendAmountWithSatoshi] < 1) {
-        [self showHintAlert:NSLocalizedString(@"Unable to send",nil) withMessage:NSLocalizedString(@"Please enter a valid amount.",nil) withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil]];
-        return;
-    }
-    
-    if (![self isValidBitcoinAddress:self.txtReceiverAddress.text]) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Unable to send",nil) message:NSLocalizedString(@"Invalid Bitcoin address",nil) preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:nil];
-        [alertController addAction:okAction];
-        
-        [self presentViewController:alertController animated:YES completion:nil];
-        return;
-    }
-    if([self.txtAmount.text compare:@""] == 0 ) return;
-    
-    if ([self.updateUnspendBalance containsObject:[NSString stringWithFormat:@"%ld", (long)account.accId]] ) {
-        [self showIndicatorView:NSLocalizedString(@"Update unspent balance...",nil)];
-    }
-}
-
 - (IBAction)btnScanQRcode:(id)sender {
     
     [self performSegueWithIdentifier:@"ScanQRSegue" sender:self];
@@ -420,7 +399,7 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
     [blockChain getBalanceByAccountID:cwAccount.accId];
     [self performSelectorOnMainThread:@selector(SetBalanceText) withObject:nil waitUntilDone:NO];
     
-    [self.btcNet getTransactionByAccount: cwAccount.accId];
+    [self.btcNet getTransactionByAccount: cwAccount.accId getAllUtxoCompletion:nil];
 }
 
 -(void) cleanInput
@@ -515,8 +494,11 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
     
     if (accId == cwCard.currentAccountId && self.performIdentifier != nil && [self.performIdentifier isEqualToString:SendConfirmSegueIdentifier]) {
         self.performIdentifier = nil;
-        [self performDismiss];
-        [self performSegueWithIdentifier:SendConfirmSegueIdentifier sender:self.btnSendBitcoin];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self performDismiss];
+            [self performSegueWithIdentifier:SendConfirmSegueIdentifier sender:self.btnSendBitcoin];
+        });
     }
 }
 
@@ -589,7 +571,9 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
         }
         
         if (isUnspentAddress && [self isGetAllPublicKeyByAccount:account.accId]) {
-            [self performSegueWithIdentifier:SendConfirmSegueIdentifier sender:self.btnSendBitcoin];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self performSegueWithIdentifier:SendConfirmSegueIdentifier sender:self.btnSendBitcoin];
+            });
         }
     }
 }

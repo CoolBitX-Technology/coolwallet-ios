@@ -366,7 +366,7 @@ BOOL didGetTransactionByAccountFlag[5];
                 
                 for (CwAddress *cwAddr in addresses) {
                     NSLog(@"check '%@' unspent", cwAddr.address);
-                    [self getUnspentByAddress:cwAddr fromAccount:cwAccount];
+                    [self getUnspentByAddress:cwAddr fromAccount:cwAccount completion:nil];
                 }
             }
         }
@@ -395,10 +395,10 @@ BOOL didGetTransactionByAccountFlag[5];
     BlockChain *blockChain = [[BlockChain alloc] init];
     [blockChain getBalanceByAccountID:accId];
     
-    return [self getTransactionByAccount:accId];
+    return [self getTransactionByAccount:accId getAllUtxoCompletion:nil];
 }
 
-- (GetTransactionByAccountErr) getTransactionByAccount:(NSInteger)accId
+- (GetTransactionByAccountErr) getTransactionByAccount:(NSInteger)accId getAllUtxoCompletion:(void (^)())getAllUtxoCompletion
 {
     GetTransactionByAccountErr err = GETTRXBYACCT_BASE;
     
@@ -429,13 +429,40 @@ BOOL didGetTransactionByAccountFlag[5];
     
     [self getHistoryTxsByAccount:account];
     
+    __block NSMutableArray* utxosFromSever = [[NSMutableArray alloc] init];
+    dispatch_group_t getUtxoGroup = dispatch_group_create();
     for (CwAddress *address in [account getAllAddresses]) {
         if (address.historyTrx != nil && address.historyTrx.count == 0) {
             address.unspendUpdateFinish = YES;
             continue;
         }
-        [self getUnspentByAddress:address fromAccount:account];
+        dispatch_group_enter(getUtxoGroup);
+        [self getUnspentByAddress:address fromAccount:account completion:^(NSMutableArray *utxos) {
+            if (utxos) {
+                [utxosFromSever addObjectsFromArray:utxos];
+            }
+            dispatch_group_leave(getUtxoGroup);
+        }];
+        
     }
+    dispatch_group_notify(getUtxoGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0), ^{
+        NSLog(@"account.unspentTxs.count:%lu server_UnspentTxs.count:%lu",(unsigned long)account.unspentTxs.count,utxosFromSever.count);
+        
+        if (getAllUtxoCompletion) {
+            if (account.unspentTxs.count > utxosFromSever.count) {
+                NSMutableArray* tempUtxos = [[NSMutableArray alloc] init];
+                for (CwUnspentTxIndex* utxo in utxosFromSever) {
+                    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@",utxo.tid];
+                    NSArray* searchedResult = [account.unspentTxs filteredArrayUsingPredicate:predicate];
+                    CwUnspentTxIndex* searchedUtxo = searchedResult[0];
+                    [tempUtxos addObject:searchedUtxo];
+                }
+                account.unspentTxs = tempUtxos;
+            }
+            utxosFromSever = nil;
+            getAllUtxoCompletion();
+        }
+    });
     
     [self isGetTransactionByAccount:account.accId];
 
@@ -534,10 +561,14 @@ BOOL didGetTransactionByAccountFlag[5];
     }
 }
 
--(void) getUnspentByAddress:(CwAddress *)addr fromAccount:(CwAccount *)account
+-(void) getUnspentByAddress:(CwAddress *)addr fromAccount:(CwAccount *)account completion:(void (^)(NSMutableArray* utxos))completion
 {
+    
     NSLog(@"getUnspentByAddress: %@, keyChainId is %ld", addr.address, (long)addr.keyChainId);
     if (addr.keyChainId != CwAddressKeyChainExternal && addr.keyChainId != CwAddressKeyChainInternal) {
+        if (completion) {
+            completion(nil);
+        }
         return;
     }
     
@@ -551,6 +582,9 @@ BOOL didGetTransactionByAccountFlag[5];
         {
             //err = GETTRXBYACCT_UNSPENTTX;
             //break;
+            if (completion) {
+                completion(nil);
+            }
         }
         else
         {
@@ -569,6 +603,7 @@ BOOL didGetTransactionByAccountFlag[5];
                     NSInteger index = [account.unspentTxs indexOfObject:historyUnspentTxIndex];
                     [account.unspentTxs replaceObjectAtIndex:index withObject:unspentTxIndex];
                 }
+                
             }
             
             if (addrUnspentTxs.count == 0) {
@@ -577,6 +612,10 @@ BOOL didGetTransactionByAccountFlag[5];
                 if (predicateResult.count > 0) {
                     [account.unspentTxs removeObjectsInArray:predicateResult];
                 }
+            }
+            
+            if (completion) {
+                completion(addrUnspentTxs);
             }
         }
         
@@ -974,6 +1013,7 @@ BOOL didGetTransactionByAccountFlag[5];
         else
         {
             NSArray* rawUnspentTxs = [self unspentTxs: responseBodyInJSON];
+//            NSLog(@"RAWUnspentTxs addr:%@ rawData:%@",addr,rawUnspentTxs);
             NSMutableArray *_unspentTxs = [[NSMutableArray alloc] initWithCapacity:[rawUnspentTxs count]];
             
             for (NSDictionary *rawUnspentTx in rawUnspentTxs)

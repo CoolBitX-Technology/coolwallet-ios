@@ -1177,19 +1177,19 @@ NSArray *addresses;
         }
         return nil;
     }
-    
+    NSLog(@"ed_account_unspentTxs.count:%ld",[account unspentTxs].count);
     for (CwUnspentTxIndex *utx in [account unspentTxs])
     {
         NSMutableString *b = [NSMutableString stringWithFormat:@"%@\n",[utx tid]];
         [b appendFormat:@"%@",[[utx amount]BTC]];
-        NSLog(@"%@", b);
+        NSLog(@"ed_utx_amount:%@", b);
         
         if (utx.kcId == CwAddressKeyChainExternal) {
             CwAddress *addr = [account.extKeys objectAtIndex:utx.kId];
-            NSLog(@"public key: %@", addr.publicKey);
+            NSLog(@"public key external: %@", addr.publicKey);
         } else if (utx.kcId == CwAddressKeyChainInternal) {
             CwAddress *addr = [account.intKeys objectAtIndex:utx.kId];
-            NSLog(@"public key: %@", addr.publicKey);
+            NSLog(@"public key internal: %@", addr.publicKey);
         }
     }
     

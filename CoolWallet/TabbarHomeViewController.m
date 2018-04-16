@@ -287,7 +287,7 @@ Boolean setBtnActionFlag;
         
         //update balance
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [btcNet getTransactionByAccount: accId];
+            [btcNet getTransactionByAccount: accId getAllUtxoCompletion:nil];
         });
     }
 }

@@ -10,10 +10,10 @@
 
 @interface CwUnspentTxIndex : NSObject
 
-@property NSData *tid;
-@property NSUInteger n;
-@property NSUInteger kcId;
-@property NSUInteger kId;
+@property NSData *tid; //tx_hash_big_endian
+@property NSUInteger n; //tx_output_n
+@property NSUInteger kcId; //external or internal
+@property NSUInteger kId; //address index
 @property CwBtc* amount;
 @property NSData *scriptPub;
 @property NSNumber *confirmations;

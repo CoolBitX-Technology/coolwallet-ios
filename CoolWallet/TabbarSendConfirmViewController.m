@@ -397,8 +397,19 @@ typedef NS_ENUM (NSInteger, InputAmountUnit) {
     
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Sent %@ BTC to %@",nil), self.sendAmountBTC, self.sendToAddress];
     
+    
+    [self showIndicatorView:@""];
+    __weak TabbarSendConfirmViewController* weakself = self;
+    __weak UINavigationController* weakSelfNavigation = self.navigationController;
     [self showHintAlert:NSLocalizedString(@"Sent",nil) withMessage:message withOKAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self.navigationController popViewControllerAnimated:YES];
+        
+        //更新UTXO，更新完回上一頁
+        [_btcNet getTransactionByAccount:self.cwAccount.accId getAllUtxoCompletion:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself performDismiss];
+                [weakSelfNavigation popViewControllerAnimated:YES];
+            });
+        }];
     }]];
 }
 

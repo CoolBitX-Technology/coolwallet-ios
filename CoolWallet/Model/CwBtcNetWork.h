@@ -23,7 +23,7 @@
 +(id) sharedManager;
 
 - (GetTransactionByAccountErr) getBalanceAndTransactionByAccount:(NSInteger)accId;
-- (GetTransactionByAccountErr) getTransactionByAccount: (NSInteger)accId;
+- (GetTransactionByAccountErr) getTransactionByAccount:(NSInteger)accId getAllUtxoCompletion:(void (^)())getAllUtxoCompletion;
 - (RegisterNotifyByAddrErr) registerNotifyByAccount: (NSInteger)accId;
 - (void) registerNotifyByAddress:(CwAddress *)addr;
 - (NSDictionary *) queryHistoryTxs:(NSArray *)addresses;

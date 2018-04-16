@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="pJk-oc-UYe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="pJk-oc-UYe">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--Hosts-->
         <scene sceneID="5xb-Uv-Ccy">
@@ -636,11 +631,11 @@
                         <viewControllerLayoutGuide type="bottom" id="Cq1-jU-Fbc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jbO-Kp-ge0">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYu-mP-na7">
-                                <rect key="frame" x="0.0" y="8" width="375" height="527"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="571"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hIK-Gk-LTt">
                                         <rect key="frame" x="10" y="8" width="355" height="82"/>
@@ -981,7 +976,7 @@
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wwP-t0-c2q">
-                                <rect key="frame" x="10" y="547" width="355" height="48"/>
+                                <rect key="frame" x="10" y="611" width="355" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="yg5-5k-oCU"/>
                                 </constraints>
@@ -2905,7 +2900,7 @@ This is to make sure you can recover your wallet if the card gets lost.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qTV-w1-CwN">
-                                <rect key="frame" x="104" y="260" width="200" height="187"/>
+                                <rect key="frame" x="104" y="260.5" width="200" height="186.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="cw9-9W-hOw"/>
                                 </constraints>
