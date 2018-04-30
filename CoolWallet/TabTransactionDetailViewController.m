@@ -46,16 +46,26 @@
     if([self.tx.historyAmount.BTC doubleValue] >=0) {
         _lblTxType.text = NSLocalizedString(@"Receive from",nil);
         _lblTxAmount.text = [NSString stringWithFormat: @"+%@", BTCAmount];
-        if(self.tx.inputs.count > 0) {
-            CwTxin* txin = (CwTxin *)[self.tx.inputs objectAtIndex:0];
-            _lblTxAddr.text = txin.addr;
+        _lblTxAddr.text = @"";
+        
+        for (CwTxin* txin in self.tx.inputs) {
+            NSString* txinStr = [NSString stringWithFormat:@"%@",txin.tid];
+            if ([txinStr isEqualToString:self.tx.tx]) {
+                _lblTxAddr.text = txin.addr;
+                break;
+            }
         }
+        
     }else{
         _lblTxType.text = NSLocalizedString(@"Send to",nil);
         _lblTxAmount.text = [NSString stringWithFormat: @"%@", BTCAmount];
-        if(self.tx.outputs.count > 0) {
-            CwTxout* txout = (CwTxout *)[self.tx.outputs objectAtIndex:0];
-            _lblTxAddr.text = txout.addr;
+        
+        for (CwTxout* txout in self.tx.outputs) {
+            NSString* txoutStr = [NSString stringWithFormat:@"%@",txout.tid];
+            if ([txoutStr isEqualToString:self.tx.tx]) {
+                _lblTxAddr.text = txout.addr;
+                break;
+            }
         }
     }
     

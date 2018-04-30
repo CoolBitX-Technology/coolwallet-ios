@@ -119,19 +119,8 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
         [self.btnAmountConvertUnit setTitle:@"BTC" forState:UIControlStateNormal];
     }
     
-    self.txtReceiverAddress.text = cwCard.paymentAddress;
-    NSString *receiveAmount = cwCard.amount > 0 ? [[OCAppCommon getInstance] convertBTCStringformUnit: cwCard.amount] : nil;
-    if (receiveAmount != nil) {
-        if (self.amountUnit == BTC) {
-            self.txtAmount.text = receiveAmount;
-        } else {
-            self.lblConvertAmount.text = receiveAmount;
-        }
-        
-        [self doneAmountItem];
-    } else {
-        self.txtAmount.text = @"";
-        self.lblConvertAmount.text = @"";
+    if (cwCard.paymentAddress.length != 0) {
+        self.txtReceiverAddress.text = cwCard.paymentAddress;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -164,10 +153,7 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
 
 -(void) viewDidDisappear:(BOOL)animated
 {
-    if ([self.tabBarController.selectedViewController class] != [TabbarSendViewController class]) {
-        cwCard.paymentAddress = @"";
-        cwCard.amount = 0;
-    }
+    cwCard.paymentAddress = @"";
 }
 
 -(CwBtcNetWork *) btcNet

@@ -432,10 +432,10 @@ BOOL didGetTransactionByAccountFlag[5];
     __block NSMutableArray* utxosFromSever = [[NSMutableArray alloc] init];
     dispatch_group_t getUtxoGroup = dispatch_group_create();
     for (CwAddress *address in [account getAllAddresses]) {
-        if (address.historyTrx != nil && address.historyTrx.count == 0) {
-            address.unspendUpdateFinish = YES;
-            continue;
-        }
+//        if (address.historyTrx != nil && address.historyTrx.count == 0) {
+//            address.unspendUpdateFinish = YES;
+//            continue;
+//        }
         dispatch_group_enter(getUtxoGroup);
         [self getUnspentByAddress:address fromAccount:account completion:^(NSMutableArray *utxos) {
             if (utxos) {
@@ -471,6 +471,7 @@ BOOL didGetTransactionByAccountFlag[5];
 
 -(void) syncAccountTransactions:(NSDictionary *)historyTxData account:(CwAccount *)account
 {
+    NSMutableDictionary* tidDic = [[NSMutableDictionary alloc] init];
     for (CwAddress *cwAddress in [account getAllAddresses]) {
         cwAddress.historyUpdateFinish = YES;
         
@@ -481,30 +482,21 @@ BOOL didGetTransactionByAccountFlag[5];
         
         for (CwTx *htx in historyTxList)
         {
+            if ([tidDic objectForKey:htx.tid]) {
+                break;
+            }
+            [tidDic setObject:@"" forKey:htx.tid];
             CwTx *record = [account.transactions objectForKey:htx.tid];
             if(record)
             {
                 //update amount
                 NSLog(@"Update Trx %@ amount %@ with %@, conifrm: %@", record.tid, record.historyAmount.satoshi,  htx.historyAmount.satoshi, [htx confirmations]);
                 
-                if (cwAddress.historyTrx == nil) {
-//                    record.historyAmount = [record.historyAmount add:htx.historyAmount];
-                    CwBtc *btc = (CwBtc*)[record.historyAmount add:htx.historyAmount];
-                    record.amount_btc = btc.BTC;
-                } else {
-                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.tid == %@", htx.tid];
-                    NSArray *searchResult = [cwAddress.historyTrx filteredArrayUsingPredicate:predicate];
-                    
-                    if (searchResult.count == 0) {
-//                        record.historyAmount = [record.historyAmount add:htx.historyAmount];
-                        CwBtc *btc = record.historyAmount;
-                        record.amount_btc = btc.BTC;
-                    }
-                }
-                
-                //update confirmations
+                record.amount_btc = htx.amount_btc;
                 [record setConfirmations:[htx confirmations]];
                 [record setHistoryTime_utc:htx.historyTime_utc];
+                [record setInputs:htx.inputs];
+                [record setOutputs:htx.outputs];
                 
                 [account.transactions setObject:record forKey:record.tid];
             }
@@ -702,9 +694,25 @@ BOOL didGetTransactionByAccountFlag[5];
         [paramAddresses addObject:cwAddress.address];
         if (paramAddresses.count < 20 && cwAddress != allAddresses.lastObject) {
             continue;
+        };
+        NSMutableDictionary* historyTx = [[self queryHistoryTxs:paramAddresses] mutableCopy];
+        NSMutableDictionary* newHistoryTx = [[NSMutableDictionary alloc] init];
+        //排除output[0]是internal address的交易紀錄(排除找零的情形)。
+        for (NSString* address in historyTx) {
+            NSArray* histTxs = [historyTx objectForKey:address];
+            NSMutableArray* newHistTxs = [[NSMutableArray alloc] init];
+            for (CwTx* tx in histTxs) {
+                CwTxout* txout = tx.outputs[0];
+                if (![account isInternalAddress:txout.addr]) {
+                    [newHistTxs addObject:tx];
+                }
+            }
+            if (newHistTxs.count > 0) {
+                [newHistoryTx setObject:newHistTxs forKey:address];
+            }
         }
         
-        [result setValuesForKeysWithDictionary:[self queryHistoryTxs:paramAddresses]];
+        [result setValuesForKeysWithDictionary:newHistoryTx];
         
         [paramAddresses removeAllObjects];
     }
@@ -817,45 +825,87 @@ BOOL didGetTransactionByAccountFlag[5];
         NSString *address = addressInfo[@"address"];
         
         NSMutableArray *cwTxs = [NSMutableArray new];
-        NSMutableArray *inputs = [NSMutableArray new];
-        NSMutableArray *outs = [NSMutableArray new];
         BOOL isInTxInputs = NO;
         BOOL isInTxOut = NO;
         for (NSDictionary *tx in txs) {
-            CwTx *cwTx = [CwTx new];
-            cwTx.txType = TypeHistoryTx;
-            cwTx.tx = tx[@"hash"];
-            cwTx.txFee = [CwBtc BTCWithSatoshi: [NSNumber numberWithDouble: [tx[@"fee"] doubleValue]]];
-            cwTx.historyTime_utc = [NSDate dateWithTimeIntervalSince1970: [tx[@"time"] doubleValue]];
-            cwTx.amount_btc = [NSNumber numberWithDouble:[tx[@"result"] doubleValue]/100000000];
-            cwTx.confirmations = [NSNumber numberWithDouble: [tx[@"block_height"] doubleValue] > 0 ? height - [tx[@"block_height"] doubleValue] + 1 : 0];
+            NSMutableArray *inputs = [[NSMutableArray alloc] init];
+            NSMutableArray *outs = [[NSMutableArray alloc] init];
+            NSMutableDictionary* inputAddresses = [[NSMutableDictionary alloc] init];
+            NSMutableDictionary* outputAddresses = [[NSMutableDictionary alloc] init];
             for (int i=0; i<[(tx[@"inputs"]) count]; i++) {
-                if ([address isEqualToString: tx[@"inputs"][i][@"prev_out"][@"addr"]]) {
-                    isInTxInputs = YES;
+                [inputAddresses setObject:@"" forKey:tx[@"inputs"][i][@"prev_out"][@"addr"]];
+            }
+            for (int i=0; i<[(tx[@"out"]) count]; i++) {
+                [outputAddresses setObject:@"" forKey:tx[@"out"][i][@"addr"]];
+            }
+            
+            long long totalInpueValue = 0;
+            if ([inputAddresses objectForKey:address]) {
+                isInTxInputs = YES;
+                for (int i=0; i<[(tx[@"inputs"]) count]; i++) {
                     CwTxin *cwTxin = [CwTxin new];
                     cwTxin.tid = tx[@"hash"];
-                    cwTxin.addr = address;
+                    cwTxin.addr = tx[@"inputs"][i][@"prev_out"][@"addr"];
                     cwTxin.n = (NSUInteger)tx[@"inputs"][i][@"prev_out"][@"n"];
                     cwTxin.amount = tx[@"inputs"][i][@"prev_out"][@"value"];
                     [inputs addObject: cwTxin];
+                    NSString* inputValue = tx[@"inputs"][i][@"prev_out"][@"value"];
+                    totalInpueValue += [inputValue longLongValue];
                 }
-            }
-            for (int i=0; i<[(tx[@"out"]) count]; i++) {
-                if ([address isEqualToString: tx[@"out"][i][@"addr"]]) {
-                    isInTxOut = YES;
                     CwTxout *cwTxout = [CwTxout new];
+                    cwTxout.tid = tx[@"hash"];
                     cwTxout.isSpent = [tx[@"spent"] isEqualToString:@"true"]?YES:NO;
-                    cwTxout.addr = address;
-                    cwTxout.n = (NSInteger)tx[@"out"][i][@"n"];
-                    cwTxout.amount = tx[@"out"][i][@"value"];
+                    cwTxout.addr = tx[@"out"][0][@"addr"];
+                    cwTxout.n = (NSInteger)tx[@"out"][0][@"n"];
+                    cwTxout.amount = tx[@"out"][0][@"value"];
                     [outs addObject: cwTxout];
+            }
+            if ([outputAddresses objectForKey:address]) {
+                isInTxOut = YES;
+                if (![address isEqualToString:tx[@"out"][0][@"addr"]]) {
+                    break;
                 }
+                for (int i=0; i<[(tx[@"inputs"]) count]; i++) {
+                    CwTxin *cwTxin = [CwTxin new];
+                    cwTxin.tid = tx[@"hash"];
+                    cwTxin.addr = tx[@"inputs"][i][@"prev_out"][@"addr"];
+                    cwTxin.n = (NSUInteger)tx[@"inputs"][i][@"prev_out"][@"n"];
+                    cwTxin.amount = tx[@"inputs"][i][@"prev_out"][@"value"];
+                    [inputs addObject: cwTxin];
+                    NSString* inputValue = tx[@"inputs"][i][@"prev_out"][@"value"];
+                    totalInpueValue += [inputValue longLongValue];
+                }
+                    CwTxout *cwTxout = [CwTxout new];
+                    cwTxout.tid = tx[@"hash"];
+                    cwTxout.isSpent = [tx[@"spent"] isEqualToString:@"true"]?YES:NO;
+                    cwTxout.addr = tx[@"out"][0][@"addr"];
+                    cwTxout.n = (NSInteger)tx[@"out"][0][@"n"];
+                    cwTxout.amount = tx[@"out"][0][@"value"];
+                    [outs addObject: cwTxout];
             }
             
             if (isInTxInputs || isInTxOut) {
+                CwTx *cwTx = [CwTx new];
+                cwTx.txType = TypeHistoryTx;
+                cwTx.tx = tx[@"hash"];
+                cwTx.txFee = tx[@"fee"];
+                cwTx.txFee = [CwBtc BTCWithSatoshi: [NSNumber numberWithDouble: [tx[@"fee"] doubleValue]]];
+                cwTx.historyTime_utc = [NSDate dateWithTimeIntervalSince1970: [tx[@"time"] doubleValue]];
+                cwTx.confirmations = [NSNumber numberWithDouble: [tx[@"block_height"] doubleValue] > 0 ? height - [tx[@"block_height"] doubleValue] + 1 : 0];
                 cwTx.inputs = inputs;
                 cwTx.outputs = outs;
-                cwTx.txFee = tx[@"fee"];
+                
+                if (isInTxInputs) {
+                    double fee = [[NSString stringWithFormat:@"%@",tx[@"fee"]] doubleValue];
+                    double outputAmount = [[NSString stringWithFormat:@"%@",tx[@"out"][0][@"value"]] doubleValue];
+                    double amountDouble = (outputAmount + fee)/100000000;
+                    amountDouble *= -1;
+                    cwTx.amount_btc = [NSNumber numberWithDouble:amountDouble];
+                    
+                } else {
+                    double outputAmount = [[NSString stringWithFormat:@"%@",tx[@"out"][0][@"value"]]doubleValue];
+                    cwTx.amount_btc = [NSNumber numberWithDouble:outputAmount/100000000];
+                }
                 [cwTxs addObject: cwTx];
                 isInTxInputs = isInTxOut = NO;
             }

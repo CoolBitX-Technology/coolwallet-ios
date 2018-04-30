@@ -340,27 +340,32 @@ Boolean setBtnActionFlag;
     UILabel *lblTxUTC = (UILabel *)[cell viewWithTag:100];
     lblTxUTC.text = [tx.historyTime_utc cwDateString];
     
-    //lblTxUTC.text = [NSString stringWithFormat: @"%@", tx.historyTime_utc];
     UILabel *lblTxNotes = (UILabel *)[cell viewWithTag:102];
-    //lblTxNotes.text = [NSString stringWithFormat: @"%@", tx.tid];
     UILabel *lblTxAmount = (UILabel *)[cell viewWithTag:103];
+    lblTxNotes.text = @"";
     
     lblTxAmount.text = (NSString*)[NSString stringWithFormat: @"%@", [tx.historyAmount getBTCDisplayFromUnit]];
-    NSLog(@"lblTxAmount:%@",lblTxAmount.text);
+    
     if ([tx.historyAmount.satoshi doubleValue]>0){
         lblTxAmount.text = [NSString stringWithFormat:@"+%@", lblTxAmount.text];
         lblTxAmount.textColor = [UIColor greenColor];
         
-        if(tx.inputs.count > 0) {
-            CwTxin* txin = (CwTxin *)[tx.inputs objectAtIndex:0];
-            lblTxNotes.text = txin.addr;
+        for (CwTxout* txout in tx.outputs) {
+            NSString* txoutStr = [NSString stringWithFormat:@"%@",txout.tid];
+            if ([txoutStr isEqualToString:tx.tx]) {
+                lblTxNotes.text = txout.addr;
+                break;
+            }
         }
     }else{
         lblTxAmount.textColor = [UIColor redColor];
         
-        if(tx.outputs.count > 0) {
-            CwTxout* txout = (CwTxout *)[tx.outputs objectAtIndex:0];
-            lblTxNotes.text = txout.addr;
+        for (CwTxin* txin in tx.inputs) {
+            NSString* txinStr = [NSString stringWithFormat:@"%@",txin.tid];
+            if ([txinStr isEqualToString:tx.tx]) {
+                lblTxNotes.text = txin.addr;
+                break;
+            }
         }
     }
     return cell;

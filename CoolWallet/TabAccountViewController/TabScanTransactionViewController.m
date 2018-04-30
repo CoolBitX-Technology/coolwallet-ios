@@ -148,10 +148,15 @@ CwCard *cwCard;
         
         //parse string in format: bitcoin:address?amount=???&label=???
         BRPaymentRequest *request = [BRPaymentRequest requestWithString:s];
-
-        cwCard.paymentAddress = request.paymentAddress;
-        cwCard.amount = request.amount;
-        cwCard.label = request.label;
+        if (request.paymentAddress.length != 0) {
+            cwCard.paymentAddress = request.paymentAddress;
+        }
+        if (request.amount > 0) {
+            cwCard.amount = request.amount;
+        }
+        if (request.label) {
+            cwCard.label = request.label;
+        }
 
         NSLog(@"address: %@", request.paymentAddress);
         NSLog(@"amount: %lld", request.amount);

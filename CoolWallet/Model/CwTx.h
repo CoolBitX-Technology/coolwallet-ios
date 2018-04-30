@@ -19,7 +19,7 @@ typedef enum{TypeUnsignedTx,TypeSignedTx,TypeUnspentTx,TypeHistoryTx} TxType;
 
 @property TxType txType;
 
-@property (nonatomic) NSString *tx;
+@property (nonatomic) NSString *tx; //transaction ID
 @property (nonatomic) NSDate* historyTime_utc;
 @property (nonatomic) NSNumber *confirmations;
 @property (nonatomic) NSNumber *amount_btc;

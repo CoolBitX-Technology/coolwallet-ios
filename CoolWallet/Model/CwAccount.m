@@ -419,4 +419,14 @@ NSComparisonResult txCompare(id unspentTx1,id unspentTx2,void* context)
     return allAddresses;
 }
 
+- (BOOL)isInternalAddress:(NSString*)address
+{
+    for (CwAddress* cwAddress in self.intKeys) {
+        if ([address isEqualToString:cwAddress.address]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 @end

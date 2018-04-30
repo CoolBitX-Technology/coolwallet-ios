@@ -11,7 +11,7 @@
 
 @interface CwTxin : NSObject
 
-@property NSData* tid;
+@property NSData* tid; //transaction ID
 @property NSUInteger n;
 @property CwBtc* amount;
 @property NSUInteger accId;

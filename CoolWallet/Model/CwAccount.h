@@ -28,13 +28,13 @@ typedef NS_ENUM (NSInteger, CwAccountStatus) {
 
 @property int64_t tempUnblockAmount; //Exchange Site order block amount, not really unblock
 
-@property NSMutableArray *extKeys;
-@property NSMutableArray *intKeys;
+@property NSMutableArray *extKeys; //[CwAddress]
+@property NSMutableArray *intKeys; //[CwAddress]
 
 @property CwKeychain *externalKeychain;
 @property CwKeychain *internalKeychain;
 
-@property NSMutableDictionary *transactions;         // CWTx[]
+@property NSMutableDictionary *transactions;         //@{(NSString*)transaction ID : CWTx[]}
 @property NSMutableArray *unspentTxs;       // CWUnspentTxIndex[]
 
 @property BOOL infoSynced;
@@ -48,6 +48,7 @@ typedef NS_ENUM (NSInteger, CwAccountStatus) {
 - (NSMutableArray*) genHashesOfTxCopy:(CwTx*)unsignedTx;
 - (GenScriptSigErr) genScriptSig:(NSData*)sig pubKey:(NSData*)pubKey scriptSig:(NSData**)scriptSig;
 - (GenRawTxDataErr) genRawTxData:(CwTx*)tx scriptSigs:(NSArray*)scriptSigs;
--(NSMutableArray *) getAllAddresses;
+- (NSMutableArray *) getAllAddresses;
+- (BOOL)isInternalAddress:(NSString*)address;
 
 @end
