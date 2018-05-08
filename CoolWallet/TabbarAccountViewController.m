@@ -29,10 +29,6 @@
         [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     }
     
-    //hide back item text
-    // 2018/3/30 不知為何要位移藏起來，註解掉這行
-//    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, 1000.f) forBarMetrics:UIBarMetricsDefault];
-    
     self.tabBarController.tabBar.tintColor=[UIColor colorWithRed:255/255.0f green:156/255.0f blue:28/255.0f alpha:1.0];
 }
 

@@ -16,6 +16,9 @@
 #import "CwBtcNetWork.h"
 #import "TabbarAccountViewController.h"
 
+#define TAG_LABEL 1
+#define TAG_REQUEST 2
+
 @interface TabReceiveBitcoinViewController ()  <CwBtcNetworkDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) CwBtcNetWork *btcNet;
@@ -27,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UIView *detailView;
 
 @property (strong, nonatomic) NSArray *accountButtons;
+@property (strong, nonatomic) NSMutableArray *extAddressArray;
 
 - (IBAction)btnNewAddress:(id)sender;
 
@@ -51,6 +55,7 @@ NSString *Label;
     //NSLog(@"currentAccountId = %ld",cwCard.currentAccountId);
     
     self.accountButtons = @[self.btnAccount1, self.btnAccount2, self.btnAccount3, self.btnAccount4, self.btnAccount5];
+    self.extAddressArray = [[NSMutableArray alloc] init];
     
     self.detailView.layer.borderWidth = 1.0;
     self.detailView.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -73,7 +78,7 @@ NSString *Label;
         self.btcNet = [CwBtcNetWork sharedManager];
     }
     self.btcNet.delegate = self;
-    
+    self.extAddressArray = account.extKeys;
     [self setAccountButton];
 }
 
@@ -89,44 +94,74 @@ NSString *Label;
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void) getCurrentAccountInfo
+{
+    [cwCard getAccountInfo:cwCard.currentAccountId];
 }
-*/
 
-#pragma marks - UITextFieldDelegate Delegates
+- (void) getAccountTransactions:(CwAccount *)account
+{
+    [self.btcNet getBalanceAndTransactionByAccount:account.accId];
+}
 
+- (void)genNewAddress
+{
+    [self showIndicatorView:NSLocalizedString(@"create address",nil)];
+    [cwCard genAddress: account.accId KeyChainId: CwAddressKeyChainExternal];
+}
+
+- (BOOL)needGenNewAddress
+{
+    BOOL needGen = YES;
+    NSMutableArray* extKeys = [self.extAddressArray copy];
+    for (CwAddress* cwAddress in extKeys) {
+        if (cwAddress.historyTrx.count == 0) {
+            needGen = NO;
+            break;
+        }
+    }
+    return needGen;
+}
+
+- (NSMutableArray*)sortExternalAddresses:(NSMutableArray*)extKeys
+{
+    NSMutableArray* extAddress = [extKeys copy];
+    NSMutableArray* addressHasTx = [[NSMutableArray alloc] init];
+    NSMutableArray* addressNoTx = [[NSMutableArray alloc] init];
+    NSMutableArray* newArray = [[NSMutableArray alloc] init];
+    for (CwAddress* cwAddress in extAddress) {
+        if (cwAddress.historyTrx.count > 0) {
+            [addressHasTx addObject:cwAddress];
+        } else {
+            [addressNoTx addObject:cwAddress];
+        }
+    }
+    
+    NSArray *sortedAddressHasTx;
+    sortedAddressHasTx = [addressHasTx sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        NSNumber *first = [NSNumber numberWithInteger:[(CwAddress*)a keyId]];
+        NSNumber *second = [NSNumber numberWithInteger:[(CwAddress*)b keyId]];
+        return [second compare:first];
+    }];
+    NSArray *sortedAddressNoTx;
+    sortedAddressNoTx = [addressNoTx sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+        NSNumber *first = [NSNumber numberWithInteger:[(CwAddress*)a keyId]];
+        NSNumber *second = [NSNumber numberWithInteger:[(CwAddress*)b keyId]];
+        return [second compare:first];
+    }];
+    if(sortedAddressNoTx) [newArray addObjectsFromArray:sortedAddressNoTx];
+    if(sortedAddressHasTx) [newArray addObjectsFromArray:sortedAddressHasTx];
+    
+    return newArray;
+}
+
+#pragma mark - UITextFieldDelegate Delegates
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return NO;
 }
 
-#pragma marks - Actions
-
-- (IBAction)btnNewAddress:(id)sender {
-    if (![cwCard enableGenAddressWithAccountId:account.accId]) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Unable to create new address",nil)
-                                                       message: NSLocalizedString(@"Maximum number of 5 unused addresses reached in this account",nil)
-                                                      delegate: nil
-                                             cancelButtonTitle: nil
-                                             otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
-        [alert show];
-        
-        return;
-    }
-    
-    [self showIndicatorView:NSLocalizedString(@"create address",nil)];
-    
-    [cwCard genAddress: account.accId KeyChainId: CwAddressKeyChainExternal];
-}
-
-#pragma marks - Account Button Actions
-
+#pragma mark - Button Actions
 - (void)setAccountButton{
     UIButton *selectedAccount;
     
@@ -170,32 +205,64 @@ NSString *Label;
         [cwCard setDisplayAccount:cwCard.currentAccountId];
     }
     
-    if ([account.extKeys count] > 0 && [account isAllAddressSynced]) {
+    if ([self.extAddressArray count] > 0 && [account isAllAddressSynced]) {
         rowSelected = 0;
         
-        [self didGetAccountAddresses:cwCard.currentAccountId];
         [self performSelectorOnMainThread:@selector(getCurrentAccountInfo) withObject:nil waitUntilDone:NO];
     } else {
-        rowSelected = -1;
-        
         [self getCurrentAccountInfo];
     }
+}
+
+- (IBAction)btnNewAddress:(id)sender {
+    if (![cwCard enableGenAddressWithAccountId:account.accId]) {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle: NSLocalizedString(@"Unable to create new address",nil)
+                                                       message: NSLocalizedString(@"Maximum number of 5 unused addresses reached in this account",nil)
+                                                      delegate: nil
+                                             cancelButtonTitle: nil
+                                             otherButtonTitles: NSLocalizedString(@"OK",nil),nil];
+        [alert show];
+        
+        return;
+    }
     
-    [self setQRcodeDataforkey:rowSelected];
-    [_tableAddressList reloadData];
+    [self genNewAddress];
 }
 
--(void) getCurrentAccountInfo
-{
-    [cwCard getAccountInfo:cwCard.currentAccountId];
+- (IBAction)btnCopyAddress:(id)sender {
+    
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    //pasteboard.string = @"paste me somewhere";
+    pasteboard.string = _lblAddress.text;
+    
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Copied",nil)
+                                                     message:_lblAddress.text
+                                                    delegate:self
+                                           cancelButtonTitle: NSLocalizedString(@"OK",nil)
+                                           otherButtonTitles:nil];
+    [alert show];
 }
 
--(void) getAccountTransactions:(CwAccount *)account
-{
-    [self.btcNet getBalanceAndTransactionByAccount:account.accId];
+- (IBAction)btnRequestPayment:(id)sender {
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Request Payment",nil) message:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alert.tag = TAG_REQUEST;
+    UITextField * alertTextField = [alert textFieldAtIndex:0];
+    alertTextField.keyboardType = UIKeyboardTypeDecimalPad;
+    //alertTextField.keyboardType = UIKeyboardTypeNumberPad;
+    alertTextField.placeholder = NSLocalizedString(@"Enter request BTC",nil);
+    [alert show];
 }
 
-#pragma marks - CwCard Delegates
+- (IBAction)btnEditLabel:(id)sender {
+    
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Edit Label",nil) message:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alert.tag = TAG_LABEL;
+    [alert show];
+}
+
+#pragma mark - CwCard Delegates
 -(void) didCwCardCommand
 {
     NSLog(@"didCwCardCommand");
@@ -207,18 +274,22 @@ NSString *Label;
     NSLog(@"didGenAddress");
     [self performDismiss];
     account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)account.accId]];
-
-    rowSelected = account.extKeyPointer-1;
-    [self setQRcodeDataforkey:account.extKeyPointer-1];
     
-    [_btnEditLabel sendActionsForControlEvents:UIControlEventTouchUpInside];
-    //[cwCard getAccountAddresses: account.accId];
-    [self.tableAddressList reloadData];
+    self.extAddressArray = account.extKeys;
+    self.extAddressArray = [self sortExternalAddresses:self.extAddressArray];
     
-    if (![cwCard enableGenAddressWithAccountId:account.accId]) {
-        [self.addButton setEnabled:NO];
-        [self.addButton setTintColor:[UIColor clearColor]];
-    }
+    rowSelected = 0;
+    [self setQRcodeDataforkey:0];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_btnEditLabel sendActionsForControlEvents:UIControlEventTouchUpInside];
+        [self.tableAddressList reloadData];
+        
+        if (![cwCard enableGenAddressWithAccountId:account.accId]) {
+            [self.addButton setEnabled:NO];
+            [self.addButton setTintColor:[UIColor clearColor]];
+        }
+    });
 }
 
 -(void) didGetAccountInfo: (NSInteger) accId
@@ -241,38 +312,44 @@ NSString *Label;
     
     [self performDismiss];
     
-    NSString *selectedAddress = _lblAddress.text;
-    
     account = [cwCard.cwAccounts objectForKey:[NSString stringWithFormat: @"%ld", (long)accId]];
+    self.extAddressArray = account.extKeys;
     
-    if (account.extKeys.count > 0) {
+    if (self.extAddressArray.count > 0) {
         if (account.lastUpdate == nil) {
-            [self performSelectorInBackground:@selector(getAccountTransactions:) withObject:account];
-        }
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.address = %@", selectedAddress];
-        NSArray *result = [account.extKeys filteredArrayUsingPredicate:predicate];
-        if (result.count > 0) {
-            rowSelected = [account.extKeys indexOfObject:result[0]];
+            [self showIndicatorView:NSLocalizedString(@"loading address...",nil)];
+            [self getAccountTransactions:account];
         } else {
-            rowSelected = 0;
+            if ([self needGenNewAddress]) {
+                [self genNewAddress];
+            } else {
+                self.extAddressArray = [self sortExternalAddresses:self.extAddressArray];
+            }
         }
     } else {
-        rowSelected = -1;
+        return;
     }
     
-    [self setQRcodeDataforkey:rowSelected];
-    [self.tableAddressList reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self setQRcodeDataforkey:rowSelected];
+        [self.tableAddressList reloadData];
+    });
 }
 
 #pragma mark - CwBtcNetwork Delegate
 -(void) didGetTransactionByAccount:(NSInteger)accId
 {
     NSLog(@"didGetTransactionByAccount: %ld", (long)accId);
-    
+    [self performDismiss];
     if (accId != cwCard.currentAccountId) {
         return;
     }
+    if ([self needGenNewAddress]) {
+        [self genNewAddress];
+        return;
+    }
+    self.extAddressArray = account.extKeys;
+    self.extAddressArray = [self sortExternalAddresses:self.extAddressArray];
     
     if (rowSelected >= 0) {
         [self.tableAddressList performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
@@ -307,11 +384,7 @@ NSString *Label;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    //if (self.segAddress.selectedSegmentIndex==0)
-        return account.extKeyPointer;
-    //else
-     //   return account.intKeyPointer;
+    return self.extAddressArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -324,18 +397,19 @@ NSString *Label;
     
     CwAddress *addr;
     
-    addr = (CwAddress *)(account.extKeys[indexPath.row]);
+    addr = (CwAddress *)(self.extAddressArray[indexPath.row]);
     
     //cell.textLabel.text = addr.address;
     
     if(addr) {
         UILabel *lblAddressLabel = (UILabel *)[cell viewWithTag:100];
         if([addr.note compare:@""] == 0) {
-            lblAddressLabel.text = [NSString stringWithFormat: @"%d", (int)indexPath.row + 1];
+//            lblAddressLabel.text = [NSString stringWithFormat: @"%d", (int)indexPath.row + 1];
+            lblAddressLabel.text = [NSString stringWithFormat: @"%ld", (long)addr.keyId];
         } else {
             lblAddressLabel.text = addr.note;
         }
-    
+        
         UILabel *lblAddressText = (UILabel *)[cell viewWithTag:101];
         lblAddressText.text = addr.address;
         
@@ -369,25 +443,27 @@ NSString *Label;
 
 - (void)setQRcodeDataforkey:(NSInteger)key
 {
-    if(key >=0) {
-        CwAddress *addr = (CwAddress *)(account.extKeys[key]);
-        
-        _lblLabel.text = addr.note;
-        
-        _lblAddress.text = addr.address;
-    
-        NSString *datastr = [NSString stringWithFormat:@"bitcoin:%@",addr.address];
-        if(RequestBTC != nil) {
-            datastr = [NSString stringWithFormat:@"%@?amount=%@",datastr, RequestBTC];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(key >=0 && self.extAddressArray.count > 0) {
+            CwAddress *addr = (CwAddress *)(self.extAddressArray[key]);
+            
+            _lblLabel.text = addr.note;
+            
+            _lblAddress.text = addr.address;
+            
+            NSString *datastr = [NSString stringWithFormat:@"bitcoin:%@",addr.address];
+            if(RequestBTC != nil) {
+                datastr = [NSString stringWithFormat:@"%@?amount=%@",datastr, RequestBTC];
+            }
+            UIImage *qrcode = [self quickResponseImageForString:datastr withDimension:170];
+            
+            [_imgQRcode setImage:qrcode];
+        } else {
+            _lblLabel.text = NSLocalizedString(@"",nil);
+            _lblAddress.text = NSLocalizedString(@"Addess",nil);
+            [_imgQRcode setImage:[UIImage imageNamed: @"x.png"]];
         }
-        UIImage *qrcode = [self quickResponseImageForString:datastr withDimension:170];
-    
-        [_imgQRcode setImage:qrcode];
-    }else{
-        _lblLabel.text = NSLocalizedString(@"Label",nil);
-        _lblAddress.text = NSLocalizedString(@"Addess",nil);
-        [_imgQRcode setImage:[UIImage imageNamed: @"x.png"]];
-    }
+    });
 }
 
 
@@ -460,42 +536,6 @@ void freeRawData(void *info, const void *data, size_t size) {
     return quickResponseImage;
 }
 
-- (IBAction)btnCopyAddress:(id)sender {
-    
-    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    //pasteboard.string = @"paste me somewhere";
-    pasteboard.string = _lblAddress.text;
-    
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Copied",nil)
-                                                     message:_lblAddress.text
-                                                    delegate:self
-                                           cancelButtonTitle: NSLocalizedString(@"OK",nil)
-                                           otherButtonTitles:nil];
-    [alert show];
-}
-
-#define TAG_LABEL 1
-#define TAG_REQUEST 2
-
-- (IBAction)btnRequestPayment:(id)sender {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Request Payment",nil) message:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alert.tag = TAG_REQUEST;
-    UITextField * alertTextField = [alert textFieldAtIndex:0];
-    alertTextField.keyboardType = UIKeyboardTypeDecimalPad;
-    //alertTextField.keyboardType = UIKeyboardTypeNumberPad;
-    alertTextField.placeholder = NSLocalizedString(@"Enter request BTC",nil);
-    [alert show];
-}
-
-- (IBAction)btnEditLabel:(id)sender {
-    
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Edit Label",nil) message:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alert.tag = TAG_LABEL;
-    [alert show];
-}
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSLog(@"Entered: %@",[[alertView textFieldAtIndex:0] text]);
     if(alertView.tag == TAG_LABEL) {
@@ -516,10 +556,18 @@ void freeRawData(void *info, const void *data, size_t size) {
 - (void)setAddressLabel: (NSInteger)index
 {
     if(index < 0) return;
-    CwAddress *addr = (CwAddress *)(account.extKeys[index]);
+    CwAddress *addr = (CwAddress *)(self.extAddressArray[index]);
     addr.note = Label;
     
-    [_tableAddressList reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_tableAddressList reloadData];
+    });
+
+    for (CwAddress* cwAddress in account.extKeys) {
+        if ([cwAddress.address isEqualToString:addr.address]) {
+            cwAddress.note = Label;
+        }
+    }
     [cwCard saveCwCardToFile];
 }
 

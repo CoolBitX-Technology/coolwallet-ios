@@ -279,6 +279,7 @@ Boolean setBtnActionFlag;
 {
     NSString *accountId = [NSString stringWithFormat:@"%ld", (long)accId];
     if ([self.txSyncing containsObject:accountId]) {
+        [self performDismiss];
         return;
     } else {
         [self.txSyncing addObject:accountId];
@@ -345,29 +346,20 @@ Boolean setBtnActionFlag;
     lblTxNotes.text = @"";
     
     lblTxAmount.text = (NSString*)[NSString stringWithFormat: @"%@", [tx.historyAmount getBTCDisplayFromUnit]];
-    
     if ([tx.historyAmount.satoshi doubleValue]>0){
         lblTxAmount.text = [NSString stringWithFormat:@"+%@", lblTxAmount.text];
         lblTxAmount.textColor = [UIColor greenColor];
-        
-        for (CwTxout* txout in tx.outputs) {
-            NSString* txoutStr = [NSString stringWithFormat:@"%@",txout.tid];
-            if ([txoutStr isEqualToString:tx.tx]) {
-                lblTxNotes.text = txout.addr;
-                break;
-            }
-        }
-    }else{
+    } else {
         lblTxAmount.textColor = [UIColor redColor];
-        
-        for (CwTxin* txin in tx.inputs) {
-            NSString* txinStr = [NSString stringWithFormat:@"%@",txin.tid];
-            if ([txinStr isEqualToString:tx.tx]) {
-                lblTxNotes.text = txin.addr;
-                break;
-            }
+    }
+    for (CwTxout* txout in tx.outputs) {
+        NSString* txoutStr = [NSString stringWithFormat:@"%@",txout.tid];
+        if ([txoutStr isEqualToString:tx.tx]) {
+            lblTxNotes.text = txout.addr;
+            break;
         }
     }
+    
     return cell;
 }
 
@@ -382,7 +374,7 @@ Boolean setBtnActionFlag;
     [self performSegueWithIdentifier:@"TransactionDetailSegue" sender:self];
 }
 
-#pragma marks - CwCardDelegate
+#pragma mark - CwCardDelegate
 
 -(void) didGetModeState
 {
@@ -458,10 +450,6 @@ Boolean setBtnActionFlag;
     account = (CwAccount *) [self.cwManager.connectedCwCard.cwAccounts objectForKey:[NSString stringWithFormat:@"%ld", (long)self.cwManager.connectedCwCard.currentAccountId]];
     
     if (account.lastUpdate == nil) {
-        if (account.transactions.count > 0) {
-            [self performDismiss];
-        }
-        
         [btcNet registerNotifyByAccount: accId];
         
         [self updateBalanceAndTxs:accId];

@@ -556,7 +556,7 @@ BOOL didGetTransactionByAccountFlag[5];
 -(void) getUnspentByAddress:(CwAddress *)addr fromAccount:(CwAccount *)account completion:(void (^)(NSMutableArray* utxos))completion
 {
     
-    NSLog(@"getUnspentByAddress: %@, keyChainId is %ld", addr.address, (long)addr.keyChainId);
+//    NSLog(@"getUnspentByAddress: %@, keyChainId is %ld", addr.address, (long)addr.keyChainId);
     if (addr.keyChainId != CwAddressKeyChainExternal && addr.keyChainId != CwAddressKeyChainInternal) {
         if (completion) {
             completion(nil);
