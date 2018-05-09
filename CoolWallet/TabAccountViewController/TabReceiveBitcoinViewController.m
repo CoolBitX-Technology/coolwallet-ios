@@ -206,7 +206,6 @@ NSString *Label;
     }
     
     if ([self.extAddressArray count] > 0 && [account isAllAddressSynced]) {
-        rowSelected = 0;
         
         [self performSelectorOnMainThread:@selector(getCurrentAccountInfo) withObject:nil waitUntilDone:NO];
     } else {
@@ -324,16 +323,16 @@ NSString *Label;
                 [self genNewAddress];
             } else {
                 self.extAddressArray = [self sortExternalAddresses:self.extAddressArray];
+                rowSelected = 0;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self setQRcodeDataforkey:rowSelected];
+                    [self.tableAddressList reloadData];
+                });
             }
         }
     } else {
         return;
     }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self setQRcodeDataforkey:rowSelected];
-        [self.tableAddressList reloadData];
-    });
 }
 
 #pragma mark - CwBtcNetwork Delegate
@@ -352,6 +351,7 @@ NSString *Label;
     self.extAddressArray = [self sortExternalAddresses:self.extAddressArray];
     
     if (rowSelected >= 0) {
+        [self setQRcodeDataforkey:rowSelected];
         [self.tableAddressList performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
     }
 }
