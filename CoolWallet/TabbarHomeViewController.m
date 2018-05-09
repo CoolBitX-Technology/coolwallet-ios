@@ -80,6 +80,7 @@ CwBtcNetWork *btcNet;
 
 -(void) viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     if (account == nil) {
         [self showIndicatorView:NSLocalizedString(@"checking data",nil)];
         [self.cwManager.connectedCwCard getModeState];

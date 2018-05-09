@@ -33,6 +33,14 @@ CwManager *cwManager;
     self.cwManager.connectedCwCard.delegate = self;
 }
 
+-(void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    //to keep card power on
+    [cwManager.connectedCwCard getFWVersion];
+}
+
 -(void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];

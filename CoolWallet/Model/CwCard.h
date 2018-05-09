@@ -205,6 +205,7 @@ typedef NS_ENUM (NSInteger, CwFwUpdateStatus) {
 -(void) exTrxSignLogoutWithTrxHandle:(NSData *)trxHandle Nonce: (NSData *)nonce;
 
 -(void) cmdClear;
+-(void) getFWVersion;
 
 @end
 
