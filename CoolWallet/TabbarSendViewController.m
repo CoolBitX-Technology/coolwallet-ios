@@ -122,6 +122,9 @@ static NSString *SendConfirmSegueIdentifier = @"SendActionSegue";
     if (cwCard.paymentAddress.length != 0) {
         self.txtReceiverAddress.text = cwCard.paymentAddress;
     }
+    if (cwCard.amount > 0) {
+        self.txtAmount.text = [[OCAppCommon getInstance] convertBTCStringformUnit:cwCard.amount];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)

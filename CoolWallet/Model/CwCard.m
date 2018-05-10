@@ -4045,6 +4045,11 @@ NSArray *addresses;
     [cwCmds removeAllObjects];
 }
 
+-(void) getFWVersion
+{
+    [self cwCmdGetFwVersion];
+}
+
 #pragma mark - Internal Methods
 
 -(void) cmdAdd: (CwCardCommand *)cmd
