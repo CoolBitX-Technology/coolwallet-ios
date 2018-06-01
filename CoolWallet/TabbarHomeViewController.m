@@ -36,6 +36,7 @@ CwBtcNetWork *btcNet;
 @property (strong, nonatomic) NSArray *accountButtons;
 @property (assign, nonatomic) BOOL waitAccountCreated;
 @property (strong, nonatomic) NSMutableArray *txSyncing;
+@property (strong, nonatomic) NSMutableDictionary* needReloadDic;
 
 @property (strong, nonatomic) CwTx *selectTx;
 
@@ -63,6 +64,9 @@ CwBtcNetWork *btcNet;
     self.txSyncing = [NSMutableArray new];
     
     [self.view sendSubviewToBack:self.balanceView];
+    
+    self.needReloadDic = [[NSMutableDictionary alloc] init];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bitcoinReceivedNotificationHandler:) name:@"BITCOIN_RECEIVED_NOTIFICATION" object: nil ];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,6 +80,13 @@ CwBtcNetWork *btcNet;
     parantViewController.delegate = self;
     
     btcNet.delegate = self;
+    
+    for (NSString* accId in self.needReloadDic) {
+        NSString* needReload = [self.needReloadDic objectForKey:accId]?[self.needReloadDic objectForKey:accId]:@"";
+        if ([needReload isEqualToString:@"1"]) {
+            [self updateBalanceAndTxs:accId.integerValue];
+        }
+    }
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -193,7 +204,6 @@ CwBtcNetWork *btcNet;
     } else {
         [self updateBalanceAndTxs:self.cwManager.connectedCwCard.currentAccountId];
     }
-    
 }
 
 - (IBAction)btnAccount:(id)sender {
@@ -310,6 +320,27 @@ Boolean setBtnActionFlag;
         
         [self.cwManager.connectedCwCard newAccount:self.cwManager.connectedCwCard.hdwAcccountPointer.integerValue Name:@""];
     }
+}
+
+- (NSString*)accountIdInString:(NSInteger)accountId
+{
+    return [NSString stringWithFormat:@"%ld",accountId];
+}
+
+- (void)setNeedReloadWithAccountId:(NSString*)accountId
+{
+    [self.needReloadDic setObject:@"1" forKey:accountId];
+    
+    if (self.isViewLoaded && self.view.window) {
+        [self updateBalanceAndTxs:self.cwManager.connectedCwCard.currentAccountId];
+    }
+}
+
+- (void)bitcoinReceivedNotificationHandler:(NSNotification*)notification
+{
+    NSLog(@"bitcoinReceivedNotificationHandler:%@",notification.object);
+    NSString* accountId = notification.object;
+    [self setNeedReloadWithAccountId:accountId];
 }
 
 #pragma mark - Table view data source
@@ -494,6 +525,8 @@ Boolean setBtnActionFlag;
             [self SetTxkeys]; //this includes reloadData
             [self performDismiss];
         }
+        
+        [self.needReloadDic setObject:@"0" forKey:[self accountIdInString:accId]];
     });
 }
 

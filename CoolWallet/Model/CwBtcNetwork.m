@@ -206,6 +206,9 @@ BOOL didGetTransactionByAccountFlag[5];
             }
             notify.soundName = UILocalNotificationDefaultSoundName;
             [[UIApplication sharedApplication] presentLocalNotificationNow: notify];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"BITCOIN_RECEIVED_NOTIFICATION"
+             object:[NSString stringWithFormat:@"%ld",foundAccId]];
         }
     }
 }

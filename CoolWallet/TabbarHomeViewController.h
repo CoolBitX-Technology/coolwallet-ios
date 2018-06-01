@@ -26,4 +26,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableTransaction;
 
 @property (nonatomic,strong) UIRefreshControl *refreshControl;
+
+- (void)updateBalanceAndTxs:(NSInteger)accId;
+
+- (void)setNeedReloadWithAccountId:(NSString*)accountId;
+
 @end
