@@ -485,8 +485,14 @@ BOOL didGetTransactionByAccountFlag[5];
         
         for (CwTx *htx in historyTxList)
         {
+            CwTxout* txout = htx.outputs[0];
+            if ([account isInternalAddress:txout.addr]) {
+                //排除output[0]是internal address的交易紀錄(排除找零的情形)。
+                continue;
+            }
             if ([tidDic objectForKey:htx.tid]) {
-                break;
+                //有找零紀錄的(outputs.count=2)會覆蓋
+                if (htx.outputs.count == 1) break;
             }
             [tidDic setObject:@"" forKey:htx.tid];
             CwTx *record = [account.transactions objectForKey:htx.tid];
@@ -699,23 +705,7 @@ BOOL didGetTransactionByAccountFlag[5];
             continue;
         };
         NSMutableDictionary* historyTx = [[self queryHistoryTxs:paramAddresses] mutableCopy];
-        NSMutableDictionary* newHistoryTx = [[NSMutableDictionary alloc] init];
-        //排除output[0]是internal address的交易紀錄(排除找零的情形)。
-        for (NSString* address in historyTx) {
-            NSArray* histTxs = [historyTx objectForKey:address];
-            NSMutableArray* newHistTxs = [[NSMutableArray alloc] init];
-            for (CwTx* tx in histTxs) {
-                CwTxout* txout = tx.outputs[0];
-                if (![account isInternalAddress:txout.addr]) {
-                    [newHistTxs addObject:tx];
-                }
-            }
-            if (newHistTxs.count > 0) {
-                [newHistoryTx setObject:newHistTxs forKey:address];
-            }
-        }
-        
-        [result setValuesForKeysWithDictionary:newHistoryTx];
+        [result setValuesForKeysWithDictionary:historyTx];
         
         [paramAddresses removeAllObjects];
     }
@@ -855,36 +845,41 @@ BOOL didGetTransactionByAccountFlag[5];
                     NSString* inputValue = tx[@"inputs"][i][@"prev_out"][@"value"];
                     totalInpueValue += [inputValue longLongValue];
                 }
+                for (int i=0; i<[(tx[@"out"]) count]; i++) {
                     CwTxout *cwTxout = [CwTxout new];
                     cwTxout.tid = tx[@"hash"];
                     cwTxout.isSpent = [tx[@"spent"] isEqualToString:@"true"]?YES:NO;
-                    cwTxout.addr = tx[@"out"][0][@"addr"];
-                    cwTxout.n = (NSInteger)tx[@"out"][0][@"n"];
-                    cwTxout.amount = tx[@"out"][0][@"value"];
+                    cwTxout.addr = tx[@"out"][i][@"addr"];
+                    cwTxout.n = (NSInteger)tx[@"out"][i][@"n"];
+                    cwTxout.amount = tx[@"out"][i][@"value"];
                     [outs addObject: cwTxout];
+                }
             }
             if ([outputAddresses objectForKey:address]) {
-                isInTxOut = YES;
-                if (![address isEqualToString:tx[@"out"][0][@"addr"]]) {
-                    break;
+                if ([tx[@"out"] count] == 2 && [address isEqualToString:tx[@"out"][1][@"addr"]]) {
+                    //有找零的交易(tx[@"out"][1]=internal address)代表轉幣出去
+                    isInTxInputs = YES;
                 }
-                for (int i=0; i<[(tx[@"inputs"]) count]; i++) {
-                    CwTxin *cwTxin = [CwTxin new];
-                    cwTxin.tid = tx[@"hash"];
-                    cwTxin.addr = tx[@"inputs"][i][@"prev_out"][@"addr"];
-                    cwTxin.n = (NSUInteger)tx[@"inputs"][i][@"prev_out"][@"n"];
-                    cwTxin.amount = tx[@"inputs"][i][@"prev_out"][@"value"];
-                    [inputs addObject: cwTxin];
-                    NSString* inputValue = tx[@"inputs"][i][@"prev_out"][@"value"];
-                    totalInpueValue += [inputValue longLongValue];
-                }
-                    CwTxout *cwTxout = [CwTxout new];
-                    cwTxout.tid = tx[@"hash"];
-                    cwTxout.isSpent = [tx[@"spent"] isEqualToString:@"true"]?YES:NO;
-                    cwTxout.addr = tx[@"out"][0][@"addr"];
-                    cwTxout.n = (NSInteger)tx[@"out"][0][@"n"];
-                    cwTxout.amount = tx[@"out"][0][@"value"];
-                    [outs addObject: cwTxout];
+                    isInTxOut = YES;
+                    for (int i=0; i<[(tx[@"inputs"]) count]; i++) {
+                        CwTxin *cwTxin = [CwTxin new];
+                        cwTxin.tid = tx[@"hash"];
+                        cwTxin.addr = tx[@"inputs"][i][@"prev_out"][@"addr"];
+                        cwTxin.n = (NSUInteger)tx[@"inputs"][i][@"prev_out"][@"n"];
+                        cwTxin.amount = tx[@"inputs"][i][@"prev_out"][@"value"];
+                        [inputs addObject: cwTxin];
+                        NSString* inputValue = tx[@"inputs"][i][@"prev_out"][@"value"];
+                        totalInpueValue += [inputValue longLongValue];
+                    }
+                    for (int i=0; i<[(tx[@"out"]) count]; i++) {
+                        CwTxout *cwTxout = [CwTxout new];
+                        cwTxout.tid = tx[@"hash"];
+                        cwTxout.isSpent = [tx[@"spent"] isEqualToString:@"true"]?YES:NO;
+                        cwTxout.addr = tx[@"out"][i][@"addr"];
+                        cwTxout.n = (NSInteger)tx[@"out"][i][@"n"];
+                        cwTxout.amount = tx[@"out"][i][@"value"];
+                        [outs addObject: cwTxout];
+                    }
             }
             
             if (isInTxInputs || isInTxOut) {
@@ -910,7 +905,8 @@ BOOL didGetTransactionByAccountFlag[5];
                     cwTx.amount_btc = [NSNumber numberWithDouble:outputAmount/100000000];
                 }
                 [cwTxs addObject: cwTx];
-                isInTxInputs = isInTxOut = NO;
+                isInTxInputs = NO;
+                isInTxOut = NO;
             }
         }
         
