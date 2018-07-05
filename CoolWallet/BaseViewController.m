@@ -56,19 +56,21 @@ CwManager *cwManager;
 }
 
 - (void) showIndicatorView:(NSString *)Msg {
-    if (mHUD != nil) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (mHUD != nil) {
+            mHUD.labelText = Msg;
+            return;
+        }
+        
+        mHUD = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:mHUD];
+        
+        //如果设置此属性则当前的view置于后台
+        mHUD.dimBackground = YES;
         mHUD.labelText = Msg;
-        return;
-    }
-    
-    mHUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:mHUD];
-    
-    //如果设置此属性则当前的view置于后台
-    mHUD.dimBackground = YES;
-    mHUD.labelText = Msg;
-    
-    [mHUD show:YES];
+        
+        [mHUD show:YES];
+    });
 }
 
 - (void) performDismiss
