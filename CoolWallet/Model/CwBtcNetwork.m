@@ -477,7 +477,6 @@ BOOL didGetTransactionByAccountFlag[5];
     NSMutableDictionary* tidDic = [[NSMutableDictionary alloc] init];
     for (CwAddress *cwAddress in [account getAllAddresses]) {
         cwAddress.historyUpdateFinish = YES;
-        
         NSArray *historyTxList = [historyTxData objectForKey:cwAddress.address];
         if (!historyTxList) {
             continue;
@@ -825,14 +824,16 @@ BOOL didGetTransactionByAccountFlag[5];
             NSMutableArray *outs = [[NSMutableArray alloc] init];
             NSMutableDictionary* inputAddresses = [[NSMutableDictionary alloc] init];
             NSMutableDictionary* outputAddresses = [[NSMutableDictionary alloc] init];
-            for (int i=0; i<[(tx[@"inputs"]) count]; i++) {
-                [inputAddresses setObject:@"" forKey:tx[@"inputs"][i][@"prev_out"][@"addr"]];
+            if (tx[@"inputs"][0][@"prev_out"]) { //miner will not have input address
+                for (int i=0; i<[(tx[@"inputs"]) count]; i++) {
+                    [inputAddresses setObject:@"" forKey:tx[@"inputs"][i][@"prev_out"][@"addr"]];
+                }
             }
+            
             for (int i=0; i<[(tx[@"out"]) count]; i++) {
                 [outputAddresses setObject:@"" forKey:tx[@"out"][i][@"addr"]];
             }
             
-            long long totalInpueValue = 0;
             if ([inputAddresses objectForKey:address]) {
                 isInTxInputs = YES;
                 for (int i=0; i<[(tx[@"inputs"]) count]; i++) {
@@ -842,8 +843,6 @@ BOOL didGetTransactionByAccountFlag[5];
                     cwTxin.n = (NSUInteger)tx[@"inputs"][i][@"prev_out"][@"n"];
                     cwTxin.amount = tx[@"inputs"][i][@"prev_out"][@"value"];
                     [inputs addObject: cwTxin];
-                    NSString* inputValue = tx[@"inputs"][i][@"prev_out"][@"value"];
-                    totalInpueValue += [inputValue longLongValue];
                 }
                 for (int i=0; i<[(tx[@"out"]) count]; i++) {
                     CwTxout *cwTxout = [CwTxout new];
@@ -868,8 +867,6 @@ BOOL didGetTransactionByAccountFlag[5];
                         cwTxin.n = (NSUInteger)tx[@"inputs"][i][@"prev_out"][@"n"];
                         cwTxin.amount = tx[@"inputs"][i][@"prev_out"][@"value"];
                         [inputs addObject: cwTxin];
-                        NSString* inputValue = tx[@"inputs"][i][@"prev_out"][@"value"];
-                        totalInpueValue += [inputValue longLongValue];
                     }
                     for (int i=0; i<[(tx[@"out"]) count]; i++) {
                         CwTxout *cwTxout = [CwTxout new];
